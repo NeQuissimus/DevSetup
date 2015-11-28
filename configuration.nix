@@ -77,12 +77,15 @@
     binutils
     chromium
     dropbox
+    ghc
     gitFull
+    gnumake
     htop
     maven
     jdk
     sbt
     scala
+    stack
     sublime3
     texLiveFull
   ];

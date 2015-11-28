@@ -3,13 +3,17 @@
 {
   imports = [ /etc/nixos/hardware-configuration.nix ];
 
-  boot.kernelPackages = pkgs.linuxPackages_4_2;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/sda";
 
   swapDevices = [ { device = "/dev/sda1"; } ];
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+  };
 
   networking = {
     hostName = "nixPixel";
@@ -44,7 +48,6 @@
   };
   
   i18n = {
-    #consoleFont = "lat9w-16";
     consoleFont = "source-code-pro";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
@@ -73,7 +76,6 @@
   environment.systemPackages = with pkgs; [
     binutils
     chromium
-    docker
     dropbox
     gitFull
     htop
@@ -83,11 +85,7 @@
     scala
     sublime3
     texLiveFull
-    vagrant
-    wget
   ];
-
-  virtualisation.docker.enable = true;
 
   programs.zsh = {
     enable = true;
@@ -96,18 +94,24 @@
     '';
   };
 
-  services.openssh.enable = true;
+  services = {
+    openssh = {
+      enable = true;
+      passwordAuthentication = false;
+      permitRootLogin = "no";
+    };
 
-  services.xserver = {
-    enable = true;
-    defaultDepth = 24;
-    videoDriver = "intel";
-    exportConfiguration = true;
-    autorun = true;
-    resolutions = [{x = 1280; y = 800;} {x = 1024; y = 768;}];
-    windowManager.awesome.enable = true;
-    desktopManager.xterm.enable = false;
-    displayManager.slim.enable = true;
+    xserver = {
+      enable = true;
+      defaultDepth = 24;
+      videoDriver = "intel";
+      exportConfiguration = true;
+      autorun = true;
+      resolutions = [{x = 1280; y = 800;} {x = 1024; y = 768;}];
+      windowManager.awesome.enable = true;
+      desktopManager.xterm.enable = false;
+      displayManager.slim.enable = true;
+    };
   };
 
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";

@@ -109,7 +109,7 @@
     xserver = {
       enable = true;
       defaultDepth = 24;
-      videoDriver = "vmware";
+      videoDriver = "virtualbox";
       exportConfiguration = true;
       autorun = true;
       monitorSection = ''ModeLine "1920x1080" 146.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync'';

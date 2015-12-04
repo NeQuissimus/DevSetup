@@ -1,52 +1,47 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ./xterm.nix ./ohmyzsh.nix ];
 
-  boot.kernelPackages = pkgs.linuxPackages_4_2;
+  boot = {
+    cleanTmpDir = true;
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";
+    initrd.checkJournalingFS = false;
 
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 10;
-  };
-
-  swapDevices = [{device = "/dev/sda1";}];
-
-  networking = {
-    hostName = "nixie";
-    extraHosts = "127.0.0.1 nixie";
-
-    firewall = {
+    loader.grub = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
-    };
-  };
-
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "10:00";
-      options = "--delete-older-than 14";
+      version = 2;
+      device = "/dev/sda";
     };
 
-    extraOptions = ''
-      auto-optimise-store = true
-    '';
+    kernel.sysctl = {
+      "vm.swappiness" = 10;
+    };
 
-    package = pkgs.nixUnstable;
-
-    useChroot = true;
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "ondemand";
+  environment = {
+    systemPackages = with pkgs; [
+      binutils
+      chromium
+      dropbox
+      gitFull
+      htop
+      maven
+      jdk
+      open-vm-tools
+      openssl
+      sbt
+      scala
+      sublime3
+      subversion
+      wget
+    ];
   };
 
   fonts = {
+    enableCoreFonts = true;
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
@@ -60,7 +55,33 @@
     defaultLocale = "en_US.UTF-8";
   };
 
-  time.timeZone = "UTC";
+  networking = {
+    hostName = "nixie";
+    extraHosts = "127.0.0.1 nixie";
+
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 22 ];
+    };
+  };
+
+  nix = {
+    binaryCaches = [ http://cache.nixos.org http://hydra.nixos.org ];
+
+    extraOptions = ''
+      auto-optimise-store = true
+    '';
+
+    gc = {
+      automatic = true;
+      dates = "10:00";
+      options = "--delete-older-than 14";
+    };
+
+    package = pkgs.nixUnstable;
+
+    useChroot = true;
+  };
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -70,34 +91,22 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    binutils
-    chromium
-#    docker
-    dropbox
-#    ghc
-    gitFull
-#    gnupg
-    htop
-#    mariadb
-    maven
-    jdk
-    open-vm-tools
-    openssl
-#    rpm
-    sbt
-    scala
-    sublime3
-    subversion
-#    tomcat7
-    wget
-  ];
-
-  programs.zsh = {
+  powerManagement = {
     enable = true;
-    promptInit = ''
-      autoload -U promptinit && promptinit && prompt clint
-    '';
+    cpuFreqGovernor = "ondemand";
+  };
+
+  programs = {
+    ssh = {
+      agentTimeout = "2h";
+    };
+
+    zsh = {
+      enable = true;
+      promptInit = ''
+        autoload -U promptinit && promptinit && prompt clint
+      '';
+    };
   };
 
   services = {
@@ -108,21 +117,11 @@
       exportConfiguration = true;
       autorun = true;
       monitorSection = ''ModeLine "1920x1080" 146.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync'';
-      resolutions = [{x = 1920; y = 1080;}];
+      resolutions = [ {x = 1920; y = 1080;} ];
       windowManager.awesome.enable = true;
       desktopManager.xterm.enable = false;
       displayManager.slim.enable = true;
     };
-
-#    mysql = {
-#      enable = true;
-#      package = pkgs.mariadb;
-#    };
-
-#    tomcat = {
-#      enable = true;
-#      user = "itactics";
-#    };
 
     openssh = {
       enable = true;
@@ -133,21 +132,28 @@
     nscd.enable = false;
   };
 
-  users.defaultUserShell = "/run/current-system/sw/bin/zsh";
-
-  users.extraUsers.nequi = {
-    name = "nequi";
-    group = "users";
-    uid = 1000;
-    extraGroups = ["wheel"];
-    createHome = true;
-    home = "/home/nequi";
-    shell = "/run/current-system/sw/bin/zsh";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGHGhXTBqe9tG3bQaL1q1hpHr5q+YC/vKcCvNW2EVZN6 tsteinbach@CAM-EN-RFDV7N.local"
-    ];
-  };
+  swapDevices = [ {device = "/dev/sda1";} ];
 
   system.stateVersion = "15.09";
 
+  time.timeZone = "UTC";
+
+  users = {
+    defaultUserShell = "/run/current-system/sw/bin/zsh";
+
+    extraUsers.nequi = {
+      createHome = true;
+      extraGroups = [ "wheel" ];
+      group = "users";
+      home = "/home/nequi";
+      name = "nequi";
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
+      ];
+      shell = "/run/current-system/sw/bin/zsh";
+      uid = 1000;
+    };
+  };
+
+  virtualisation.virtualbox.guest.enable = true;
 }

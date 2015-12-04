@@ -30,13 +30,9 @@
       htop
       maven
       jdk
-      open-vm-tools
-      openssl
       sbt
       scala
       sublime3
-      subversion
-      wget
     ];
   };
 

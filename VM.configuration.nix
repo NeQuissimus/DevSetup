@@ -63,6 +63,7 @@
 
   nix = {
     binaryCaches = [ http://cache.nixos.org http://hydra.nixos.org ];
+    binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
 
     extraOptions = ''
       auto-optimise-store = true

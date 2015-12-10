@@ -13,6 +13,7 @@ if [ ! -e "$HOME/.oh-my-zsh" -a ! $(id -u) = "0" ]; then
   plugins=(git)
   export PATH="$HOME/bin:/var/setuid-wrappers:$HOME/.nix-profile/bin:$HOME/.nix-profile/sbin:$HOME/.nix-profile/lib/kde4/libexec:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/nix/var/nix/profiles/default/lib/kde4/libexec:/run/current-system/sw/bin:/run/current-system/sw/sbin:/run/current-system/sw/lib/kde4/libexec"
   source $HOME/.oh-my-zsh/oh-my-zsh.sh
+  alias mvn='mvn -q'
 EOF
 fi
   '';

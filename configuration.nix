@@ -26,6 +26,7 @@
     gitFull
     gradle
     htop
+    iotop
     jre
     maven
     sublime3
@@ -38,6 +39,11 @@
     fonts = with pkgs; [
       source-code-pro
     ];
+    fontconfig.defaultFonts.monospace = [ "Source Code Pro" ];
+  };
+
+  hardware = {
+    cpu.intel.updateMicrocode = true;
   };
 
   i18n = {
@@ -60,8 +66,12 @@
   };
 
   nix = {
-    binaryCaches = [ http://cache.nixos.org http://hydra.nixos.org ];
+    binaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
+
+    extraOptions = ''
+      auto-optimise-store = true
+    '';
 
     gc = {
       automatic = true;
@@ -69,11 +79,9 @@
       options = "--delete-older-than 14";
     };
 
-    extraOptions = ''
-      auto-optimise-store = true
-    '';
-
     package = pkgs.nixUnstable;
+
+    trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
 
     useChroot = true;
   };
@@ -91,14 +99,24 @@
     cpuFreqGovernor = "ondemand";
   };
 
-  programs.zsh = {
-    enable = true;
-    promptInit = ''
-      autoload -U promptinit && promptinit && prompt clint
-    '';
+  programs = {
+    ssh.startAgent = true;
+    zsh = {
+      enable = true;
+      promptInit = ''
+        autoload -U promptinit && promptinit && prompt clint
+      '';
+    };
   };
 
   services = {
+    nscd.enable = false;
+
+    ntp = {
+      enable = true;
+      servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
+    };
+
     openssh = {
       enable = true;
       passwordAuthentication = false;
@@ -106,18 +124,21 @@
     };
 
     xserver = {
-      enable = true;
-      defaultDepth = 24;
-      videoDriver = "intel";
-      exportConfiguration = true;
       autorun = true;
-      resolutions = [{x = 1280; y = 800;} {x = 1024; y = 768;}];
-      windowManager.awesome.enable = true;
+      defaultDepth = 24;
       desktopManager.xterm.enable = false;
-      displayManager.slim.enable = true;
+      displayManager = {
+        sessionCommands = with pkgs; lib.mkAfter ''
+          ${coreutils}/bin/sleep 30 && ${dropbox}/bin/dropbox &
+        '';
+        slim.enable = true;
+      };
+      enable = true;
+      exportConfiguration = true;
+      resolutions = [{x = 1280; y = 800;} {x = 1024; y = 768;}];
+      videoDriver = "intel";
+      windowManager.awesome.enable = true;
     };
-
-    nscd.enable = false;
   };
 
   time = {
@@ -125,7 +146,7 @@
   };
 
   users = {
-    defaultUserShell = "/run/current-system/sw/bin/zsh";
+    defaultUserShell = "${pkgs.zsh}/bin/zsh";
 
     extraUsers.nequi = {
      createHome = true;
@@ -133,7 +154,7 @@
      group = "users";
      home = "/home/nequi";
      name = "nequi";
-     shell = "/run/current-system/sw/bin/zsh";
+     shell = "${pkgs.zsh}/bin/zsh";
      uid = 1000;
 
      openssh.authorizedKeys.keys = [

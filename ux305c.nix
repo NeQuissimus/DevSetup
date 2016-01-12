@@ -172,8 +172,7 @@
      uid = 1000;
 
      openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3W3w6Zf5ceFx+7FFfLKZZb2eeHf6fFETSfbBw954aiFQkVdo0MBgxICc8HzjSk+XKsrgYB/uDFs5e+qjyqmS2nKJMiMTkTRxG+HOiPYf50LI5eZPqB5mMORDOQZYShAYfMs5+dLfDT2K88zuAb4KoxoJVo2a6Q1x+NxJT6YKtcTgxmAGylqRJThvpVd/yoYoBKzlmWPI37iyeg+8GT5Qo9edzqYFIg4tN9lK1mzpZ+ybpL674+WM6X9bGdlKNn0JHi9BCsFUGYFvB9qpQuEZ8MRL/cvfDrERZuc+w6WaCcZobAd0s6GTylUjGGTSvrcXYxPexFMPZIgNe0qRjacfd tsteinbach@pixelbox.local"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFnJWxz0uwcdMkyjx3+MxO9ZNlVPaCGsUolCi9GtRDJ4 nequi@nixPixel"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
      ];
     };
   };

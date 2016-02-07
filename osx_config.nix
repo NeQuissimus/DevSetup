@@ -1,5 +1,3 @@
-# ~/.nixpkgs/config.nix
-
  {
    allowUnfree = true;
    packageOverrides = pkgs: rec {
@@ -9,6 +7,10 @@
 
       gradleGen = pkgs.gradleGen.override {
         jdk = pkgs.openjdk8;
+      };
+
+      sbt = pkgs.sbt.override {
+        jre = pkgs.openjdk8;
       };
    };
  }

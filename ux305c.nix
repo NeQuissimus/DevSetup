@@ -6,13 +6,14 @@
   boot = {
     cleanTmpDir = true;
 
-    initrd.kernelModules = ["ahci" "aesni-intel" "i915"];
+    initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
       "vm.swappiness" = 10;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -21,11 +22,11 @@
   };
 
   environment.systemPackages = with pkgs; [
+    atom
     binutils
     chromium
     dropbox
     encfs
-    #gcc5
     gitFull
     gradle
     htop
@@ -36,10 +37,10 @@
     #ncurses
     sbt
     scala
-    sublime3
     texLiveFull
     upower
-    which
+    xclip
+    xtrlock-pam
   ];
 
   fonts = {
@@ -74,7 +75,11 @@
       allowedTCPPorts = [ 22 ];
     };
 
-    wireless.enable = true;
+    wireless = {
+      enable = true;
+      networks.Germadian.pskRaw = "36c8af10dfa1bc96ca74afe305d0c4750ef5259d87d39e9051c1ab441f38dbd9";
+      networks.SecurityBeginsWithTrust.pskRaw = "b5da43c13e23e1d6a8328ccd5128ac6b8b5add7852489d1da150535e13afad3b";
+    };
   };
 
   nix = {
@@ -150,6 +155,7 @@
       enable = true;
       exportConfiguration = true;
       resolutions = [{x = 1920; y = 1080;} {x = 1280; y = 800;} {x = 1024; y = 768;}];
+      synaptics.enable = true;
       videoDriver = "intel";
       windowManager.awesome.enable = true;
     };

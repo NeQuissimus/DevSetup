@@ -13,19 +13,17 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/15c7d240-8fc6-45db-91ef-8b72f68a5f49";
+    { device = "/dev/disk/by-uuid/ea545fea-8543-4df2-810c-6b83d61af471";
       fsType = "btrfs";
-      options = "subvol=nixos";
+      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=nixos"];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/1016-0561";
+    { device = "/dev/disk/by-uuid/6F54-70A6";
       fsType = "vfat";
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/5b04396d-11d8-44ce-b4af-456320736a23"; }
-    ];
+  swapDevices = [ ];
 
   nix.maxJobs = 4;
 }

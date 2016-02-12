@@ -35,6 +35,7 @@
     jdk
     maven
     #ncurses
+    parcellite
     sbt
     scala
     texLiveFull
@@ -149,6 +150,7 @@
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 30 && ${dropbox}/bin/dropbox &
+          ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
         slim.enable = true;
       };

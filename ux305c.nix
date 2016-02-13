@@ -55,7 +55,7 @@
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = true;
+    pulseaudio.enable = false;
   };
 
   i18n = {
@@ -157,7 +157,11 @@
       enable = true;
       exportConfiguration = true;
       resolutions = [{x = 1920; y = 1080;} {x = 1280; y = 800;} {x = 1024; y = 768;}];
-      synaptics.enable = true;
+      synaptics = {
+        enable = true;
+        tapButtons = false;
+        twoFingerScroll = true;
+      };
       videoDriver = "intel";
       windowManager.awesome.enable = true;
     };

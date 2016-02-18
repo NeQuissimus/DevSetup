@@ -187,5 +187,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
      ];
     };
+    
+    mutableUsers = false;
   };
 }

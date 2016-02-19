@@ -176,7 +176,7 @@
 
     extraUsers.nequi = {
      createHome = true;
-     #extraGroups = [ "wheel" ];
+     extraGroups = [ "wheel" ];
      group = "users";
      home = "/home/nequi";
      name = "nequi";
@@ -185,6 +185,7 @@
 
      openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBL3lMFtXtxowkw4tM2irAQbVODOyBomOYchi4ClTNxV nequi@nixus"
      ];
     };
     

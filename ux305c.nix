@@ -9,7 +9,7 @@
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
-      "vm.swappiness" = 10;
+      "vm.swappiness" = 5;
     };
 
     #kernelPackages = pkgs.linuxPackages_latest;
@@ -188,7 +188,5 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBL3lMFtXtxowkw4tM2irAQbVODOyBomOYchi4ClTNxV nequi@nixus"
      ];
     };
-    
-    mutableUsers = false;
   };
 }

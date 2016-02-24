@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ./ohmyzsh.nix ./xterm.nix ];
+  imports = [ ./ux305c-hardware.nix ./ohmyzsh.nix ./xterm.nix ];
 
   boot = {
     cleanTmpDir = true;

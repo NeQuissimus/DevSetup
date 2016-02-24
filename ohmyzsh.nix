@@ -16,6 +16,8 @@ if [ ! -e "$HOME/.oh-my-zsh" -a ! $(id -u) = "0" ]; then
   alias mvn='mvn -q'
   alias xclip='xclip -selection c'
   alias lock='xtrlock-pam'
+  alias volume_up='amixer -q sset Master 5%+'
+  alias volume_down='amixer -q sset Master 5%-'
 EOF
 fi
   '';

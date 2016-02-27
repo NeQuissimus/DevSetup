@@ -26,18 +26,12 @@
     binutils
     chromium
     dropbox
-    encfs
     gitFull
-    gradle
     htop
     iotop
-    kotlin
     jdk
     maven
-    #ncurses
     parcellite
-    sbt
-    scala
     texLiveFull
     upower
     xclip

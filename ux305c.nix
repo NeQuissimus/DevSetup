@@ -9,6 +9,7 @@
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
+      "vm.drop_caches" = 3;
       "vm.swappiness" = 5;
     };
 

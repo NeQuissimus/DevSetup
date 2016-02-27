@@ -1,5 +1,3 @@
-{
-  environment.shellInit = ''cat << EOF > ~/XTerm
   XTerm*Background: grey10
   XTerm*Foreground: white
   XTerm*FaceName: SourceCode Pro:size=10:antialias=true
@@ -35,5 +33,3 @@
   ! LightGrey + White
   *color7:  #cccccc
   *color15: #ffffff
-EOF'';
-}

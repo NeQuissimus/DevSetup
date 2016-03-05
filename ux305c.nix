@@ -23,6 +23,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    # Basics
     atom
     binutils
     chromium
@@ -30,13 +31,27 @@
     gitFull
     htop
     iotop
-    jdk
-    maven
     parcellite
-    texLiveFull
     upower
     xclip
     xtrlock-pam
+
+    # Java
+    gradle
+    jdk
+    maven
+
+    # Haskell
+    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
+      cabal-install
+      scotty
+    ]))
+
+    # LaTeX
+    texLiveFull
+
+    # Design
+    gimp
   ];
 
   fonts = {
@@ -74,7 +89,10 @@
     wireless = {
       enable = true;
       networks.Germadian.pskRaw = "36c8af10dfa1bc96ca74afe305d0c4750ef5259d87d39e9051c1ab441f38dbd9";
+      networks.NeQuissimus.pskRaw = "36c8af10dfa1bc96ca74afe305d0c4750ef5259d87d39e9051c1ab441f38dbd9";
       networks.SecurityBeginsWithTrust.pskRaw = "b5da43c13e23e1d6a8328ccd5128ac6b8b5add7852489d1da150535e13afad3b";
+      networks.Bella.pskRaw = "7c5879155da692f077d99058d62cdf90a6e11b80e54867c7a509de725ae2b3b2";
+      networks.Bella-5G.pskRaw = "7c5879155da692f077d99058d62cdf90a6e11b80e54867c7a509de725ae2b3b2";
     };
   };
 

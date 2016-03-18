@@ -13,8 +13,8 @@
       "vm.swappiness" = 5;
     };
 
-    #kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_testing;
+    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -31,6 +31,7 @@
     gitFull
     htop
     iotop
+    oh-my-zsh
     parcellite
     upower
     xclip
@@ -147,6 +148,8 @@
   };
 
   services = {
+    nixosManual.enable = false;
+
     nscd.enable = false;
 
     ntp = {

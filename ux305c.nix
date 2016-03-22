@@ -135,12 +135,12 @@
     ssh.startAgent = true;
     zsh = {
       enable = true;
-      interactiveShellInit = ''
-        if [ ! -e "$HOME/.oh-my-zsh" -a ! $(id -u) = "0" ]; then
-          cd $HOME
-          sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-        fi
-      '';
+#      interactiveShellInit = ''
+#        if [ ! -e "$HOME/.oh-my-zsh" -a ! $(id -u) = "0" ]; then
+#          cd $HOME
+#          sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+#        fi
+#      '';
       promptInit = ''
         autoload -U promptinit && promptinit && prompt clint
       '';

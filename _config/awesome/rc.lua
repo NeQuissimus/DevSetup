@@ -120,6 +120,16 @@ vicious.register(memwidget, vicious.widgets.mem, " Mem: $1% ($2MB/$3MB)  ", 13)
 cpuwidget = wibox.widget.textbox()
 vicious.register(cpuwidget, vicious.widgets.cpu, "  CPU: $1% ")
 
+batwidget = awful.widget.progressbar()
+batwidget:set_width(80)
+batwidget:set_height(14)
+batwidget:set_vertical(false)
+batwidget:set_background_color("#000000")
+batwidget:set_border_color(nil)
+batwidget:set_color("#00bfff")
+vicious.register(batwidget, vicious.widgets.bat, "$2", 120, "BAT0")
+
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -201,6 +211,7 @@ for s = 1, screen.count() do
     --if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(cpuwidget)
     right_layout:add(memwidget)
+    right_layout:add(batwidget)
     right_layout:add(wibox.widget.systray())
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])

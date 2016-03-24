@@ -37,22 +37,26 @@
     xclip
     xtrlock-pam
 
+    # VPN
+    ppp
+    pptp
+
     # Java
     gradle
     jdk
     maven
 
     # Haskell
-    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
-      cabal-install
-      scotty
-    ]))
+#    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
+#      cabal-install
+#      scotty
+#    ]))
 
     # LaTeX
-    texLiveFull
+#    texLiveFull
 
     # Design
-    gimp
+#    gimp
   ];
 
   fonts = {
@@ -83,8 +87,12 @@
     ''; # Basically kill ftp.au.debian.org
 
     firewall = {
+      allowedTCPPorts = [ 22 1723 ];
       enable = true;
-      allowedTCPPorts = [ 22 ];
+      extraCommands = ''
+       iptables -A INPUT -p 47 -j ACCEPT
+       iptables -A OUTPUT -p 47 -j ACCEPT
+      '';
     };
 
     wireless = {
@@ -189,6 +197,14 @@
         luaModules = [ pkgs.luaPackages.vicious ];
       };
     };
+  };
+
+  system = {
+    autoUpgrade = {
+      dates = "18:00";
+      enable = true;
+    };
+    stateVersion = "16.09";
   };
 
   time = {

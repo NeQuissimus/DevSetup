@@ -84,6 +84,7 @@
     extraHosts = ''
       127.0.0.1 nixus
       127.0.0.1 ftp.au.debian.org
+      10.30.27.121 raspi
     ''; # Basically kill ftp.au.debian.org
 
     firewall = {

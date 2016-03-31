@@ -1,0 +1,35 @@
+"*":
+  "atom-beautify":
+    analytics: false
+    cfml_indent_size: 4
+    css_indent_size: 4
+    gherkin_indent_size: 4
+    html_indent_size: 4
+    js_indent_size: 4
+  core:
+    audioBeep: false
+    ignoredNames: [
+      ".git"
+      "*.class"
+    ]
+    packagesWithKeymapsDisabled: [
+      "sort-lines"
+    ]
+  editor:
+    autoIndentOnPaste: false
+    fontFamily: "Source Code Pro"
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+    softWrap: true
+    softWrapHangingIndent: 4
+    tabLength: 4
+    tabType: "soft"
+  "exception-reporting":
+    userId: "cc60559a-1c66-2f61-e97e-d52ce124d01d"
+  minimap:
+    plugins:
+      "highlight-selected": true
+      "highlight-selectedDecorationsZIndex": 0
+  welcome:
+    showOnStartup: false

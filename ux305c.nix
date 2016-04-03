@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./ux305c-hardware.nix ];
+  imports = [ ./ux305c-hardware.nix ./ux305-wifi.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -13,8 +13,8 @@
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
-    #kernelPackages = pkgs.linuxPackages_testing;
+    #kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -53,10 +53,10 @@
     ]))
 
     # LaTeX
-    texLiveFull
+#    texLiveFull
 
     # Design
-    gimp
+#    gimp
   ];
 
   fonts = {
@@ -94,15 +94,6 @@
        iptables -A INPUT -p 47 -j ACCEPT
        iptables -A OUTPUT -p 47 -j ACCEPT
       '';
-    };
-
-    wireless = {
-      enable = true;
-      # Set actual passwords!
-      networks.Germadian.pskRaw = "46c8af10dfa1bc96ca74afe305d0c4750ef5259d87d39e9051c1ab441f38dbd9";
-      networks.NeQuissimus.pskRaw = "46c8af10dfa1bc96ca74afe305d0c4750ef5259d87d39e9051c1ab441f38dbd9";
-      networks.Bella.pskRaw = "8c5879155da692f077d99058d62cdf90a6e11b80e54867c7a509de725ae2b3b2";
-      networks.Bella-5G.pskRaw = "8c5879155da692f077d99058d62cdf90a6e11b80e54867c7a509de725ae2b3b2";
     };
   };
 
@@ -197,7 +188,7 @@
 
   system = {
     autoUpgrade = {
-      dates = "18:00";
+      dates = "23:00";
       enable = true;
     };
     stateVersion = "16.09";

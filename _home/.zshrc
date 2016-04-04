@@ -12,8 +12,5 @@
   alias lock='xtrlock-pam'
   alias volume_up='amixer -q sset Master 5%+'
   alias volume_down='amixer -q sset Master 5%-'
-  if [ -f ~/.config/awesome/rc.lua ]; then
-    P_AWESOME=$(type -p awesome | awk '{print $3}' | xargs readlink | sed 's/\(.*\)\/bin\/awesome/\1/')
-    sed -i "s|%%PATH%%|${P_AWESOME}|" ~/.config/awesome/rc.lua
-  fi
-
+  export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
+  setxkbmap -option ctrl:nocaps

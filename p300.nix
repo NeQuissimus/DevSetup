@@ -139,6 +139,31 @@ server {
     #charset koi8-r;
     access_log /var/log/nginx/log/host.access.log combined;
     location / {
+        set $should_proxy "";
+        set $upgrade_header "";
+
+        if ($http_sec_jbossremoting_key) {
+            set $should_proxy "Y";
+        }
+
+        if ($http_sec_hornetqremoting_key) {
+            set $should_proxy "Y";
+        }
+
+        if ($should_proxy = Y) {
+            proxy_pass http://127.0.0.1:8080;
+            set $upgrade_header "upgrade";
+        }
+
+        proxy_buffering off;
+        proxy_read_timeout 120s;
+        proxy_http_version 1.1;
+        proxy_set_header sec_jbossremoting_key $http_sec_jbossremoting_key;
+        proxy_set_header sec_hornetqremoting_key $http_sec_hornetqremoting_key;
+        proxy_set_header upgrade $http_upgrade;
+        proxy_set_header connection $upgrade_header;
+        proxy_set_header host $http_host;
+
         add_header X-UA-Compatible IE=edge;
         root /home/nequi/dev/xms/cms/ui/web;
         index index.html;
@@ -250,7 +275,12 @@ server {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
-        slim.enable = true;
+        slim = {
+          enable = true;
+          extraConfig = ''
+            numlock on
+          '';
+        };
       };
       enable = true;
       exportConfiguration = true;

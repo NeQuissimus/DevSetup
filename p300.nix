@@ -37,6 +37,7 @@
 
     jdk
     maven
+    scala
 
     slack
 

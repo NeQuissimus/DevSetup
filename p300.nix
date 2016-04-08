@@ -30,6 +30,7 @@
     iotop
     oh-my-zsh
     parcellite
+    tcpdump
     unzip
     upower
     xclip
@@ -40,6 +41,8 @@
     scala
 
     slack
+
+    python
 
     liquibase
     nodejs
@@ -59,7 +62,7 @@
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = false;
+    pulseaudio.enable = true;
   };
 
   i18n = {

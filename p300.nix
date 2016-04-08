@@ -43,6 +43,7 @@
     slack
 
     python
+    mysql
 
     liquibase
     nodejs

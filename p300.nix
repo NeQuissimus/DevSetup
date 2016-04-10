@@ -30,6 +30,7 @@
     iotop
     oh-my-zsh
     parcellite
+    tcpdump
     unzip
     upower
     xclip
@@ -37,8 +38,18 @@
 
     jdk
     maven
+    scala
 
     slack
+
+    python
+    mysql
+
+    liquibase
+    nodejs
+    openssl
+    postgresql_jdbc
+    protobuf2_5
   ];
 
   fonts = {
@@ -52,7 +63,7 @@
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = false;
+    pulseaudio.enable = true;
   };
 
   i18n = {
@@ -124,6 +135,119 @@
   };
 
   services = {
+    nginx = {
+      httpConfig = ''
+server {
+    listen 80;
+    server_name $HOSTNAME;
+    port_in_redirect off;
+    #charset koi8-r;
+    access_log /var/log/nginx/log/host.access.log combined;
+    location / {
+        set $should_proxy "";
+        set $upgrade_header "";
+
+        if ($http_sec_jbossremoting_key) {
+            set $should_proxy "Y";
+        }
+
+        if ($http_sec_hornetqremoting_key) {
+            set $should_proxy "Y";
+        }
+
+        if ($should_proxy = Y) {
+            proxy_pass http://127.0.0.1:8080;
+            set $upgrade_header "upgrade";
+        }
+
+        proxy_buffering off;
+        proxy_read_timeout 120s;
+        proxy_http_version 1.1;
+        proxy_set_header sec_jbossremoting_key $http_sec_jbossremoting_key;
+        proxy_set_header sec_hornetqremoting_key $http_sec_hornetqremoting_key;
+        proxy_set_header upgrade $http_upgrade;
+        proxy_set_header connection $upgrade_header;
+        proxy_set_header host $http_host;
+
+        add_header X-UA-Compatible IE=edge;
+        root /home/nequi/dev/xms/cms/ui/web;
+        index index.html;
+    }
+    location /cms-test {
+        alias /home/nequi/dev/xms/cms/ui/test/mocha;
+    }
+    location /api {
+        proxy_pass http://127.0.0.1:8080/sdp-web/api;
+    }
+    location /SDP-war {
+        proxy_pass http://127.0.0.1:8080/SDP-war;
+    }
+    location /integration {
+        proxy_pass http://127.0.0.1:8080/integration-test-support/integration;
+    }
+    location /diagnostics {
+        alias /var/diagnostics;
+        autoindex on;
+    }
+}
+server {
+    listen 9080;
+    server_name $HOSTNAME;
+    port_in_redirect off;
+    #charset koi8-r;
+    #access_log /var/log/nginx/log/host.access.log main;
+    location / {
+        add_header X-UA-Compatible IE=edge;
+        root /home/nequi/dev/xms/cms/ui/build/release;
+        index index.html;
+    }
+    location /api {
+        proxy_pass http://127.0.0.1:8080/sdp-web/api;
+    }
+    location /SDP-war {
+        proxy_pass http://127.0.0.1:8080/SDP-war;
+    }
+    location /integration {
+        proxy_pass http://127.0.0.1:8080/integration-test-support/integration;
+    }
+    location /diagnostics {
+        alias /var/diagnostics;
+        autoindex on;
+    }
+}
+server {
+    listen 443 ssl;
+    server_name $HOSTNAME;
+    port_in_redirect off;
+    ssl_certificate /usr/local/cms/sslCert/devCert.crt;
+    ssl_certificate_key /usr/local/cms/sslCert/devCert.key;
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout 5m;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+    location / {
+        add_header X-UA-Compatible IE=edge;
+        root /home/nequi/dev/xms/cms/ui/web;
+        index index.html;
+    }
+    location /api {
+        proxy_pass http://127.0.0.1:8080/sdp-web/api;
+    }
+    location /SDP-war {
+        proxy_pass http://127.0.0.1:8080/SDP-war;
+    }
+    location /integration {
+        proxy_pass http://127.0.0.1:8080/integration-test-support/integration;
+    }
+    location /diagnostics {
+        alias /var/diagnostics;
+        autoindex on;
+    }
+}
+      '';
+      enable = true;
+    };
+
     nixosManual.enable = false;
 
     nscd.enable = false;
@@ -139,6 +263,13 @@
       permitRootLogin = "no";
     };
 
+    postgresql = {
+      dataDir = "/var/db/postgres93";
+      enable = true;
+      initialScript = ./emc_init.sql;
+      package = pkgs.postgresql93;
+    };
+
     upower.enable = true;
 
     xserver = {
@@ -149,7 +280,12 @@
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
-        slim.enable = true;
+        slim = {
+          enable = true;
+          extraConfig = ''
+            numlock on
+          '';
+        };
       };
       enable = true;
       exportConfiguration = true;

@@ -15,3 +15,4 @@ _atom/storage
 _atom/.apm
 _atom/nohup.out
 _atom/.node-gyp
+*.sql

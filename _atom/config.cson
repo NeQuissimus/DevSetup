@@ -1,11 +1,8 @@
 "*":
   "atom-beautify":
-    analytics: false
-    cfml_indent_size: 4
-    css_indent_size: 4
-    gherkin_indent_size: 4
-    html_indent_size: 4
-    js_indent_size: 4
+    general:
+      _analyticsUserId: "dd643054-a800-462a-bcd1-5eae32692908"
+      analytics: false
   core:
     audioBeep: false
     ignoredNames: [

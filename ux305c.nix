@@ -46,17 +46,24 @@
     jdk
     maven
 
+    # Scala
+    scala
+    sbt
+
     # Haskell
-    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
-      cabal-install
-      scotty
-    ]))
+#    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
+#      cabal-install
+#      scotty
+#    ]))
 
     # LaTeX
 #    texLiveFull
 
     # Design
-#    gimp
+    gimp
+
+    # IRC
+    irssi
   ];
 
   fonts = {

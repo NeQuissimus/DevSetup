@@ -32,7 +32,6 @@
     parcellite
     tcpdump
     unzip
-    upower
     xclip
     xtrlock-pam
 
@@ -120,8 +119,7 @@
   };
 
   powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "ondemand";
+    enable = false;
   };
 
   programs = {
@@ -132,6 +130,10 @@
         autoload -U promptinit && promptinit && prompt clint
       '';
     };
+  };
+
+  security = {
+    hideProcessInformation = true;
   };
 
   services = {

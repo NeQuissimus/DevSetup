@@ -23,7 +23,6 @@
   environment.systemPackages = with pkgs; [
     atom
     binutils
-    chromium
     gitFull
     firefox
     htop
@@ -44,6 +43,8 @@
     python
     mysql
 
+    chromedriver
+    google-chrome
     liquibase
     nodejs
     openssl

@@ -114,7 +114,7 @@
   nixpkgs.config = {
     allowUnfree = true;
     chromium = {
-      enablePepperFlash = true;
+      enablePepperFlash = false;
       enablePepperPDF = true;
     };
   };

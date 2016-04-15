@@ -25,7 +25,10 @@
     binutils
     gitFull
     firefox
+    gnupg
+    gnupg1compat
     htop
+    keybase
     iotop
     oh-my-zsh
     parcellite

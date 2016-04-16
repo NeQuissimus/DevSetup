@@ -64,6 +64,9 @@
 
     # IRC
     irssi
+
+    # Games
+    minecraft
   ];
 
   fonts = {

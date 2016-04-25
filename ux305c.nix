@@ -13,8 +13,8 @@
       "vm.swappiness" = 5;
     };
 
-    #kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_testing;
+    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -121,7 +121,7 @@
       options = "--delete-older-than 14";
     };
 
-    package = pkgs.nixUnstable;
+    #package = pkgs.nixUnstable;
 
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
 

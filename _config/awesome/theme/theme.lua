@@ -89,7 +89,7 @@ theme.layout_tiletop = "/home/nequi/.config/awesome/theme/layouts/tiletopw.png"
 theme.layout_spiral  = "/home/nequi/.config/awesome/theme/layouts/spiralw.png"
 theme.layout_dwindle = "/home/nequi/.config/awesome/theme/layouts/dwindlew.png"
 
-theme.awesome_icon = "/nix/store/4ifqpn2c7g450h2kam5k33jj832s46ih-awesome-3.5.9/share/awesome/icons/awesome16.png"
+theme.awesome_icon = "/nix/store/lqybivxf8dlggp0ysc8kxgs5ppklaw99-awesome-3.5.9/share/awesome/icons/awesome16.png"
 
 -- Define the icon theme for application icons. If not set then the icons 
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.

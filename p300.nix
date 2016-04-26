@@ -107,8 +107,6 @@
       options = "--delete-older-than 14";
     };
 
-    package = pkgs.nixUnstable;
-
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
 
     useChroot = true;

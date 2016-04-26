@@ -5,9 +5,11 @@
       analytics: false
   core:
     audioBeep: false
+    autoHideMenuBar: true
     ignoredNames: [
       ".git"
       "*.class"
+      "target"
     ]
     packagesWithKeymapsDisabled: [
       "sort-lines"

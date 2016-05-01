@@ -34,6 +34,7 @@
     oh-my-zsh
     parcellite
     upower
+    vivaldi
     xclip
     xtrlock-pam
 

@@ -34,7 +34,7 @@
     oh-my-zsh
     parcellite
     upower
-    vivaldi
+#    vivaldi
     xclip
     xtrlock-pam
 
@@ -43,13 +43,13 @@
     pptp
 
     # Java
-    gradle
-    jdk
-    maven
+#    gradle
+#    jdk
+#    maven
 
     # Scala
-    scala
-    sbt
+#    scala
+#    sbt
 
     # Haskell
 #    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
@@ -61,10 +61,10 @@
 #    texLiveFull
 
     # Design
-    gimp
+#    gimp
 
     # IRC
-    irssi
+#    irssi
 
     # Games
     minecraft

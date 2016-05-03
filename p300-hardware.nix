@@ -4,23 +4,33 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-    ];
+  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/3705601c-1cae-4b01-8fe5-3a9f747c1ace";
-      fsType = "ext4";
-    };
+  fileSystems."/" = { 
+    device = "/dev/disk/by-uuid/3705601c-1cae-4b01-8fe5-3a9f747c1ace";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/ED0E-2D62";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/ED0E-2D62";
+    fsType = "vfat";
+  };
+
+  fileSystems."/mnt/development" = {
+    device = "nas-01:/volume1/development";
+    fsType = "nfs";
+    options = [ "nolock" ];
+  };
+
+  fileSystems."/mnt/software/" = {
+    device = "nas-01:/volume1/software";
+    fsType = "nfs";
+    options = [ "nolock" ];
+  };
 
   swapDevices = [ ];
 

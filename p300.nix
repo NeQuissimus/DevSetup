@@ -318,6 +318,8 @@ server {
   users = {
     defaultUserShell = "${pkgs.zsh}/bin/zsh";
 
+    extraGroups.vboxusers.members = [ "nequi" ];
+
     extraUsers.nequi = {
      createHome = true;
      extraGroups = [ "wheel" ];
@@ -334,4 +336,6 @@ server {
      ];
     };
   };
+
+  virtualisation.virtualbox.host.enable = true;
 }

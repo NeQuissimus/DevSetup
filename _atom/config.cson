@@ -30,5 +30,7 @@
     plugins:
       "highlight-selected": true
       "highlight-selectedDecorationsZIndex": 0
+  "tree-view":
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false

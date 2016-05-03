@@ -9,11 +9,12 @@
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
-      "vm.drop_caches" = 3;
+      "vm.drop_caches" = 1;
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
+    #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
@@ -44,7 +45,7 @@
 
     # Java
 #    gradle
-#    jdk
+     jdk
 #    maven
 
     # Scala

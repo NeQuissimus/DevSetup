@@ -13,8 +13,8 @@
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
-    #kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
+    kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
@@ -69,6 +69,9 @@
 
     # Games
     minecraft
+
+    # Video
+    vlc
   ];
 
   fonts = {
@@ -120,7 +123,7 @@
     gc = {
       automatic = true;
       dates = "10:00";
-      options = "--delete-older-than 14";
+      options = "--delete-older-than 30";
     };
 
     #package = pkgs.nixUnstable;

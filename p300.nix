@@ -23,6 +23,7 @@
   environment.systemPackages = with pkgs; [
     atom
     binutils
+    emacs
     gitFull
     firefox
     gnupg
@@ -34,6 +35,7 @@
     parcellite
     tcpdump
     unzip
+    vivaldi
     xclip
     xtrlock-pam
 
@@ -139,6 +141,13 @@
   };
 
   services = {
+    locate = {
+      enable = true;
+      includeStore = false;
+      interval = "hourly";
+      localuser = "nequi";
+    };
+
     nginx = {
       httpConfig = ''
 server {

@@ -9,13 +9,14 @@
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
+      "vm.dirty_writeback_centisecs" = 1500;
       "vm.drop_caches" = 1;
+      "vm.laptop_mode" = 5;
       "vm.swappiness" = 5;
     };
 
     #kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
     kernelPackages = pkgs.linuxPackages_latest;
-    #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -35,7 +36,6 @@
     oh-my-zsh
     parcellite
     upower
-#    vivaldi
     xclip
     xtrlock-pam
 
@@ -154,6 +154,11 @@
         autoload -U promptinit && promptinit && prompt clint
       '';
     };
+  };
+
+  security = {
+    grsecurity.config.sysctl = true; # Insecure
+    hideProcessInformation = true;
   };
 
   services = {

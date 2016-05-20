@@ -9,12 +9,14 @@
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
     kernel.sysctl = {
-      "vm.drop_caches" = 3;
+      "vm.dirty_writeback_centisecs" = 1500;
+      "vm.drop_caches" = 1;
+      "vm.laptop_mode" = 5;
       "vm.swappiness" = 5;
     };
 
+    #kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
     kernelPackages = pkgs.linuxPackages_latest;
-    #kernelPackages = pkgs.linuxPackages_testing;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -24,17 +26,24 @@
 
   environment.systemPackages = with pkgs; [
     # Basics
-    atom
+    ( lib.overrideDerivation atom (attrs: {
+      name = "atom-1.6.2";
+      src = fetchurl {
+        url = "https://github.com/atom/atom/releases/download/v1.6.2/atom-amd64.deb";
+        sha256 = "1kl2pc0smacn4lgk5wwlaiw03rm8b0763vaisgp843p35zzsbc9n";
+        name = "atom-1.6.2.deb";
+      };
+    }))
     binutils
     chromium
     dropbox
+    gettext
     gitFull
     htop
     iotop
     oh-my-zsh
     parcellite
     upower
-#    vivaldi
     xclip
     xtrlock-pam
 
@@ -44,7 +53,7 @@
 
     # Java
 #    gradle
-#    jdk
+     jdk
 #    maven
 
     # Scala
@@ -68,6 +77,9 @@
 
     # Games
     minecraft
+
+    # Video
+    vlc
   ];
 
   fonts = {
@@ -112,6 +124,8 @@
     binaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
 
+    buildCores = 0;
+
     extraOptions = ''
       auto-optimise-store = true
     '';
@@ -119,10 +133,10 @@
     gc = {
       automatic = true;
       dates = "10:00";
-      options = "--delete-older-than 14";
+      options = "--delete-older-than 30";
     };
 
-    #package = pkgs.nixUnstable;
+    maxJobs = 4;
 
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
 
@@ -152,7 +166,24 @@
     };
   };
 
+  security = {
+    hideProcessInformation = true;
+    sudo = {
+        enable = true;
+        wheelNeedsPassword = false;
+    };
+  };
+
   services = {
+    fail2ban = {
+        enable = true;
+        jails.ssh-iptables = ''
+          enabled = true
+        '';
+    };
+
+    locate.enable = true;
+
     nixosManual.enable = false;
 
     nscd.enable = false;

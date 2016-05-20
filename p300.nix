@@ -21,7 +21,14 @@
   };
 
   environment.systemPackages = with pkgs; [
-    atom
+    ( lib.overrideDerivation atom (attrs: {
+      name = "atom-1.6.2";
+      src = fetchurl {
+        url = "https://github.com/atom/atom/releases/download/v1.6.2/atom-amd64.deb";
+        sha256 = "1kl2pc0smacn4lgk5wwlaiw03rm8b0763vaisgp843p35zzsbc9n";
+        name = "atom-1.6.2.deb";
+      };
+    }))
     binutils
     emacs
     gitFull
@@ -99,6 +106,8 @@
     binaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
 
+    buildCores = 0;
+
     extraOptions = ''
       auto-optimise-store = true
     '';
@@ -106,7 +115,7 @@
     gc = {
       automatic = true;
       dates = "10:00";
-      options = "--delete-older-than 14";
+      options = "--delete-older-than 30";
     };
 
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];

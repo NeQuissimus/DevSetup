@@ -24,6 +24,4 @@
     };
 
   swapDevices = [ ];
-
-  nix.maxJobs = 4;
 }

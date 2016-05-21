@@ -245,7 +245,7 @@
 
     extraUsers.nequi = {
      createHome = true;
-     extraGroups = [ "wheel" ];
+     extraGroups = [ "docker" "wheel" ];
      group = "users";
      home = "/home/nequi";
      name = "nequi";

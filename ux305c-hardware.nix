@@ -4,24 +4,28 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-    ];
+  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/ea545fea-8543-4df2-810c-6b83d61af471";
-      fsType = "btrfs";
-      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=nixos"];
-    };
+  fileSystems."/" = { 
+    device = "/dev/disk/by-uuid/ea545fea-8543-4df2-810c-6b83d61af471";
+    fsType = "btrfs";
+    options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=nixos"];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6F54-70A6";
-      fsType = "vfat";
-    };
+  fileSystems."/var/lib/docker" = { 
+    device = "/dev/disk/by-uuid/ea545fea-8543-4df2-810c-6b83d61af471";
+    fsType = "btrfs";
+    options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=@docker"];
+  };
+
+  fileSystems."/boot" = { 
+    device = "/dev/disk/by-uuid/6F54-70A6";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 }

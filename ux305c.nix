@@ -20,7 +20,7 @@
 
     loader = {
       efi.canTouchEfiVariables = true;
-      gummiboot.enable = true;
+      systemd-boot.enable = true;
     };
   };
 
@@ -34,6 +34,7 @@
         name = "atom-1.6.2.deb";
       };
     }))
+    #atom
     binutils
     chromium
     dropbox
@@ -42,6 +43,7 @@
     htop
     iotop
     oh-my-zsh
+    pandoc
     parcellite
     upower
     xclip
@@ -57,8 +59,8 @@
 #    maven
 
     # Scala
-#    scala
-#    sbt
+    scala
+    sbt
 
     # Haskell
 #    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
@@ -97,7 +99,7 @@
   };
 
   i18n = {
-    consoleFont = "source-code-pro";
+#    consoleFont = "source-code-pro";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
@@ -111,7 +113,7 @@
     ''; # Basically kill ftp.au.debian.org
 
     firewall = {
-      allowedTCPPorts = [ 22 1723 ];
+      allowedTCPPorts = [ 22 80 443 1723 8080 9990 ];
       enable = true;
       extraCommands = ''
        iptables -A INPUT -p 47 -j ACCEPT
@@ -140,7 +142,7 @@
 
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
 
-    useChroot = true;
+    useSandbox = true;
   };
 
   nixpkgs.config = {
@@ -167,7 +169,7 @@
   };
 
   security = {
-    hideProcessInformation = true;
+#    hideProcessInformation = true;
     sudo = {
         enable = true;
         wheelNeedsPassword = false;
@@ -176,7 +178,7 @@
 
   services = {
     fail2ban = {
-        enable = true;
+        enable = false;
         jails.ssh-iptables = ''
           enabled = true
         '';
@@ -204,7 +206,10 @@
     xserver = {
       autorun = true;
       defaultDepth = 24;
-      desktopManager.xterm.enable = false;
+      desktopManager = {
+        default = "none";
+        xterm.enable = false;
+      };
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 30 && ${dropbox}/bin/dropbox &
@@ -225,6 +230,12 @@
         enable = true;
         luaModules = [ pkgs.luaPackages.vicious ];
       };
+#      windowManager.default = "xmonad";
+#      windowManager.xmonad = {
+#         enable = true;
+#         enableContribAndExtras = true;
+#      };
+      xkbOptions = "ctrl:nocaps";
     };
   };
 
@@ -233,7 +244,7 @@
       dates = "23:00";
       enable = true;
     };
-    stateVersion = "16.09";
+    stateVersion = "16.03";
   };
 
   time = {
@@ -260,8 +271,8 @@
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = "btrfs";
-  };
+#  virtualisation.docker = {
+#    enable = true;
+#    storageDriver = "btrfs";
+#  };
 }

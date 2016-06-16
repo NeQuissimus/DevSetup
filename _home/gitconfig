@@ -9,3 +9,7 @@
 	rb = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 	undo = reset HEAD~1 --mixed
 	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+[interactive]
+	diffFilter = diff-highlight
+[diff]
+	compactionHeuristic = true

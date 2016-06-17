@@ -17,6 +17,7 @@
   editor:
     autoIndentOnPaste: false
     fontFamily: "Source Code Pro"
+    fontSize: 13
     invisibles: {}
     showIndentGuide: true
     showInvisibles: true

@@ -26,15 +26,6 @@
 
   environment.systemPackages = with pkgs; [
     # Basics
-    ( lib.overrideDerivation atom (attrs: {
-      name = "atom-1.6.2";
-      src = fetchurl {
-        url = "https://github.com/atom/atom/releases/download/v1.6.2/atom-amd64.deb";
-        sha256 = "1kl2pc0smacn4lgk5wwlaiw03rm8b0763vaisgp843p35zzsbc9n";
-        name = "atom-1.6.2.deb";
-      };
-    }))
-    #atom
     binutils
     chromium
     dropbox
@@ -46,6 +37,7 @@
     oh-my-zsh
     pandoc
     parcellite
+    sublime3
     upower
     xclip
     xtrlock-pam

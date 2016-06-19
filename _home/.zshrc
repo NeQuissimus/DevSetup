@@ -1,4 +1,4 @@
-  export ZSH=/nix/store/qxrzsak15ymhbj0pwl9m93mbgkbi2q0r-oh-my-zsh-git-2016-04-20/share/oh-my-zsh/
+  export ZSH=$(ls -d /nix/store/*oh-my-zsh* -t | head -1)/share/oh-my-zsh/
   ZSH_THEME="sunaku"
   CASE_SENSITIVE="false"
   export UPDATE_ZSH_DAYS=7

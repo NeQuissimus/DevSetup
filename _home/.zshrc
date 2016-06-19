@@ -1,4 +1,4 @@
-  export ZSH=/home/nequi/.oh-my-zsh
+  export ZSH=/nix/store/qxrzsak15ymhbj0pwl9m93mbgkbi2q0r-oh-my-zsh-git-2016-04-20/share/oh-my-zsh/
   ZSH_THEME="sunaku"
   CASE_SENSITIVE="false"
   export UPDATE_ZSH_DAYS=7
@@ -6,7 +6,7 @@
   HIST_STAMPS="dd.mm.yyyy"
   plugins=(git)
   export PATH="/home/nequi/bin:/var/setuid-wrappers:/home/nequi/.nix-profile/bin:/home/nequi/.nix-profile/sbin:/home/nequi/.nix-profile/lib/kde4/libexec:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/nix/var/nix/profiles/default/lib/kde4/libexec:/run/current-system/sw/bin:/run/current-system/sw/sbin:/run/current-system/sw/lib/kde4/libexec"
-  source /home/nequi/.oh-my-zsh/oh-my-zsh.sh
+  source ${ZSH}/oh-my-zsh.sh
   alias mvn='mvn -q'
   alias nano='nano -w'
   alias xclip='xclip -selection c'

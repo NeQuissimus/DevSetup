@@ -15,8 +15,8 @@
       "vm.swappiness" = 5;
     };
 
-    #kernelPackages = pkgs.linuxPackages_grsec_desktop_4_5;
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_grsec_nixos;
+#    kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -38,6 +38,7 @@
     binutils
     chromium
     dropbox
+    firefox
     gettext
     gitFull
     htop
@@ -56,7 +57,7 @@
     # Java
 #    gradle
      jdk
-#    maven
+    maven
 
     # Scala
     scala
@@ -169,7 +170,10 @@
   };
 
   security = {
-#    hideProcessInformation = true;
+    grsecurity.enable = true;
+
+    hideProcessInformation = true;
+
     sudo = {
         enable = true;
         wheelNeedsPassword = false;
@@ -230,11 +234,6 @@
         enable = true;
         luaModules = [ pkgs.luaPackages.vicious ];
       };
-#      windowManager.default = "xmonad";
-#      windowManager.xmonad = {
-#         enable = true;
-#         enableContribAndExtras = true;
-#      };
       xkbOptions = "ctrl:nocaps";
     };
   };

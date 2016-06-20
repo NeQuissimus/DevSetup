@@ -204,10 +204,6 @@
         enable = true;
         luaModules = [ pkgs.luaPackages.vicious ];
       };
-#      windowManager.xmonad = {
-#         enable = true;
-#         enableContribAndExtras = true;
-#      };
       xrandrHeads = [ "DP1" "DP2" ];
     };
   };
@@ -246,8 +242,14 @@
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    extraOptions = "--insecure-registry 10.10.5.13:5000";
+  virtualisation = {
+    docker = {
+      enable = true;
+      extraOptions = "--insecure-registry 10.10.5.13:5000";
+    };
+
+    virtualbox.host = {
+      enable = true;
+    };
   };
 }

@@ -21,14 +21,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ( lib.overrideDerivation atom (attrs: {
-      name = "atom-1.6.2";
-      src = fetchurl {
-        url = "https://github.com/atom/atom/releases/download/v1.6.2/atom-amd64.deb";
-        sha256 = "1kl2pc0smacn4lgk5wwlaiw03rm8b0763vaisgp843p35zzsbc9n";
-        name = "atom-1.6.2.deb";
-      };
-    }))
     binutils
     emacs
     gitFull
@@ -36,10 +28,12 @@
     gnupg
     gnupg1compat
     htop
+    i3lock-fancy
     keybase
     iotop
     oh-my-zsh
     parcellite
+    sublime3
     tcpdump
     unzip
     xclip
@@ -172,13 +166,6 @@
       permitRootLogin = "no";
     };
 
-    postgresql = {
-      dataDir = "/var/db/postgres93";
-      enable = false;
-      initialScript = ./emc_init.sql;
-      package = pkgs.postgresql93;
-    };
-
     upower.enable = true;
 
     xserver = {
@@ -200,14 +187,10 @@
       exportConfiguration = true;
       resolutions = [{x = 1920; y = 1200;} {x = 1280; y = 800;}];
       videoDriver = "intel";
-      windowManager.awesome = {
+      windowManager.i3 = {
         enable = true;
-        luaModules = [ pkgs.luaPackages.vicious ];
+#        luaModules = [ pkgs.luaPackages.vicious ];
       };
-#      windowManager.xmonad = {
-#         enable = true;
-#         enableContribAndExtras = true;
-#      };
       xrandrHeads = [ "DP1" "DP2" ];
     };
   };
@@ -246,8 +229,14 @@
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    extraOptions = "--insecure-registry 10.10.5.13:5000";
+  virtualisation = {
+    docker = {
+      enable = true;
+      extraOptions = "--insecure-registry 10.10.5.13:5000";
+    };
+
+    virtualbox.host = {
+      enable = true;
+    };
   };
 }

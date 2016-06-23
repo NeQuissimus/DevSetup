@@ -5,6 +5,7 @@
 	"font_face": "Source Code Pro",
 	"font_size": 12,
 	"highlight_line": true,
+        "hot_exit": false,
 	"ignored_packages":
 	[
 		"1337 Color Scheme",
@@ -14,6 +15,7 @@
 		"Vintage"
 	],
 	"open_files_in_new_window": false,
+        "remember_open_files": false,
 	"phoenix_color_blue": true,
 	"save_on_focus_lost": true,
 	"show_encoding": true,

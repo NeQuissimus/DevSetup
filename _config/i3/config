@@ -24,6 +24,10 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
+
+set $workspace9 "9: "
+set $workspace10 "10: "
+
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -32,8 +36,8 @@ bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+9 workspace $workspace9
+bindsym $mod+0 workspace $workspace10
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
@@ -42,8 +46,18 @@ bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+9 move container to workspace $workspace9
+bindsym $mod+Shift+0 move container to workspace $workspace10
+
+assign [class="Firefox"] $workspace9
+assign [class="Slack"] $workspace10
+
+workspace $workspace9 output DP2
+workspace $workspace10 output DP2
+
+bindsym $mod+bracketleft move workspace to output left
+bindsym $mod+bracketright move workspace to output right
+
 bindsym $mod+Shift+l exec i3lock-fancy
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
@@ -65,3 +79,6 @@ bar {
 }
 
 exec_always xsetroot -solid black
+
+exec slack
+exec firefox

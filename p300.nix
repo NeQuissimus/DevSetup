@@ -66,6 +66,7 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
+      font-awesome-ttf
       source-code-pro
     ];
     fontconfig.defaultFonts.monospace = [ "Source Code Pro" ];

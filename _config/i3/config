@@ -74,8 +74,28 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+set $bg-color 	         #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #E53935
+set $indicator-color     #666666
+
+client.focused          $bg-color           $bg-color          $text-color          $indicator-color
+client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator-color
+
 bar {
-        status_command /nix/store/cian3sj78mh006d1vri4ljqd9z608g9i-i3status-2.10/bin/i3status
+        status_command /nix/store/cian3sj78mh006d1vri4ljqd9z608g9i-i3status-2.10/bin/i3status -c ~/.config/i3/i3status.conf
+        colors {
+		background $bg-color
+	    	separator #757575
+
+		focused_workspace  $bg-color          $bg-color          $text-color
+		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+        }
 }
 
 exec_always xsetroot -solid black

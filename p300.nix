@@ -143,6 +143,8 @@
     };
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   services = {
     locate = {
       enable = true;

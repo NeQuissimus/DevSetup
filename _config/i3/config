@@ -4,7 +4,7 @@ font pango:Source Code Pro 8
 
 floating_modifier $mod
 
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec xterm
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec /nix/store/w5322yv7b3czyqha22pqv6kmmapv2hix-dmenu-4.6/bin/dmenu_run
 bindsym $mod+Left focus left
@@ -63,3 +63,5 @@ bindsym $mod+r mode "resize"
 bar {
         status_command /nix/store/cian3sj78mh006d1vri4ljqd9z608g9i-i3status-2.10/bin/i3status
 }
+
+exec_always xsetroot -solid black

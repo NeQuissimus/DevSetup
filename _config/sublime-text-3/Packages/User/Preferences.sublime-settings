@@ -3,7 +3,7 @@
 	"ensure_newline_at_eof_on_save": true,
 	"find_selected_text": true,
 	"font_face": "Source Code Pro",
-	"font_size": 12,
+	"font_size": 11,
 	"highlight_line": true,
 	"hot_exit": false,
 	"ignored_packages":

@@ -235,7 +235,7 @@
   virtualisation = {
     docker = {
       enable = true;
-      extraOptions = "--insecure-registry 10.10.5.13:5000";
+      extraOptions = "--insecure-registry docker-mama.lab.exinda.com";
     };
 
     virtualbox.host = {

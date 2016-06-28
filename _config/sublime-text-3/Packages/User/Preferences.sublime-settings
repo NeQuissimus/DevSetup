@@ -20,7 +20,7 @@
 	"save_on_focus_lost": true,
 	"show_encoding": true,
 	"show_line_endings": true,
-	"tab_size": 2,
+	"tab_size": 4,
 	"todo":
 	{
 		"file_exclude_patterns":

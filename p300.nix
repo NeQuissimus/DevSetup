@@ -60,6 +60,7 @@
 #    openssl
 #    postgresql_jdbc
 #    protobuf2_5
+    protobuf3_0
   ];
 
   fonts = {

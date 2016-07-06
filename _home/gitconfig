@@ -1,5 +1,5 @@
 [push]
-	default = matching
+	default = upstream
 [user]
 	email = tim@nequissimus.com
 	name = Tim Steinbach

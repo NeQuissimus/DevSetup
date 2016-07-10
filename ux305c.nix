@@ -15,8 +15,8 @@
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_grsec_nixos;
-#    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_grsec_nixos;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -27,12 +27,14 @@
   environment.systemPackages = with pkgs; [
     # Basics
     binutils
-    chromium
+    conky
     dropbox
+    feh
     firefox
     gettext
     gitFull
     htop
+    i3lock-fancy
     iotop
     oh-my-zsh
     pandoc
@@ -47,40 +49,23 @@
     pptp
 
     # Java
-#    gradle
-     jdk
+    gradle
+    jdk
     maven
 
     # Scala
     scala
     sbt
 
-    # Haskell
-#    (haskellPackages.ghcWithPackages(haskellPackages: with haskellPackages; [
-#      cabal-install
-#      scotty
-#    ]))
-
-    # LaTeX
-#    texLiveFull
-
-    # Design
-#    gimp
-
-    # IRC
-#    irssi
-
-    # Games
-    minecraft
-
-    # Video
-    vlc
+    # Chat
+    slack
   ];
 
   fonts = {
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
+      font-awesome-ttf
       source-code-pro
     ];
     fontconfig.defaultFonts.monospace = [ "Source Code Pro" ];
@@ -92,7 +77,6 @@
   };
 
   i18n = {
-#    consoleFont = "source-code-pro";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
@@ -106,7 +90,7 @@
     ''; # Basically kill ftp.au.debian.org
 
     firewall = {
-      allowedTCPPorts = [ 22 80 443 1723 8080 9990 ];
+      allowedTCPPorts = [ 22 ];
       enable = true;
       extraCommands = ''
        iptables -A INPUT -p 47 -j ACCEPT
@@ -140,10 +124,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    chromium = {
-      enablePepperFlash = true;
-      enablePepperPDF = true;
-    };
   };
 
   powerManagement = {
@@ -162,7 +142,7 @@
   };
 
   security = {
-    grsecurity.enable = true;
+#    grsecurity.enable = true;
 
     hideProcessInformation = true;
 
@@ -202,16 +182,14 @@
     xserver = {
       autorun = true;
       defaultDepth = 24;
-      desktopManager = {
-        default = "none";
-        xterm.enable = false;
-      };
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 30 && ${dropbox}/bin/dropbox &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
-        slim.enable = true;
+    	slim = {
+          enable = true;
+        };
       };
       enable = true;
       exportConfiguration = true;
@@ -222,9 +200,8 @@
         twoFingerScroll = true;
       };
       videoDriver = "intel";
-      windowManager.awesome = {
+      windowManager.i3 = {
         enable = true;
-        luaModules = [ pkgs.luaPackages.vicious ];
       };
       xkbOptions = "ctrl:nocaps";
     };
@@ -262,8 +239,8 @@
     };
   };
 
-#  virtualisation.docker = {
-#    enable = true;
-#    storageDriver = "btrfs";
-#  };
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
+  };
 }

@@ -39,6 +39,7 @@
     xclip
     xtrlock-pam
 
+    idea.idea-community
     jdk
 #    (maven.override { jdk = openjdk7; })
     maven
@@ -53,13 +54,6 @@
     mysql
     postgresql
 
-#    chromedriver
-#    google-chrome
-#    liquibase
-#    nodejs
-#    openssl
-#    postgresql_jdbc
-#    protobuf2_5
     protobuf3_0
   ];
 
@@ -193,7 +187,6 @@
       videoDriver = "intel";
       windowManager.i3 = {
         enable = true;
-#        luaModules = [ pkgs.luaPackages.vicious ];
       };
       xrandrHeads = [ "DP1" "DP2" ];
     };

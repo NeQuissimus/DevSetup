@@ -1,4 +1,4 @@
-  export ZSH=$(ls -d /nix/store/*oh-my-zsh* -t | head -1)/share/oh-my-zsh/
+  export ZSH=$(ls -d /nix/store/*oh-my-zsh-git* -t | grep -v '.*dev' | head -1)/share/oh-my-zsh/
   ZSH_THEME="sunaku"
   CASE_SENSITIVE="false"
   export UPDATE_ZSH_DAYS=7

@@ -207,9 +207,9 @@
   users = {
     defaultUserShell = "${pkgs.zsh}/bin/zsh";
 
-    extraGroups.vboxusers.members = [ "nequi" ];
+    groups.vboxusers.members = [ "nequi" ];
 
-    extraUsers.nequi = {
+    users.nequi = {
      createHome = true;
      extraGroups = [ "docker" "wheel" ];
      group = "users";

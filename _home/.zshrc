@@ -18,3 +18,4 @@ alias volume_down='amixer -q sset Master 5%-'
 alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 setxkbmap -option ctrl:nocaps
+[[ -z "${HOME}" ]] || rm -rf "${HOME}/Downloads/*"

@@ -6,7 +6,7 @@ floating_modifier $mod
 
 bindsym $mod+Return exec xterm
 bindsym $mod+Shift+q kill
-bindsym $mod+d exec /nix/store/w5322yv7b3czyqha22pqv6kmmapv2hix-dmenu-4.6/bin/dmenu_run
+bindsym $mod+d exec /nix/store/k4xmg8rhg1skbsq6axh94parylx6abdn-dmenu-4.6/bin/dmenu_run
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up

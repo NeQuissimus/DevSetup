@@ -22,6 +22,7 @@
 
   environment.systemPackages = with pkgs; [
     binutils
+    chromium
     emacs
     gitFull
     firefox
@@ -54,7 +55,17 @@
     mysql
     postgresql
 
+    # QX Cloud
     protobuf3_0
+
+    # QX Boost
+    ## UI
+    gcc
+    gnumake
+    nodejs
+    nodePackages.gulp
+    ## Data Generator
+    python3
   ];
 
   fonts = {
@@ -73,7 +84,7 @@
   };
 
   i18n = {
-    consoleFont = "source-code-pro";
+#    consoleFont = "source-code-pro";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
@@ -119,14 +130,16 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    
     chromium = {
-      enablePepperFlash = false;
+      enablePepperFlash = true;
       enablePepperPDF = true;
     };
-  };
 
-  powerManagement = {
-    enable = false;
+    firefox = {
+      enableGoogleTalkPlugin = true;
+      enableAdobeFlash = true;
+    };
   };
 
   programs = {
@@ -142,13 +155,6 @@
   security.sudo.wheelNeedsPassword = false;
 
   services = {
-    locate = {
-      enable = true;
-      includeStore = false;
-      interval = "hourly";
-      localuser = "nequi";
-    };
-
     nixosManual.enable = false;
 
     nscd.enable = false;
@@ -163,8 +169,6 @@
       passwordAuthentication = false;
       permitRootLogin = "no";
     };
-
-    upower.enable = true;
 
     xserver = {
       autorun = true;
@@ -193,11 +197,7 @@
   };
 
   system = {
-    autoUpgrade = {
-      dates = "10:00";
-      enable = true;
-    };
-    stateVersion = "16.03";
+    stateVersion = "16.09";
   };
 
   time = {
@@ -233,7 +233,7 @@
     };
 
     virtualbox.host = {
-      enable = true;
+      enable = false;
     };
   };
 }

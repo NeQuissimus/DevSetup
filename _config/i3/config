@@ -6,7 +6,7 @@ floating_modifier $mod
 
 bindsym $mod+Return exec xterm
 bindsym $mod+Shift+q kill
-bindsym $mod+d exec /nix/store/k4xmg8rhg1skbsq6axh94parylx6abdn-dmenu-4.6/bin/dmenu_run
+bindsym $mod+d exec /nix/store/7s7w1cks44zndbzk43sn835zw2ck7j7z-dmenu-4.6/bin/dmenu_run
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -87,7 +87,7 @@ client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-co
 client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator-color
 
 bar {
-        status_command /nix/store/cian3sj78mh006d1vri4ljqd9z608g9i-i3status-2.10/bin/i3status -c ~/.config/i3/i3status.conf
+        status_command /nix/store/ms02a3lzhv1w6hl7mxfsgsbw6bkfvk01-i3status-2.10/bin/i3status -c ~/.config/i3/i3status.conf
         colors {
 		background $bg-color
 	    	separator #757575

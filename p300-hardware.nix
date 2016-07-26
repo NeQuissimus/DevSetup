@@ -4,35 +4,35 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
+  imports =
+    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = { 
-    device = "/dev/disk/by-uuid/3705601c-1cae-4b01-8fe5-3a9f747c1ace";
-    fsType = "ext4";
-  };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
+      fsType = "btrfs";
+      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=nixos"];
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/ED0E-2D62";
-    fsType = "vfat";
-  };
+  fileSystems."/tmp" =
+    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
+      fsType = "btrfs";
+      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=tmp"];
+    };
 
-  fileSystems."/mnt/development" = {
-    device = "nas-01:/volume1/development";
-    fsType = "nfs";
-    options = [ "nolock" ];
-  };
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
+      fsType = "btrfs";
+      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=home"];
+    };
 
-  fileSystems."/mnt/software/" = {
-    device = "nas-01:/volume1/software";
-    fsType = "nfs";
-    options = [ "nolock" ];
-  };
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/266b9d55-1203-4332-b3b8-7accca80f028"; }
+    ];
 
-  swapDevices = [ ];
-
-  nix.maxJobs = 8;
+  nix.maxJobs = lib.mkDefault 8;
 }

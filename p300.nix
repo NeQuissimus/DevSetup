@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./p300-hardware.nix ];
 
   boot = {
     cleanTmpDir = true;

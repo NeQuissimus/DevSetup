@@ -22,6 +22,7 @@
 
   environment.systemPackages = with pkgs; [
     binutils
+    chromium
     emacs
     gitFull
     firefox
@@ -48,13 +49,30 @@
 
     pandoc
 
-    slack
+    ( lib.overrideDerivation slack (attrs: {
+      name = "slack-2.0.3";
+        src = fetchurl {
+        url = "https://slack-ssb-updates.global.ssl.fastly.net/linux_releases/slack-desktop-2.0.3-amd64.deb";
+        sha256 = "0pp8n1w9kmh3pph5kc6akdswl3z2lqwryjg9d267wgj62mslr3cg";
+        name = "slack-desktop-2.0.3-amd64.deb";
+      };
+    }))
 
     python
     mysql
     postgresql
 
+    # QX Cloud
     protobuf3_0
+
+    # QX Boost
+    ## UI
+    gcc
+    gnumake
+    nodejs
+    nodePackages.gulp
+    ## Data Generator
+    python3
   ];
 
   fonts = {
@@ -73,7 +91,7 @@
   };
 
   i18n = {
-    consoleFont = "source-code-pro";
+#    consoleFont = "source-code-pro";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
@@ -119,14 +137,16 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    
     chromium = {
-      enablePepperFlash = false;
+      enablePepperFlash = true;
       enablePepperPDF = true;
     };
-  };
 
-  powerManagement = {
-    enable = false;
+    firefox = {
+      enableGoogleTalkPlugin = true;
+      enableAdobeFlash = true;
+    };
   };
 
   programs = {
@@ -142,13 +162,6 @@
   security.sudo.wheelNeedsPassword = false;
 
   services = {
-    locate = {
-      enable = true;
-      includeStore = false;
-      interval = "hourly";
-      localuser = "nequi";
-    };
-
     nixosManual.enable = false;
 
     nscd.enable = false;
@@ -163,8 +176,6 @@
       passwordAuthentication = false;
       permitRootLogin = "no";
     };
-
-    upower.enable = true;
 
     xserver = {
       autorun = true;
@@ -193,11 +204,7 @@
   };
 
   system = {
-    autoUpgrade = {
-      dates = "10:00";
-      enable = true;
-    };
-    stateVersion = "16.03";
+    stateVersion = "16.09";
   };
 
   time = {
@@ -233,7 +240,7 @@
     };
 
     virtualbox.host = {
-      enable = true;
+      enable = false;
     };
   };
 }

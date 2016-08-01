@@ -16,6 +16,7 @@ alias lock='xtrlock-pam'
 alias volume_up='amixer -q sset Master 5%+'
 alias volume_down='amixer -q sset Master 5%-'
 alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
+alias sbt='sbt -mem 4096'
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || rm -rf "${HOME}/Downloads/*"

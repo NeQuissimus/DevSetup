@@ -33,9 +33,12 @@
     firefox
     gettext
     gitFull
+    gnupg
+    gnupg1compat
     htop
     i3lock-fancy
     iotop
+    keybase-go
     oh-my-zsh
     pandoc
     parcellite

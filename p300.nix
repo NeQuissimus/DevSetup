@@ -13,7 +13,9 @@
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+#    kernelPackages = pkgs.linuxPackages_latest;
+#    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_grsec_nixos;
 
     loader = {
       systemd-boot.enable = true;
@@ -28,6 +30,7 @@
     firefox
     gnupg
     gnupg1compat
+    google-chrome
     htop
     i3lock-fancy
     keybase
@@ -101,6 +104,7 @@
     extraHosts = ''
       127.0.0.1 nixus
       127.0.0.1 ftp.au.debian.org
+      52.6.31.232 github
     ''; # Basically kill ftp.au.debian.org
 
     firewall = {
@@ -159,9 +163,15 @@
     };
   };
 
-  security.sudo.wheelNeedsPassword = false;
+  security = {
+    chromiumSuidSandbox.enable = true;
+    grsecurity.enable = true;
+    sudo.wheelNeedsPassword = false;
+  };
 
   services = {
+    klogd.enable = false;
+
     nixosManual.enable = false;
 
     nscd.enable = false;
@@ -240,7 +250,7 @@
     };
 
     virtualbox.host = {
-      enable = false;
+      enable = true;
     };
   };
 }

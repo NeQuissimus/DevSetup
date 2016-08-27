@@ -28,7 +28,6 @@
     # Basics
     binutils
     conky
-    dropbox
     feh
     firefox
     gettext
@@ -59,6 +58,9 @@
     # Scala
     scala
     sbt
+
+    # Lagom
+    activator
 
     # Chat
     slack
@@ -94,6 +96,7 @@
 
     firewall = {
       allowedTCPPorts = [ 22 ];
+      allowPing = false;
       enable = true;
       extraCommands = ''
        iptables -A INPUT -p 47 -j ACCEPT
@@ -105,11 +108,11 @@
   nix = {
     binaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
-
-    buildCores = 0;
+    buildCores = 8;
 
     extraOptions = ''
       auto-optimise-store = true
+      connect-timeout = 10
     '';
 
     gc = {
@@ -120,8 +123,8 @@
 
     maxJobs = 4;
 
+    nrBuildUsers = 30;
     trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
-
     useSandbox = true;
   };
 
@@ -192,7 +195,6 @@
       defaultDepth = 24;
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
-          ${coreutils}/bin/sleep 30 && ${dropbox}/bin/dropbox &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
     	slim = {
@@ -220,7 +222,7 @@
       dates = "23:00";
       enable = true;
     };
-    stateVersion = "16.03";
+    stateVersion = "16.09";
   };
 
   time = {

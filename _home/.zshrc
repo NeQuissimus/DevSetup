@@ -11,7 +11,7 @@ export TERMINAL="xterm"
 export PATH="${CODE_COLLAB}:/home/nequi/bin:/var/setuid-wrappers:/home/nequi/.nix-profile/bin:/home/nequi/.nix-profile/sbin:/home/nequi/.nix-profile/lib/kde4/libexec:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/nix/var/nix/profiles/default/lib/kde4/libexec:/run/current-system/sw/bin:/run/current-system/sw/sbin:/run/current-system/sw/lib/kde4/libexec"
 source ${ZSH}/oh-my-zsh.sh
 alias mvn='mvn -q'
-alias nano='nano -i -E -w -c'
+alias nano='nano -E -w -c'
 alias xclip='xclip -selection c'
 alias lock='xtrlock-pam'
 alias volume_up='amixer -q sset Master 5%+'

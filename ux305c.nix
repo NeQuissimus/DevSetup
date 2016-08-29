@@ -42,6 +42,7 @@
     pandoc
     parcellite
     sublime3
+    unzip
     upower
     xclip
     xtrlock-pam

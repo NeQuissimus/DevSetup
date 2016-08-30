@@ -15,4 +15,6 @@ _atom/storage
 _atom/.apm
 _atom/nohup.out
 _atom/.node-gyp
+_config/sublime-text-3/Cache
+_config/sublime-text-3/Local
 *.sql

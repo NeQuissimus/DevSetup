@@ -18,3 +18,12 @@ _atom/.node-gyp
 _config/sublime-text-3/Cache
 _config/sublime-text-3/Local
 *.sql
+_config/sublime-text-3/Index/
+_config/sublime-text-3/Installed Packages/
+_config/sublime-text-3/Packages/User/Package Control.cache/
+_config/sublime-text-3/Packages/User/Package Control.last-run
+_config/sublime-text-3/Packages/User/Package Control.merged-ca-bundle
+_config/sublime-text-3/Packages/User/Package Control.sublime-settings
+_config/sublime-text-3/Packages/User/Package Control.user-ca-bundle
+_config/sublime-text-3/Packages/bz2/
+_config/sublime-text-3/Packages/ssl-linux/

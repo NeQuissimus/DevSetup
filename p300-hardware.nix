@@ -13,25 +13,24 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
+    { device = "/dev/disk/by-uuid/0d9b35fd-84c7-416e-8eae-ff794145f532";
       fsType = "btrfs";
-      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=nixos"];
+      options = [ "subvol=nixos" ];
     };
 
-  fileSystems."/tmp" =
-    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
-      fsType = "btrfs";
-      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=tmp"];
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/F2FC-C44C";
+      fsType = "vfat";
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/653738c1-1c86-4349-9b09-6eb4b4b2ed32";
+    { device = "/dev/disk/by-uuid/752068c1-4e40-4f9c-a18f-6ec445036419";
       fsType = "btrfs";
-      options = ["noatime" "autodefrag" "discard" "ssd" "compress=lzo" "space_cache" "subvol=home"];
+      options = [ "subvol=home" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/266b9d55-1203-4332-b3b8-7accca80f028"; }
+    [ { device = "/dev/disk/by-uuid/2978f4b9-0b66-4093-8c1b-2f84b74a277a"; }
     ];
 
   nix.maxJobs = lib.mkDefault 8;

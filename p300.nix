@@ -13,9 +13,8 @@
       "vm.swappiness" = 5;
     };
 
-#    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
 #    kernelPackages = pkgs.linuxPackages;
-    kernelPackages = pkgs.linuxPackages_grsec_nixos;
 
     loader = {
       systemd-boot.enable = true;
@@ -43,7 +42,6 @@
     xclip
     xtrlock-pam
 
-    idea.idea-community
     jdk
 #    (maven.override { jdk = openjdk7; })
     maven
@@ -60,6 +58,7 @@
         name = "slack-desktop-2.0.3-amd64.deb";
       };
     }))
+#    slack
 
     python
     mysql
@@ -164,8 +163,6 @@
   };
 
   security = {
-    chromiumSuidSandbox.enable = true;
-    grsecurity.enable = true;
     sudo.wheelNeedsPassword = false;
   };
 
@@ -174,7 +171,7 @@
 
     nixosManual.enable = false;
 
-    nscd.enable = false;
+    nscd.enable = true;
 
     ntp = {
       enable = true;
@@ -250,7 +247,7 @@
     };
 
     virtualbox.host = {
-      enable = true;
+      enable = false;
     };
   };
 }

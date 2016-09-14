@@ -199,7 +199,7 @@
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
-    	slim = {
+        slim = {
           enable = true;
         };
       };
@@ -221,7 +221,8 @@
 
   system = {
     autoUpgrade = {
-      dates = "23:00";
+      channel = "https://nixos.org/channels/nixos-16.09";
+      dates = "01:00";
       enable = true;
     };
     stateVersion = "16.09";

@@ -64,8 +64,7 @@
     activator
 
     # Custom
-sublime3
-#    sublime3-dev
+    (import nixpkgs/sublime3-dev.nix)
 
   ];
 

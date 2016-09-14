@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [ ./ux305c-hardware.nix ./ux305-wifi.nix ];
+  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -41,9 +41,9 @@
     oh-my-zsh
     pandoc
     parcellite
-    sublime3
     unzip
     upower
+    vlc
     xclip
     xtrlock-pam
 
@@ -63,8 +63,10 @@
     # Lagom
     activator
 
-    # Chat
-    slack
+    # Custom
+sublime3
+#    sublime3-dev
+
   ];
 
   fonts = {
@@ -89,11 +91,11 @@
 
   networking = {
     hostName = "nixus";
+
     extraHosts = ''
       127.0.0.1 nixus
-      127.0.0.1 ftp.au.debian.org
-      10.30.27.121 raspi
-    ''; # Basically kill ftp.au.debian.org
+      0.0.0.0 ftp.au.debian.org
+    '' + (lib.fileContents ./hosts);
 
     firewall = {
       allowedTCPPorts = [ 22 ];

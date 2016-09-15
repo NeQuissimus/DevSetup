@@ -4,34 +4,30 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-    ];
+  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/82eb2cca-4dde-4dfe-a1db-8d5c373cebb1";
-      fsType = "btrfs";
-      options = [ "subvol=nixos" ];
-    };
+  fileSystems."/" = { 
+    device = "/dev/disk/by-uuid/82eb2cca-4dde-4dfe-a1db-8d5c373cebb1";
+    fsType = "btrfs";
+    options = [ "noatime" "compress=lzo" "ssd" "space_cache" "commit=120" "subvol=nixos" ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/932114e7-2ac1-490e-973d-466c7bc0e4f5";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
+  fileSystems."/home" = { 
+    device = "/dev/disk/by-uuid/932114e7-2ac1-490e-973d-466c7bc0e4f5";
+    fsType = "btrfs";
+    options = [ "noatime" "compress=lzo" "ssd" "space_cache" "commit=120" "subvol=home" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/C1C5-BF1F";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/C1C5-BF1F";
+    fsType = "vfat";
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/4f0187a5-b153-4a28-8e33-fd1a56fc09ce"; }
-    ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/4f0187a5-b153-4a28-8e33-fd1a56fc09ce"; } ];
 
   nix.maxJobs = lib.mkDefault 4;
 }

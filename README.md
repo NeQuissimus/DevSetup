@@ -2,8 +2,8 @@
 
 ## Machines
 
-`p300.nix` = Lenovo ThinkStation P300
-`ux305c.nix` = ASUS ZenBook UX305CA
+- `p300.nix` = Lenovo ThinkStation P300
+- `ux305c.nix` = ASUS ZenBook UX305CA
 
 ## /etc/hosts
 

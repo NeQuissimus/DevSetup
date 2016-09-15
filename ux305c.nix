@@ -119,7 +119,7 @@
 
     gc = {
       automatic = true;
-      dates = "10:00";
+      dates = "01:00";
       options = "--delete-older-than 30";
     };
 

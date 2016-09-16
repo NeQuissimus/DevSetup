@@ -10,16 +10,16 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = { 
+  fileSystems."/" = {
     device = "/dev/disk/by-uuid/82eb2cca-4dde-4dfe-a1db-8d5c373cebb1";
     fsType = "btrfs";
-    options = [ "noatime" "compress=lzo" "ssd" "space_cache" "commit=120" "subvol=nixos" ];
+    options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=nixos" ];
   };
 
-  fileSystems."/home" = { 
+  fileSystems."/home" = {
     device = "/dev/disk/by-uuid/932114e7-2ac1-490e-973d-466c7bc0e4f5";
     fsType = "btrfs";
-    options = [ "noatime" "compress=lzo" "ssd" "space_cache" "commit=120" "subvol=home" ];
+    options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=home" ];
   };
 
   fileSystems."/boot" = {

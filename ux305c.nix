@@ -15,7 +15,6 @@
       "vm.swappiness" = 5;
     };
 
-    #kernelPackages = pkgs.linuxPackages_grsec_nixos;
     kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
@@ -155,8 +154,6 @@
   };
 
   security = {
-#    grsecurity.enable = true;
-
     hideProcessInformation = true;
 
     sudo = {

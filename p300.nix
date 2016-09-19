@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [ ./p300-hardware.nix ];
@@ -104,7 +104,7 @@
       127.0.0.1 nixus
       127.0.0.1 ftp.au.debian.org
       52.6.31.232 github
-    ''; # Basically kill ftp.au.debian.org
+    '' + (lib.fileContents ./hosts);
 
     firewall = {
       allowedTCPPorts = [ 22 80 443 1723 5432 8080 9990 ];
@@ -140,7 +140,7 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    
+
     chromium = {
       enablePepperFlash = true;
       enablePepperPDF = true;

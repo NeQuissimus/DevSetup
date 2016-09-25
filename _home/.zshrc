@@ -19,6 +19,7 @@ alias volume_down='amixer -q sset Master 5%-'
 alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
 alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
+alias docker_compose='curl -sL https://github.com/docker/compose/releases/download/1.8.0/run.sh | sh'
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || rm -rf "${HOME}/Downloads/*"

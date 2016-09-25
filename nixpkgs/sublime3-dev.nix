@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
 
 let
-  build = "3122";
+  build = "3126";
   libPath = stdenv.lib.makeLibraryPath [glib xorg.libX11 gtk2 cairo pango];
   redirects = [ "/usr/bin/pkexec=/var/setuid-wrappers/pkexec" ];
 in let
@@ -12,7 +12,7 @@ in let
     src = fetchurl {
           name = "sublimetext-${build}.tar.bz2";
           url = "https://download.sublimetext.com/sublime_text_3_build_${build}_x64.tar.bz2";
-          sha256 = "0rcxc1h5s7w7aiyacb67iddwn72dqx5a832h8brga135giq19j40";
+          sha256 = "0ykj33fq86iv7f9zx76h90pl9y86iri0idhlj09a6prhk8p17nqq";
         };
 
     dontStrip = true;

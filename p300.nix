@@ -14,7 +14,6 @@
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
-#    kernelPackages = pkgs.linuxPackages;
 
     loader = {
       systemd-boot.enable = true;
@@ -36,7 +35,8 @@
     iotop
     oh-my-zsh
     parcellite
-    sublime3
+    #sublime3
+    (import nixpkgs/sublime3-dev.nix)
     tcpdump
     unzip
     xclip
@@ -50,14 +50,6 @@
 
     pandoc
 
-#    ( lib.overrideDerivation slack (attrs: {
-#      name = "slack-2.0.3";
-#        src = fetchurl {
-#        url = "https://slack-ssb-updates.global.ssl.fastly.net/linux_releases/slack-desktop-2.0.3-amd64.deb";
-#        sha256 = "0pp8n1w9kmh3pph5kc6akdswl3z2lqwryjg9d267wgj62mslr3cg";
-#        name = "slack-desktop-2.0.3-amd64.deb";
-#      };
-#    }))
     slack
 
     python
@@ -163,6 +155,7 @@
   };
 
   security = {
+    hideProcessInformation = true;
     sudo.wheelNeedsPassword = false;
   };
 
@@ -211,6 +204,11 @@
   };
 
   system = {
+    autoUpgrade = {
+      channel = "https://nixos.org/channels/nixos-16.09";
+      dates = "01:00";
+      enable = true;
+    };
     stateVersion = "16.09";
   };
 
@@ -244,10 +242,6 @@
     docker = {
       enable = true;
       extraOptions = "--insecure-registry docker-mama.lab.exinda.com";
-    };
-
-    virtualbox.host = {
-      enable = false;
     };
   };
 }

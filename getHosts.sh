@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts

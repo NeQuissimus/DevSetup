@@ -144,7 +144,27 @@
   };
 
   programs = {
-    ssh.startAgent = true;
+    ssh = {
+      agentTimeout = "4h";
+      extraConfig = ''
+        Host *
+          ConnectTimeout 60
+          ServerAliveInterval 240
+          ConnectionAttempts 60
+      '';
+      knownHosts = [
+        {
+          hostNames = [ "pine" "pine.nequissimus.com" "10.30.27.128" ];
+          publicKey = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLd5r3p3khAwHU8h2W/vCk872XV9iOqL3GvwofWkw5xbtljG1AnTPeBjxHVAaQCagrrJGA9iGope2g6A6ydpvn4=";
+        }
+        {
+          hostNames = [ "github.com" "192.30.252.*" "192.30.253.*" "192.30.254.*" "192.30.255.*" ];
+          publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==";
+        }
+      ];
+      startAgent = true;
+    };
+
     zsh = {
       enable = true;
       promptInit = ''

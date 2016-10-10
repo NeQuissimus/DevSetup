@@ -27,31 +27,20 @@
     # Basics
     binutils
     conky
-    feh
     firefox
-    gettext
     gitFull
     gnupg
     gnupg1compat
+    httpstat
     htop
     i3lock-fancy
-    iotop
     keybase-go
-    oh-my-zsh
-    pandoc
     parcellite
     unzip
     upower
     vlc
-    xclip
-    xtrlock-pam
-
-    # VPN
-    ppp
-    pptp
 
     # Java
-    gradle
     jdk
     maven
 
@@ -64,7 +53,6 @@
 
     # Custom
     (import nixpkgs/sublime3-dev.nix)
-
   ];
 
   fonts = {
@@ -102,12 +90,12 @@
       extraCommands = ''
        iptables -A INPUT -p 47 -j ACCEPT
        iptables -A OUTPUT -p 47 -j ACCEPT
-      '';
+      ''; # 47 = GRE (for PPTP)
     };
   };
 
   nix = {
-    binaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
+    binaryCaches = [ https://hydra.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
     buildCores = 8;
 
@@ -125,7 +113,7 @@
     maxJobs = 4;
 
     nrBuildUsers = 30;
-    trustedBinaryCaches = [ https://cache.nixos.org https://hydra.nixos.org ];
+    trustedBinaryCaches = [ https://hydra.nixos.org ];
     useSandbox = true;
   };
 
@@ -183,18 +171,9 @@
   };
 
   services = {
-    fail2ban = {
-        enable = false;
-        jails.ssh-iptables = ''
-          enabled = true
-        '';
-    };
-
     locate.enable = true;
 
     nixosManual.enable = false;
-
-    nscd.enable = false;
 
     ntp = {
       enable = true;
@@ -238,15 +217,15 @@
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-16.09";
-      dates = "01:00";
+      channel = "https://nixos.org/channels/nixos-unstable-small";
+      dates = "21:00";
       enable = true;
     };
-    stateVersion = "16.09";
+    stateVersion = "17.03";
   };
 
   time = {
-    timeZone = "UTC";
+    timeZone = "America/Toronto";
   };
 
   users = {
@@ -258,13 +237,11 @@
      group = "users";
      home = "/home/nequi";
      name = "nequi";
-     shell = "${pkgs.zsh}/bin/zsh";
      uid = 1000;
+     useDefaultShell = true;
 
      openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBL3lMFtXtxowkw4tM2irAQbVODOyBomOYchi4ClTNxV nequi@nixus"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyku7sT/Wa20VjAUoGwOpmCbl5v2omrX9mZLJLnfTuYLxzqNsIZha2N5DjipIzxhjh8XoJG+8n/L7hO9tgrst4mhJZdAOEntS+rr4HSHoojzmh6Vkc1A6j9aS+qNUy+ZZYIZ6ENeVge2J4EobMFnlLP0r31s7rmYnXX1hH7RvhVqUf0Tg6/J4rEHKbwPUXkpto4WIR14yKzBxoO2zWX4X61viMSGUAeNQ35dGVd7JFv+LbCJW7HcyehbfFCb2wOa+L1EEGVaLJccGhQzzFd6svlr1ECxcM2L11zZTVJ6lYHMYKGAHxcIPMwIkoOyKtCtRPL4giJ43C6OBkTZqk0jm3 nequi@nixus"
      ];
     };
   };

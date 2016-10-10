@@ -1,4 +1,6 @@
-export ZSH=$(ls -d /nix/store/*oh-my-zsh-git* -t | grep -v '.*drv' | head -1)/share/oh-my-zsh/
+export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
+[ -d "${ZSH}" ] || nix-env -iA nixos.oh-my-zsh
+
 ZSH_THEME="sunaku"
 CASE_SENSITIVE="false"
 export UPDATE_ZSH_DAYS=7

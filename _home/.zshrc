@@ -25,3 +25,5 @@ alias docker_compose='curl -sL https://github.com/docker/compose/releases/downlo
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || rm -rf "${HOME}/Downloads/*"
+
+nix-search(){ echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }

@@ -27,32 +27,10 @@
     # Basics
     binutils
     conky
-    firefox
-    gitFull
-    gnupg
-    gnupg1compat
-    httpstat
     htop
     i3lock-fancy
-    keybase-go
     parcellite
-    unzip
     upower
-    vlc
-
-    # Java
-    jdk
-    maven
-
-    # Scala
-    scala
-    sbt
-
-    # Lagom
-    activator
-
-    # Custom
-    (import nixpkgs/sublime3-dev.nix)
   ];
 
   fonts = {
@@ -95,7 +73,7 @@
   };
 
   nix = {
-    binaryCaches = [ https://hydra.nixos.org ];
+    binaryCaches = [ https://hydra.nixos.org https://cache.nixos.org ];
     binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
     buildCores = 8;
 
@@ -113,7 +91,7 @@
     maxJobs = 4;
 
     nrBuildUsers = 30;
-    trustedBinaryCaches = [ https://hydra.nixos.org ];
+    trustedBinaryCaches = [ https://hydra.nixos.org https://cache.nixos.org ];
     useSandbox = true;
   };
 

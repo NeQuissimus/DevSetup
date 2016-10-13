@@ -1,5 +1,4 @@
 export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
-[ -d "${ZSH}" ] || nix-env -iA nixos.oh-my-zsh
 
 ZSH_THEME="sunaku"
 CASE_SENSITIVE="false"

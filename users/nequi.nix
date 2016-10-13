@@ -23,8 +23,9 @@
         gitFull
         gnupg
         gnupg1compat
-        (import nixpkgs/httpstat.nix)
+        (import ../nixpkgs/httpstat.nix)
         keybase-go
+        oh-my-zsh
         unzip
         vlc
         zip
@@ -38,7 +39,7 @@
         sbt
         activator
 
-        (import nixpkgs/sublime3-dev.nix)
+        (import ../nixpkgs/sublime3-dev.nix)
       ];
     };
   };

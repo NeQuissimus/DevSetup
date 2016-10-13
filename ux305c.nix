@@ -195,11 +195,11 @@
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-unstable-small";
+      channel = "https://nixos.org/channels/nixos-16.09-small";
       dates = "21:00";
       enable = true;
     };
-    stateVersion = "17.03";
+    stateVersion = "16.09";
   };
 
   time = {

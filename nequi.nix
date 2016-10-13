@@ -23,7 +23,7 @@
         gitFull
         gnupg
         gnupg1compat
-#        httpstat
+        (import nixpkgs/httpstat.nix)
         keybase-go
         unzip
         vlc

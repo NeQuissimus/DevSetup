@@ -30,3 +30,4 @@ _config/sublime-text-3/Packages/ssl-linux/
 hosts
 nixpkgs/result
 bin/
+rootfs.tar.xz

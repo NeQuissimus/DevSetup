@@ -73,8 +73,7 @@
   };
 
   nix = {
-    binaryCaches = [ https://hydra.nixos.org https://cache.nixos.org ];
-    binaryCachePublicKeys = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
+    binaryCaches = [ https://cache.nixos.org ];
     buildCores = 8;
 
     extraOptions = ''
@@ -91,7 +90,7 @@
     maxJobs = 4;
 
     nrBuildUsers = 30;
-    trustedBinaryCaches = [ https://hydra.nixos.org https://cache.nixos.org ];
+    trustedBinaryCaches = [ https://cache.nixos.org ];
     useSandbox = true;
   };
 
@@ -197,7 +196,7 @@
     autoUpgrade = {
       channel = "https://nixos.org/channels/nixos-16.09-small";
       dates = "21:00";
-      enable = true;
+      enable = false;
     };
     stateVersion = "16.09";
   };

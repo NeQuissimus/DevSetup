@@ -23,7 +23,7 @@
         gitFull
         gnupg
         gnupg1compat
-        (import ../nixpkgs/httpstat.nix)
+        httpstat
         keybase-go
         oh-my-zsh
         unzip
@@ -35,9 +35,10 @@
         maven
 
         # Scala
-        scala
-        sbt
         activator
+        ammonite-repl
+        sbt
+        scala
 
         (import ../nixpkgs/sublime3-dev.nix)
       ];

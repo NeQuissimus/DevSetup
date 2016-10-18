@@ -83,13 +83,17 @@
 
     gc = {
       automatic = true;
-      dates = "01:00";
+      dates = "18:00";
       options = "--delete-older-than 30";
     };
 
     maxJobs = 4;
 
     nrBuildUsers = 30;
+    optimise = {
+      automatic = true;
+      dates = [ "18:00" ];
+    };
     trustedBinaryCaches = [ https://cache.nixos.org ];
     useSandbox = true;
   };

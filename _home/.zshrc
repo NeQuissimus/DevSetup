@@ -25,3 +25,4 @@ setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || rm -rf "${HOME}/Downloads/*"
 
 nix-search(){ echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
+nix-update(){ echo "Updating user environment... "; nix-env -i $(nix-env -q); }

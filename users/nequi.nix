@@ -6,7 +6,6 @@
   firefox = {
     enableGoogleTalkPlugin = true;
     enableAdobeFlash = true;
-    enableBluejeans = true;
   };
 
   chromium = {
@@ -15,8 +14,8 @@
   };
 
   packageOverrides = pkgs_: with pkgs_; {
-    user-nequi = with pkgs; buildEnv {
-      name = "user-nequi";
+    user-basics = with pkgs; buildEnv {
+      name = "user-basics";
 
       paths = [
         firefox
@@ -27,20 +26,40 @@
         keybase-go
         oh-my-zsh
         unzip
-        vlc
         zip
+      ];
+    };
 
-        # Java
-        jdk
+    user-java = with pkgs; buildEnv {
+      name = "user-java";
+
+      paths = [
+        gradle
         maven
+        openjdk
+      ];
+    };
 
-        # Scala
+    user-scala = with pkgs; buildEnv {
+      name = "user-scala";
+
+      paths = [
         activator
         ammonite-repl
         sbt
         scala
+      ];
+    };
 
-        (import ../nixpkgs/sublime3-dev.nix)
+    sublime3-dev = (import ../nixpkgs/sublime3-dev.nix);
+
+    user-misc = with pkgs; buildEnv {
+      name = "user-misc";
+
+      paths = [
+        jekyll
+        texlive.combined.scheme-full
+        vlc
       ];
     };
   };

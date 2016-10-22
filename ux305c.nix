@@ -27,6 +27,7 @@
     # Basics
     binutils
     conky
+    gitMinimal
     htop
     i3lock-fancy
     parcellite
@@ -98,15 +99,6 @@
     useSandbox = true;
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-
-    firefox = {
-      enableGoogleTalkPlugin = true;
-      enableAdobeFlash = true;
-    };
-  };
-
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "ondemand";
@@ -147,7 +139,7 @@
 
     sudo = {
         enable = true;
-        wheelNeedsPassword = false;
+        wheelNeedsPassword = true;
     };
   };
 
@@ -199,7 +191,7 @@
   system = {
     autoUpgrade = {
       channel = "https://nixos.org/channels/nixos-unstable-small";
-      dates = "21:00";
+      dates = "19:00";
       enable = true;
     };
     stateVersion = "17.03";

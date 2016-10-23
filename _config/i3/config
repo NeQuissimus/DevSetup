@@ -99,6 +99,3 @@ bar {
 }
 
 exec_always xsetroot -solid black
-
-exec slack
-exec firefox

@@ -1,6 +1,6 @@
   XTerm*Background: grey10
-  XTerm*Foreground: white
-  XTerm*FaceName: SourceCode Pro:size=10:antialias=true
+  XTerm*Foreground: grey
+  XTerm*FaceName: SourceCode Pro:size=11:antialias=true
   XTerm*Font: 8x13
   XTerm*SaveLines: 10000
   XTerm*BorderWidth: 5

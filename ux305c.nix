@@ -66,10 +66,6 @@
       allowedTCPPorts = [ 22 ];
       allowPing = false;
       enable = true;
-      extraCommands = ''
-       iptables -A INPUT -p 47 -j ACCEPT
-       iptables -A OUTPUT -p 47 -j ACCEPT
-      ''; # 47 = GRE (for PPTP)
     };
   };
 

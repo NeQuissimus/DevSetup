@@ -1,6 +1,6 @@
 export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
 
-ZSH_THEME="sunaku"
+ZSH_THEME="avit"
 CASE_SENSITIVE="false"
 ENABLE_CORRECTION="true"
 HIST_STAMPS="dd.mm.yyyy"

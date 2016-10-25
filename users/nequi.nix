@@ -18,11 +18,11 @@
       name = "user-basics";
 
       paths = [
+        dejavu_fonts
         firefox
         gitFull
         gnupg
         gnupg1compat
-        hack-font
         httpstat
         keybase-go
         oh-my-zsh

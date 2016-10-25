@@ -38,10 +38,11 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
+      dejavu_fonts
       font-awesome-ttf
       source-code-pro
     ];
-    fontconfig.defaultFonts.monospace = [ "Source Code Pro" ];
+    fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
   };
 
   hardware = {

@@ -1,6 +1,6 @@
   XTerm*Background: grey10
   XTerm*Foreground: grey
-  XTerm*FaceName: Hack:size=12:antialias=true
+  XTerm*FaceName: DejaVu Sans Mono:size=12:antialias=true
   XTerm*Font: 8x13
   XTerm*SaveLines: 100000
   XTerm*BorderWidth: 5

@@ -22,6 +22,7 @@
         gitFull
         gnupg
         gnupg1compat
+        hack-font
         httpstat
         keybase-go
         oh-my-zsh

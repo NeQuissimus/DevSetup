@@ -1,4 +1,4 @@
-font pango:DejaVu Sans Mono 10
+font pango:Source Code Pro 8
 
 set $mod Mod4
 set $dmenu_run $(find /nix/store -name 'dmenu_run' -type f | head -1)

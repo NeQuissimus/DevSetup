@@ -1,10 +1,14 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  myKernel = pkgs.linuxPackages_latest;
+in {
   imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ];
 
   boot = {
     cleanTmpDir = true;
+
+    extraModulePackages = [ (pkgs.linuxPackages.sysdig.override { kernel = myKernel.kernel; }) ];
 
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
@@ -15,7 +19,7 @@
       "vm.swappiness" = 5;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = myKernel;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -31,6 +35,7 @@
     htop
     i3lock-fancy
     parcellite
+    sysdig
     upower
   ];
 

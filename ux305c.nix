@@ -3,7 +3,7 @@
 let
   myKernel = pkgs.linuxPackages_latest;
 in {
-  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ];
+  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./i3-config.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -170,9 +170,8 @@ in {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
-        slim = {
-          enable = true;
-        };
+        slim.enable = true;
+        xserverArgs = [ "-logfile" "/var/log/X.log" ];
       };
       enable = true;
       exportConfiguration = true;
@@ -183,9 +182,6 @@ in {
         twoFingerScroll = true;
       };
       videoDriver = "intel";
-      windowManager.i3 = {
-        enable = true;
-      };
       xkbOptions = "ctrl:nocaps";
     };
   };

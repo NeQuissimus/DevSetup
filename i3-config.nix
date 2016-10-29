@@ -66,14 +66,12 @@ rec {
     font pango:Source Code Pro 8
 
     set $mod Mod4
-    set $dmenu_run $(find /nix/store -name 'dmenu_run' -type f | head -1)
-    set $i3status_run $(find /nix/store -name 'i3status' -type f | head -1)
 
     floating_modifier $mod
 
     bindsym $mod+Return exec xterm
     bindsym $mod+Shift+q kill
-    bindsym $mod+d exec $dmenu_run
+    bindsym $mod+d exec ${pkgs.dmenu}/bin/dmenu_run
     bindsym $mod+Left focus left
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up

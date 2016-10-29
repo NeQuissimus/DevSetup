@@ -31,8 +31,12 @@ rec {
     }
 
     battery 0 {
-      format = " %percentage"
+      format = "%status %percentage"
       format_down = ""
+      status_chr = ""
+      status_bat = ""
+      low_threshold = "30"
+      threshold_type = "time"
     }
 
     ethernet eno1 {
@@ -54,11 +58,11 @@ rec {
     }
 
     disk "/" {
-      format = "  %avail (root)"
+      format = " %avail"
     }
 
     disk "/home" {
-      format = "  %avail (home)"
+      format = " %avail"
     }
   '';
 

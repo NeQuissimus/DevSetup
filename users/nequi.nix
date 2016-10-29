@@ -58,6 +58,7 @@
       name = "user-misc";
 
       paths = [
+        franz
         jekyll
         texlive.combined.scheme-full
         vlc

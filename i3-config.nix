@@ -41,7 +41,7 @@ rec {
     }
 
     wireless wlp1s0 {
-      format_up = "%essid (%quality): %ip"
+      format_up = " %essid (%quality)"
       format_down = ""
     }
 
@@ -67,9 +67,31 @@ rec {
 
     set $mod Mod4
 
+    set $bg-color #2f343f
+    set $inactive-bg-color #2f343f
+    set $text-color #f3f4f5
+    set $inactive-text-color #676e7d
+    set $urgent-bg-color #e53935
+    set $indicator-color #666666
+    set $separator-color #757575
+
     floating_modifier $mod
 
-    bindsym $mod+Return exec xterm
+    mode "resize" {
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+
+    set $workspace1 "1: "
+    set $workspace2 "2: "
+    set $workspace9 "9: "
+    set $workspace10 "10: "
+
+    bindsym $mod+Return exec ${pkgs.xterm}/bin/xterm
     bindsym $mod+Shift+q kill
     bindsym $mod+d exec ${pkgs.dmenu}/bin/dmenu_run
     bindsym $mod+Left focus left
@@ -90,11 +112,8 @@ rec {
     bindsym $mod+space focus mode_toggle
     bindsym $mod+a focus parent
 
-    set $workspace9 "9: "
-    set $workspace10 "10: "
-
-    bindsym $mod+1 workspace 1
-    bindsym $mod+2 workspace 2
+    bindsym $mod+1 workspace $workspace1
+    bindsym $mod+2 workspace $workspace2
     bindsym $mod+3 workspace 3
     bindsym $mod+4 workspace 4
     bindsym $mod+5 workspace 5
@@ -103,8 +122,8 @@ rec {
     bindsym $mod+8 workspace 8
     bindsym $mod+9 workspace $workspace9
     bindsym $mod+0 workspace $workspace10
-    bindsym $mod+Shift+1 move container to workspace 1
-    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+1 move container to workspace $workspace1
+    bindsym $mod+Shift+2 move container to workspace $workspace2
     bindsym $mod+Shift+3 move container to workspace 3
     bindsym $mod+Shift+4 move container to workspace 4
     bindsym $mod+Shift+5 move container to workspace 5
@@ -114,6 +133,16 @@ rec {
     bindsym $mod+Shift+9 move container to workspace $workspace9
     bindsym $mod+Shift+0 move container to workspace $workspace10
 
+    bindsym $mod+bracketleft move workspace to output left
+    bindsym $mod+bracketright move workspace to output right
+
+    bindsym $mod+Shift+l exec ${pkgs.i3lock-fancy}/bin/i3lock-fancy
+    bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+r restart
+
+    bindsym $mod+r mode "resize"
+
+    assign [class="Sublime"] $workspace2
     assign [class="Firefox"] $workspace9
     assign [class="Slack"] $workspace10
     assign [class="Franz"] $workspace10
@@ -121,47 +150,21 @@ rec {
     workspace $workspace9 output DP2
     workspace $workspace10 output DP2
 
-    bindsym $mod+bracketleft move workspace to output left
-    bindsym $mod+bracketright move workspace to output right
-
-    bindsym $mod+Shift+l exec i3lock-fancy
-    bindsym $mod+Shift+c reload
-    bindsym $mod+Shift+r restart
-    bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-    mode "resize" {
-            bindsym Left resize shrink width 10 px or 10 ppt
-            bindsym Down resize grow height 10 px or 10 ppt
-            bindsym Up resize shrink height 10 px or 10 ppt
-            bindsym Right resize grow width 10 px or 10 ppt
-            bindsym Return mode "default"
-            bindsym Escape mode "default"
-    }
-
-    bindsym $mod+r mode "resize"
-
-    set $bg-color            #2f343f
-    set $inactive-bg-color   #2f343f
-    set $text-color          #f3f4f5
-    set $inactive-text-color #676E7D
-    set $urgent-bg-color     #E53935
-    set $indicator-color     #666666
-
-    client.focused          $bg-color           $bg-color          $text-color          $indicator-color
-    client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
-    client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
-    client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator-color
+    client.focused $bg-color $bg-color $text-color $indicator-color
+    client.unfocused $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
+    client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
+    client.urgent $urgent-bg-color $urgent-bg-color $text-color $indicator-color
 
     bar {
-            status_command ${pkgs.i3status}/bin/i3status -c /etc/i3/status
-            colors {
+        status_command ${pkgs.i3status}/bin/i3status -c /etc/i3/status
+        colors {
             background $bg-color
-            separator #757575
+            separator $separator-color
 
-            focused_workspace  $bg-color          $bg-color          $text-color
+            focused_workspace $bg-color $bg-color $text-color
             inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-            urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
-            }
+            urgent_workspace $urgent-bg-color $urgent-bg-color $text-color
+        }
     }
 
     exec_always xsetroot -solid black

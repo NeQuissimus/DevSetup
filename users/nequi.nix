@@ -58,6 +58,7 @@
       name = "user-misc";
 
       paths = [
+        encfs
         franz
         jekyll
         texlive.combined.scheme-full

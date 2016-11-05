@@ -20,7 +20,7 @@
 	diffFilter = diff-highlight
 [diff]
 	compactionHeuristic = true
-[remote "origin"]
+[remote "*"]
 	prune = true
 [branch]
 	autosetuprebase = always

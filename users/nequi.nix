@@ -37,7 +37,7 @@
       paths = [
         gradle
         maven
-        openjdk
+        openjdk8
       ];
     };
 
@@ -63,6 +63,7 @@
         jekyll
         texlive.combined.scheme-full
         vlc
+        wine
       ];
     };
   };

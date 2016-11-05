@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  myKernel = pkgs.linuxPackages_latest;
+  myKernel = pkgs.linuxPackages_4_8;
 in {
   imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./i3-config.nix ];
 
@@ -16,7 +16,7 @@ in {
       "vm.dirty_writeback_centisecs" = 1500;
       "vm.drop_caches" = 1;
       "vm.laptop_mode" = 5;
-      "vm.swappiness" = 5;
+      "vm.swappiness" = 1;
     };
 
     kernelPackages = myKernel;
@@ -41,7 +41,7 @@ in {
 
   fonts = {
     enableFontDir = true;
-    enableGhostscriptFonts = true;
+    enableGhostscriptFonts = false;
     fonts = with pkgs; [
       dejavu_fonts
       font-awesome-ttf

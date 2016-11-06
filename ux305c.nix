@@ -217,8 +217,15 @@ in {
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = "btrfs";
+  virtualisation = {
+    docker = {
+      enable = true;
+      storageDriver = "btrfs";
+    };
+
+    rkt = {
+      enable = true;
+      gc.automatic = true;
+    };
   };
 }

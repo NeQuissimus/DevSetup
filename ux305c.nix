@@ -3,7 +3,7 @@
 let
   myKernel = pkgs.linuxPackages_4_8;
 in {
-  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./i3-config.nix ];
+  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -45,6 +45,7 @@ in {
     fonts = with pkgs; [
       dejavu_fonts
       font-awesome-ttf
+      nerdfonts
       source-code-pro
     ];
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
@@ -168,6 +169,8 @@ in {
       defaultDepth = 24;
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
+          ${xorg.xsetroot}/bin/xsetroot -solid black &
+          ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';
         slim.enable = true;

@@ -6,7 +6,7 @@ rec {
     extraPackages = with pkgs.haskellPackages; haskellPackages: [ xmobar ];
   };
 
-  # symlink /etc/xmonad/xmonad.hs to ~/.xmonad/xmonad.hs
+  # See https://github.com/NixOS/nixpkgs/issues/20258
   environment.etc."xmonad/xmonad.hs".text = ''
     import Control.Monad (liftM2)
     import XMonad

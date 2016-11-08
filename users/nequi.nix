@@ -31,6 +31,14 @@
       ];
     };
 
+    user-haskell = with pkgs; buildEnv {
+      name = "user-haskell";
+
+      paths = [
+        ghc
+      ];
+    };
+
     user-java = with pkgs; buildEnv {
       name = "user-java";
 

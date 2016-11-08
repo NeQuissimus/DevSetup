@@ -8,6 +8,7 @@ rec {
 
   # symlink /etc/xmonad/xmonad.hs to ~/.xmonad/xmonad.hs
   environment.etc."xmonad/xmonad.hs".text = ''
+    import Control.Monad (liftM2)
     import XMonad
     import XMonad.Actions.CycleWS
     import XMonad.Hooks.DynamicLog
@@ -27,13 +28,15 @@ rec {
         isFullscreen --> (doF W.focusDown <+> doFullFloat)
         , isDialog --> doFloat
         , className =? "Franz" --> doShift "0"
-        , className =? "Firefox" --> doShift "9"
-        , className =? "Sublime" --> doShift "2"
+        , className =? "Firefox" --> viewShift "9"
+        , className =? "Sublime" --> viewShift "2"
         , appName =? "desktop_window" --> doIgnore
         ]
+        where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
     myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
       ((modm, xK_Return), spawn $ XMonad.terminal conf),
+      ((modm .|. shiftMask, xK_l), spawn "${pkgs.i3lock-fancy}/bin/i3lock-fancy"),
       ((modm, xK_d), spawn "${pkgs.dmenu}/bin/dmenu_run"),
       ((modm, xK_w), kill),
       ((modm, xK_Left), windows W.focusUp),

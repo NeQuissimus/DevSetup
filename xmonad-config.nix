@@ -82,7 +82,7 @@ rec {
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = False
-       , commands = [ Run DynNetwork [ "--template" , "<dev>: <tx>kB/s | <rx>kB/s" ] 10
+       , commands = [ Run DynNetwork [ "--template" , "<dev>: <rx>kB/s | <tx>kB/s" ] 10
                     , Run MultiCpu [ "--template" , "Cpu: <total0>% | <total1>% | <total2>% | <total3>%" ] 10
                     , Run Memory ["-t","Mem: <used>"] 10
                     , Run Com "uname" ["-r"] "" 36000
@@ -110,6 +110,3 @@ rec {
        }
   '';
 }
-
-# Run Network "wlp1s0" [] 10
-#, Run BatteryP ["BAT0"] ["-t", "<acstatus> (<left>%)", "-L", "10", "-H", "80", "-p", "3", "--", "-O", "<fc=green>On</fc>", "-i", "", "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 600

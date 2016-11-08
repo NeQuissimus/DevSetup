@@ -21,14 +21,14 @@ rec {
     import qualified Data.Map as M
     import qualified XMonad.StackSet as W
 
-    myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+    myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
 
     myManageHook = composeAll [
         isFullscreen --> (doF W.focusDown <+> doFullFloat)
         , isDialog --> doFloat
-        , appName =? "Franz" --> doShift "9"
-        , appName =? "firefox" --> doShift "8"
-        , appName =? "sublime" --> doShift "2"
+        , className =? "Franz" --> doShift "0"
+        , className =? "Firefox" --> doShift "9"
+        , className =? "Sublime" --> doShift "2"
         , appName =? "desktop_window" --> doIgnore
         ]
 
@@ -42,7 +42,7 @@ rec {
       ((modm .|. shiftMask, xK_Right), windows W.swapDown)
       ]
       ++ [((m .|. modm, k), windows $ f i)
-         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+         | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [ xK_0 ])
          , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
       ++ [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
          | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]

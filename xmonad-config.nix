@@ -6,9 +6,9 @@ rec {
     extraPackages = with pkgs.haskellPackages; haskellPackages: [ xmobar ];
   };
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    haskellPackages = pkgs.haskellPackages.override { overrides = self: super: { xmonad = pkgs.lib.overrideDerivation super.xmonad (old: { patches = [ ./nixpkgs/xmonad-nix.patch ]; });};};
-  };
+  # nixpkgs.config.packageOverrides = pkgs: {
+    # haskellPackages = pkgs.haskellPackages.override { overrides = self: super: { xmonad = pkgs.lib.overrideDerivation super.xmonad (old: { patches = [ ./nixpkgs/xmonad-nix.patch ]; });};};
+  # };
 
   # See https://github.com/NixOS/nixpkgs/issues/20258
   environment.etc."xmonad/xmonad.hs".text = ''
@@ -55,20 +55,20 @@ rec {
          | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
          , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-    myStartupHook = M.fromList $ [
-      spawnOnce "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
-    ]
-
     main = do
+      xmproc <- spawnPipe "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
       xmonad $ def {
         focusedBorderColor = "#F0F0F0",
         handleEventHook = docksEventHook <+> handleEventHook def,
         keys = myKeys,
         layoutHook = avoidStruts $ layoutHook def,
+        logHook = dynamicLogWithPP xmobarPP
+                        { ppOrder = \(ws:l:t:_) -> ws : [t]
+                        , ppOutput = hPutStrLn xmproc
+                        , ppTitle = xmobarColor "green" "" . shorten 50 },
         manageHook = myManageHook <+> manageDocks <+> manageHook def,
         modMask = mod4Mask,
         normalBorderColor = "#666666",
-        startupHook = myStartupHook <+> startupHook def,
         terminal = "xterm",
         workspaces = myWorkspaces
       }
@@ -112,11 +112,11 @@ rec {
                                        -- charged status
                                        , "-i"  , "<fc=#006000>Charged</fc>"
                              ] 50
+                    , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %multicpu% |  %memory% MiB |  %dynnetwork% }\
-                    \{  %date% |  %battery% |  %uname%"
+       , template = "%StdinReader% }{  %multicpu% |  %memory% MiB |  %dynnetwork% |  %date% |  %battery% |  %uname%"
        }
   '';
 }

@@ -6,6 +6,10 @@ rec {
     extraPackages = with pkgs.haskellPackages; haskellPackages: [ xmobar ];
   };
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    haskellPackages = pkgs.haskellPackages.override { overrides = self: super: { xmonad = pkgs.lib.overrideDerivation super.xmonad (old: { patches = [ ./nixpkgs/xmonad-nix.patch ]; });};};
+  };
+
   # See https://github.com/NixOS/nixpkgs/issues/20258
   environment.etc."xmonad/xmonad.hs".text = ''
     import Control.Monad (liftM2)
@@ -51,17 +55,20 @@ rec {
          | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
          , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
+    myStartupHook = M.fromList $ [
+      spawnOnce "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
+    ]
+
     main = do
-      xmproc <- spawnPipe "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
       xmonad $ def {
         focusedBorderColor = "#F0F0F0",
         handleEventHook = docksEventHook <+> handleEventHook def,
         keys = myKeys,
         layoutHook = avoidStruts $ layoutHook def,
-        logHook = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc, ppTitle = xmobarColor "green" "" . shorten 50 },
         manageHook = myManageHook <+> manageDocks <+> manageHook def,
         modMask = mod4Mask,
         normalBorderColor = "#666666",
+        startupHook = myStartupHook <+> startupHook def,
         terminal = "xterm",
         workspaces = myWorkspaces
       }

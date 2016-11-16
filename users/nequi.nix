@@ -66,9 +66,12 @@
       name = "user-misc";
 
       paths = [
+        chromium
         encfs
         franz
         jekyll
+        nodejs
+        ruby
         texlive.combined.scheme-full
         vlc
         wine

@@ -82,6 +82,7 @@ in {
 
     extraOptions = ''
       auto-optimise-store = true
+      binary-caches-parallel-connections = 3
       connect-timeout = 10
     '';
 

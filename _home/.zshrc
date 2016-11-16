@@ -36,4 +36,4 @@ function heroku() {
     johnnagro/heroku-toolbelt "$@"
 }
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
-function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q); }
+function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc'); }

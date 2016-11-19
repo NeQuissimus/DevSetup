@@ -22,6 +22,8 @@ alias sbt='sbt -mem 4096'
 alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'
 
+alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
+
 setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || [[ -e "${HOME}/Downloads" ]] && rm -rf "${HOME}/Downloads" && mkdir "${HOME}/Downloads"
 

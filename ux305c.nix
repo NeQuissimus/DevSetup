@@ -139,6 +139,8 @@ in {
   };
 
   security = {
+    chromiumSuidSandbox.enable = true;
+
     grsecurity.enable = true;
 
     hideProcessInformation = true;

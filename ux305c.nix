@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
-  myKernel = pkgs.linuxPackages_grsec_nixos;
+  grsec = true;
+  myKernel = if grsec then pkgs.linuxPackages_grsec_nixos else pkgs.linuxPackages_latest;
 in {
   imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ];
 
@@ -139,9 +140,9 @@ in {
   };
 
   security = {
-    chromiumSuidSandbox.enable = true;
+    chromiumSuidSandbox.enable = grsec;
 
-    grsecurity.enable = true;
+    grsecurity.enable = grsec;
 
     hideProcessInformation = true;
 

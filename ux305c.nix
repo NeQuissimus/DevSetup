@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  myKernel = pkgs.linuxPackages_4_8;
+  myKernel = pkgs.linuxPackages_grsec_nixos;
 in {
   imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ];
 
@@ -139,6 +139,8 @@ in {
   };
 
   security = {
+    grsecurity.enable = true;
+
     hideProcessInformation = true;
 
     sudo = {

@@ -24,6 +24,7 @@ alias rsync='rsync -azvvP'
 alias irssi='irssi --config=/etc/irssi/config'
 
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
+alias nix-repair-store='nix-store --verify --check-contents --repair'
 
 setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || [[ -e "${HOME}/Downloads" ]] && rm -rf "${HOME}/Downloads" && mkdir "${HOME}/Downloads"

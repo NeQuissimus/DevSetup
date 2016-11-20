@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  grsec = false;
+  grsec = false; # Kernel panics, probably https://bugs.gentoo.org/show_bug.cgi?id=597554
   myKernel = if grsec then pkgs.linuxPackages_grsec_nixos else pkgs.linuxPackages_latest;
 in {
   imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ./irssi-config.nix ];

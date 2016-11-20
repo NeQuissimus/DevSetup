@@ -7,7 +7,7 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
 export TERMINAL="xterm"
-export PATH="$/home/nequi/bin:/var/setuid-wrappers:/home/nequi/.nix-profile/bin:/home/nequi/.nix-profile/sbin:/home/nequi/.nix-profile/lib/kde4/libexec:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/nix/var/nix/profiles/default/lib/kde4/libexec:/run/current-system/sw/bin:/run/current-system/sw/sbin:/run/current-system/sw/lib/kde4/libexec"
+export PATH="/home/nequi/bin:/var/setuid-wrappers:/home/nequi/.nix-profile/bin:/home/nequi/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/run/current-system/sw/bin:/run/current-system/sw/sbin"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 
 source ${ZSH}/oh-my-zsh.sh

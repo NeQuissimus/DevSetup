@@ -21,6 +21,7 @@ alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
 alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'
+alias irssi='irssi --config=/etc/irssi/config'
 
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
 

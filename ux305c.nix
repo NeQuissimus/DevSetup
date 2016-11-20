@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  grsec = true;
+  grsec = false;
   myKernel = if grsec then pkgs.linuxPackages_grsec_nixos else pkgs.linuxPackages_latest;
 in {
-  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ];
+  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ./irssi-config.nix ];
 
   boot = {
     cleanTmpDir = true;

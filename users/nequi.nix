@@ -69,6 +69,7 @@
         chromium
         encfs
         franz
+        irssi
         jekyll
         nodejs
         ruby

@@ -32,6 +32,7 @@ in {
     # Basics
     binutils
     conky
+    dmenu
     gitMinimal
     htop
     i3lock-fancy

@@ -7,7 +7,7 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
 export TERMINAL="xterm"
-export PATH="/home/nequi/bin:/var/setuid-wrappers:/home/nequi/.nix-profile/bin:/home/nequi/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/run/current-system/sw/bin:/run/current-system/sw/sbin:/home/tsteinbach/bin:/home/tsteinbach/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export PATH="/home/tsteinbach/bin:/var/setuid-wrappers:/home/tsteinbach/.nix-profile/bin:/home/tsteinbach/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/run/current-system/sw/bin:/run/current-system/sw/sbin:/home/tsteinbach/bin:/home/tsteinbach/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 
 source ${ZSH}/oh-my-zsh.sh
@@ -17,7 +17,7 @@ alias nano='nano -E -w -c'
 alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
 alias volume_up='amixer -q sset Master 5%+; volume'
 alias volume_down='amixer -q sset Master 5%-; volume'
-alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
+alias javarepl='java -jar /home/tsteinbach/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
 alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'

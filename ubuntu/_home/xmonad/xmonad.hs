@@ -27,7 +27,7 @@
 
     myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
       ((modm, xK_Return), spawn $ XMonad.terminal conf),
-      ((modm .|. shiftMask, xK_l), spawn "i3lock"),
+      ((modm .|. shiftMask, xK_l), spawn "/home/tsteinbach/dev/i3lock-fancy-multimonitor/lock"),
       ((modm, xK_d), spawn "dmenu_run"),
       ((modm, xK_w), kill),
       ((modm, xK_Left), windows W.focusUp),

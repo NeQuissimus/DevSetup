@@ -30,5 +30,5 @@ alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
 function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc'); }
 
-xsetroot -solid black
-xsetroot -cursor_name left_ptr
+#xsetroot -solid black
+#xsetroot -cursor_name left_ptr

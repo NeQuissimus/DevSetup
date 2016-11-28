@@ -24,6 +24,7 @@
         gnupg
         gnupg1compat
         httpstat
+        irssi
         keybase-go
         oh-my-zsh
         unzip
@@ -69,7 +70,6 @@
         chromium
         encfs
         franz
-        irssi
         jekyll
         nodejs
         ruby

@@ -30,4 +30,4 @@ setxkbmap -option ctrl:nocaps
 [[ -z "${HOME}" ]] || [[ -e "${HOME}/Downloads" ]] && rm -rf "${HOME}/Downloads" && mkdir "${HOME}/Downloads"
 
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
-function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc'); }
+function nix-update() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -f ~/.nix-defexpr/channels/nixpkgs/nixpkgs -i $(nix-env -q | grep -v 'user-misc'); }

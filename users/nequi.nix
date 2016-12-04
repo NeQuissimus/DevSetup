@@ -18,6 +18,7 @@
       name = "user-basics";
 
       paths = [
+        atom
         dejavu_fonts
         firefox
         gitFull

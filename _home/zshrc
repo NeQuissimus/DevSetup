@@ -27,7 +27,7 @@ alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i
 alias nix-repair-store='nix-store --verify --check-contents --repair'
 
 setxkbmap -option ctrl:nocaps
-[[ -z "${HOME}" ]] || [[ -e "${HOME}/Downloads" ]] && rm -rf "${HOME}/Downloads" && mkdir "${HOME}/Downloads"
 
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
 function nix-update() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -f ~/.nix-defexpr/channels/nixpkgs/nixpkgs -i $(nix-env -q | grep -v 'user-misc'); }
+function nix-update-git() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -i $(nix-env -q | grep -v 'user-misc') -f /home/nequi/dev/nixpkgs -I nixpkgs=/home/nequi/dev/nixpkgs; }

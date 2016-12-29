@@ -9,7 +9,7 @@ in {
   boot = {
     cleanTmpDir = true;
 
-    extraModulePackages = [ (pkgs.linuxPackages.sysdig.override { kernel = myKernel.kernel; }) ];
+#    extraModulePackages = [ (pkgs.linuxPackages.sysdig.override { kernel = myKernel.kernel; }) ];
 
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
@@ -37,7 +37,7 @@ in {
     htop
     i3lock-fancy
     parcellite
-    sysdig
+#    sysdig
     upower
   ];
 
@@ -97,10 +97,10 @@ in {
     maxJobs = 4;
 
     nrBuildUsers = 30;
-    optimise = {
-      automatic = true;
-      dates = [ "18:00" ];
-    };
+    #optimise = {
+    #  automatic = true;
+    #  dates = [ "18:00" ];
+    #};
     trustedBinaryCaches = [ https://cache.nixos.org ];
     useSandbox = true;
   };
@@ -198,11 +198,11 @@ in {
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-unstable-small";
+      channel = "https://nixos.org/channels/nixos-16.09-small";
       dates = "19:00";
       enable = true;
     };
-    stateVersion = "17.03";
+    stateVersion = "16.09";
   };
 
   time = {

@@ -18,12 +18,14 @@
       name = "user-basics";
 
       paths = [
+        atom
         dejavu_fonts
         firefox
         gitFull
         gnupg
         gnupg1compat
         httpstat
+        irssi
         keybase-go
         oh-my-zsh
         unzip
@@ -69,7 +71,6 @@
         chromium
         encfs
         franz
-        irssi
         jekyll
         nodejs
         texlive.combined.scheme-full

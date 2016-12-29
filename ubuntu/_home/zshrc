@@ -7,10 +7,11 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
 export TERMINAL="xterm"
-export PATH="/home/tsteinbach/bin:/var/setuid-wrappers:/home/tsteinbach/.nix-profile/bin:/home/tsteinbach/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/run/current-system/sw/bin:/run/current-system/sw/sbin:/home/tsteinbach/bin:/home/tsteinbach/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
+export ANYCONNECT="/opt/cisco/anyconnect/bin"
+export PATH="${PATH}:${ANYCONNECT}:/home/tsteinbach/bin:/var/setuid-wrappers:/home/tsteinbach/.nix-profile/bin:/home/tsteinbach/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/run/current-system/sw/bin:/run/current-system/sw/sbin:/home/tsteinbach/bin:/home/tsteinbach/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
-source ${ZSH}/oh-my-zsh.sh
+[[ -e ${ZSH}/oh-my-zsh.sh ]] && source ${ZSH}/oh-my-zsh.sh
 
 alias mvn='mvn -q'
 alias nano='nano -E -w -c'
@@ -30,5 +31,7 @@ alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
 function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc'); }
 
-#xsetroot -solid black
-#xsetroot -cursor_name left_ptr
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+[[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi

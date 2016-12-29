@@ -72,7 +72,6 @@
         irssi
         jekyll
         nodejs
-        ruby
         texlive.combined.scheme-full
         vlc
         wine

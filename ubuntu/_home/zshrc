@@ -20,9 +20,12 @@ alias volume_up='amixer -q sset Master 5%+; volume'
 alias volume_down='amixer -q sset Master 5%-; volume'
 alias javarepl='java -jar /home/tsteinbach/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
-alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
+alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q)'
+alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'
 alias pdf='evince'
+
+alias build_ruby='find . -name Gemfile.lock -exec rm -f {} \; && rvm gemset empty 0; bundle install && gem uninstall -I -x http_parser.rb zookeeper nokogiri hitimes mime-types cassandra-driver && rake && cd pkg && gem install * && cd ..' 
 
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
 alias nix-repair-store='nix-store --verify --check-contents --repair'

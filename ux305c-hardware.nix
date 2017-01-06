@@ -4,30 +4,50 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
+  imports =
+    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/82eb2cca-4dde-4dfe-a1db-8d5c373cebb1";
-    fsType = "btrfs";
-    options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=nixos" ];
-  };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=root" ];
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/932114e7-2ac1-490e-973d-466c7bc0e4f5";
-    fsType = "btrfs";
-    options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=home" ];
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/2756-7EDA";
+      fsType = "vfat";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/C1C5-BF1F";
-    fsType = "vfat";
-  };
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=home" ];
+    };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/4f0187a5-b153-4a28-8e33-fd1a56fc09ce"; } ];
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=nix" ];
+    };
+
+  fileSystems."/tmp" =
+    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=tmp" ];
+    };
+
+  fileSystems."/var/docker" =
+    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=var/docker/docker" ];
+    };
+
+  swapDevices = [ ];
 
   nix.maxJobs = lib.mkDefault 4;
 }

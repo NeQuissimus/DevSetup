@@ -1,15 +1,10 @@
 { config, lib, pkgs, ... }:
 
-let
-  grsec = false; # Kernel panics, probably https://bugs.gentoo.org/show_bug.cgi?id=597554
-  myKernel = if grsec then pkgs.linuxPackages_grsec_nixos else pkgs.linuxPackages_latest;
-in {
-  imports = [ ./ux305c-hardware.nix ./ux305c-wifi.nix ./xmonad-config.nix ./irssi-config.nix ];
+{
+  imports = [ ./ux305c-hardware.nix ./xmonad-config.nix ./ux305c-wifi.nix ];
 
   boot = {
     cleanTmpDir = true;
-
-#    extraModulePackages = [ (pkgs.linuxPackages.sysdig.override { kernel = myKernel.kernel; }) ];
 
     initrd.kernelModules = ["ahci" "aesni-intel"];
 
@@ -20,7 +15,7 @@ in {
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = myKernel;
+    kernelPackages = pkgs.linuxPackages_4_9;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -37,19 +32,19 @@ in {
     htop
     i3lock-fancy
     parcellite
-#    sysdig
     upower
   ];
 
   fonts = {
     enableFontDir = true;
-    enableGhostscriptFonts = false;
+
     fonts = with pkgs; [
       dejavu_fonts
       font-awesome-ttf
       nerdfonts
       source-code-pro
     ];
+
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
   };
 
@@ -69,7 +64,7 @@ in {
     extraHosts = ''
       127.0.0.1 nixus
       0.0.0.0 ftp.au.debian.org
-    '' + (lib.fileContents ./hosts);
+    '';
 
     firewall = {
       allowedTCPPorts = [ 22 ];
@@ -97,10 +92,6 @@ in {
     maxJobs = 4;
 
     nrBuildUsers = 30;
-    #optimise = {
-    #  automatic = true;
-    #  dates = [ "18:00" ];
-    #};
     trustedBinaryCaches = [ https://cache.nixos.org ];
     useSandbox = true;
   };
@@ -141,10 +132,6 @@ in {
   };
 
   security = {
-    chromiumSuidSandbox.enable = grsec;
-
-    grsecurity.enable = grsec;
-
     hideProcessInformation = true;
 
     sudo = {
@@ -154,6 +141,11 @@ in {
   };
 
   services = {
+    dnsmasq = {
+      enable = true;
+      servers = [ "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
+    };
+ 
     locate.enable = true;
 
     nixosManual.enable = false;
@@ -198,11 +190,11 @@ in {
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-16.09-small";
+      channel = "https://nixos.org/channels/nixos-unstable-small";
       dates = "19:00";
       enable = true;
     };
-    stateVersion = "16.09";
+    stateVersion = "17.03";
   };
 
   time = {
@@ -231,11 +223,6 @@ in {
     docker = {
       enable = true;
       storageDriver = "btrfs";
-    };
-
-    rkt = {
-      enable = true;
-      gc.automatic = true;
     };
   };
 }

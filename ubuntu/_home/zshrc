@@ -18,23 +18,27 @@ alias nano='nano -E -w -c'
 alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
 alias volume_up='amixer -q sset Master 5%+; volume'
 alias volume_down='amixer -q sset Master 5%-; volume'
-alias javarepl='java -jar /home/tsteinbach/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
 alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q)'
 alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'
 alias pdf='evince'
-
-alias build_ruby='find . -name Gemfile.lock -exec rm -f {} \; && rvm gemset empty 0; bundle install && gem uninstall -I -x http_parser.rb zookeeper nokogiri hitimes mime-types cassandra-driver && rake && cd pkg && gem install * && cd ..' 
+alias vpn='sudo openconnect --no-cert-check --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
 
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
 alias nix-repair-store='nix-store --verify --check-contents --repair'
 alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'
 
+function fix_dns() { while true; do sudo su - -c 'grep "8.8.8.8" /etc/resolv.conf > /dev/null || echo "nameserver 8.8.8.8" >> /etc/resolv.conf'; sleep 5; done }
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
-function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc'); }
+function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -i $(nix-env -q | grep -v 'user-misc' | grep -v 'nix-'); }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
+
+
+function docker_zk() { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper registry.internal/common/zookeeper-base:3.4.6 }
+function docker_kafka() { docker kill kafka; docker rm kafka; docker run -d -p9092:9092 --name kafka --link zookeeper:zookeeper -e KAFKA_ADVERTISED_PORT="9092" -e KAFKA_ZOOKEEPER_CONNECT="zookeeper:2181" "registry.internal/cds/kafka:1.1" }
+function docker_kazoo() { docker run --rm --name kazoo --link zookeeper:zookeeper -v $(pwd)/$1:/config.json "registry.internal/soa/kazoo:0.0.1" }

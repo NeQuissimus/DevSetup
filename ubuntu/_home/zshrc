@@ -42,3 +42,5 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc
 function docker_zk() { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper registry.internal/common/zookeeper-base:3.4.6 }
 function docker_kafka() { docker kill kafka; docker rm kafka; docker run -d -p9092:9092 --name kafka --link zookeeper:zookeeper -e KAFKA_ADVERTISED_PORT="9092" -e KAFKA_ZOOKEEPER_CONNECT="zookeeper:2181" "registry.internal/cds/kafka:1.1" }
 function docker_kazoo() { docker run --rm --name kazoo --link zookeeper:zookeeper -v $(pwd)/$1:/config.json "registry.internal/soa/kazoo:0.0.1" }
+function kafka_consume() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/cds/kafka:latest -c "/opt/kafka_2.11-0.10.1.0/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic $1" }
+function kafka_produce() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/cds/kafka:latest -c "/opt/kafka_2.11-0.10.1.0/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic $1" }

@@ -64,7 +64,7 @@
     extraHosts = ''
       127.0.0.1 nixus
       0.0.0.0 ftp.au.debian.org
-    '';
+    '' + (lib.fileContents ./hosts);
 
     firewall = {
       allowedTCPPorts = [ 22 ];
@@ -145,7 +145,7 @@
       enable = true;
       servers = [ "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
     };
- 
+
     locate.enable = true;
 
     nixosManual.enable = false;
@@ -184,13 +184,21 @@
         twoFingerScroll = true;
       };
       videoDriver = "intel";
+      windowManager.xmonad = {
+        enable = true;
+        enableContribAndExtras = true;
+        /*extraPackages = haskellPackages: [
+            haskellPackages.xmonad-contrib
+            haskellPackages.xmobar
+        ];*/
+      };
       xkbOptions = "ctrl:nocaps";
     };
   };
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-unstable-small";
+      channel = "https://nixos.org/channels/nixos-17.03-small";
       dates = "19:00";
       enable = true;
     };
@@ -224,5 +232,7 @@
       enable = true;
       storageDriver = "btrfs";
     };
+
+    virtualbox.host.enable = false;
   };
 }

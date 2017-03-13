@@ -6,10 +6,6 @@ rec {
     extraPackages = with pkgs.haskellPackages; haskellPackages: [ xmobar ];
   };
 
-  # nixpkgs.config.packageOverrides = pkgs: {
-    # haskellPackages = pkgs.haskellPackages.override { overrides = self: super: { xmonad = pkgs.lib.overrideDerivation super.xmonad (old: { patches = [ ./nixpkgs/xmonad-nix.patch ]; });};};
-  # };
-
   # See https://github.com/NixOS/nixpkgs/issues/20258
   environment.etc."xmonad/xmonad.hs".text = ''
     import Control.Monad (liftM2)

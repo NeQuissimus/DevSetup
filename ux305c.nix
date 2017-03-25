@@ -10,7 +10,7 @@
 
     kernel.sysctl = {
       "vm.dirty_writeback_centisecs" = 1500;
-      "vm.drop_caches" = 1;
+      "vm.drop_caches" = 3;
       "vm.laptop_mode" = 5;
       "vm.swappiness" = 1;
     };
@@ -23,17 +23,24 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # Basics
-    binutils
-    conky
-    dmenu
-    gitMinimal
-    htop
-    i3lock-fancy
-    parcellite
-    upower
-  ];
+  environment = {
+    sessionVariables = {
+      TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
+    };
+
+    systemPackages = with pkgs; [
+      # Basics
+      binutils
+      conky
+      dmenu
+      gitMinimal
+      htop
+      i3lock-fancy
+      parcellite
+      rxvt_unicode-with-plugins
+      upower
+    ];
+  };
 
   fonts = {
     enableFontDir = true;
@@ -50,7 +57,7 @@
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = false;
+    pulseaudio.enable = true;
   };
 
   i18n = {
@@ -163,6 +170,8 @@
 
     upower.enable = true;
 
+    urxvtd.enable = true;
+
     xserver = {
       autorun = true;
       defaultDepth = 24;
@@ -187,10 +196,6 @@
       windowManager.xmonad = {
         enable = true;
         enableContribAndExtras = true;
-        /*extraPackages = haskellPackages: [
-            haskellPackages.xmonad-contrib
-            haskellPackages.xmobar
-        ];*/
       };
       xkbOptions = "ctrl:nocaps";
     };
@@ -233,6 +238,6 @@
       storageDriver = "btrfs";
     };
 
-    virtualbox.host.enable = false;
+    virtualbox.host.enable = true;
   };
 }

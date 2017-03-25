@@ -6,7 +6,7 @@ ENABLE_CORRECTION="true"
 HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
-export TERMINAL="xterm"
+export TERMINAL="urxvt"
 export PATH="/home/nequi/bin:${PATH}"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
 

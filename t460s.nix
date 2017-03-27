@@ -10,7 +10,7 @@
 
     kernel.sysctl = {
       "vm.dirty_writeback_centisecs" = 1500;
-      "vm.drop_caches" = 1;
+      "vm.drop_caches" = 3;
       "vm.laptop_mode" = 5;
       "vm.swappiness" = 1;
     };
@@ -28,10 +28,11 @@
     binutils
     conky
     dmenu
-    gitMinimal
+    gitFull
     htop
     i3lock-fancy
     parcellite
+    rxvt_unicode-with-plugins
     upower
   ];
 
@@ -50,7 +51,7 @@
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = false;
+    pulseaudio.enable = true;
   };
 
   i18n = {
@@ -64,6 +65,14 @@
     extraHosts = ''
       127.0.0.1 nixus
       0.0.0.0 ftp.au.debian.org
+
+      10.1.110.57 registry.internal
+      10.1.110.83 confluence.internal
+      10.1.110.113 gems.internal
+      10.1.110.167 jira.esentire.com
+      10.1.110.208 jenkins.internal
+      10.1.110.243 gerrit.internal
+      10.1.114.20 exchange.esentire.com
     '' + (lib.fileContents ./hosts);
 
     firewall = {
@@ -71,6 +80,8 @@
       allowPing = false;
       enable = true;
     };
+
+    nameservers = [ "10.1.115.20" "10.1.114.53" "10.3.114.53" "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
   };
 
   nix = {
@@ -112,6 +123,10 @@
       '';
       knownHosts = [
         {
+          hostNames = [ "gerrit.internal" "10.1.110.243" ];
+          publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCab+Q4qxGALu4lQvDn8JHezrhJdsZSlK6QRXs/ZL0HD1u/qnRdH/WALeKKoRWG4O4H9ACbGwWl8EbFonhrbfE+0QgxwkGwm8DBZwKJV5aALhXKCREV0Zm/OamVmRGqUHQ5JUItCmfKt7mAqw1KheEBxMy2Qj3W/joqTNqL9tPipw==";
+        }
+        {
           hostNames = [ "github.com" "192.30.252.*" "192.30.253.*" "192.30.254.*" "192.30.255.*" ];
           publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==";
         }
@@ -131,17 +146,12 @@
     hideProcessInformation = true;
 
     sudo = {
-        enable = true;
-        wheelNeedsPassword = true;
+      enable = true;
+      wheelNeedsPassword = true;
     };
   };
 
   services = {
-    dnsmasq = {
-      enable = true;
-      servers = [ "10.1.115.20" "10.1.114.53" "10.3.114.53" "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
-    };
-
     locate.enable = true;
 
     nixosManual.enable = false;
@@ -159,12 +169,13 @@
 
     upower.enable = true;
 
+    urxvtd.enable = true;
+
     xserver = {
       autorun = true;
       defaultDepth = 24;
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
-          ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
           ${xorg.xsetroot}/bin/xsetroot -solid black &
           ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
@@ -188,8 +199,8 @@
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-17.03-small";
-      dates = "19:00";
+      channel = "https://nixos.org/channels/nixos-17.03";
+      dates = "9:00";
       enable = true;
     };
     stateVersion = "17.03";

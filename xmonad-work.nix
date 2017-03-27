@@ -61,7 +61,7 @@ main = do
     manageHook = myManageHook <+> manageDocks <+> manageHook def,
     modMask = mod4Mask,
     normalBorderColor = "#666666",
-    terminal = "xterm",
+    terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
     workspaces = myWorkspaces
   }
   '';

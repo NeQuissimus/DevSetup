@@ -23,18 +23,24 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # Basics
-    binutils
-    conky
-    dmenu
-    gitFull
-    htop
-    i3lock-fancy
-    parcellite
-    rxvt_unicode-with-plugins
-    upower
-  ];
+  environment = {
+    sessionVariables = {
+      TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
+    };
+
+    systemPackages = with pkgs; [
+      # Basics
+      binutils
+      conky
+      dmenu
+      gitFull
+      htop
+      i3lock-fancy
+      parcellite
+      rxvt_unicode-with-plugins
+      upower
+    ];
+  };
 
   fonts = {
     enableFontDir = true;

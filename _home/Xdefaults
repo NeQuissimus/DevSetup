@@ -30,3 +30,4 @@ URxvt*scrollBar: false
 URxvt*scrollBar_right: true
 URxvt*scrollColor: #000000
 URxvt.saveLines: 25000
+URxvt*iso14755: False

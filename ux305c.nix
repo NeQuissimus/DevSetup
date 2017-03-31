@@ -148,25 +148,9 @@
   };
 
   services = {
-    dnsmasq = {
-      enable = true;
-      servers = [ "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
-    };
-
     locate.enable = true;
 
     nixosManual.enable = false;
-
-    ntp = {
-      enable = true;
-      servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
-    };
-
-    openssh = {
-      enable = true;
-      passwordAuthentication = false;
-      permitRootLogin = "no";
-    };
 
     upower.enable = true;
 
@@ -219,7 +203,7 @@
 
     extraUsers.nequi = {
      createHome = true;
-     extraGroups = [ "docker" "wheel" ];
+     extraGroups = [ "docker" "rkt" "wheel" ];
      group = "users";
      home = "/home/nequi";
      name = "nequi";
@@ -234,10 +218,12 @@
 
   virtualisation = {
     docker = {
-      enable = true;
+      enable = false;
       storageDriver = "btrfs";
     };
 
-    virtualbox.host.enable = true;
+    rkt.enable = false;
+
+    virtualbox.host.enable = false;
   };
 }

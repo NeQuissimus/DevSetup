@@ -33,6 +33,8 @@
       binutils
       conky
       dmenu
+      exfat-utils
+      fuse_exfat
       gitFull
       htop
       i3lock-fancy
@@ -87,7 +89,7 @@
       enable = true;
     };
 
-    nameservers = [ "10.1.115.20" "10.1.114.53" "10.3.114.53" "8.8.8.8" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
+    nameservers = [ "10.1.115.20" "8.8.8.8" "10.1.114.53" "10.3.114.53" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
   };
 
   nix = {
@@ -151,6 +153,10 @@
   security = {
     hideProcessInformation = true;
 
+    pki.certificates = [
+      (lib.fileContents ./registry.crt)
+    ];
+
     sudo = {
       enable = true;
       wheelNeedsPassword = true;
@@ -159,6 +165,8 @@
 
   services = {
     locate.enable = true;
+
+    nscd.enable = true;
 
     nixosManual.enable = false;
 
@@ -233,7 +241,6 @@
   virtualisation = {
     docker = {
       enable = true;
-      extraOptions = "--insecure-registry registry.internal";
       storageDriver = "btrfs";
     };
 

@@ -31,3 +31,4 @@ hosts
 nixpkgs/result
 bin/
 rootfs.tar.xz
+*.crt

@@ -1,30 +1,32 @@
 [push]
-	default = upstream
-	followTags = true
+        default = upstream
+        followTags = true
 [user]
-	email = tim@nequissimus.com
-	name = Tim Steinbach
-	signingkey = 0588CEBD610D7123
+        email = tim@nequissimus.com
+        name = Tim Steinbach
+        signingkey = 0588CEBD610D7123
 [alias]
-	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+        bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
         clear = clean -xfd
+        hard = reset --hard upstream/staging
         lastcommit = for-each-ref --sort=committerdate refs --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %ae (%(color:green)%(committerdate:relative)%(color:reset))'
         lg = log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>[%G?]%Creset%C(auto)%d%Creset' --abbrev-commit
+        ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
         pr = "!f() { git fetch origin pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
         prup = "!f() { git fetch upstream pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
         rename = "!f() { git push -u origin origin/"${1}":refs/heads/"${2}"; git push origin :"${1}"; }; f"
-        t = tag -s
-	undo = reset HEAD~1 --mixed
-	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+        t = tag -s -a
+        undo = reset HEAD~1 --mixed
+        up = !git pull --rebase --prune $@ && git submodule update --init --recursive
 [interactive]
-	diffFilter = diff-highlight
+        diffFilter = diff-highlight
 [diff]
-	compactionHeuristic = true
+        compactionHeuristic = true
 [remote "origin"]
-	prune = true
+        prune = true
 [branch]
-	autosetuprebase = always
+        autosetuprebase = always
 [commit]
-	gpgsign = true
+        gpgsign = true
 [tag]
-	forceSignAnnotated = true
+        forceSignAnnotated = true

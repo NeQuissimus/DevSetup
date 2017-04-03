@@ -81,6 +81,7 @@
       10.1.110.208 jenkins.internal
       10.1.110.243 gerrit.internal
       10.1.114.20 exchange.esentire.com
+      10.1.110.130 build-01.internal
     '' + (lib.fileContents ./hosts);
 
     firewall = {
@@ -89,7 +90,7 @@
       enable = true;
     };
 
-    nameservers = [ "8.8.8.8" "10.1.115.20" "10.1.114.53" "10.3.114.53" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
+    nameservers = [ "10.1.115.20" "8.8.8.8" "10.1.114.53" "10.3.114.53" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
   };
 
   nix = {
@@ -166,7 +167,39 @@
   services = {
     locate.enable = true;
 
-    nscd.enable = true;
+    nscd = {
+      config = ''
+        server-user             nscd
+        threads                 2
+        paranoia                no
+        debug-level             0
+
+        enable-cache            passwd          yes
+        positive-time-to-live   passwd          600
+        negative-time-to-live   passwd          20
+        suggested-size          passwd          211
+        check-files             passwd          yes
+        persistent              passwd          no
+        shared                  passwd          yes
+
+        enable-cache            group           yes
+        positive-time-to-live   group           3600
+        negative-time-to-live   group           60
+        suggested-size          group           211
+        check-files             group           yes
+        persistent              group           no
+        shared                  group           yes
+
+        enable-cache            hosts           yes
+        positive-time-to-live   hosts           3600
+        negative-time-to-live   hosts           15
+        suggested-size          hosts           211
+        check-files             hosts           yes
+        persistent              hosts           yes
+        shared                  hosts           yes
+      '';
+      enable = true;
+    };
 
     nixosManual.enable = false;
 

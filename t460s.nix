@@ -203,6 +203,11 @@
 
     nixosManual.enable = false;
 
+    ntp = {
+      enable = true;
+      servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
+    };
+
     openssh = {
       enable = true;
       passwordAuthentication = false;

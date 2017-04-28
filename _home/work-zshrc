@@ -27,6 +27,7 @@ alias rsync='rsync -azvvP'
 alias scrot='scrot -s'
 alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
 alias vpn_route='sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0'
+alias git='hub'
 
 alias nix-repair-store='nix-store --verify --check-contents --repair'
 alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'

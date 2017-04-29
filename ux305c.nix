@@ -15,7 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_4_9;
+    kernelPackages = pkgs.linuxPackages_4_10;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -152,6 +152,11 @@
 
     nixosManual.enable = false;
 
+    ntp = {
+      enable = true;
+      servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
+    };
+
     upower.enable = true;
 
     urxvtd.enable = true;
@@ -218,7 +223,7 @@
 
   virtualisation = {
     docker = {
-      enable = false;
+      enable = true;
       storageDriver = "btrfs";
     };
 

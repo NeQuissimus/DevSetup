@@ -1,10 +1,12 @@
 export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
 
-ZSH_THEME="avit"
+ZSH_THEME="nequissimus"
+ZSH_CUSTOM="${HOME}/dev/nequi-zsh"
+
 CASE_SENSITIVE="false"
 ENABLE_CORRECTION="true"
 HIST_STAMPS="dd.mm.yyyy"
-plugins=(git)
+plugins=(docker git github gitignore kubectl sbt scala)
 
 export TERMINAL="urxvt"
 export PATH="/home/nequi/bin:${PATH}"
@@ -17,17 +19,17 @@ alias nano='nano -E -w -c'
 alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
 alias volume_up='amixer -q sset Master 5%+; volume'
 alias volume_down='amixer -q sset Master 5%-; volume'
-alias javarepl='java -jar /home/nequi/bin/javarepl.jar'
 alias sbt='sbt -mem 4096'
-alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
+alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q)'
+alias docker_clean_dangling='docker images -qf dangling=true | xargs -r docker rmi'
+alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias rsync='rsync -azvvP'
-alias irssi='irssi --config=/etc/irssi/config'
-
+alias scrot='scrot -s'
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
 alias nix-repair-store='nix-store --verify --check-contents --repair'
 
 setxkbmap -option ctrl:nocaps
 
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
-function nix-update() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -f ~/.nix-defexpr/channels/nixpkgs/nixpkgs -i $(nix-env -q | grep -v 'user-misc'); }
-function nix-update-git() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -i $(nix-env -q | grep -v 'user-misc') -f /home/nequi/dev/nixpkgs -I nixpkgs=/home/nequi/dev/nixpkgs; }
+function nix-update() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -u '*'; nix-env -f ~/.nix-defexpr/channels/nixpkgs/nixpkgs -i $(nix-env -q | grep -v 'user-misc'); }
+function nix-update-git() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -u '*'; nix-env -i $(nix-env -q | grep -v 'user-misc') -f /home/nequi/dev/nixpkgs -I nixpkgs=/home/nequi/dev/nixpkgs; }

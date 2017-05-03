@@ -1,14 +1,14 @@
 export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
 
-ZSH_THEME="avit"
+ZSH_THEME="nequissimus"
+ZSH_CUSTOM="${HOME}/dev/ext/nequi-zsh"
+
 CASE_SENSITIVE="false"
 HIST_STAMPS="dd.mm.yyyy"
-plugins=(git)
+plugins=(docker git github gitignore kubectl sbt scala)
 
 export TERMINAL="urxvt"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
-export ANYCONNECT="/opt/cisco/anyconnect/bin"
-export PATH="${PATH}:${ANYCONNECT}"
 export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/Documents/service_account.json"
 
 [[ -e ${ZSH}/oh-my-zsh.sh ]] && source ${ZSH}/oh-my-zsh.sh
@@ -45,7 +45,5 @@ function docker_elastic() { docker run -d --name elasticsearch -p 9200:9200 -e "
 function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
 function kafka_consume() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/cds/kafka:latest -c "/opt/kafka_2.11-0.10.1.0/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic $1" }
 function kafka_produce() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/cds/kafka:latest -c "/opt/kafka_2.11-0.10.1.0/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic $1" }
-
-source <(kubectl completion zsh)
 
 unsetopt correct_all

@@ -224,7 +224,7 @@
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
           ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
-          ${xorg.xsetroot}/bin/xsetroot -solid black &
+          ${xorg.xsetroot}/bin/xsetroot -solid #222222 &
           ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';

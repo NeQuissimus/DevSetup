@@ -166,7 +166,7 @@
       defaultDepth = 24;
       displayManager = {
         sessionCommands = with pkgs; lib.mkAfter ''
-          ${xorg.xsetroot}/bin/xsetroot -solid black &
+          ${xorg.xsetroot}/bin/xsetroot -solid #222222 &
           ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
           ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
         '';

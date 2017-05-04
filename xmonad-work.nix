@@ -60,7 +60,7 @@ main = do
                     , ppTitle = xmobarColor "green" "" . shorten 50 },
     manageHook = myManageHook <+> manageDocks <+> manageHook def,
     modMask = mod4Mask,
-    normalBorderColor = "#666666",
+    normalBorderColor = "#444444",
     terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
     workspaces = myWorkspaces
   }

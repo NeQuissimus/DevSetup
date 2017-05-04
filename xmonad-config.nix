@@ -51,7 +51,7 @@ rec {
     main = do
       xmproc <- spawnPipe "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
       xmonad $ def {
-        focusedBorderColor = "#F0F0F0",
+        focusedBorderColor = "#E0E0E0",
         handleEventHook = docksEventHook <+> handleEventHook def,
         keys = myKeys,
         layoutHook = avoidStruts $ layoutHook def,
@@ -61,7 +61,7 @@ rec {
                         , ppTitle = xmobarColor "green" "" . shorten 50 },
         manageHook = myManageHook <+> manageDocks <+> manageHook def,
         modMask = mod4Mask,
-        normalBorderColor = "#666666",
+        normalBorderColor = "#444444",
         terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
         workspaces = myWorkspaces
       }

@@ -5,7 +5,7 @@ ZSH_CUSTOM="${HOME}/dev/ext/nequi-zsh"
 
 CASE_SENSITIVE="false"
 HIST_STAMPS="dd.mm.yyyy"
-plugins=(docker git github gitignore kubectl sbt scala)
+plugins=(docker git github gitignore kubectl ruby sbt scala)
 
 export TERMINAL="urxvt"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"

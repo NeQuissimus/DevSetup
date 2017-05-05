@@ -27,6 +27,7 @@ alias rsync='rsync -azvvP'
 alias scrot='scrot -s'
 alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
 alias nix-repair-store='nix-store --verify --check-contents --repair'
+alias weather='curl -k https://wttr.in | head -n -2'
 
 setxkbmap -option ctrl:nocaps
 

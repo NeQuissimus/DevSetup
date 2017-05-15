@@ -36,7 +36,7 @@ alias coala_ruby='docker run -v=$(pwd):/app --workdir=/app coala/base coala --ci
 alias coala_scala='docker run -v=$(pwd):/app --workdir=/app coala/base coala --ci --files src/main/**/*.scala --bears ScalaLintBear -I'
 
 function gerrit_hook() { gitdir=$(git rev-parse --git-dir); scp -p -P 29418 tsteinbach@gerrit.internal:hooks/commit-msg ${gitdir}/hooks/; git commit --amend --no-edit }
-function nix-update() { echo "Updating user environment... "; nix-channel --update nixpkgs; nix-env -u '*'; nix-env -f ~/.nix-defexpr/channels/nixpkgs/nixpkgs -i $(nix-env -q | grep -v 'user-misc'); }
+function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -u '*'; nix-env -i $(nix-env -q | grep -v 'user-misc'); }
 function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
 function docker_zk() { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper registry.internal/common/zookeeper-base:3.4.6 }
 function docker_kafka() { docker kill kafka; docker rm kafka; docker run -d -p9092:9092 --name kafka --link zookeeper:zookeeper -e KAFKA_ADVERTISED_PORT="9092" -e KAFKA_ZOOKEEPER_CONNECT="zookeeper:2181" "registry.internal/cds/kafka:1.1" }

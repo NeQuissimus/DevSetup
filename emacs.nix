@@ -7,6 +7,7 @@ in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
   ]) ++ (with epkgs.melpaPackages; [
     ensime
+    markdown-mode
     use-package
   ]) ++ (with epkgs.elpaPackages; [
     beacon

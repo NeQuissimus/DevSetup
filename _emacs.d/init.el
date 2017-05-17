@@ -9,6 +9,12 @@
  use-package-always-ensure t
  sentence-end-double-space nil)
 
+;; Load files from disk when changed
+(global-auto-revert-mode t)
+
+;; Remove white-spaces when saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; buffer local variables
 (setq-default
  indent-tabs-mode nil

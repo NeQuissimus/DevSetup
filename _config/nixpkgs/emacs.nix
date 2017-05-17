@@ -6,9 +6,22 @@ let
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
   ]) ++ (with epkgs.melpaPackages; [
+    auto-complete
+    dockerfile-mode
     ensime
+    haskell-mode
+    hl-todo
+    indent-guide
+    json-mode
     markdown-mode
+    nix-mode
+    rspec-mode
+    smartparens
+    smooth-scrolling
+    spacemacs-theme
+    undo-tree
     use-package
+    yaml-mode
   ]) ++ (with epkgs.elpaPackages; [
     beacon
   ]) ++ [

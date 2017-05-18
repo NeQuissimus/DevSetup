@@ -9,6 +9,7 @@ in
     auto-complete
     dockerfile-mode
     ensime
+    feature-mode
     haskell-mode
     hl-todo
     indent-guide

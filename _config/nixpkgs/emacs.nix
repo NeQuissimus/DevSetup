@@ -10,6 +10,7 @@ in
     dockerfile-mode
     ensime
     feature-mode
+    groovy-mode
     haskell-mode
     hl-todo
     indent-guide

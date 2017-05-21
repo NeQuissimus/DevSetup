@@ -15,7 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_4_9;
 
     loader = {
       efi.canTouchEfiVariables = true;

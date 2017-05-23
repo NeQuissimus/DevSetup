@@ -7,6 +7,7 @@
  scroll-error-top-bottom t
  show-paren-delay 0.5
  use-package-always-ensure t
+ show-trailing-whitespace t
  sentence-end-double-space nil)
 
 ;; Load files from disk when changed

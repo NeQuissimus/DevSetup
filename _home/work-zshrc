@@ -26,7 +26,6 @@ alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a
 alias rsync='rsync -azvvP'
 alias scrot='scrot -s'
 alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
-alias vpn_route='sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0'
 alias git='hub'
 
 alias nix-repair-store='nix-store --verify --check-contents --repair'
@@ -34,6 +33,8 @@ alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-
 
 alias coala_ruby='docker run -v=$(pwd):/app --workdir=/app coala/base coala --ci --files lib/*/*.rb --bears RuboCopBear -I'
 alias coala_scala='docker run -v=$(pwd):/app --workdir=/app coala/base coala --ci --files src/main/**/*.scala --bears ScalaLintBear -I'
+
+function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tun0; sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0 }
 
 function gerrit_hook() { gitdir=$(git rev-parse --git-dir); scp -p -P 29418 tsteinbach@gerrit.internal:hooks/commit-msg ${gitdir}/hooks/; git commit --amend --no-edit }
 function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -u '*'; nix-env -i $(nix-env -q | grep -v 'emacs'); }

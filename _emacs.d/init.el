@@ -20,7 +20,8 @@
 (setq-default
  indent-tabs-mode nil
  tab-width 2
- c-basic-offset 2)
+ c-basic-offset 2
+ buffer-file-coding-system 'utf-8-unix)
 
 ;; modes
 (electric-indent-mode 0)

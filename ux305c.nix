@@ -229,6 +229,6 @@
 
     rkt.enable = false;
 
-    virtualbox.host.enable = false;
+    virtualbox.host.enable = true;
   };
 }

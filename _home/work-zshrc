@@ -9,7 +9,9 @@ plugins=(docker git github gitignore kubectl ruby sbt scala)
 
 export TERMINAL="urxvt"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
+
 export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/Documents/service_account.json"
+export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 
 [[ -e ${ZSH}/oh-my-zsh.sh ]] && source ${ZSH}/oh-my-zsh.sh
 

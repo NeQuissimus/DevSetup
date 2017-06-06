@@ -25,9 +25,7 @@ myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
 myManageHook = composeAll [
     isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , isDialog --> doFloat
-    , className =? "Franz" --> doShift "0"
-    , className =? "Firefox" --> viewShift "9"
-    , className =? "Sublime" --> viewShift "2"
+    , className =? "Chromium" --> viewShift "9"
     , appName =? "desktop_window" --> doIgnore
     ]
     where viewShift = doF . liftM2 (.) W.greedyView W.shift

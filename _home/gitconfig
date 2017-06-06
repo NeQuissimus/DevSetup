@@ -6,7 +6,7 @@
         name = Tim Steinbach
         signingkey = 0588CEBD610D7123
 [alias]
-        bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+        bclean = "!f() { git fetch --prune && git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d && git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs -r git branch -d; }; f"
         clear = clean -xfd
         hard = reset --hard origin/master
         lastcommit = for-each-ref --sort=committerdate refs --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %ae (%(color:green)%(committerdate:relative)%(color:reset))'

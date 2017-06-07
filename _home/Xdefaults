@@ -29,5 +29,8 @@ URxvt*urlLauncher: firefox
 URxvt*scrollBar: false
 URxvt*scrollBar_right: true
 URxvt*scrollColor: #000000
-URxvt.saveLines: 25000
+URxvt*scrollTtyKeypress: true
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt.saveLines: 250000
 URxvt*iso14755: False

@@ -33,3 +33,5 @@ setxkbmap -option ctrl:nocaps
 
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
 function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -u '*'; nix-env -i $(nix-env -q | grep -v 'emacs'); }
+
+alias kube_busybox='kubectl run -i --tty busybox --image=busybox -- sh'

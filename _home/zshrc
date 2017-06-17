@@ -34,4 +34,4 @@ setxkbmap -option ctrl:nocaps
 function nix-search() { echo "Searching..."; nix-env -qaP --description '*' | grep -i "$1"; }
 function nix-update() { echo "Updating user environment... "; nix-channel --update; nix-env -u '*'; nix-env -i $(nix-env -q | grep -v 'emacs'); }
 
-alias kube_alpine='kubectl run -i --tty alpine --image=alpine -- sh'
+function kube_alpine() { kubectl run --namespace=${1:-default} -i --tty alpine --image=alpine -- sh }

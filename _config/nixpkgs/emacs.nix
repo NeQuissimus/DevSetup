@@ -8,7 +8,6 @@ in
   ]) ++ (with epkgs.melpaPackages; [
     auto-complete
     dockerfile-mode
-    ensime
     feature-mode
     groovy-mode
     haskell-mode

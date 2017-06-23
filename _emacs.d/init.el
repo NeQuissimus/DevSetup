@@ -48,33 +48,10 @@
   :interpreter
   ("scala" . scala-mode))
 
-(use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-  ;; allows using SPACE when in the minibuffer
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map))
-
-(use-package ensime
-  :ensure t
-  :pin melpa-stable)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (ensime sbt-mode scala-mode use-package beacon))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 (use-package groovy-mode
   :mode (("build\\.gradle" . groovy-mode)
          ("Jenkinsfile" . groovy-mode)
          ("Jenkinsfile.test" . groovy-mode)))
+
+(ac-config-default)
+

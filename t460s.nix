@@ -30,6 +30,7 @@
 
     systemPackages = with pkgs; [
       # Basics
+      autocutsel
       binutils
       conky
       dmenu
@@ -38,7 +39,6 @@
       gitFull
       htop
       i3lock-fancy
-      parcellite
       rxvt_unicode-with-plugins
       upower
     ];
@@ -226,7 +226,8 @@
           ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
           ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
           ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
-          ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
+          ${autocutsel}/bin/autocutsel &
+          ${autocutsel}/bin/autocutsel -s PRIMARY &
         '';
         slim.enable = true;
         xserverArgs = [ "-logfile" "/var/log/X.log" ];

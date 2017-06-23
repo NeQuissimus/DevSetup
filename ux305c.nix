@@ -30,13 +30,13 @@
 
     systemPackages = with pkgs; [
       # Basics
+      autocutsel
       binutils
       conky
       dmenu
       gitMinimal
       htop
       i3lock-fancy
-      parcellite
       rxvt_unicode-with-plugins
       upower
     ];
@@ -175,7 +175,8 @@
         sessionCommands = with pkgs; lib.mkAfter ''
           ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
           ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
-          ${coreutils}/bin/sleep 5 && ${parcellite}/bin/parcellite &
+          ${autocutsel}/bin/autocutsel &
+          ${autocutsel}/bin/autocutsel -s PRIMARY &
         '';
         slim.enable = true;
         xserverArgs = [ "-logfile" "/var/log/X.log" ];

@@ -28,6 +28,7 @@
 
 ;; global keybindings
 (global-unset-key (kbd "C-z"))
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; the package manager
 (require 'package)

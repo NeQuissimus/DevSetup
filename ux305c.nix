@@ -103,6 +103,10 @@
     useSandbox = true;
   };
 
+  nixpkgs.config.packageOverrides = pkgs:
+    { virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
+  };
+
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "ondemand";

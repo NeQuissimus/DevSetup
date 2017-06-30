@@ -15,7 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_hardened;
+    kernelPackages = pkgs.linuxPackages_hardened_copperhead;
 
     loader = {
       efi.canTouchEfiVariables = true;

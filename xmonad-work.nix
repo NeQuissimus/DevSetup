@@ -26,6 +26,8 @@ myManageHook = composeAll [
     isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , isDialog --> doFloat
     , className =? "Chromium" --> viewShift "9"
+    , className =? "Emacs" --> viewShift "2"
+    , className =? "Atom" --> viewShift "2"
     , appName =? "desktop_window" --> doIgnore
     ]
     where viewShift = doF . liftM2 (.) W.greedyView W.shift

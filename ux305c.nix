@@ -16,6 +16,7 @@
     };
 
     kernelPackages = pkgs.linuxPackages_hardened_copperhead;
+#    kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -107,11 +108,6 @@
     { virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
   };
 
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "ondemand";
-  };
-
   programs = {
     ssh = {
       agentTimeout = "4h";
@@ -143,6 +139,8 @@
   };
 
   security = {
+    chromiumSuidSandbox.enable = true;
+
     hideProcessInformation = true;
 
     sudo = {
@@ -167,6 +165,8 @@
       longitude = "-80.38";
       temperature.night = 1900;
     };
+
+    tlp.enable = true;
 
     upower.enable = true;
 

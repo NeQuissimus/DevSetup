@@ -74,6 +74,7 @@
       127.0.0.1 nixus
       0.0.0.0 ftp.au.debian.org
 
+      10.1.108.103 github.internal github.esentire.com
       10.1.110.57 registry.internal
       10.1.110.83 confluence.internal
       10.1.110.113 gems.internal

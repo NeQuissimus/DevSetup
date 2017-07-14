@@ -15,8 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_hardened_copperhead;
-#    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -139,7 +138,7 @@
   };
 
   security = {
-    chromiumSuidSandbox.enable = true;
+    chromiumSuidSandbox.enable = false;
 
     hideProcessInformation = true;
 
@@ -241,6 +240,6 @@
 
     rkt.enable = false;
 
-    virtualbox.host.enable = true;
+    virtualbox.host.enable = false;
   };
 }

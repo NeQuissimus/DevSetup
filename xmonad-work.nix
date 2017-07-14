@@ -28,6 +28,7 @@ myManageHook = composeAll [
     , className =? "Chromium" --> viewShift "9"
     , className =? "Emacs" --> viewShift "2"
     , className =? "Atom" --> viewShift "2"
+    , className =? "HipChat" --> viewShift "0"
     , appName =? "desktop_window" --> doIgnore
     ]
     where viewShift = doF . liftM2 (.) W.greedyView W.shift

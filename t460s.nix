@@ -121,11 +121,6 @@
     { virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
   };
 
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "ondemand";
-  };
-
   programs = {
     ssh = {
       agentTimeout = "4h";
@@ -221,6 +216,8 @@
       permitRootLogin = "no";
     };
 
+    tlp.enable = true;
+
     upower.enable = true;
 
     urxvtd.enable = true;
@@ -290,6 +287,6 @@
       storageDriver = "btrfs";
     };
 
-    virtualbox.host.enable = true;
+    virtualbox.host.enable = false;
   };
 }

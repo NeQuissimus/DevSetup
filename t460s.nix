@@ -34,8 +34,6 @@
       binutils
       conky
       dmenu
-      exfat-utils
-      fuse_exfat
       gitFull
       htop
       i3lock-fancy
@@ -266,6 +264,16 @@
   users = {
     defaultUserShell = "${pkgs.zsh}/bin/zsh";
 
+    extraUsers.kubernetes = {
+      createHome = true;
+      extraGroups = [ "docker" ];
+      group = "users";
+      home = "/home/kubernetes";
+      name = "kubernetes";
+      uid = 1002;
+      useDefaultShell = true;
+    };
+
     extraUsers.nequi = {
      createHome = true;
      extraGroups = [ "docker" "wheel" ];
@@ -279,6 +287,16 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
      ];
     };
+
+    extraUsers.scala = {
+      createHome = true;
+      extraGroups = [ "docker" ];
+      group = "users";
+      home = "/home/scala";
+      name = "scala";
+      uid = 1001;
+      useDefaultShell = true;
+    };
   };
 
   virtualisation = {
@@ -287,6 +305,6 @@
       storageDriver = "btrfs";
     };
 
-    virtualbox.host.enable = false;
+    virtualbox.host.enable = true;
   };
 }

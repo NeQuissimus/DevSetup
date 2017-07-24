@@ -1,11 +1,11 @@
 export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
 
 ZSH_THEME="nequissimus"
-ZSH_CUSTOM="${HOME}/dev/ext/nequi-zsh"
+ZSH_CUSTOM="/home/nequi/dev/ext/nequi-zsh"
 
 CASE_SENSITIVE="false"
 HIST_STAMPS="dd.mm.yyyy"
-plugins=(docker git github gitignore kubectl ruby sbt scala)
+plugins=(docker git gitignore)
 
 export TERMINAL="urxvt"
 export JAVA_HOME="${$(readlink -e $(type -p java))%*/bin/java}"
@@ -28,7 +28,6 @@ alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a
 alias rsync='rsync -azvvP'
 alias scrot='scrot -s'
 alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
-alias git='hub'
 
 alias nix-repair-store='nix-store --verify --check-contents --repair'
 alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'
@@ -54,5 +53,13 @@ function kafka_consume() { docker run -it --link kafka:kafka --entrypoint /bin/s
 function kafka_produce() { docker run -it --link kafka:kafka --entrypoint /bin/sh wurstmeister/kafka:0.10.2.1 -c "/opt/kafka/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic $1" }
 
 function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
+
+# User switch
+alias scala='sudo su - scala'
+alias kube='sudo su - kubernetes'
+alias nix='sudo su - nix'
+alias ruby='sudo su - ruby'
+
+eval $(ssh-agent -s) >> /dev/null
 
 unsetopt correct_all

@@ -15,7 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_hardened_copperhead;
+    kernelPackages = pkgs.linuxPackages_4_9; # LTS
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -115,10 +115,6 @@
     useSandbox = true;
   };
 
-  nixpkgs.config.packageOverrides = pkgs:
-    { virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
-  };
-
   programs = {
     ssh = {
       agentTimeout = "4h";
@@ -150,8 +146,6 @@
   };
 
   security = {
-    chromiumSuidSandbox.enable = true;
-
     hideProcessInformation = true;
 
     pki.certificates = [
@@ -160,7 +154,7 @@
 
     sudo = {
       enable = true;
-      wheelNeedsPassword = true;
+      wheelNeedsPassword = false;
     };
   };
 
@@ -265,6 +259,7 @@
     defaultUserShell = "${pkgs.zsh}/bin/zsh";
 
     extraUsers.kubernetes = {
+      isNormalUser = true;
       createHome = true;
       extraGroups = [ "docker" ];
       group = "users";
@@ -275,20 +270,44 @@
     };
 
     extraUsers.nequi = {
-     createHome = true;
-     extraGroups = [ "docker" "wheel" ];
-     group = "users";
-     home = "/home/nequi";
-     name = "nequi";
-     uid = 1000;
-     useDefaultShell = true;
+      isNormalUser = true;
+      createHome = true;
+      extraGroups = [ "docker" "wheel" ];
+      group = "users";
+      home = "/home/nequi";
+      name = "nequi";
+      uid = 1000;
+      useDefaultShell = true;
 
-     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
-     ];
+      openssh.authorizedKeys.keys = [
+       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
+      ];
+    };
+
+    extraUsers.nix = {
+      isNormalUser = true;
+      createHome = true;
+      extraGroups = [ "docker" ];
+      group = "users";
+      home = "/home/nix";
+      name = "nix";
+      uid = 1003;
+      useDefaultShell = true;
+    };
+
+    extraUsers.ruby = {
+      isNormalUser = true;
+      createHome = true;
+      extraGroups = [ "docker" ];
+      group = "users";
+      home = "/home/ruby";
+      name = "ruby";
+      uid = 1004;
+      useDefaultShell = true;
     };
 
     extraUsers.scala = {
+      isNormalUser = true;
       createHome = true;
       extraGroups = [ "docker" ];
       group = "users";

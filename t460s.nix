@@ -98,13 +98,13 @@
 
     extraOptions = ''
       auto-optimise-store = true
-      binary-caches-parallel-connections = 3
+      binary-caches-parallel-connections = 20
       connect-timeout = 10
     '';
 
     gc = {
       automatic = true;
-      dates = "18:00";
+      dates = "12:00";
       options = "--delete-older-than 30";
     };
 

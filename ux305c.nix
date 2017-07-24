@@ -86,7 +86,7 @@
 
     extraOptions = ''
       auto-optimise-store = true
-      binary-caches-parallel-connections = 3
+      binary-caches-parallel-connections = 20
       connect-timeout = 10
     '';
 
@@ -240,6 +240,6 @@
 
     rkt.enable = false;
 
-    virtualbox.host.enable = false;
+    virtualbox.host.enable = true;
   };
 }

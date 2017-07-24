@@ -25,7 +25,7 @@ myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
 myManageHook = composeAll [
     isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , isDialog --> doFloat
-    , className =? "Chromium" --> viewShift "9"
+    , className =? "Chromium-browser" --> viewShift "9"
     , className =? "Emacs" --> viewShift "2"
     , className =? "Atom" --> viewShift "2"
     , className =? "HipChat" --> viewShift "0"

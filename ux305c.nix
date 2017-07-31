@@ -15,7 +15,7 @@
       "vm.swappiness" = 1;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_hardened;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -66,17 +66,21 @@
   };
 
   networking = {
-    hostName = "nixus";
+    enableIPv6 = true;
 
-    extraHosts = ''
-      127.0.0.1 nixus
-      0.0.0.0 ftp.au.debian.org
-    '' + (lib.fileContents ./hosts);
+    extraHosts = (lib.fileContents ./hosts);
+
+    hostName = "nixus";
 
     firewall = {
       allowedTCPPorts = [ 22 ];
       allowPing = false;
       enable = true;
+    };
+
+    hosts = {
+      "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
+      "0.0.0.0" = ["ftp.au.debian.org"];
     };
   };
 

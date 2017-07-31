@@ -69,7 +69,7 @@
     hostName = "nixus";
 
     extraHosts = ''
-      127.0.0.1 nixus
+      127.0.0.1 nixus localhost
       0.0.0.0 ftp.au.debian.org
 
       10.1.108.103 github.internal github.esentire.com
@@ -116,6 +116,22 @@
   };
 
   programs = {
+    chromium = {
+      enable = true;
+
+      defaultSearchProviderSearchURL = ''https://encrypted.google.com/search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}'';
+
+      extensions = [
+        "obdbgnebcljmgkoljcdddaopadkifnpm" # Canvas Defender
+        "kbfnbcaeplbcioakkpcpgfkobkghlhen" # Grammarly
+        "ehhkfhegcenpfoanmgfpfhnmdmflkbgk" # Home - New Tab Page
+        "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+        "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+      ];
+    };
+
     ssh = {
       agentTimeout = "4h";
       extraConfig = ''

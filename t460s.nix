@@ -127,6 +127,7 @@
         "ehhkfhegcenpfoanmgfpfhnmdmflkbgk" # Home - New Tab Page
         "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
         "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+        "niloccemoadcdkdjlinkgdfekeahmflj" # Save to Pocket
         "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
         "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
       ];

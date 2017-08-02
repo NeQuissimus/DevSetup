@@ -30,13 +30,19 @@
 
     systemPackages = with pkgs; [
       # Basics
+      atom
       autocutsel
       binutils
+      chromium
       conky
       dmenu
       gitFull
+      gnupg1compat
       htop
       i3lock-fancy
+      jq
+      oh-my-zsh
+      skopeo
       rxvt_unicode-with-plugins
       upower
     ];
@@ -156,9 +162,14 @@
 
     zsh = {
       enable = true;
+
+      ohMyZsh = {
+        enable = true;
+      };
+
       promptInit = ''
         autoload -U promptinit && promptinit && prompt clint
-      '';
+      '' + (lib.fileContents ./_home/work-zshrc);
     };
   };
 

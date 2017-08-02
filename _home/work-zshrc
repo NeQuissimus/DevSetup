@@ -1,5 +1,3 @@
-export ZSH="${HOME}/.nix-profile/share/oh-my-zsh"
-
 ZSH_THEME="nequissimus"
 ZSH_CUSTOM="/home/nequi/dev/ext/nequi-zsh"
 

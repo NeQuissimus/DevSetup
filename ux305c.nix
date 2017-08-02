@@ -30,14 +30,20 @@
 
     systemPackages = with pkgs; [
       # Basics
+      alacritty
+      atom
       autocutsel
       binutils
+      chromium
       conky
       dmenu
-      gitMinimal
+      gitFull
+      gnupg1compat
       htop
       i3lock-fancy
-      rxvt_unicode-with-plugins
+      jq
+      oh-my-zsh
+      skopeo
       upower
     ];
   };
@@ -112,6 +118,23 @@
   };
 
   programs = {
+    chromium = {
+      enable = true;
+
+      defaultSearchProviderSearchURL = ''https://encrypted.google.com/search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}'';
+
+      extensions = [
+        "obdbgnebcljmgkoljcdddaopadkifnpm" # Canvas Defender
+        "kbfnbcaeplbcioakkpcpgfkobkghlhen" # Grammarly
+        "ehhkfhegcenpfoanmgfpfhnmdmflkbgk" # Home - New Tab Page
+        "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+        "niloccemoadcdkdjlinkgdfekeahmflj" # Save to Pocket
+        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+        "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+      ];
+    };
+
     ssh = {
       agentTimeout = "4h";
       extraConfig = ''
@@ -135,9 +158,22 @@
 
     zsh = {
       enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+
+      ohMyZsh = {
+        enable = true;
+      };
+
       promptInit = ''
         autoload -U promptinit && promptinit && prompt clint
-      '';
+      '' + (lib.fileContents ./_home/zshrc);
+
+      syntaxHighlighting = {
+        enable = true;
+
+        highlighters = [ "main" "brackets" "pattern" "cursor" "root" "line"];
+      };
     };
   };
 
@@ -172,8 +208,6 @@
     tlp.enable = true;
 
     upower.enable = true;
-
-    urxvtd.enable = true;
 
     xserver = {
       autorun = true;
@@ -238,12 +272,12 @@
 
   virtualisation = {
     docker = {
-      enable = true;
+      enable = false;
       storageDriver = "btrfs";
     };
 
     rkt.enable = false;
 
-    virtualbox.host.enable = true;
+    virtualbox.host.enable = false;
   };
 }

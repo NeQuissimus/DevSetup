@@ -28,7 +28,7 @@ rec {
         isFullscreen --> (doF W.focusDown <+> doFullFloat)
         , isDialog --> doFloat
         , className =? "Firefox" --> viewShift "8"
-        , className =? "Chromium" --> viewShift "9"
+        , className =? "Chromium-browser" --> viewShift "9"
         , className =? "Emacs" --> viewShift "2"
         , className =? "Atom" --> viewShift "2"
         , appName =? "desktop_window" --> doIgnore
@@ -63,7 +63,7 @@ rec {
         manageHook = myManageHook <+> manageDocks <+> manageHook def,
         modMask = mod4Mask,
         normalBorderColor = "#444444",
-        terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
+        terminal = "${pkgs.alacritty}/bin/alacritty",
         workspaces = myWorkspaces
       }
   '';

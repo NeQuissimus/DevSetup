@@ -62,7 +62,7 @@ main = do
     manageHook = myManageHook <+> manageDocks <+> manageHook def,
     modMask = mod4Mask,
     normalBorderColor = "#444444",
-    terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
+    terminal = "${pkgs.alacritty}/bin/alacritty",
     workspaces = myWorkspaces
   }
   '';

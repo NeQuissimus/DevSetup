@@ -30,6 +30,7 @@
 
     systemPackages = with pkgs; [
       # Basics
+      alacritty
       atom
       autocutsel
       binutils
@@ -43,7 +44,6 @@
       jq
       oh-my-zsh
       skopeo
-      rxvt_unicode-with-plugins
       upower
     ];
   };

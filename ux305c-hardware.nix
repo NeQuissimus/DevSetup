@@ -13,41 +13,19 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=root" ];
+    { device = "/dev/disk/by-uuid/22ebf61e-926e-4038-bc53-1d6832f1fb51";
+      fsType = "ext4";
+      options = [ "noatime" "nodiratime" "discard" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/2756-7EDA";
+    { device = "/dev/disk/by-uuid/86AB-210F";
       fsType = "vfat";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=home" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=nix" ];
-    };
-
-  fileSystems."/tmp" =
-    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=tmp" ];
-    };
-
-  fileSystems."/var/docker" =
-    { device = "/dev/disk/by-uuid/579cab11-afd3-4ae6-a4e0-0cce3ac863ba";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=var/docker/docker" ];
-    };
-
-  swapDevices = [ ];
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/1d5e662b-89e5-4aac-88af-7f9207898a90"; }
+    ];
 
   nix.maxJobs = lib.mkDefault 4;
 }

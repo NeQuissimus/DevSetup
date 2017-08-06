@@ -6,7 +6,16 @@
   boot = {
     cleanTmpDir = true;
 
-    initrd.kernelModules = ["ahci" "aesni-intel"];
+    initrd = {
+      luks.devices = [{
+        allowDiscards = true;
+        device = "/dev/disk/by-uuid/44dd41f0-7642-4939-9118-0caec4498739";
+        name = "root";
+        preLVM = true;
+      }];
+
+      kernelModules = ["ahci" "aesni-intel"];
+    };
 
     kernel.sysctl = {
       "vm.dirty_writeback_centisecs" = 1500;
@@ -19,7 +28,13 @@
 
     loader = {
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = true;
+
+      grub = {
+        device = "nodev";
+        efiSupport = true;
+        enable = true;
+        version = 2;
+      };
     };
   };
 
@@ -274,7 +289,6 @@
   virtualisation = {
     docker = {
       enable = true;
-      storageDriver = "btrfs";
     };
 
     rkt.enable = false;

@@ -41,7 +41,7 @@ font:
 
 render_timer: false
 
-custom_cursor_colors: false
+custom_cursor_colors: true
 
 colors:
   primary:

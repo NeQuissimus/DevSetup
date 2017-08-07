@@ -15,6 +15,10 @@
       }];
 
       kernelModules = ["ahci" "aesni-intel"];
+
+      postMountCommands = ''
+        chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder
+      '';
     };
 
     kernel.sysctl = {
@@ -41,6 +45,7 @@
   environment = {
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
+      XMONAD_CONFIG_DIR = "/etc/xmonad";
     };
 
     systemPackages = with pkgs; [
@@ -188,7 +193,7 @@
       syntaxHighlighting = {
         enable = true;
 
-        highlighters = [ "main" "brackets" "pattern" "cursor" "root" "line"];
+        highlighters = [ "main" "brackets" "pattern" "root" "line"];
       };
     };
   };
@@ -205,6 +210,14 @@
   };
 
   services = {
+    cron = {
+      enable = true;
+
+      systemCronJobs = [
+        "15 18 * * 6 root fstrim -v -a"
+      ];
+    };
+
     locate.enable = true;
 
     nixosManual.enable = false;

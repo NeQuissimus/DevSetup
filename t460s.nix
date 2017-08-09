@@ -1,357 +1,76 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./t460s-hardware.nix ./xmonad-work.nix ./t460s-wifi.nix ];
+  imports = [ ./nixos-common.nix ./t460s-hardware.nix ./xmonad-config.nix ./t460s-wifi.nix ];
 
-  boot = {
-    cleanTmpDir = true;
+  boot.loader.systemd-boot.enable = true;
 
-    initrd.kernelModules = ["ahci" "aesni-intel"];
+  networking.hostName = "nixus";
 
-    kernel.sysctl = {
-      "vm.dirty_writeback_centisecs" = 1500;
-      "vm.drop_caches" = 3;
-      "vm.laptop_mode" = 5;
-      "vm.swappiness" = 1;
-    };
-
-    kernelPackages = pkgs.linuxPackages_4_9; # LTS
-
-    loader = {
-      efi.canTouchEfiVariables = true;
-      systemd-boot.enable = true;
-    };
+  networking.hosts = {
+    "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
+    "0.0.0.0" = ["ftp.au.debian.org"];
+    "10.1.108.103"= ["github.internal" "github.esentire.com"];
+    "10.1.110.113" = ["gems.internal"];
+    "10.1.110.130" = ["build-01.internal"];
+    "10.1.110.167" = ["jira.esentire.com" "jira.internal"];
+    "10.1.110.208" = ["jenkins.internal"];
+    "10.1.110.243" = ["gerrit.internal"];
+    "10.1.110.57" = ["registry.internal" "portus-1.internal"];
+    "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
+    "10.1.114.20" = ["exchange.esentire.com"];
   };
 
-  environment = {
-    sessionVariables = {
-      TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
-    };
-
-    systemPackages = with pkgs; [
-      # Basics
-      alacritty
-      atom
-      autocutsel
-      binutils
-      chromium
-      conky
-      dmenu
-      gitFull
-      gnupg1compat
-      htop
-      i3lock-fancy
-      jq
-      oh-my-zsh
-      skopeo
-      upower
-    ];
-  };
-
-  fonts = {
-    enableFontDir = true;
-
-    fonts = with pkgs; [
-      dejavu_fonts
-      font-awesome-ttf
-      nerdfonts
-      source-code-pro
-    ];
-
-    fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
-  };
-
-  hardware = {
-    cpu.intel.updateMicrocode = true;
-    pulseaudio.enable = true;
-  };
-
-  i18n = {
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
-
-  networking = {
-    hostName = "nixus";
-
-    extraHosts = ''
-      127.0.0.1 nixus localhost
-      0.0.0.0 ftp.au.debian.org
-
-      10.1.108.103 github.internal github.esentire.com
-      10.1.110.57 registry.internal
-      10.1.110.83 confluence.internal
-      10.1.110.113 gems.internal
-      10.1.110.167 jira.esentire.com
-      10.1.110.208 jenkins.internal
-      10.1.110.243 gerrit.internal
-      10.1.114.20 exchange.esentire.com
-      10.1.110.130 build-01.internal
-    '' + (lib.fileContents ./hosts);
-
-    firewall = {
-      allowedTCPPorts = [ 22 ];
-      allowPing = false;
-      enable = true;
-    };
-
-    nameservers = [ "10.1.115.20" "8.8.8.8" "10.1.114.53" "10.3.114.53" "8.8.4.4" "64.6.64.6" "64.6.65.6" ];
-  };
-
-  nix = {
-    binaryCaches = [ https://cache.nixos.org ];
-    buildCores = 8;
-
-    extraOptions = ''
-      auto-optimise-store = true
-      binary-caches-parallel-connections = 20
-      connect-timeout = 10
-    '';
-
-    gc = {
-      automatic = true;
-      dates = "12:00";
-      options = "--delete-older-than 30";
-    };
-
-    maxJobs = 4;
-
-    nrBuildUsers = 30;
-    trustedBinaryCaches = [ https://cache.nixos.org ];
-    useSandbox = true;
-  };
-
-  programs = {
-    chromium = {
-      enable = true;
-
-      defaultSearchProviderSearchURL = ''https://encrypted.google.com/search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}'';
-
-      extensions = [
-        "obdbgnebcljmgkoljcdddaopadkifnpm" # Canvas Defender
-        "kbfnbcaeplbcioakkpcpgfkobkghlhen" # Grammarly
-        "ehhkfhegcenpfoanmgfpfhnmdmflkbgk" # Home - New Tab Page
-        "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
-        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
-        "niloccemoadcdkdjlinkgdfekeahmflj" # Save to Pocket
-        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-        "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
-      ];
-    };
-
-    ssh = {
-      agentTimeout = "4h";
-      extraConfig = ''
-        Host *
-          ConnectTimeout 60
-          ServerAliveInterval 240
-          ConnectionAttempts 60
-      '';
-      knownHosts = [
-        {
-          hostNames = [ "gerrit.internal" "10.1.110.243" ];
-          publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCab+Q4qxGALu4lQvDn8JHezrhJdsZSlK6QRXs/ZL0HD1u/qnRdH/WALeKKoRWG4O4H9ACbGwWl8EbFonhrbfE+0QgxwkGwm8DBZwKJV5aALhXKCREV0Zm/OamVmRGqUHQ5JUItCmfKt7mAqw1KheEBxMy2Qj3W/joqTNqL9tPipw==";
-        }
-        {
-          hostNames = [ "github.com" "192.30.252.*" "192.30.253.*" "192.30.254.*" "192.30.255.*" ];
-          publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==";
-        }
-      ];
-      startAgent = true;
-    };
-
-    zsh = {
-      enable = true;
-
-      ohMyZsh = {
-        enable = true;
-      };
-
-      promptInit = ''
-        autoload -U promptinit && promptinit && prompt clint
-      '' + (lib.fileContents ./_home/work-zshrc);
-    };
-  };
-
-  security = {
-    hideProcessInformation = true;
-
-    pki.certificates = [
+  security.pki.certificates = [
       (lib.fileContents ./registry.crt)
     ];
 
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
-    };
+  security.sudo.wheelNeedsPassword = false;
+
+  services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
+    ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
+    ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
+    ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
+    ${autocutsel}/bin/autocutsel &
+    ${autocutsel}/bin/autocutsel -s PRIMARY &
+    ${xlibs.xhost}/bin/xhost + &
+  '';
+
+  services.xserver.resolutions = [
+    { x = 1920; y = 1080; }
+    { x = 1280; y = 800; }
+    { x = 1024; y = 768; }
+  ];
+
+  services.xserver.videoDriver = "intel";
+
+  services.xserver.xrandrHeads = [ "DP2-3" "DP2-2" "eDP1" ];
+
+  users.extraUsers.kubernetes = {
+    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    name = "kubernetes";
+    uid = 1002;
   };
 
-  services = {
-    locate.enable = true;
-
-    nscd = {
-      config = ''
-        server-user             nscd
-        threads                 2
-        paranoia                no
-        debug-level             0
-
-        enable-cache            passwd          yes
-        positive-time-to-live   passwd          600
-        negative-time-to-live   passwd          20
-        suggested-size          passwd          211
-        check-files             passwd          yes
-        persistent              passwd          no
-        shared                  passwd          yes
-
-        enable-cache            group           yes
-        positive-time-to-live   group           3600
-        negative-time-to-live   group           60
-        suggested-size          group           211
-        check-files             group           yes
-        persistent              group           no
-        shared                  group           yes
-
-        enable-cache            hosts           yes
-        positive-time-to-live   hosts           3600
-        negative-time-to-live   hosts           15
-        suggested-size          hosts           211
-        check-files             hosts           yes
-        persistent              hosts           yes
-        shared                  hosts           yes
-      '';
-      enable = true;
-    };
-
-    nixosManual.enable = false;
-
-    ntp = {
-      enable = true;
-      servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
-    };
-
-    openssh = {
-      enable = true;
-      passwordAuthentication = false;
-      permitRootLogin = "no";
-    };
-
-    tlp.enable = true;
-
-    upower.enable = true;
-
-    urxvtd.enable = true;
-
-    xserver = {
-      autorun = true;
-      defaultDepth = 24;
-      displayManager = {
-        sessionCommands = with pkgs; lib.mkAfter ''
-          ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
-          ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
-          ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
-          ${autocutsel}/bin/autocutsel &
-          ${autocutsel}/bin/autocutsel -s PRIMARY &
-        '';
-        slim.enable = true;
-        xserverArgs = [ "-logfile" "/var/log/X.log" ];
-      };
-      enable = true;
-      exportConfiguration = true;
-      resolutions = [{x = 1920; y = 1080;} {x = 1280; y = 800;} {x = 1024; y = 768;}];
-      synaptics = {
-        enable = true;
-        tapButtons = false;
-        twoFingerScroll = true;
-      };
-      videoDriver = "intel";
-      xkbOptions = "ctrl:nocaps";
-      xrandrHeads = [ "DP2-3" "DP2-2" "eDP1" ];
-    };
+  users.extraUsers.nix = {
+    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    name = "nix";
+    uid = 1003;
   };
 
-  system = {
-    autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-17.03";
-      dates = "9:00";
-      enable = true;
-    };
-    stateVersion = "17.03";
+  users.extraUsers.ruby = {
+    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    name = "ruby";
+    uid = 1004;
   };
 
-  time = {
-    timeZone = "America/Toronto";
-  };
-
-  users = {
-    defaultUserShell = "${pkgs.zsh}/bin/zsh";
-
-    extraUsers.kubernetes = {
-      isNormalUser = true;
-      createHome = true;
-      extraGroups = [ "docker" ];
-      group = "users";
-      home = "/home/kubernetes";
-      name = "kubernetes";
-      uid = 1002;
-      useDefaultShell = true;
-    };
-
-    extraUsers.nequi = {
-      isNormalUser = true;
-      createHome = true;
-      extraGroups = [ "docker" "wheel" ];
-      group = "users";
-      home = "/home/nequi";
-      name = "nequi";
-      uid = 1000;
-      useDefaultShell = true;
-
-      openssh.authorizedKeys.keys = [
-       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7Jdj3a0bXoMTTE7dTLtAuB3aY5ZCTvWGhmlYYYFC/D timsteinbach@iPixel.local"
-      ];
-    };
-
-    extraUsers.nix = {
-      isNormalUser = true;
-      createHome = true;
-      extraGroups = [ "docker" ];
-      group = "users";
-      home = "/home/nix";
-      name = "nix";
-      uid = 1003;
-      useDefaultShell = true;
-    };
-
-    extraUsers.ruby = {
-      isNormalUser = true;
-      createHome = true;
-      extraGroups = [ "docker" ];
-      group = "users";
-      home = "/home/ruby";
-      name = "ruby";
-      uid = 1004;
-      useDefaultShell = true;
-    };
-
-    extraUsers.scala = {
-      isNormalUser = true;
-      createHome = true;
-      extraGroups = [ "docker" ];
-      group = "users";
-      home = "/home/scala";
-      name = "scala";
-      uid = 1001;
-      useDefaultShell = true;
-    };
-  };
-
-  virtualisation = {
-    docker = {
-      enable = true;
-      storageDriver = "btrfs";
-    };
-
-    virtualbox.host.enable = true;
+  users.extraUsers.scala = {
+    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    name = "scala";
+    uid = 1001;
   };
 }

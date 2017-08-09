@@ -31,4 +31,4 @@
 [tag]
         forceSignAnnotated = true
 [apply]
-	whitespace = fix
+	      whitespace = fix

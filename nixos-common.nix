@@ -99,7 +99,10 @@
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
   };
 
-  hardware.cpu.intel.updateMicrocode = true;
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    pulseaudio.enable = true;
+  };
 
   i18n = {
     consoleKeyMap = "us";
@@ -146,8 +149,8 @@
     useSandbox = true;
   };
 
-  nixpkgs.config.packageOverrides = pkgs:
-    { virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
+  nixpkgs.config.packageOverrides = pkgs: {
+    virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
   };
 
   programs = {
@@ -255,6 +258,13 @@
     ntp = {
       enable = true;
       servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
+    };
+
+    redshift = {
+      enable = true;
+      latitude = "43.18";
+      longitude = "-80.38";
+      temperature.night = 1900;
     };
 
     tlp.enable = true;

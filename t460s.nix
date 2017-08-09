@@ -22,8 +22,8 @@
   };
 
   security.pki.certificates = [
-      (lib.fileContents ./registry.crt)
-    ];
+    (lib.fileContents ./registry.crt)
+  ];
 
   security.sudo.wheelNeedsPassword = false;
 
@@ -73,4 +73,6 @@
     name = "scala";
     uid = 1001;
   };
+
+  virtualisation.virtualbox.host.enable = false;
 }

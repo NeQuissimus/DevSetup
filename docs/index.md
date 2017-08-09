@@ -1,6 +1,8 @@
 # NeQuissimus NixOS setup
 
 - [Installation from scratch (with LUKS)](./installation)
+
+<!--
 - [System configuration - Basics](./config-basic)
 - [System configuration - Misc](./config-misc)
 - [User environments](./user-env)
@@ -8,3 +10,4 @@
 - [Application configuration](./app-config)
 - [System maintenance](./maintain)
 - [Add / update packages to nixpkgs / Contribute](./contribute)
+-->

@@ -22,6 +22,12 @@
     kernelPackages = pkgs.linuxPackages_hardened_copperhead;
 
     loader.efi.canTouchEfiVariables = true;
+
+    plymouth = {
+      enable = true;
+      logo = "${pkgs.nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png";
+      theme = "spinfinity";
+    };
   };
 
   environment = {
@@ -216,6 +222,11 @@
   };
 
   services = {
+    dnscrypt-proxy = {
+      enable = true;
+      localPort = 43;
+    };
+
     dnsmasq = {
       enable = true;
 
@@ -233,23 +244,7 @@
         "10.1.114.53" # Internal
         "10.3.114.53" # Internal
         "10.3.115.20" # Internal
-        "8.8.8.8" # Google
-        "8.8.4.4" # Google
-        "64.6.64.6" # Verisign
-        "64.6.65.6" # Verisign
-        "69.195.152.204" # OpenNIC
-        "23.94.5.133" # OpenNIC
-        "208.67.222.222" # OpenDNS / Cisco Umbrella
-        "208.67.220.220" # OpenDNS / Cisco Umbrella
-        "77.88.8.7" # Yandex Family
-        "77.88.8.3" # Yandex Family
-      ] ++ lib.optionals config.networking.enableIPv6 [
-        "2620:0:ccc::2" # OpenDNS
-        "2620:0:ccd::2" # OpenDNS
-        "2001:4860:4860::8888" # Google
-        "2001:4860:4860::8844" # Google
-        "2a02:6b8::feed:a11" # Yandex Family
-        "2a02:6b8:0:1::feed:a11" # Yandex Family
+        "127.0.0.1#43" # dnscrypt
       ];
     };
 
@@ -276,7 +271,28 @@
       defaultDepth = 24;
 
       displayManager = {
-        slim.enable = true;
+        lightdm = {
+          background = "${pkgs.nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png";
+          enable = true;
+
+          extraSeatDefaults = ''
+            greeter-show-manual-login=true
+            greeter-hide-users=true
+          '';
+
+          greeters.gtk = {
+            extraConfig = ''
+              default-user-image = ${pkgs.nixos-icons}/share/icons/hicolor/64x64/apps/nix-snowflake.png
+              position = 50%,center -300,end
+            '';
+
+            theme = {
+              name = "Numix";
+              package = pkgs.numix-gtk-theme;
+            };
+          };
+        };
+
         xserverArgs = [ "-logfile" "/var/log/X.log" ];
       };
 

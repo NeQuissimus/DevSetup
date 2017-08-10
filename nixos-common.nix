@@ -232,6 +232,7 @@
         "10.1.115.20" # Internal
         "10.1.114.53" # Internal
         "10.3.114.53" # Internal
+        "10.3.115.20" # Internal
         "8.8.8.8" # Google
         "8.8.4.4" # Google
         "64.6.64.6" # Verisign

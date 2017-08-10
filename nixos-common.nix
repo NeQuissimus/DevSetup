@@ -83,6 +83,7 @@
       chromium
       conky
       dmenu
+      exa
       gitFull
       gnupg1compat
       htop

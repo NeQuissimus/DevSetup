@@ -33,7 +33,7 @@
   };
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
+    ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
     ${autocutsel}/bin/autocutsel -s PRIMARY &

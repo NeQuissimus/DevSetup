@@ -28,6 +28,7 @@ myManageHook = composeAll [
     , className =? "Chromium-browser" --> viewShift "9"
     , className =? "Emacs" --> viewShift "2"
     , className =? "Atom" --> viewShift "2"
+    , className =? "Code" --> viewShift "2"
     , className =? "HipChat" --> viewShift "0"
     , appName =? "desktop_window" --> doIgnore
     ]

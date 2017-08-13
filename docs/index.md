@@ -4,6 +4,7 @@
 
 <!--
 - [System configuration - Basics](./config-basic)
+- [Desktop environment](./desktop)
 - [System configuration - Misc](./config-misc)
 - [User environments](./user-env)
 - [Custom package overrides](./pkg-override)

@@ -9,6 +9,7 @@
 
       postMountCommands = ''
         chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder
+        chmod 777 /etc/.config # Hack, so that other things can write in here
       '';
     };
 
@@ -77,7 +78,6 @@
     systemPackages = with pkgs; [
       # Basics
       alacritty
-      atom
       autocutsel
       binutils
       chromium
@@ -92,6 +92,7 @@
       oh-my-zsh
       skopeo
       upower
+      vscode
     ];
   };
 
@@ -156,8 +157,12 @@
     useSandbox = true;
   };
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
+  nixpkgs.config = {
+    allowUnfree = true;
+
+    packageOverrides = pkgs: {
+      virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
+    };
   };
 
   programs = {

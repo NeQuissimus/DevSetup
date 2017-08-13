@@ -24,6 +24,12 @@
     "0.0.0.0" = ["ftp.au.debian.org"];
   };
 
+  programs.ssh.extraConfig = ''
+    Host pine
+    HostName 10.0.10.10
+    User ubuntu
+  '';
+
   services.cron = {
     enable = true;
 

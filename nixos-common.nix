@@ -15,7 +15,7 @@
 
     kernel.sysctl = {
       "vm.dirty_writeback_centisecs" = 1500;
-      "vm.drop_caches" = 3;
+      "vm.drop_caches" = 1;
       "vm.laptop_mode" = 5;
       "vm.swappiness" = 1;
     };
@@ -80,16 +80,17 @@
       alacritty
       autocutsel
       binutils
-      chromium
       conky
       dmenu
       exa
+      firefox-unwrapped
       gitFull
       gnupg1compat
       htop
       i3lock-fancy
       jq
       oh-my-zsh
+      ripgrep
       skopeo
       upower
       vscode
@@ -138,7 +139,7 @@
       "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
     ];
 
-    buildCores = 8;
+    buildCores = 4;
 
     extraOptions = ''
       binary-caches-parallel-connections = 20
@@ -160,29 +161,21 @@
   nixpkgs.config = {
     allowUnfree = true;
 
-    packageOverrides = pkgs: {
+    packageOverrides = super: let self = super.pkgs; in {
+      # https://github.com/NixOS/nixpkgs/issues/27759
+      tor-browser-bundle-bin = pkgs.tor-browser-bundle-bin.override {
+        extraPrefs = ''
+          lockPref("browser.tabs.remote.autostart", false);
+          lockPref("browser.tabs.remote.autostart.2", false);
+        '';
+      };
+
+      # The hardened kernel does not have 32-bit emulation
       virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
     };
   };
 
   programs = {
-    chromium = {
-      enable = true;
-
-      defaultSearchProviderSearchURL = ''https://encrypted.google.com/search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}'';
-
-      extensions = [
-        "obdbgnebcljmgkoljcdddaopadkifnpm" # Canvas Defender
-        "kbfnbcaeplbcioakkpcpgfkobkghlhen" # Grammarly
-        "ehhkfhegcenpfoanmgfpfhnmdmflkbgk" # Home - New Tab Page
-        "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
-        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
-        "niloccemoadcdkdjlinkgdfekeahmflj" # Save to Pocket
-        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-        "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
-      ];
-    };
-
     ssh = {
       agentTimeout = "4h";
       extraConfig = ''
@@ -222,7 +215,6 @@
   };
 
   security = {
-    chromiumSuidSandbox.enable = true;
     hideProcessInformation = true;
     sudo.enable = true;
   };

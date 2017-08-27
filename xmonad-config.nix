@@ -26,6 +26,7 @@ myManageHook = composeAll [
     isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , isDialog --> doFloat
     , className =? "Chromium-browser" --> viewShift "9"
+    , className =? "Firefox" --> viewShift "9"
     , className =? "Emacs" --> viewShift "2"
     , className =? "Atom" --> viewShift "2"
     , className =? "Code" --> viewShift "2"

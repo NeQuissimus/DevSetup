@@ -1,4 +1,0 @@
-xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0
-xsetroot -solid black
-xsetroot -cursor_name left_ptr
-

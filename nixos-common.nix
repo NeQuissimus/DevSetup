@@ -309,7 +309,7 @@
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-unstable";
+      channel = "https://nixos.org/channels/nixos-17.09";
       dates = "9:00";
       enable = true;
     };

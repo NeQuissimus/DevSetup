@@ -31,12 +31,12 @@ alias volume_up='amixer -q sset Master 5%+; volume'
 alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
 alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
 
-
 function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" docker.elastic.co/elasticsearch/elasticsearch:5.4.2 }
 function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
 function docker_kafka() { docker kill kafka; docker rm kafka; docker run -h $(hostname) -d -p 9092:9092 --name kafka --link zookeeper:zookeeper -e KAFKA_ZOOKEEPER_CONNECT="zookeeper:2181" -e KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://$(hostname):9092" -e KAFKA_CREATE_TOPICS="topic1:1:1,topic2:1:1" wurstmeister/kafka:0.10.2.1 }
 function docker_kazoo() { docker run --rm --name kazoo --link zookeeper:zookeeper -v $(pwd)/$1:/config.json "registry.internal/soa/kazoo:0.0.1" }
 function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles }
+function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine }
 function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq }
 function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7 }
 function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }

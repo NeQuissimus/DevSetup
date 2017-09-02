@@ -71,7 +71,7 @@ user_pref("security.fileuri.strict_origin_policy", true);
 user_pref("browser.urlbar.filter.javascript", true);
 user_pref("javascript.options.asmjs", false);
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);
-user_pref("svg.disabled", true);
+user_pref("svg.disabled", false);
 user_pref("media.video_stats.enabled", false);
 user_pref("general.buildID.override", "20100101");
 user_pref("browser.display.use_document_fonts", 0);
@@ -150,8 +150,8 @@ user_pref("browser.safebrowsing.enabled", true); // Firefox < 50
 user_pref("browser.safebrowsing.phishing.enabled", true); // firefox >= 50
 user_pref("browser.safebrowsing.malware.enabled", true);
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
-user_pref("browser.pocket.enabled", false);
-user_pref("extensions.pocket.enabled", false);
+user_pref("browser.pocket.enabled", true);
+user_pref("extensions.pocket.enabled", true);
 /******************************************************************************
  * SECTION: Automatic connections *
  ******************************************************************************/

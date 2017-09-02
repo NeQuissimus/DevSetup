@@ -31,6 +31,9 @@ sed -i 's|user_pref("browser.privatebrowsing.autostart", true);|user_pref("brows
 sed -i 's|user_pref("privacy.clearOnShutdown.openWindows", true);|user_pref("privacy.clearOnShutdown.openWindows", false);|' "${USERJS}"
 sed -i 's|user_pref("places.history.enabled", false);|user_pref("places.history.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("privacy.sanitize.sanitizeOnShutdown", true);|user_pref("privacy.sanitize.sanitizeOnShutdown", false);|' "${USERJS}"
+sed -i 's|user_pref("svg.disabled", true);|user_pref("svg.disabled", false);|' "${USERJS}"
+sed -i 's|user_pref("browser.pocket.enabled", false);|user_pref("browser.pocket.enabled", true);|' "${USERJS}"
+sed -i 's|user_pref("extensions.pocket.enabled", false);|user_pref("extensions.pocket.enabled", true);|' "${USERJS}"
 
 # Remove most comments
 sed -i 's|^//.*||g' "${USERJS}"

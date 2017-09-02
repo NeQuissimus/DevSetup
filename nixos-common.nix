@@ -164,6 +164,10 @@
     packageOverrides = super: let self = super.pkgs; in {
       docker = pkgs.docker-edge;
 
+      openjdk8 = pkgs.openjdk8.override {
+        minimal = true;
+      };
+
       # https://github.com/NixOS/nixpkgs/issues/27759
       tor-browser-bundle-bin = pkgs.tor-browser-bundle-bin.override {
         extraPrefs = ''

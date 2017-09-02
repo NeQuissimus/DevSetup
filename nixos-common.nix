@@ -164,6 +164,8 @@
     packageOverrides = super: let self = super.pkgs; in {
       docker = pkgs.docker-edge;
 
+      jre = pkgs.jre8_headless;
+
       openjdk8 = pkgs.openjdk8.override {
         minimal = true;
       };

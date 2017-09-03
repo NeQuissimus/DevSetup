@@ -22,11 +22,15 @@
 
     kernelPackages = pkgs.linuxPackages_hardened_copperhead;
 
-    loader.efi.canTouchEfiVariables = true;
+    loader = {
+      efi.canTouchEfiVariables = true;
+
+      grub.splashImage = "${pkgs.nixos-artwork.wallpapers.stripes-logo}/share/artwork/gnome/nix-wallpaper-stripes-logo.png";
+    };
 
     plymouth = {
       enable = true;
-      logo = "${pkgs.nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png";
+      logo = "${pkgs.nixos-artwork.wallpapers.simple-light-gray}/share/artwork/gnome/nix-wallpaper-simple-light-gray.png";
       theme = "spinfinity";
     };
   };
@@ -278,7 +282,7 @@
 
       displayManager = {
         lightdm = {
-          background = "${pkgs.nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png";
+          background = "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/artwork/gnome/nix-wallpaper-simple-blue.png";
           enable = true;
 
           extraSeatDefaults = ''

@@ -8,6 +8,7 @@ curl -o "${USERJS}" https://raw.githubusercontent.com/pyllyukko/user.js/master/u
 # Clean up whitespace
 sed -i 's/\s\+/ /g' "${USERJS}"
 
+# Fix a few things that break websites or my usage habits :)
 sed -i 's|user_pref("browser.search.update", false);|user_pref("browser.search.update", true);|' "${USERJS}"
 sed -i 's|user_pref("privacy.clearOnShutdown.cookies", true);|user_pref("privacy.clearOnShutdown.cookies", false);|' "${USERJS}"
 sed -i 's|user_pref("privacy.clearOnShutdown.history", true);|user_pref("privacy.clearOnShutdown.history", false);|' "${USERJS}"
@@ -34,6 +35,7 @@ sed -i 's|user_pref("privacy.sanitize.sanitizeOnShutdown", true);|user_pref("pri
 sed -i 's|user_pref("svg.disabled", true);|user_pref("svg.disabled", false);|' "${USERJS}"
 sed -i 's|user_pref("browser.pocket.enabled", false);|user_pref("browser.pocket.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("extensions.pocket.enabled", false);|user_pref("extensions.pocket.enabled", true);|' "${USERJS}"
+sed -i 's|user_pref("keyword.enabled", false);|user_pref("keyword.enabled", true);|' "${USERJS}"
 
 # Remove most comments
 sed -i 's|^//.*||g' "${USERJS}"

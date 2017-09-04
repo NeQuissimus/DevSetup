@@ -14,13 +14,27 @@
     };
 
     kernel.sysctl = {
-      "vm.dirty_writeback_centisecs" = 1500;
-      "vm.drop_caches" = 1;
-      "vm.laptop_mode" = 5;
-      "vm.swappiness" = 1;
+      "kernel.dmesg_restrict" = true; # Restrict dmesg access
+      "kernel.kexec_load_disabled" = true; # Prevent kernel reload
+      "kernel.kptr_restrict" = lib.mkOverride 500 2; # Hide kernel pointers
+      "kernel.unprivileged_bpf_disabled" = true; # Prevent privilege escalation
+      "kernel.yama.ptrace_scope" = 1; # Limit ptrace
+      "net.core.bpf_jit_enable" = false; # Turn off bpf JIT
+      "net.core.bpf_jit_harden" = true; # Harden bpf JIT if it cannot be disabled
+      "user.max_user_namespaces" = 0; # Disable user namespaces
+      "vm.dirty_ratio" = 40; # Write back to disk at %
+      "vm.drop_caches" = 1; # Drop caches early
+      "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
+      "vm.swappiness" = 1; # Minimum swap usage
     };
 
     kernelPackages = pkgs.linuxPackages_hardened_copperhead;
+
+    kernelParams = [
+      "nohibernate"
+      "page_poison=1"
+      "vsyscall=none"
+    ];
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -227,7 +241,9 @@
   };
 
   security = {
+    apparmor.enable = true;
     hideProcessInformation = true;
+    lockKernelModules = true;
     sudo.enable = true;
   };
 

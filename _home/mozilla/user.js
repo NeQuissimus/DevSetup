@@ -57,7 +57,7 @@ user_pref("intl.locale.matchOS", false);
 user_pref("browser.search.geoSpecificDefaults", false);
 user_pref("clipboard.autocopy", false);
 user_pref("javascript.use_us_english_locale", true);
-user_pref("keyword.enabled", false);
+user_pref("keyword.enabled", true);
 user_pref("browser.urlbar.trimURLs", false);
 user_pref("browser.fixup.alternate.enabled", false);
 user_pref("browser.fixup.hide_user_pass", true);

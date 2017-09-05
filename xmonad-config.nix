@@ -48,7 +48,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
      | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [ xK_0 ])
      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
   ++ [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-     | (key, sc) <- zip [xK_w, xK_q, xK_e] [0, 1, 2]
+     | (key, sc) <- zip [xK_q, xK_e, xK_w] [0, 1, 2]
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 main = do
   xmproc <- spawnPipe "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"

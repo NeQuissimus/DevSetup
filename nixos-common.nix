@@ -243,7 +243,7 @@
   security = {
     apparmor.enable = true;
     hideProcessInformation = true;
-    lockKernelModules = true;
+    lockKernelModules = false; # https://github.com/NixOS/nixpkgs/issues/29019
     sudo.enable = true;
   };
 

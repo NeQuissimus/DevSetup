@@ -29,7 +29,7 @@
   security.sudo.wheelNeedsPassword = false;
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --rotate left --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0 &
+    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --primary --auto --pos 0x0 --output DP2-2 --crtc 2 --rotate left --auto --pos 1920x0 --output eDP1 --auto --pos 3000x0
     ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
@@ -37,15 +37,13 @@
     ${xlibs.xhost}/bin/xhost + &
   '';
 
-  services.xserver.resolutions = [
-    { x = 1920; y = 1080; }
-    { x = 1280; y = 800; }
-    { x = 1024; y = 768; }
-  ];
-
   services.xserver.videoDriver = "intel";
 
-  services.xserver.xrandrHeads = [ "DP2-3" "DP2-2" "eDP1" ];
+  services.xserver.xrandrHeads = [
+    "DP2-3" { output = "DP2-3"; primary = true; }
+    "DP2-2" { monitorConfig = ''Option "Rotate" "left"''; output = "DP2-2"; }
+    "eDP1" { output = "eDP1"; }
+  ];
 
   users.extraUsers.kubernetes = {
     extraGroups = [ "docker" ];

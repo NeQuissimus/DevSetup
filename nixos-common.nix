@@ -21,19 +21,34 @@
       "kernel.yama.ptrace_scope" = 1; # Limit ptrace
       "net.core.bpf_jit_enable" = false; # Turn off bpf JIT
       "net.core.bpf_jit_harden" = true; # Harden bpf JIT if it cannot be disabled
+      "net.ipv4.conf.all.accept_redirects" = 0; # Don't accept redirects
+      "net.ipv4.conf.all.log_martians" = 1; # Log martian packets
+      "net.ipv4.conf.all.rp_filter" = 1; # Protect against IP spoofing
+      "net.ipv4.conf.all.send_redirects" = 0; # No redirects (only needed on routers)
+      "net.ipv4.conf.default.accept_redirects" = 0; # Don't accept redirects
+      "net.ipv4.conf.default.log_martians" = 1; # Log martian packets
+      "net.ipv4.conf.default.rp_filter" = 1; # Protect against IP spoofing
+      "net.ipv4.conf.default.send_redirects" = 0; # No redirects (only needed on routers)
+      "net.ipv4.tcp_rfc1337" = 1; # Protect against tcp time-wait assassination hazards
+      "net.ipv6.conf.all.accept_redirects" = 0; # Don't accept redirects
+      "net.ipv6.conf.default.accept_redirects" = 0; # Don't accept redirects
       "user.max_user_namespaces" = 0; # Disable user namespaces
-      "vm.dirty_ratio" = 40; # Write back to disk at %
+      "vm.dirty_background_ratio" = 2; # Write back to disk at %
+      "vm.dirty_ratio" = 3; # Write back to disk at %
       "vm.drop_caches" = 1; # Drop caches early
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
       "vm.swappiness" = 1; # Minimum swap usage
+      "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
     kernelPackages = pkgs.linuxPackages_hardened_copperhead;
 
     kernelParams = [
-      "nohibernate"
-      "page_poison=1"
-      "vsyscall=none"
+      "nohibernate" # Disable hibernation
+      "page_poison=1" # Poison memory pages, wiping freed memory
+      "slab_nomerge" # Disable slab merging (Slab = chunk of memory)
+      "slub_debug=FZP" # Enable sanity checks (F), redzoning (Z) and poisoning (P)
+      "vsyscall=none" # vsyscall is obsolete
     ];
 
     loader = {

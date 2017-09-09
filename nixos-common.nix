@@ -114,7 +114,6 @@
       autocutsel
       binutils
       conky
-      dmenu
       exa
       firefox-unwrapped
       gitFull
@@ -124,6 +123,7 @@
       jq
       oh-my-zsh
       ripgrep
+      rofi
       skopeo
       upower
       vscode
@@ -194,7 +194,7 @@
   nixpkgs.config = {
     allowUnfree = true;
 
-    packageOverrides = super: let self = super.pkgs; in {
+    packageOverrides = pkgs: {
       docker = pkgs.docker-edge;
 
       jre = pkgs.jre8_headless;
@@ -210,9 +210,6 @@
           lockPref("browser.tabs.remote.autostart.2", false);
         '';
       };
-
-      # The hardened kernel does not have 32-bit emulation
-      virtualbox = pkgs.virtualbox.override { enable32bitGuests = false; };
     };
   };
 

@@ -52,4 +52,6 @@
   ];
 
   services.xserver.videoDriver = "intel";
+
+  virtualisation.virtualbox.host.enable = true;
 }

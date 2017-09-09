@@ -67,7 +67,7 @@ user_pref("security.mixed_content.block_active_content", true);
 user_pref("security.mixed_content.block_display_content", true);
 user_pref("network.jar.open-unsafe-types", false);
 user_pref("security.xpconnect.plugin.unrestricted", false);
-user_pref("security.fileuri.strict_origin_policy", true);
+user_pref("security.fileuri.strict_origin_policy", false);
 user_pref("browser.urlbar.filter.javascript", true);
 user_pref("javascript.options.asmjs", false);
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);

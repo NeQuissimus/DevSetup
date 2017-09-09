@@ -36,6 +36,7 @@ sed -i 's|user_pref("svg.disabled", true);|user_pref("svg.disabled", false);|' "
 sed -i 's|user_pref("browser.pocket.enabled", false);|user_pref("browser.pocket.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("extensions.pocket.enabled", false);|user_pref("extensions.pocket.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("keyword.enabled", false);|user_pref("keyword.enabled", true);|' "${USERJS}"
+sed -i 's|user_pref("security.fileuri.strict_origin_policy", true);|user_pref("security.fileuri.strict_origin_policy", false);|' "${USERJS}" # Breaks Office OWA
 
 # Remove most comments
 sed -i 's|^//.*||g' "${USERJS}"

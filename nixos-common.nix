@@ -2,6 +2,13 @@
 
 {
   boot = {
+    blacklistedKernelModules = [
+      # Obscure network protocols
+      "ax25"
+      "netrom"
+      "rose"
+    ];
+
     cleanTmpDir = true;
 
     initrd = {
@@ -36,6 +43,7 @@
       "vm.dirty_background_ratio" = 2; # Write back to disk at %
       "vm.dirty_ratio" = 3; # Write back to disk at %
       "vm.drop_caches" = 1; # Drop caches early
+      "vm.mmap_min_addr" = 65535; # Enforce memory beyond NULL space
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
       "vm.swappiness" = 1; # Minimum swap usage
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure

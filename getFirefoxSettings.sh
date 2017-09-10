@@ -38,6 +38,9 @@ sed -i 's|user_pref("extensions.pocket.enabled", false);|user_pref("extensions.p
 sed -i 's|user_pref("keyword.enabled", false);|user_pref("keyword.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("security.fileuri.strict_origin_policy", true);|user_pref("security.fileuri.strict_origin_policy", false);|' "${USERJS}" # Breaks Office OWA
 
+echo 'user_pref("zoom.maxPercent", 100);' >> "${USERJS}"
+echo 'user_pref("zoom.minPercent", 100);' >> "${USERJS}"
+
 # Remove most comments
 sed -i 's|^//.*||g' "${USERJS}"
 

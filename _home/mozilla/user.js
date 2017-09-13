@@ -139,7 +139,7 @@ user_pref("privacy.trackingprotection.enabled", true);
 user_pref("privacy.trackingprotection.pbmode.enabled", true);
 user_pref("privacy.userContext.enabled", true);
 user_pref("privacy.resistFingerprinting", true);
-user_pref("pdfjs.disabled", true);
+user_pref("pdfjs.disabled", false);
 user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("datareporting.healthreport.service.enabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);

@@ -176,7 +176,7 @@ user_pref("network.negotiate-auth.allow-insecure-ntlm-v1", false);
 user_pref("security.csp.experimentalEnabled", true);
 user_pref("security.csp.enable", true);
 user_pref("security.sri.enable", true);
-user_pref("network.http.referer.spoofSource", true);
+user_pref("network.http.referer.spoofSource", false);
 user_pref("network.cookie.cookieBehavior", 1);
 user_pref("network.cookie.thirdparty.sessionOnly", true);
 /*******************************************************************************

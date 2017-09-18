@@ -38,6 +38,7 @@ sed -i 's|user_pref("extensions.pocket.enabled", false);|user_pref("extensions.p
 sed -i 's|user_pref("keyword.enabled", false);|user_pref("keyword.enabled", true);|' "${USERJS}"
 sed -i 's|user_pref("security.fileuri.strict_origin_policy", true);|user_pref("security.fileuri.strict_origin_policy", false);|' "${USERJS}" # Breaks Office OWA
 sed -i 's|user_pref("pdfjs.disabled", true);|user_pref("pdfjs.disabled", false);|' "${USERJS}" # View PDFs in browser
+sed -i 's|user_pref("network.http.referer.spoofSource", true);|user_pref("network.http.referer.spoofSource", false);|' "${USERJS}" # Breaks Google Hangouts
 
 echo 'user_pref("zoom.maxPercent", 100);' >> "${USERJS}"
 echo 'user_pref("zoom.minPercent", 100);' >> "${USERJS}"

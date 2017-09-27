@@ -12,7 +12,7 @@
     cleanTmpDir = true;
 
     initrd = {
-      kernelModules = ["ahci" "aesni-intel"];
+      kernelModules = [ "ahci" "aesni-intel" "veth" ];
 
       postMountCommands = ''
         chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder
@@ -190,7 +190,7 @@
     gc = {
       automatic = true;
       dates = "12:00";
-      options = "--delete-older-than 30";
+      options = "--delete-older-than 60";
     };
 
     maxJobs = 8;
@@ -201,24 +201,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-
-    packageOverrides = pkgs: {
-      docker = pkgs.docker-edge;
-
-      jre = pkgs.jre8_headless;
-
-      openjdk8 = pkgs.openjdk8.override {
-        minimal = true;
-      };
-
-      # https://github.com/NixOS/nixpkgs/issues/27759
-      tor-browser-bundle-bin = pkgs.tor-browser-bundle-bin.override {
-        extraPrefs = ''
-          lockPref("browser.tabs.remote.autostart", false);
-          lockPref("browser.tabs.remote.autostart.2", false);
-        '';
-      };
-    };
   };
 
   programs = {

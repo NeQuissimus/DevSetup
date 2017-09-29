@@ -9,7 +9,6 @@
 
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
-    "0.0.0.0" = ["ftp.au.debian.org"];
     "10.1.108.103"= ["github.internal" "github.esentire.com"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
@@ -20,6 +19,8 @@
     "10.1.110.57" = ["registry.internal" "portus-1.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
+
+    "0.0.0.0" = [ "ftp.au.debian.org" "esentire-email-security.com" "eshoney.com" "bmcm-security-esentire.net" "getlink.nl" "philezone.com" "cowrk.me" "threatlab.io" "esentiredns.com" "esentireapis.com" ];
   };
 
   security.pki.certificates = [

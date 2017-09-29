@@ -12,7 +12,7 @@
     cleanTmpDir = true;
 
     initrd = {
-      kernelModules = [ "ahci" "aesni-intel" "veth" ];
+      kernelModules = [ "ahci" "aesni-intel" "nls-cp437" "nls-iso8859-1" "veth" "vfat" ];
 
       postMountCommands = ''
         chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder
@@ -245,7 +245,7 @@
   security = {
     apparmor.enable = true;
     hideProcessInformation = true;
-    lockKernelModules = false;
+    lockKernelModules = true;
     sudo.enable = true;
   };
 

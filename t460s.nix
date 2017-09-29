@@ -20,7 +20,7 @@
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
 
-    "0.0.0.0" = [ "ftp.au.debian.org" "esentire-email-security.com" "eshoney.com" "bmcm-security-esentire.net" "getlink.nl" "philezone.com" "cowrk.me" "threatlab.io" "esentiredns.com" "esentireapis.com" ];
+    "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
   security.pki.certificates = [

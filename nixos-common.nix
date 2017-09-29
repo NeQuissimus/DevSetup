@@ -245,7 +245,7 @@
   security = {
     apparmor.enable = true;
     hideProcessInformation = true;
-    lockKernelModules = true;
+    lockKernelModules = false;
     sudo.enable = true;
   };
 
@@ -263,6 +263,16 @@
         cache-size=2000
         local-ttl=3600
         min-cache-ttl=3600
+
+        address=/bmcm-security-esentire.net/0.0.0.0
+        address=/cowrk.me/0.0.0.0
+        address=/esentire-email-security.com/0.0.0.0
+        address=/esentireapis.com/0.0.0.0
+        address=/esentiredns.com/0.0.0.0
+        address=/eshoney.com/0.0.0.0
+        address=/getlink.nl/0.0.0.0
+        address=/philezone.com/0.0.0.0
+        address=/threatlab.io/0.0.0.0
       '';
 
       resolveLocalQueries = true;

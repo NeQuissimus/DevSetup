@@ -10,6 +10,7 @@
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
     "10.1.108.103"= ["github.internal" "github.esentire.com"];
+    "10.1.110.54" = ["artifactory.internal"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
     "10.1.110.167" = ["jira.esentire.com" "jira.internal"];

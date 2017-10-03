@@ -12,7 +12,21 @@
     cleanTmpDir = true;
 
     initrd = {
-      kernelModules = [ "ahci" "aesni-intel" "nls-cp437" "nls-iso8859-1" "veth" "vfat" ];
+      kernelModules = [
+        "ahci"
+        "aesni-intel"
+        "aufs" # Docker
+        "bridge" # Docker
+        "br_netfilter" # Docker
+        "nf_nat" # Docker
+        "nls-cp437" # /boot
+        "nls-iso8859-1" # /boot
+        "tun" # VPN
+        "veth" # Docker
+        "vfat" # /boot
+        "xt_conntrack" # Docker
+        "xt_nat" # Docker
+      ];
 
       postMountCommands = ''
         chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder

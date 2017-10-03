@@ -15,7 +15,6 @@
       kernelModules = [
         "ahci"
         "aesni-intel"
-        "aufs" # Docker
         "bridge" # Docker
         "br_netfilter" # Docker
         "nf_nat" # Docker

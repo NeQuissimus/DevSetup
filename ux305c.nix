@@ -3,13 +3,6 @@
 {
   imports = [ ./nixos-common.nix ./ux305c-hardware.nix ./xmonad-config.nix ./ux305c-wifi.nix ];
 
-  boot.initrd.luks.devices = [{
-    allowDiscards = true;
-    device = "/dev/disk/by-uuid/44dd41f0-7642-4939-9118-0caec4498739";
-    name = "root";
-    preLVM = true;
-  }];
-
   boot.loader.grub = {
     device = "nodev";
     efiSupport = true;
@@ -52,6 +45,4 @@
   ];
 
   services.xserver.videoDriver = "intel";
-
-  virtualisation.virtualbox.host.enable = true;
 }

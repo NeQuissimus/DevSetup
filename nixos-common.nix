@@ -76,6 +76,8 @@
       efi.canTouchEfiVariables = true;
 
       grub.splashImage = "${pkgs.nixos-artwork.wallpapers.stripes-logo}/share/artwork/gnome/nix-wallpaper-stripes-logo.png";
+
+      systemd-boot.editor = false;
     };
 
     plymouth = {
@@ -209,6 +211,7 @@
     maxJobs = 8;
     nrBuildUsers = 30;
     trustedBinaryCaches = [ http://hydra.nixos.org/ ];
+    trustedUsers = [];
     useSandbox = true;
   };
 
@@ -383,6 +386,8 @@
       name = "nequi";
       uid = 1000;
     };
+
+    users.root.shell = pkgs.nologin;
   };
 
   virtualisation = {

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./ux305c-hardware.nix ./xmonad-config.nix ./ux305c-wifi.nix ];
+  imports = [ ./nixos-common.nix ./harden.nix ./ux305c-hardware.nix ./xmonad-config.nix ./ux305c-wifi.nix ];
 
   boot.loader.grub = {
     device = "nodev";
@@ -9,6 +9,11 @@
     enable = true;
     version = 2;
   };
+
+  environment.systemPackages = with pkgs; [
+    encryptr
+    sbt
+  ];
 
   networking.hostName = "nixus";
 
@@ -23,13 +28,15 @@
     User ubuntu
   '';
 
-  services.cron = {
+  services.kbfs = {
     enable = true;
-
-    systemCronJobs = [
-      "15 18 * * 6 root fstrim -v -a"
+    mountPoint = "/mnt/keybase";
+    extraFlags = [
+      "-label kbfs"
+      "-mount-type normal"
     ];
   };
+  services.keybase.enable = true;
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
     ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &

@@ -92,10 +92,8 @@
       i3lock-fancy
       jq
       oh-my-zsh
-      ripgrep
       rofi
       skopeo
-      upower
       vscode
     ];
   };
@@ -122,7 +120,7 @@
   };
 
   networking = {
-    extraHosts = (lib.fileContents ./hosts);
+    extraHosts = (lib.fileContents ./etc/hosts);
   };
 
   nix = {

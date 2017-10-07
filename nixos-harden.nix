@@ -10,7 +10,7 @@ with lib;
         "netrom"
         "rose"
     ];
-    
+
     cleanTmpDir = true;
 
     initrd.kernelModules = [
@@ -75,7 +75,7 @@ with lib;
 
     tcpcrypt.enable = true;
   };
-  
+
   nix = {
     trustedBinaryCaches = [ http://hydra.nixos.org/ ];
     trustedUsers = [];
@@ -102,7 +102,7 @@ with lib;
   };
 
   system.autoUpgrade = {
-    channel = "https://nixos.org/channels/nixos-17.09";
+    channel = mkDefault "https://nixos.org/channels/nixos-17.09";
     dates = "9:00";
     enable = true;
   };

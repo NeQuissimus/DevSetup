@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./t460s-hardware.nix ./xmonad-config.nix ./t460s-wifi.nix ];
+  imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./t460s-hardware.nix ./t460s-wifi.nix ];
 
   boot.loader.systemd-boot.enable = true;
 

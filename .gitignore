@@ -27,7 +27,7 @@ _config/sublime-text-3/Packages/User/Package Control.sublime-settings
 _config/sublime-text-3/Packages/User/Package Control.user-ca-bundle
 _config/sublime-text-3/Packages/bz2/
 _config/sublime-text-3/Packages/ssl-linux/
-hosts
+etc/hosts
 nixpkgs/result
 bin/
 rootfs.tar.xz

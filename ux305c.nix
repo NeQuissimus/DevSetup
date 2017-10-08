@@ -12,6 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     encryptr
+    kbfs
+    keybase-gui
     sbt
   ];
 
@@ -30,7 +32,7 @@
 
   services.kbfs = {
     enable = true;
-    mountPoint = "/mnt/keybase";
+    mountPoint = "/keybase";
     extraFlags = [
       "-label kbfs"
       "-mount-type normal"

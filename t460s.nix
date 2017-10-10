@@ -24,11 +24,19 @@
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
+  services.kbfs = {
+    enable = true;
+    mountPoint = "/keybase";
+    extraFlags = [
+      "-label kbfs"
+      "-mount-type normal"
+    ];
+  };
+  services.keybase.enable = true;
+
   security.pki.certificates = [
     (lib.fileContents ./registry.crt)
   ];
-
-  security.sudo.wheelNeedsPassword = false;
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
     sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP2-3 --crtc 1 --primary --auto --pos 0x0 --output DP2-2 --crtc 2 --rotate left --auto --pos 1920x0 --output eDP1 --auto --pos 3000x0

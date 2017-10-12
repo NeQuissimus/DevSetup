@@ -37,6 +37,7 @@
       "-mount-type normal"
     ];
   };
+
   services.keybase.enable = true;
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''

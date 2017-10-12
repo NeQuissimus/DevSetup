@@ -30,8 +30,6 @@
       logo = "${pkgs.nixos-artwork.wallpapers.simple-light-gray}/share/artwork/gnome/nix-wallpaper-simple-light-gray.png";
       theme = "spinfinity";
     };
-
-    tmpOnTmpfs = true;
   };
 
   environment = {

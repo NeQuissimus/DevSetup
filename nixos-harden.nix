@@ -22,7 +22,6 @@ with lib;
       "nf_nat" # Docker
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
-      "tun" # VPN
       "veth" # Docker
       "vfat" # /boot
       "xt_conntrack" # Docker
@@ -81,8 +80,15 @@ with lib;
     trustedUsers = [];
   };
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    virtualbox = pkgs.virtualbox.override {
+      enable32bitGuests = false;
+    };
+  };
+
   security = {
     apparmor.enable = true;
+    chromiumSuidSandbox.enable = true;
     hideProcessInformation = true;
     lockKernelModules = true;
     sudo.enable = true;

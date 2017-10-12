@@ -3,6 +3,14 @@
 {
   imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./t460s-hardware.nix ./t460s-wifi.nix ];
 
+  boot.initrd.kernelModules = [
+    "tun" # VPN
+    "vboxpci" # VirtualBox
+    "vboxnetflt" # VirtualBox
+    "vboxnetadp" # VirtualBox
+    "vboxdrv" # VirtualBox
+  ];
+
   boot.loader.systemd-boot.enable = true;
 
   networking.hostName = "nixus";
@@ -83,5 +91,15 @@
     uid = 1001;
   };
 
-  virtualisation.virtualbox.host.enable = false;
+  users.extraUsers.metron = {
+    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    name = "metron";
+    uid = 1005;
+  };
+
+  virtualisation.virtualbox.host = {
+    enable = false;
+    headless = true;
+  };
 }

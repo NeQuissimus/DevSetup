@@ -13,6 +13,10 @@
 
   boot.loader.systemd-boot.enable = true;
 
+  boot.kernel.sysctl = {
+    "vm.max_map_count" = 262144; # Increase map count for ElasticSearch
+  };
+
   networking.hostName = "nixus";
 
   networking.hosts = {

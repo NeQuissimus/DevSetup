@@ -16,16 +16,25 @@ with lib;
     initrd.kernelModules = [
       "ahci"
       "aesni-intel"
-      "bridge" # Docker
-      "br_netfilter" # Docker
       "fuse" # KBFS
-      "nf_nat" # Docker
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
-      "veth" # Docker
       "vfat" # /boot
+    ] ++ optionals (config.virtualisation.docker.enable) [
+      "bridge" # Docker
+      "br_netfilter" # Docker
+      "nf_nat" # Docker
+      "veth" # Docker
       "xt_conntrack" # Docker
       "xt_nat" # Docker
+    ] ++ optionals (config.virtualisation.docker.enable && !config.virtualisation.docker.liveRestore) [
+      "ip_vs" # Docker Swarm
+      "vxlan" # Docker Swarm
+    ] ++ optionals (config.virtualisation.virtualbox.host.enable) [
+      "vboxpci" # VirtualBox
+      "vboxnetflt" # VirtualBox
+      "vboxnetadp" # VirtualBox
+      "vboxdrv" # VirtualBox
     ];
 
     kernel.sysctl = {

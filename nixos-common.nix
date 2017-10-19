@@ -301,6 +301,7 @@
   virtualisation = {
     docker = {
       enable = true;
+      # liveRestore = false; # Docker Swarm
       storageDriver = if (config.fileSystems."/".fsType == "btrfs") then "btrfs" else null;
     };
   };

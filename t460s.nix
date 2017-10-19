@@ -5,10 +5,6 @@
 
   boot.initrd.kernelModules = [
     "tun" # VPN
-    "vboxpci" # VirtualBox
-    "vboxnetflt" # VirtualBox
-    "vboxnetadp" # VirtualBox
-    "vboxdrv" # VirtualBox
   ];
 
   boot.loader.systemd-boot.enable = true;

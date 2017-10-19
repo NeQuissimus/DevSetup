@@ -237,48 +237,6 @@
 
     tlp.enable = true;
     upower.enable = true;
-
-    xserver = {
-      autorun = true;
-      defaultDepth = 24;
-
-      displayManager = {
-        lightdm = {
-          background = "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/artwork/gnome/nix-wallpaper-simple-blue.png";
-          enable = true;
-
-          extraSeatDefaults = ''
-            greeter-show-manual-login=true
-            greeter-hide-users=true
-          '';
-
-          greeters.gtk = {
-            extraConfig = ''
-              default-user-image = ${pkgs.nixos-icons}/share/icons/hicolor/64x64/apps/nix-snowflake.png
-              position = 50%,center -300,end
-            '';
-
-            theme = {
-              name = "Numix";
-              package = pkgs.numix-gtk-theme;
-            };
-          };
-        };
-
-        xserverArgs = [ "-logfile" "/var/log/X.log" ];
-      };
-
-      enable = true;
-      exportConfiguration = true;
-
-      synaptics = {
-        enable = true;
-        tapButtons = false;
-        twoFingerScroll = true;
-      };
-
-      xkbOptions = "ctrl:nocaps";
-    };
   };
 
   system.stateVersion = "17.09";
@@ -301,7 +259,9 @@
   virtualisation = {
     docker = {
       enable = true;
+      enableOnBoot = false;
       # liveRestore = false; # Docker Swarm
+      package = pkgs.docker-edge;
       storageDriver = if (config.fileSystems."/".fsType == "btrfs") then "btrfs" else null;
     };
   };

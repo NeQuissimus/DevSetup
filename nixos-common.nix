@@ -259,7 +259,6 @@
   virtualisation = {
     docker = {
       enable = true;
-      enableOnBoot = false;
       # liveRestore = false; # Docker Swarm
       package = pkgs.docker-edge;
       storageDriver = if (config.fileSystems."/".fsType == "btrfs") then "btrfs" else null;

@@ -1,10 +1,27 @@
 { config, lib, pkgs, ... }: rec {
-  config.programs.sway = {
-    enable = true;
-  };
+   config.services.xserver = {
+    autorun = true;
+    defaultDepth = 24;
 
-  config.hardware.opengl = {
+    displayManager = {
+      gdm = {
+        enable = true;
+      };
+    };
+
     enable = true;
-    extraPackages = [ pkgs.vaapiIntel ];
+    exportConfiguration = true;
+
+    synaptics = {
+      enable = true;
+      tapButtons = false;
+      twoFingerScroll = true;
+    };
+
+    windowManager.sway = {
+      enable = true;
+    };
+
+    xkbOptions = "ctrl:nocaps";
   };
 }

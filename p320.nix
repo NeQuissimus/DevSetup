@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
+  imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
   boot.initrd.kernelModules = [
     "tun" # VPN
@@ -12,6 +12,12 @@
   boot.kernel.sysctl = {
     "vm.max_map_count" = 262144; # Increase map count for ElasticSearch
   };
+
+  environment.systemPackages = with pkgs; [
+    ammonite
+    kubernetes
+    sbt
+  ];
 
   networking.hostName = "nixus-desktop";
 

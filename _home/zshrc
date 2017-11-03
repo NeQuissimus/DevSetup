@@ -51,6 +51,4 @@ alias kube='sudo su - kubernetes'
 alias nix='sudo su - nix'
 alias ruby='sudo su - ruby'
 
-eval $(ssh-agent -s) >> /dev/null
-
 unsetopt correct_all

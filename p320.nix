@@ -15,6 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     ammonite
+    hipchat
     kubernetes
     sbt
   ];

@@ -78,7 +78,6 @@
 
     systemPackages = with pkgs; [
       # Basics
-      alacritty
       autocutsel
       binutils
       conky
@@ -91,6 +90,7 @@
       jq
       oh-my-zsh
       rofi
+      rxvt_unicode-with-plugins
       skopeo
       vscode
     ];
@@ -237,6 +237,7 @@
 
     tlp.enable = true;
     upower.enable = true;
+    urxvtd.enable = true;
   };
 
   system.stateVersion = "17.09";

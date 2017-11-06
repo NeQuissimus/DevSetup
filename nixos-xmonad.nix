@@ -91,7 +91,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
      | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [ xK_0 ])
      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
   ++ [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-     | (key, sc) <- zip [xK_q, xK_e, xK_w] [0, 1, 2]
+     | (key, sc) <- zip [xK_q, xK_w] [0, 1]
      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 main = do
   xmproc <- spawnPipe "${pkgs.haskellPackages.xmobar}/bin/xmobar /etc/xmobar/config"
@@ -107,7 +107,7 @@ main = do
     manageHook = myManageHook <+> manageDocks <+> manageHook def,
     modMask = mod4Mask,
     normalBorderColor = "#444444",
-    terminal = "${pkgs.alacritty}/bin/alacritty",
+    terminal = "${pkgs.rxvt_unicode-with-plugins}/bin/urxvtc",
     workspaces = myWorkspaces
   }
   '';
@@ -131,7 +131,7 @@ main = do
        , allDesktops = True
        , overrideRedirect = False
        , commands = [ Run DynNetwork [ "--template" , "<dev>: <rx>kB/s | <tx>kB/s" ] 10
-                    , Run MultiCpu [ "--template" , "Cpu: <total0>% | <total1>% | <total2>% | <total3>%" ] 10
+                    , Run MultiCpu [ "--template" , "Cpu: <total0>% | <total1>% | <total2>% | <total3>% | <total4>% | <total5>% | <total6>% | <total7>%" ] 10
                     , Run Memory ["-t","Mem: <used>"] 10
                     , Run Com "uname" ["-r"] "" 36000
                     , Run Date "%A, %d.%m.%Y %H:%M:%S" "date" 10

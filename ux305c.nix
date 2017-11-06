@@ -11,6 +11,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    chromium
     encryptr
     keybase-gui
     sbt

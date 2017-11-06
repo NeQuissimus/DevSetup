@@ -15,8 +15,10 @@
 
   environment.systemPackages = with pkgs; [
     ammonite
+    chromium
     hipchat
     kubernetes
+    nox
     sbt
   ];
 

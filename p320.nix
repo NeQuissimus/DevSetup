@@ -56,7 +56,7 @@
   ];
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP1 --crtc 1 --primary --auto --pos 0x0 --output HDMI2 --crtc 2 --rotate left --auto --pos 1920x0
+    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP1 --crtc 1 --primary --auto --pos 0x400 --output HDMI2 --crtc 2 --rotate left --auto --pos 1920x0
     ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &

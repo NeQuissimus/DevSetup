@@ -43,6 +43,7 @@ function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
 function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper zookeeper:3.4.10 }
 function kafka_consume() { docker run -it --link kafka:kafka --entrypoint /bin/sh wurstmeister/kafka:0.10.2.1 -c "/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic $1" }
 function kafka_produce() { docker run -it --link kafka:kafka --entrypoint /bin/sh wurstmeister/kafka:0.10.2.1 -c "/opt/kafka/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic $1" }
+function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
 function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tun0; sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0 }
 
 # User switch

@@ -61,7 +61,7 @@ with lib;
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };
 
-    kernelPackages = pkgs.linuxPackages_hardened_copperhead;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_hardened_copperhead;
 
     kernelParams = [
       "nohibernate" # Disable hibernation

@@ -13,6 +13,8 @@
     "vm.max_map_count" = 262144; # Increase map count for ElasticSearch
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_4_13;
+
   environment.systemPackages = with pkgs; [
     ammonite
     chromium
@@ -71,8 +73,10 @@
     "HDMI2" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI2"; }
   ];
 
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+
   virtualisation.virtualbox.host = {
-    enable = false;
+    enable = true;
     headless = true;
   };
 }

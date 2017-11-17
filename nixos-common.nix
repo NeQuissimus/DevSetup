@@ -120,6 +120,7 @@
 
   networking = {
     extraHosts = (lib.fileContents ./etc/hosts);
+    nameservers = [ "127.0.0.1" ];
   };
 
   nix = {
@@ -195,10 +196,12 @@
   services = {
     dnsmasq = {
       extraConfig = ''
-        all-servers
+        strict-order
         cache-size=2000
         local-ttl=3600
         min-cache-ttl=3600
+
+        conf-file=/etc/dnsmasq-conf.conf
 
         address=/bmcm-security-esentire.net/0.0.0.0
         address=/cowrk.me/0.0.0.0
@@ -211,13 +214,17 @@
         address=/threatlab.io/0.0.0.0
       '';
 
-      resolveLocalQueries = true;
+      resolveLocalQueries = false;
 
+      # This list will be flipped
       servers = [
+        "64.6.64.6" # Verisign
+        "64.6.65.6" # Verisign
         "10.1.115.20" # Internal
         "10.1.114.53" # Internal
         "10.3.114.53" # Internal
         "10.3.115.20" # Internal
+        "9.9.9.9" # Quad9
       ];
     };
 

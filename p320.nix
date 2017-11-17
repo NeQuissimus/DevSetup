@@ -53,6 +53,12 @@
   };
   services.keybase.enable = true;
 
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+    permitRootLogin = "no";
+  };
+
   security.pki.certificates = [
     (lib.fileContents ./registry.crt)
   ];
@@ -74,6 +80,10 @@
   ];
 
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+
+  users.users.nequi.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
+  ];
 
   virtualisation.virtualbox.host = {
     enable = true;

@@ -100,6 +100,7 @@
 
   virtualisation.virtualbox.host = {
     enable = false;
-    headless = true;
+    headless = false;
   };
 }
+

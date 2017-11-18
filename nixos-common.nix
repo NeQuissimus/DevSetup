@@ -71,6 +71,8 @@
               whitespace = fix
     '';
 
+    etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
+
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
       XDG_CONFIG_HOME = "/etc/.config";
@@ -119,7 +121,6 @@
   };
 
   networking = {
-    extraHosts = (lib.fileContents ./etc/hosts);
     nameservers = [ "127.0.0.1" ];
   };
 
@@ -196,6 +197,8 @@
   services = {
     dnsmasq = {
       extraConfig = ''
+        no-hosts
+        addn-hosts=/etc/dnsmasq.hosts
         strict-order
         cache-size=2000
         local-ttl=3600

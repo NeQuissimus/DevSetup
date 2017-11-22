@@ -89,12 +89,6 @@ with lib;
     trustedUsers = [];
   };
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    virtualbox = pkgs.virtualbox.override {
-      enable32bitGuests = false;
-    };
-  };
-
   security = {
     apparmor.enable = true;
     chromiumSuidSandbox.enable = true;

@@ -13,8 +13,6 @@
     "vm.max_map_count" = 262144; # Increase map count for ElasticSearch
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_4_13;
-
   environment.systemPackages = with pkgs; [
     ammonite
     chromium
@@ -86,7 +84,6 @@
   ];
 
   virtualisation.virtualbox.host = {
-    enable = true;
-    headless = true;
+    enable = false;
   };
 }

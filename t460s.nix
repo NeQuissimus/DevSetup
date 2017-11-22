@@ -28,6 +28,7 @@
     "10.1.110.57" = ["registry.internal" "portus-1.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
+    "172.16.0.254" = ["captiveportal-login.esentire.com"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };

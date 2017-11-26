@@ -16,7 +16,6 @@
     keybase-gui
     sbt
     nox
-    vulnix
   ];
 
   networking.hostName = "nixus";

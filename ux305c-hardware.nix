@@ -15,7 +15,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/c2d11010-19f1-4724-99d9-0821e033bc50";
       fsType = "btrfs";
-      options = [ "noatime" "compress=lzo" "ssd" "discard" "space_cache" "commit=120" "subvol=root" ];
+      options = [ "noatime" "compress=lzo" "ssd" "space_cache" "commit=120" "subvol=root" ];
     };
 
   fileSystems."/boot" =

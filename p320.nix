@@ -18,9 +18,12 @@
     chromium
     hipchat
     kubernetes
+    openjdk8
     nox
     sbt
   ];
+
+  environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
 
   networking.hostName = "nixus-desktop";
 

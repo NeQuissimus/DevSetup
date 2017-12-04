@@ -113,7 +113,7 @@ with lib;
   system.autoUpgrade = {
     channel = mkDefault "https://nixos.org/channels/nixos-17.09";
     dates = "9:00";
-    enable = true;
+    enable = false;
   };
 
   users.users.root.shell = pkgs.nologin; # Make sure to have a user with a password :D

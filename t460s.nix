@@ -64,41 +64,6 @@
     "eDP1" { output = "eDP1"; }
   ];
 
-  users.extraUsers.kubernetes = {
-    extraGroups = [ "docker" ];
-    isNormalUser = true;
-    name = "kubernetes";
-    uid = 1002;
-  };
-
-  users.extraUsers.nix = {
-    extraGroups = [ "docker" ];
-    isNormalUser = true;
-    name = "nix";
-    uid = 1003;
-  };
-
-  users.extraUsers.ruby = {
-    extraGroups = [ "docker" ];
-    isNormalUser = true;
-    name = "ruby";
-    uid = 1004;
-  };
-
-  users.extraUsers.scala = {
-    extraGroups = [ "docker" ];
-    isNormalUser = true;
-    name = "scala";
-    uid = 1001;
-  };
-
-  users.extraUsers.metron = {
-    extraGroups = [ "docker" ];
-    isNormalUser = true;
-    name = "metron";
-    uid = 1005;
-  };
-
   virtualisation.virtualbox.host = {
     enable = false;
     headless = false;

@@ -131,7 +131,7 @@ main = do
        , allDesktops = True
        , overrideRedirect = False
        , commands = [ Run DynNetwork [ "--template" , "<dev>: <rx>kB/s | <tx>kB/s" ] 10
-                    , Run MultiCpu [ "--template" , "Cpu: <total0>% | <total1>% | <total2>% | <total3>% | <total4>% | <total5>% | <total6>% | <total7>%" ] 10
+                    , Run Cpu [ "--template" , "Cpu: <bar>%" ] 10
                     , Run Memory ["-t","Mem: <used>"] 10
                     , Run Com "uname" ["-r"] "" 36000
                     , Run Date "%A, %d.%m.%Y %H:%M:%S" "date" 10

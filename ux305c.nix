@@ -12,10 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     chromium
-    encryptr
     keybase-gui
-    sbt
-    nox
+    sbt-extras
   ];
 
   networking.hostName = "nixus";

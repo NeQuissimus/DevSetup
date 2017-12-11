@@ -18,9 +18,8 @@
     chromium
     hipchat
     kubernetes
-    openjdk8
     nox
-    sbt
+    sbt-extras
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
@@ -40,6 +39,9 @@
     "10.1.110.57" = ["registry.internal" "portus-1.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
+    "10.203.1.101" = ["kubeapi.test"];
+    #"10.203.1.106" = ["kubeapi.test"];
+    #"10.203.1.107" = ["kubeapi.test"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };

@@ -196,6 +196,9 @@
 
   services = {
     dnsmasq = {
+      alwaysKeepRunning = true;
+      enable = true;
+
       extraConfig = ''
         no-hosts
         addn-hosts=/etc/dnsmasq.hosts
@@ -218,19 +221,6 @@
       '';
 
       resolveLocalQueries = false;
-
-      # This list will be flipped
-      servers = [
-        "64.6.64.6" # Verisign
-        "64.6.65.6" # Verisign
-        "192.168.114.199" # Internal colo
-        "10.1.115.20" # Internal
-        "10.1.114.53" # Internal
-        "10.3.114.53" # Internal
-        "10.3.115.20" # Internal
-        "10.1.120.31" # Internal
-        "9.9.9.9" # Quad9
-      ];
     };
 
     nscd.enable = false;

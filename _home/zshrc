@@ -47,3 +47,5 @@ function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
 function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tun0; sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0 }
 
 unsetopt correct_all
+
+type -p kubectl >> /dev/null && source <(kubectl completion zsh)

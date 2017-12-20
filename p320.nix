@@ -17,9 +17,19 @@
     ammonite
     chromium
     hipchat
-    kubernetes
     nox
     sbt-extras
+
+    ((pkgs.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
+      version = "1.9.0";
+      name = "kubectl-1.9.0";
+      src = fetchFromGitHub {
+        owner = "kubernetes";
+        repo = "kubernetes";
+        rev = "v1.9.0";
+        sha256 = "03383j5n66r5qv3y03g3v9vmvmzhpj3fzparsz1s22x1zzr4qg5a";
+      };
+    }))
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

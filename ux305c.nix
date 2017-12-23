@@ -11,6 +11,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    ammonite
     chromium
     keybase-gui
     sbt-extras

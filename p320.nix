@@ -21,13 +21,13 @@
     sbt-extras
 
     ((pkgs.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.9.0";
-      name = "kubectl-1.9.0";
+      version = "1.9.1";
+      name = "kubectl-1.9.1";
       src = fetchFromGitHub {
         owner = "kubernetes";
         repo = "kubernetes";
-        rev = "v1.9.0";
-        sha256 = "03383j5n66r5qv3y03g3v9vmvmzhpj3fzparsz1s22x1zzr4qg5a";
+        rev = "v1.9.1";
+        sha256 = "1dmq2g138h7fsswmq4l47b44gsl9anmm3ywqyi7y48f1rkvc11mk";
       };
     }))
   ];
@@ -49,6 +49,7 @@
     "10.1.110.57" = ["registry.internal" "portus-1.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
+    "10.1.204.234" = ["soc.uat"];
     "10.203.1.101" = ["kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.test"];
     #"10.203.1.107" = ["kubeapi.test"];

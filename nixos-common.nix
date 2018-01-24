@@ -85,7 +85,7 @@
       binutils
       conky
       exa
-      firefox-unwrapped
+      firefox
       gitFull
       gnupg1compat
       htop

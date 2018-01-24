@@ -3,7 +3,9 @@
 BASEDIR="$(pwd -P $(dirname $0))"
 USERJS="${BASEDIR}/_home/mozilla/user.js"
 
-curl -o "${USERJS}" https://raw.githubusercontent.com/pyllyukko/user.js/master/user.js
+mkdir -p "${BASEDIR}/_home/mozilla"
+
+curl -o "${USERJS}" https://raw.githubusercontent.com/pyllyukko/user.js/relaxed/user.js
 
 # Clean up whitespace
 sed -i 's/\s\+/ /g' "${USERJS}"

@@ -57,6 +57,11 @@
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
+  nixpkgs.config = {
+    firefox.enableAdobeFlash = true;
+    firefox.enableAdobeFlashDRM = true;
+  };
+
   services.kbfs = {
     enable = true;
     mountPoint = "/keybase";

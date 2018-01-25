@@ -21,13 +21,13 @@
     sbt-extras
 
     ((pkgs.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.9.1";
-      name = "kubectl-1.9.1";
+      version = "1.9.2";
+      name = "kubectl-1.9.2";
       src = fetchFromGitHub {
         owner = "kubernetes";
         repo = "kubernetes";
-        rev = "v1.9.1";
-        sha256 = "1dmq2g138h7fsswmq4l47b44gsl9anmm3ywqyi7y48f1rkvc11mk";
+        rev = "v1.9.2";
+        sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
       };
     }))
   ];

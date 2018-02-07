@@ -50,9 +50,10 @@
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
     "10.1.204.234" = ["soc.uat"];
-    "10.203.1.101" = ["kubeapi.test"];
-    #"10.203.1.106" = ["kubeapi.test"];
-    #"10.203.1.107" = ["kubeapi.test"];
+    "10.203.0.31" = ["kubeapi.qa"];
+    "10.203.1.101" = ["kubeapi.dev"];
+    #"10.203.1.106" = ["kubeapi.dev"];
+    #"10.203.1.107" = ["kubeapi.dev"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
@@ -116,6 +117,8 @@
   users.users.nequi.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
   ];
+
+  virtualisation.docker.package = pkgs.docker-edge;
 
   virtualisation.virtualbox.host = {
     enable = false;

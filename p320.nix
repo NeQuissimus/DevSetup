@@ -15,21 +15,13 @@
 
   environment.systemPackages = with pkgs; [
     ammonite
-    chromium
+    google-chrome
     hipchat
+    kubectl
+    kubernetes-helm
+    minikube
     nox
     sbt-extras
-
-    ((pkgs.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.9.2";
-      name = "kubectl-1.9.2";
-      src = fetchFromGitHub {
-        owner = "kubernetes";
-        repo = "kubernetes";
-        rev = "v1.9.2";
-        sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
-      };
-    }))
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
@@ -61,6 +53,19 @@
   nixpkgs.config = {
     firefox.enableAdobeFlash = true;
     firefox.enableAdobeFlashDRM = true;
+  };
+
+  nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
+    kubernetes = (super.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
+      version = "1.9.2";
+      name = "kubectl-1.9.2";
+      src = pkgs.fetchFromGitHub {
+        owner = "kubernetes";
+        repo = "kubernetes";
+        rev = "v1.9.2";
+        sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
+      };
+    });
   };
 
   services.kbfs = {
@@ -121,6 +126,6 @@
   virtualisation.docker.package = pkgs.docker-edge;
 
   virtualisation.virtualbox.host = {
-    enable = false;
+    enable = true;
   };
 }

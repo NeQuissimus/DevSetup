@@ -33,7 +33,6 @@ alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.co
 
 function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack }
 function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
-function docker_kafka() { docker kill kafka; docker rm kafka; docker run -h $(hostname) -d -p 9092:9092 --name kafka --link zookeeper:zookeeper -e KAFKA_ZOOKEEPER_CONNECT="zookeeper:2181" -e KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://$(hostname):9092" -e KAFKA_ADVERTISED_PORT=9092 registry.internal/common/kafka:1.0.0 }
 function docker_kazoo() { docker run --rm --name kazoo --link zookeeper:zookeeper -v $(pwd)/$1:/config.json "registry.internal/soa/kazoo:0.0.1" }
 function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles }
 function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine }
@@ -41,8 +40,22 @@ function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -
 function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7 }
 function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
 function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper zookeeper:3.4.10 }
-function kafka_consume() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/common/kafka:1.0.0 -c "/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic $1" }
-function kafka_produce() { docker run -it --link kafka:kafka --entrypoint /bin/sh registry.internal/common/kafka:1.0.0 -c "/opt/kafka/bin/kafka-console-producer.sh --broker-list kafka:9092 --topic $1" }
+
+function docker_kafka() {
+  docker kill kafka
+  docker_zk
+  docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh solsson/kafka:1.0.0 ./config/server.properties --override zookeeper.connect=zookeeper:2181
+}
+function kafka_consume() {
+  docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh solsson/kafka:1.0.0 --bootstrap-server kafka:9092 --topic $@
+}
+function kafka_produce() {
+  docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.0.0 --broker-list kafka:9092 --topic $1
+}
+function kafka_topic() {
+  docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper solsson/kafka:1.0.0 --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
+}
+
 function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
 function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tun0; sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0 }
 

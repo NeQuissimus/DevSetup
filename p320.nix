@@ -18,8 +18,8 @@
     google-chrome
     hipchat
     kubectl
-    kubernetes-helm
-    minikube
+    # kubernetes-helm
+    # minikube
     nox
     sbt-extras
   ];
@@ -126,6 +126,6 @@
   virtualisation.docker.package = pkgs.docker-edge;
 
   virtualisation.virtualbox.host = {
-    enable = true;
+    enable = false;
   };
 }

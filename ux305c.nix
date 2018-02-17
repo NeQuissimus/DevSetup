@@ -14,9 +14,9 @@
     ammonite
     chromium
     keybase-gui
-    kubectl
-    kubernetes-helm
-    minikube
+    # kubectl
+    # kubernetes-helm
+    # minikube
     sbt-extras
   ];
 
@@ -81,6 +81,6 @@
   virtualisation.docker.package = pkgs.docker-edge;
 
   virtualisation.virtualbox.host = {
-    enable = true;
+    enable = false;
   };
 }

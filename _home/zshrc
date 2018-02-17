@@ -62,3 +62,4 @@ function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tu
 unsetopt correct_all
 
 type -p kubectl >> /dev/null && source <(kubectl completion zsh)
+type -p minikube >> /dev/null && source <(minikube completion zsh)

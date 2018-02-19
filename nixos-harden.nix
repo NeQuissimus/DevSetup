@@ -5,10 +5,10 @@ with lib;
 {
   boot = {
     blacklistedKernelModules = [
-        # Obscure network protocols
-        "ax25"
-        "netrom"
-        "rose"
+      # Obscure network protocols
+      "ax25"
+      "netrom"
+      "rose"
     ];
 
     cleanTmpDir = true;

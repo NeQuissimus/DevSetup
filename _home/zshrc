@@ -1,5 +1,5 @@
 ZSH_THEME="nequissimus"
-ZSH_CUSTOM="/home/nequi/dev/ext/nequi-zsh"
+ZSH_CUSTOM="/home/nequi/dev/nequi-zsh"
 
 CASE_SENSITIVE="false"
 HIST_STAMPS="dd.mm.yyyy"

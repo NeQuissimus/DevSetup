@@ -148,6 +148,7 @@
 
     maxJobs = 8;
     nrBuildUsers = 30;
+    package = pkgs.nixUnstable;
     useSandbox = true;
   };
 
@@ -258,12 +259,16 @@
       name = "nequi";
       uid = 1000;
     };
+
+    users.docker = {
+      subUidRanges = [ { startUid = 100000; count = 65536; } ];
+      subGidRanges = [ { startGid = 100000; count = 65536; } ];
+    };
   };
 
   virtualisation = {
     docker = {
       enable = true;
-      storageDriver = if (config.fileSystems."/".fsType == "btrfs") then "btrfs" else null;
     };
   };
 }

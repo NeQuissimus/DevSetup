@@ -13,6 +13,9 @@ export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 
 [[ -e ${ZSH}/oh-my-zsh.sh ]] && source ${ZSH}/oh-my-zsh.sh
 
+bindkey "^[Od" backward-word
+bindkey "^[Oc" forward-word
+
 alias diff='diff --color'
 alias docker_clean_dangling='docker images -qf dangling=true | xargs -r docker rmi'
 alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'

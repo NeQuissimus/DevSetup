@@ -13,7 +13,6 @@
   environment.systemPackages = with pkgs; [
     ammonite
     chromium
-    keybase-gui
     # kubectl
     # kubernetes-helm
     # minikube
@@ -48,7 +47,7 @@
   '';
 
   services.kbfs = {
-    enable = true;
+    enable = false;
     mountPoint = "/keybase";
     extraFlags = [
       "-label kbfs"
@@ -56,7 +55,7 @@
     ];
   };
 
-  services.keybase.enable = true;
+  services.keybase.enable = false;
 
   services.dnsmasq.servers = [
     "9.9.9.9"

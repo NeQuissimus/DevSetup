@@ -84,6 +84,7 @@
       autocutsel
       binutils
       conky
+      dnstools
       exa
       firefox
       gitFull
@@ -104,7 +105,7 @@
 
     fonts = with pkgs; [
       dejavu_fonts
-      font-awesome-ttf
+      font-awesome_4
     ];
 
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
@@ -148,7 +149,6 @@
 
     maxJobs = 8;
     nrBuildUsers = 30;
-    package = pkgs.nixUnstable;
     useSandbox = true;
   };
 

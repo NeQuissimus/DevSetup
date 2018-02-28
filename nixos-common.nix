@@ -81,6 +81,7 @@
 
     systemPackages = with pkgs; [
       # Basics
+      alsaUtils
       autocutsel
       binutils
       conky

@@ -17,7 +17,7 @@
     ammonite
     google-chrome
     hipchat
-    kubectl
+    # kubectl
     # kubernetes-helm
     # minikube
     nox
@@ -60,26 +60,19 @@
 
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
     kubernetes = (super.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.9.2";
-      name = "kubectl-1.9.2";
+      version = "1.10.0-beta.0";
+      name = "kubectl-1.10.0-beta.0";
       src = pkgs.fetchFromGitHub {
         owner = "kubernetes";
         repo = "kubernetes";
-        rev = "v1.9.2";
-        sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
+        rev = "v1.10.0-beta.0";
+        sha256 = "1hai1pp1d0g8kf2kga8qp9lbcpab4ar0j77yr4mmdy8ivhr634xr";
       };
     });
   };
 
-  services.kbfs = {
-    enable = true;
-    mountPoint = "/keybase";
-    extraFlags = [
-      "-label kbfs"
-      "-mount-type normal"
-    ];
-  };
-  services.keybase.enable = true;
+  services.kbfs.false;
+  services.keybase.enable = false;
 
   # List will be flipped
   services.dnsmasq.servers = [

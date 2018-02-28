@@ -12,10 +12,6 @@
 
   environment.systemPackages = with pkgs; [
     ammonite
-    chromium
-    # kubectl
-    # kubernetes-helm
-    # minikube
     sbt-extras
   ];
 
@@ -46,15 +42,7 @@
     User ubuntu
   '';
 
-  services.kbfs = {
-    enable = false;
-    mountPoint = "/keybase";
-    extraFlags = [
-      "-label kbfs"
-      "-mount-type normal"
-    ];
-  };
-
+  services.kbfs.enable = false;
   services.keybase.enable = false;
 
   services.dnsmasq.servers = [
@@ -78,8 +66,4 @@
   services.xserver.videoDriver = "intel";
 
   virtualisation.docker.package = pkgs.docker-edge;
-
-  virtualisation.virtualbox.host = {
-    enable = false;
-  };
 }

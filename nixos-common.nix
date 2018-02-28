@@ -105,6 +105,7 @@
 
     fonts = with pkgs; [
       dejavu_fonts
+      fira-code
       font-awesome_4
     ];
 

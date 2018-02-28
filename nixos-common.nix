@@ -84,7 +84,7 @@
       autocutsel
       binutils
       conky
-      dnstools
+      dnsutils
       exa
       firefox
       gitFull
@@ -106,7 +106,7 @@
     fonts = with pkgs; [
       dejavu_fonts
       fira-code
-      font-awesome_4
+      font-awesome-ttf # font-awesome_4
     ];
 
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];

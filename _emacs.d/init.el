@@ -1,4 +1,11 @@
 ;; global variables
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setq
  inhibit-startup-screen t
  create-lockfiles nil
@@ -9,6 +16,11 @@
  use-package-always-ensure t
  show-trailing-whitespace t
  sentence-end-double-space nil)
+
+(setq whitespace-style '(face trailing tabs))
+(custom-set-faces
+ '(whitespace-tab ((t (:background "red")))))
+(global-whitespace-mode)
 
 ;; Load files from disk when changed
 (global-auto-revert-mode t)
@@ -28,31 +40,15 @@
 
 ;; global keybindings
 (global-unset-key (kbd "C-z"))
+(global-set-key (kbd "C-x f") 'projectile-find-file)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
-;; the package manager
-(require 'package)
-(setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ("org" . "http://orgmode.org/elpa/")
-                    ("melpa" . "http://melpa.org/packages/")
-                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
- package-archive-priorities '(("melpa-stable" . 1)))
-
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-
-(use-package scala-mode
-  :interpreter
-  ("scala" . scala-mode))
-
-(use-package groovy-mode
-  :mode (("build\\.gradle" . groovy-mode)
-         ("Jenkinsfile" . groovy-mode)
-         ("Jenkinsfile.test" . groovy-mode)))
+;; Allocate more memory
+(setq gc-cons-threshold 20000000)
 
 (ac-config-default)
 
+(require 'smartparens-config)
+(smartparens-global-mode)
+
+(projectile-global-mode)

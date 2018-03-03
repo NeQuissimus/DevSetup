@@ -42,6 +42,11 @@
     User ubuntu
   '';
 
+  services.emacs = {
+    enable = true;
+    package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
+  };
+
   services.kbfs.enable = false;
   services.keybase.enable = false;
 

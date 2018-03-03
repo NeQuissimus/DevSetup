@@ -33,3 +33,7 @@ nixpkgs/result
 bin/
 rootfs.tar.xz
 *.crt
+*~
+\#*\#
+_emacs.d/ac-comphist.dat
+_emacs.d/projectile-bookmarks.eld

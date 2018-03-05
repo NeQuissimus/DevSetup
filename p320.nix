@@ -71,7 +71,7 @@
     });
   };
 
-  services.kbfs.false;
+  services.kbfs.enable = false;
   services.keybase.enable = false;
 
   # List will be flipped

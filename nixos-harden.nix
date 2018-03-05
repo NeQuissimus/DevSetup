@@ -56,7 +56,7 @@ with lib;
       "net.ipv4.tcp_rfc1337" = 1; # Protect against tcp time-wait assassination hazards
       "net.ipv6.conf.all.accept_redirects" = 0; # Don't accept redirects
       "net.ipv6.conf.default.accept_redirects" = 0; # Don't accept redirects
-      "user.max_user_namespaces" = 0; # Disable user namespaces
+#      "user.max_user_namespaces" = 0; # Disable user namespaces, break Nix 2.0
       "vm.mmap_min_addr" = 65535; # Enforce memory beyond NULL space
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };

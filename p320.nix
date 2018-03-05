@@ -87,6 +87,11 @@
     "9.9.9.9" # Quad9
   ];
 
+  services.emacs = {
+    enable = true;
+    package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
+  };
+
   services.openssh = {
     enable = true;
     passwordAuthentication = false;

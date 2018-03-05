@@ -3,6 +3,7 @@ rec {
   services.xserver = {
     autorun = true;
     defaultDepth = 24;
+    desktopManager.xterm.enable = false;
 
     displayManager = {
       lightdm = {

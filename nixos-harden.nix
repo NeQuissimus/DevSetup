@@ -89,6 +89,10 @@ with lib;
     trustedUsers = [];
   };
 
+  nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
+    linuxPackages = pkgs.linuxPackages_copperhead_hardened;
+  };
+
   security = {
     apparmor.enable = true;
     chromiumSuidSandbox.enable = true;

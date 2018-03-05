@@ -9,6 +9,7 @@ in
     auto-complete
     dockerfile-mode
     magit
+    markdown-mode
     nix-mode
     projectile
     scala-mode

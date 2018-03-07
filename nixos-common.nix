@@ -107,7 +107,8 @@
     fonts = with pkgs; [
       dejavu_fonts
       fira-code
-      font-awesome-ttf # font-awesome_4
+      fira-code-symbols # https://github.com/tonsky/FiraCode/issues/211
+      font-awesome_4
     ];
 
     fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];

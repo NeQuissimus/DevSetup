@@ -106,6 +106,7 @@
 
     fonts = with pkgs; [
       dejavu_fonts
+      emacs-all-the-icons-fonts
       fira-code
       fira-code-symbols # https://github.com/tonsky/FiraCode/issues/211
       font-awesome_4

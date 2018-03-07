@@ -6,6 +6,9 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(load-theme 'zerodark t)
+(zerodark-setup-modeline-format)
+
 (setq
  inhibit-startup-screen t
  create-lockfiles nil
@@ -80,7 +83,7 @@
             ("\\(\\\\\\\\\\)"              #Xe106)
             ("\\(\\\\\\\\\\\\\\)"          #Xe107)
             ("\\({-\\)"                    #Xe108)
-            ("\\(\\[\\]\\)"                #Xe109)
+            ;;("\\(\\[\\]\\)"                #Xe109)
             ("\\(::\\)"                    #Xe10a)
             ("\\(:::\\)"                   #Xe10b)
             ("[^=]\\(:=\\)"                #Xe10c)

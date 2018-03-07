@@ -8,16 +8,20 @@ in
   ]) ++ (with epkgs.melpaPackages; [
     auto-complete
     dockerfile-mode
+    indent-guide
+    json-mode
     magit
     markdown-mode
     nix-mode
     projectile
     scala-mode
     smartparens
+    smooth-scrolling
     undo-tree
+    use-package
+    yaml-mode
     zerodark-theme
   ]) ++ (with epkgs.elpaPackages; [
-    auctex
     beacon
     nameless
   ]))

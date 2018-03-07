@@ -55,6 +55,8 @@
 (projectile-global-mode)
 
 ;;; Fira code
+(set-default-font "Fira Code")
+
 ;; This works when using emacs --daemon + emacsclient
 (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
 ;; This works when using emacs without server/client

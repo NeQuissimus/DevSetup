@@ -35,6 +35,7 @@
   environment = {
     etc.".config/.gitconfig".text = (lib.fileContents ./_home/gitconfig);
     etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
+    etc.".config/rofi/config".text = "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
 
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
@@ -200,7 +201,7 @@
     };
 
     redshift = {
-      enable = true;
+      enable = false;
       latitude = "43.18";
       longitude = "-80.38";
       temperature.night = 1900;

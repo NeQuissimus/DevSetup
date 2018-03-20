@@ -42,6 +42,8 @@
     User ubuntu
   '';
 
+  security.chromiumSuidSandbox.enable = false;
+
   services.emacs = {
     enable = true;
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };

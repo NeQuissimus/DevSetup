@@ -81,7 +81,7 @@ myManageHook = composeAll [
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
   ((modm, xK_Return), spawn $ XMonad.terminal conf),
   ((modm .|. shiftMask, xK_l), spawn "${pkgs.i3lock-fancy}/bin/i3lock-fancy"),
-  ((modm, xK_d), spawn "${pkgs.rofi}/bin/rofi -color-window '#393939, #393939, #268bd2' -color-normal '#393939, #ffffff, #393939, #268bd2, #ffffff' -color-active '#393939, #268bd2, #393939, #268bd2, #205171' -color-urgent '#393939, #f3843d, #393939, #268bd2, #ffc39c' -show run"),
+  ((modm, xK_d), spawn "${pkgs.rofi}/bin/rofi -show run"),
   ((modm, xK_w), kill),
   ((modm, xK_Left), windows W.focusUp),
   ((modm, xK_Right), windows W.focusDown),

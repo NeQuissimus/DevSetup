@@ -57,6 +57,21 @@
 
 (projectile-global-mode)
 
+;; Gitter + Irc
+(use-package erc
+  :commands erc erc-tls
+  :init
+  (setq
+   erc-prompt-for-password t ;; prefer ~/.authinfo for passwords
+   erc-hide-list '("JOIN" "PART" "QUIT")
+   erc-autojoin-channels-alist
+   '(("irc.gitter.im" "#scalaz/scalaz"))))
+
+(defun gitter()
+  "Connect to Gitter."
+  (interactive)
+  (erc-tls :server "irc.gitter.im" :port 6697))
+
 ;;; Fira code
 (set-default-font "Fira Code")
 

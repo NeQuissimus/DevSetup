@@ -14,6 +14,7 @@ in
     markdown-mode
     nix-mode
     projectile
+    restclient
     scala-mode
     smartparens
     smooth-scrolling

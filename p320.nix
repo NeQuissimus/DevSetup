@@ -38,6 +38,7 @@
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
     "10.1.110.167" = ["jira.esentire.com" "jira.internal"];
+    "10.1.110.178" = ["secnet.esentire.com"];
     "10.1.110.191" = ["hipchat.esentire.com"];
     "10.1.110.208" = ["jenkins.internal"];
     "10.1.110.243" = ["gerrit.internal"];
@@ -49,6 +50,7 @@
     "10.203.1.101" = ["kubeapi.dev"];
     #"10.203.1.106" = ["kubeapi.dev"];
     #"10.203.1.107" = ["kubeapi.dev"];
+    "172.16.0.254" = ["captiveportal-login.esentire.com"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };

@@ -15,6 +15,7 @@ in
     nix-mode
     projectile
     restclient
+    rust-mode
     scala-mode
     smartparens
     smooth-scrolling

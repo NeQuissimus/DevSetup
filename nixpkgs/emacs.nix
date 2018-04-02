@@ -14,12 +14,9 @@ in
     markdown-mode
     nix-mode
     projectile
-    restclient
-    rust-mode
     scala-mode
     smartparens
     smooth-scrolling
-    undo-tree
     use-package
     yaml-mode
     zerodark-theme

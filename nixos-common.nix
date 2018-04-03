@@ -183,6 +183,7 @@
         address=/esentire-email-security.com/0.0.0.0
         address=/esentireapis.com/0.0.0.0
         address=/esentiredns.com/0.0.0.0
+        address=/esentrie.com/0.0.0.0
         address=/eshoney.com/0.0.0.0
         address=/getlink.nl/0.0.0.0
         address=/philezone.com/0.0.0.0

@@ -35,7 +35,7 @@
   environment = {
     etc.".config/.gitconfig".text = (lib.fileContents ./_home/gitconfig);
     etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
-    etc.".config/rofi/config".text = "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
+    etc.".config/rofi/config".text = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
 
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";

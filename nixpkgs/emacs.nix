@@ -8,6 +8,7 @@ in
   ]) ++ (with epkgs.melpaPackages; [
     auto-complete
     dockerfile-mode
+    haskell-mode
     indent-guide
     json-mode
     magit

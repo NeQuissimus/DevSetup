@@ -15,6 +15,7 @@ in
     markdown-mode
     nix-mode
     projectile
+    rust-mode
     scala-mode
     smartparens
     smooth-scrolling

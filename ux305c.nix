@@ -34,9 +34,6 @@
         sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
       };
     });
-
-    jdk = pkgs.openjdk10 // { outputs = [ "out" ]; };
-    jre = lib.setName "openjre-${lib.getVersion pkgs.openjdk10.jre}" (lib.addMetaAttrs { outputsToInstall = [ "jre" ]; } (pkgs.openjdk10.jre // { outputs = [ "jre" ]; }));
   };
 
   programs.ssh.extraConfig = ''

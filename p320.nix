@@ -86,6 +86,7 @@
     "10.3.114.53" # Internal
     "10.3.115.20" # Internal
     "10.1.120.31" # Internal
+    "1.1.1.1" # CloudFlare
     "9.9.9.9" # Quad9
   ];
 

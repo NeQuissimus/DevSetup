@@ -115,7 +115,7 @@ with lib;
   };
 
   system.autoUpgrade = {
-    channel = mkDefault "https://nixos.org/channels/nixos-17.09";
+    channel = mkDefault "https://nixos.org/channels/nixos-18.03";
     dates = "9:00";
     enable = false;
   };

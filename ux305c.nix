@@ -40,6 +40,14 @@
     Host pine
     HostName 10.0.10.10
     User ubuntu
+
+    Host router
+    HostName 10.0.0.2
+    User nequi
+
+    Host pi
+    HostName 10.0.10.6
+    User pi
   '';
 
   security.chromiumSuidSandbox.enable = false;

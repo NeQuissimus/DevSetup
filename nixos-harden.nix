@@ -16,10 +16,11 @@ with lib;
     initrd.kernelModules = [
       "ahci"
       "aesni-intel"
-      "fuse" # KBFS
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
       "vfat" # /boot
+    ] ++ optionals (config.services.kbfs.enable) [
+      "fuse" # KBFS
     ] ++ optionals (config.virtualisation.docker.enable) [
       "bridge" # Docker
       "br_netfilter" # Docker
@@ -56,7 +57,7 @@ with lib;
       "net.ipv4.tcp_rfc1337" = 1; # Protect against tcp time-wait assassination hazards
       "net.ipv6.conf.all.accept_redirects" = 0; # Don't accept redirects
       "net.ipv6.conf.default.accept_redirects" = 0; # Don't accept redirects
-#      "user.max_user_namespaces" = 0; # Disable user namespaces, break Nix 2.0
+#      "user.max_user_namespaces" = 0; # Disable user namespaces, breaks Nix 2.0
       "vm.mmap_min_addr" = 65535; # Enforce memory beyond NULL space
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };
@@ -98,7 +99,10 @@ with lib;
     chromiumSuidSandbox.enable = lib.mkDefault true;
     hideProcessInformation = true;
     lockKernelModules = true;
-    sudo.enable = true;
+    sudo = {
+      enable = true;
+      wheelNeedsPassword = true;
+    };
   };
 
   services = {
@@ -112,6 +116,19 @@ with lib;
 
       servers = [ "127.0.0.1#43" ];
     };
+
+    fail2ban = {
+      daemonConfig = ''
+        [sshd]
+        maxretry = 3
+        findtime = 43200
+        bantime = 86400
+      '';
+
+      enable = true;
+    };
+
+    openssh.permitRootLogin = "no";
   };
 
   system.autoUpgrade = {

@@ -91,6 +91,7 @@
 
   networking = {
     nameservers = [ "127.0.0.1" ];
+    timeServers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
   };
 
   nix = {
@@ -111,12 +112,18 @@
 
     gc = {
       automatic = true;
-      dates = "12:00";
+      dates = "13:00";
       options = "--delete-older-than 60";
     };
 
     maxJobs = 8;
     nrBuildUsers = 30;
+
+    optimise = {
+      automatic = true;
+      dates = [ "14:00" ];
+    };
+
     useSandbox = true;
   };
 

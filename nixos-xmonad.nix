@@ -1,5 +1,9 @@
 { config, lib, pkgs, ... }:
 rec {
+  environment.systemPackages = with pkgs; [
+    haskellPackages.xmobar
+  ];
+
   services.xserver = {
     autorun = true;
     defaultDepth = 24;

@@ -4,13 +4,6 @@
   boot = {
     enableContainers = false;
 
-    initrd = {
-      postMountCommands = ''
-        chmod 777 /etc/xmonad # Hack because xmonad needs to write into the folder
-        chmod 777 /etc/.config # Hack, so that other things can write in here
-      '';
-    };
-
     kernel.sysctl = {
       "vm.dirty_background_ratio" = 2; # Write back to disk at %
       "vm.dirty_ratio" = 3; # Write back to disk at %
@@ -33,14 +26,10 @@
   };
 
   environment = {
-    etc.".config/.gitconfig".text = (lib.fileContents ./_home/gitconfig);
     etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
-    etc.".config/rofi/config".text = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
 
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
-      XDG_CONFIG_HOME = "/etc/.config";
-      XMONAD_CONFIG_DIR = "/etc/xmonad";
     };
 
     systemPackages = with pkgs; [
@@ -62,6 +51,8 @@
       rxvt_unicode-with-plugins
       skopeo
       vscode
+
+      ((pkgs.callPackage ./nixpkgs/nix-home.nix) { })
     ];
   };
 
@@ -159,8 +150,6 @@
       ohMyZsh = {
         enable = true;
       };
-
-      promptInit = (lib.fileContents ./_home/zshrc);
 
       syntaxHighlighting = {
         enable = true;

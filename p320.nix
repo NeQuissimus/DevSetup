@@ -117,7 +117,6 @@
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
-    permitRootLogin = "no";
   };
 
   security.pki.certificates = [

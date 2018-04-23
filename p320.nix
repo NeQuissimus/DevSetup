@@ -55,6 +55,12 @@
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
+  networking.firewall = {
+    allowedTCPPorts = [ 80 ];
+    allowPing = false;
+    enable = true;
+  };
+
   nixpkgs.config = {
     firefox.enableAdobeFlash = true;
     firefox.enableAdobeFlashDRM = true;
@@ -73,9 +79,6 @@
     });
   };
 
-  services.kbfs.enable = false;
-  services.keybase.enable = false;
-
   # List will be flipped
   services.dnsmasq.servers = [
     "64.6.64.6" # Verisign
@@ -93,6 +96,22 @@
   services.emacs = {
     enable = true;
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
+  };
+
+  services.kbfs.enable = false;
+  services.keybase.enable = false;
+
+  services.nginx = {
+    enable = false;
+    virtualHosts = {
+      localhost = {
+        forceSSL = false;
+        enableACME = false;
+        locations."/" = {
+          proxyPass = "http://localhost:3000";
+        };
+      };
+    };
   };
 
   services.openssh = {

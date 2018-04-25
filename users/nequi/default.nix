@@ -458,21 +458,24 @@ in mkHome {
       function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq }
       function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7 }
       function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
-      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper zookeeper:3.4.10 }
+      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper zookeeper:3.5 }
 
       function docker_kafka() {
         docker kill kafka
         docker_zk
-        docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh solsson/kafka:1.0.0 ./config/server.properties --override zookeeper.connect=zookeeper:2181
+        docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh solsson/kafka:1.1 ./config/server.properties --override zookeeper.connect=zookeeper:2181
       }
       function kafka_consume() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh solsson/kafka:1.0.0 --bootstrap-server kafka:9092 --topic $@
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh solsson/kafka:1.1 --bootstrap-server kafka:9092 --topic $@
       }
       function kafka_produce() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.0.0 --broker-list kafka:9092 --topic $1
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.1 --broker-list kafka:9092 --topic $1
+      }
+      function kafka_produce_key() {
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.1 --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"
       }
       function kafka_topic() {
-        docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper solsson/kafka:1.0.0 --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
+        docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper solsson/kafka:1.1 --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
       }
 
       function noxpr() { nix-shell -p nox --run "nox-review pr $1" }

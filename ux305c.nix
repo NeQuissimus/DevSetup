@@ -48,6 +48,10 @@
     Host pi
     HostName 10.0.10.6
     User pi
+
+    Host cyclops
+    HostName 10.0.0.52
+    User nequi
   '';
 
   security.chromiumSuidSandbox.enable = false;

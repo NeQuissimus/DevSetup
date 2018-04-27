@@ -1,4 +1,5 @@
-{ stdenv, python, fetchFromGitHub }:
+# { stdenv, python, fetchFromGitHub }:
+with import <nixpkgs>{};
 stdenv.mkDerivation rec {
   version = "0.3.3";
   name = "nix-home-${version}";
@@ -31,7 +32,7 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = https://github.com/sheenobu/nix-home;
     description = "Per-user configuration management via Nix";
-    licenses = [ stdenv.lib.license.mit ];
+    licenses = [ stdenv.lib.licenses.mit ];
     platforms = stdenv.lib.platforms.unix;
     inherit version;
   };

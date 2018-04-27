@@ -422,11 +422,15 @@ in mkHome {
       plugins=(docker git gitignore)
 
       export TERMINAL="xterm"
+      export TERM="linux"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
 
       export GOOGLE_APPLICATION_CREDENTIALS="''${HOME}/Documents/service_account.json"
       export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 
+      ZSH="''${ZSH:-/nix/var/nix/profiles/per-user/${user}/profile/share/oh-my-zsh}"
+
+      [[ -e "/home/${user}/.nix-profile/etc/profile.d/nix.sh" ]] && source  /home/${user}/.nix-profile/etc/profile.d/nix.sh
       [[ -e "''${ZSH}/oh-my-zsh.sh" ]] && source "''${ZSH}/oh-my-zsh.sh"
 
       bindkey "^[Od" backward-word

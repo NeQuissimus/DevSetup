@@ -62,7 +62,7 @@ with lib;
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };
 
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_copperhead_hardened;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_copperhead_lts;
 
     kernelParams = [
       "nohibernate" # Disable hibernation
@@ -91,7 +91,7 @@ with lib;
   };
 
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    linuxPackages = pkgs.linuxPackages_copperhead_hardened;
+    linuxPackages = pkgs.linuxPackages_copperhead_lts;
   };
 
   security = {

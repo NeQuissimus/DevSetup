@@ -1,5 +1,5 @@
-# { stdenv, python, fetchFromGitHub }:
-with import <nixpkgs>{};
+{ stdenv, python, fetchFromGitHub }:
+#with import <nixpkgs>{};
 stdenv.mkDerivation rec {
   version = "0.3.3";
   name = "nix-home-${version}";

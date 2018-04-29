@@ -2,7 +2,10 @@
 
 with lib;
 
-{
+let
+  # https://github.com/NixOS/nixpkgs/issues/39225
+  kernelPkgs = if (config.fileSystems."/".fsType == "zfs") then pkgs.linuxPackages_copperhead_lts else pkgs.linuxPackages_copperhead_stable;
+in {
   boot = {
     blacklistedKernelModules = [
       # Obscure network protocols
@@ -62,7 +65,7 @@ with lib;
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };
 
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_copperhead_lts;
+    kernelPackages = lib.mkDefault kernelPkgs;
 
     kernelParams = [
       "nohibernate" # Disable hibernation
@@ -91,7 +94,7 @@ with lib;
   };
 
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    linuxPackages = pkgs.linuxPackages_copperhead_lts;
+    linuxPackages = kernelPkgs;
   };
 
   security = {

@@ -10,6 +10,7 @@
     "zavl"
     "zcommon"
     "zfs"
+    "zlua"
     "znvpair"
     "zunicode"
   ];

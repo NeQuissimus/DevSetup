@@ -414,13 +414,14 @@ in mkHome {
     '';
 
     ".zshrc".content = ''
+      # oh-my-zsh
       ZSH_THEME="nequissimus"
       ZSH_CUSTOM="/home/${user}/dev/nequi-zsh"
-
       CASE_SENSITIVE="false"
       HIST_STAMPS="dd.mm.yyyy"
       plugins=(docker git gitignore)
 
+      # ENV
       export TERMINAL="xterm"
       export TERM="linux"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
@@ -428,18 +429,33 @@ in mkHome {
       export GOOGLE_APPLICATION_CREDENTIALS="''${HOME}/Documents/service_account.json"
       export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 
+      # ZSH for non-NixOS
       ZSH="''${ZSH:-/nix/var/nix/profiles/per-user/${user}/profile/share/oh-my-zsh}"
 
+      # Load oh-my-zsh
       [[ -e "/home/${user}/.nix-profile/etc/profile.d/nix.sh" ]] && source  /home/${user}/.nix-profile/etc/profile.d/nix.sh
       [[ -e "''${ZSH}/oh-my-zsh.sh" ]] && source "''${ZSH}/oh-my-zsh.sh"
 
+      # Fix ZSH
       bindkey "^[Od" backward-word
       bindkey "^[Oc" forward-word
 
+      function zle-line-init() {
+        if (( ''${+terminfo[smkx]} )); then
+         echoti smkx
+        fi
+      }
+
+      function zle-line-finish() {
+        if (( ''${+terminfo[rmkx]} )); then
+          echoti rmkx
+        fi
+      }
+
+      unsetopt correct_all
+
+      # Aliases
       alias diff='diff --color'
-      alias docker_clean_dangling='docker images -qf dangling=true | xargs -r docker rmi'
-      alias docker_clean_images='docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q)'
-      alias docker_clean='docker kill $(docker ps -q); docker rm $(docker ps -a -q)'
       alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'
       alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
       alias ls='exa'
@@ -452,41 +468,43 @@ in mkHome {
       alias volume_down='amixer -q sset Master 5%-; volume'
       alias volume_up='amixer -q sset Master 5%+; volume'
       alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
-      alias vpn='sudo openconnect --user=tsteinbach --authgroup=RSA cmbvpn.esentire.com --mtu 1492'
 
-      function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack }
+      # Docker tools
+      function docker_clean() { docker kill $(docker ps -q); docker rm $(docker ps -a -q) }
+      function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi }
+      function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q) }
       function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
-      function docker_kazoo() { docker run --rm --name kazoo --link zookeeper:zookeeper -v $(pwd)/$1:/config.json "registry.internal/soa/kazoo:0.0.1" }
+      function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
+
+      # Docker all the things
+      DOCKER_KAFKA_IMAGE="solsson/kafka:1.1"
+      DOCKER_ZOOKEEPER_IMAGE="zookeeper:3.5"
+      function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack }
       function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles }
       function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine }
       function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq }
       function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7 }
-      function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
-      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper zookeeper:3.5 }
+      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper "''${DOCKER_ZOOKEEPER_IMAGE}" }
+      function docker_kafka() { docker kill kafka; docker_zk; docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh "''${DOCKER_KAFKA_IMAGE}" ./config/server.properties --override zookeeper.connect=zookeeper:2181 }
 
-      function docker_kafka() {
-        docker kill kafka
-        docker_zk
-        docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh solsson/kafka:1.1 ./config/server.properties --override zookeeper.connect=zookeeper:2181
-      }
+      # Kafka
       function kafka_consume() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh solsson/kafka:1.1 --bootstrap-server kafka:9092 --topic $@
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@
       }
       function kafka_produce() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.1 --broker-list kafka:9092 --topic $1
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1
       }
       function kafka_produce_key() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh solsson/kafka:1.1 --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"
+        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"
       }
       function kafka_topic() {
-        docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper solsson/kafka:1.1 --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
+        docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
       }
 
+      # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
-      function vpn_route() { sudo route add -net 10.203.0.0 netmask 255.255.0.0 dev tun0; sudo route add -net 10.1.0.0 netmask 255.255.0.0 dev tun0 }
 
-      unsetopt correct_all
-
+      # Include shell completions
       type -p kubectl >> /dev/null && source <(kubectl completion zsh)
       type -p minikube >> /dev/null && source <(minikube completion zsh)
     '';

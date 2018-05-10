@@ -47,7 +47,7 @@
     "10.1.114.20" = ["exchange.esentire.com"];
     "10.1.204.234" = ["soc.uat"];
     "10.203.0.31" = ["kubeapi.qa"];
-    "10.203.1.101" = ["kubeapi.dev"];
+    "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.dev"];
     #"10.203.1.107" = ["kubeapi.dev"];
     "172.16.0.254" = ["captiveportal-login.esentire.com"];

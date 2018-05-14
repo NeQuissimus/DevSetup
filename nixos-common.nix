@@ -208,7 +208,7 @@
     urxvtd.enable = true;
   };
 
-  system.stateVersion = "17.09";
+  system.nixos.stateVersion = "18.09";
 
   time = {
     timeZone = "America/Toronto";

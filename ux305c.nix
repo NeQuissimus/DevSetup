@@ -10,11 +10,6 @@
     version = 2;
   };
 
-  environment.systemPackages = with pkgs; [
-    ammonite
-    sbt-extras
-  ];
-
   networking.hostName = "nixus";
 
   networking.hosts = {

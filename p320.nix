@@ -14,14 +14,11 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ammonite
     google-chrome
     hipchat
     # kubectl
     # kubernetes-helm
     # minikube
-    nox
-    sbt-extras
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

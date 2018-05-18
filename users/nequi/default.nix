@@ -356,7 +356,6 @@ in mkHome {
       alias nano='nano -E -w -c'
       alias nix-repair-store='nix-store --verify --check-contents --repair'
       alias rsync='rsync -azvvP'
-      alias sbt='sbt -J-Xms1G -J-Xmx8G'
       alias scrot='scrot -s'
       alias volume_down='amixer -q sset Master 5%-; volume'
       alias volume_up='amixer -q sset Master 5%+; volume'
@@ -399,6 +398,10 @@ in mkHome {
 
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
+
+      # Tools
+      function sbt() { args="$@"; nix-shell -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G $args" }
+      function amm() { nix-shell -p ammonite --command "amm" }
 
       # Include shell completions
       type -p kubectl >> /dev/null && source <(kubectl completion zsh)

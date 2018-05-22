@@ -403,6 +403,7 @@ in mkHome {
       function sbt() { args="$@"; nix-shell -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}" }
       function amm() { nix-shell -p ammonite --command "amm" }
       function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}" }
+      function kubectl() { args="$@"; nix-shell -p kubectl --command "kubectl ''${args}" }
 
       # Include shell completions
       type -p kubectl >> /dev/null && source <(kubectl completion zsh)

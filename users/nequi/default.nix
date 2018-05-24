@@ -54,6 +54,7 @@ in mkHome {
       (global-unset-key (kbd "C-z"))
       (global-set-key (kbd "C-x f") 'projectile-find-file)
       (define-key global-map (kbd "RET") 'newline-and-indent)
+      (global-set-key (kbd "C-x g") 'magit-status)
 
       ;; Allocate more memory
       (setq gc-cons-threshold 20000000)

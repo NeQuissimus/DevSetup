@@ -3,10 +3,6 @@
 {
   imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
-  boot.initrd.kernelModules = [
-    "tun" # VPN
-  ];
-
   boot.loader.systemd-boot.enable = true;
 
   boot.kernel.sysctl = {
@@ -16,9 +12,6 @@
   environment.systemPackages = with pkgs; [
     google-chrome
     hipchat
-    # kubectl
-    # kubernetes-helm
-    # minikube
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
@@ -52,28 +45,11 @@
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [ 80 ];
-    allowPing = false;
-    enable = true;
-  };
+  networking.firewall.allowedTCPPorts = [ ];
 
   nixpkgs.config = {
     firefox.enableAdobeFlash = true;
     firefox.enableAdobeFlashDRM = true;
-  };
-
-  nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    kubernetes = (super.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.10.0-beta.0";
-      name = "kubectl-1.10.0-beta.0";
-      src = pkgs.fetchFromGitHub {
-        owner = "kubernetes";
-        repo = "kubernetes";
-        rev = "v1.10.0-beta.0";
-        sha256 = "1hai1pp1d0g8kf2kga8qp9lbcpab4ar0j77yr4mmdy8ivhr634xr";
-      };
-    });
   };
 
   # List will be flipped
@@ -95,22 +71,6 @@
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
   };
 
-  services.kbfs.enable = false;
-  services.keybase.enable = false;
-
-  services.nginx = {
-    enable = false;
-    virtualHosts = {
-      localhost = {
-        forceSSL = false;
-        enableACME = false;
-        locations."/" = {
-          proxyPass = "http://localhost:3000";
-        };
-      };
-    };
-  };
-
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
@@ -126,7 +86,6 @@
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
     ${autocutsel}/bin/autocutsel -s PRIMARY &
-    ${xlibs.xhost}/bin/xhost + &
   '';
 
   services.xserver.videoDriver = "intel";
@@ -136,15 +95,14 @@
     "HDMI2" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI2"; }
   ];
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+  system.autoUpgrade = {
+    channel = "https://nixos.org/channels/nixos-unstable";
+    enable = true;
+  };
 
   users.users.nequi.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
   ];
 
   virtualisation.docker.package = pkgs.docker-edge;
-
-  virtualisation.virtualbox.host = {
-    enable = false;
-  };
 }

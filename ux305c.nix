@@ -18,19 +18,6 @@
     "0.0.0.0" = ["ftp.au.debian.org"];
   };
 
-  nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    kubernetes = (super.kubernetes.override { components = [ "cmd/kubectl" ]; }).overrideAttrs (oldAttrs: {
-      version = "1.9.2";
-      name = "kubectl-1.9.2";
-      src = pkgs.fetchFromGitHub {
-        owner = "kubernetes";
-        repo = "kubernetes";
-        rev = "v1.9.2";
-        sha256 = "0yf9k08ngplqb5xwipyfp25nlb19ykh05b7l9qcvybczihdkv6p2";
-      };
-    });
-  };
-
   programs.ssh.extraConfig = ''
     Host pine
     HostName 10.0.10.10
@@ -48,8 +35,6 @@
     HostName 10.0.0.52
     User nequi
   '';
-
-  security.chromiumSuidSandbox.enable = false;
 
   services.emacs = {
     enable = true;

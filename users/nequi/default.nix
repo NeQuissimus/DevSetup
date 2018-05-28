@@ -7,9 +7,15 @@ in mkHome {
   inherit user;
 
   files = {
+    ".Xresources".content = ''
+      Emacs*toolBar: 0
+      Emacs*menuBar: 0
+    '';
+
     ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
 
     ".emacs.d/init.el".content = ''
+      (scroll-bar-mode -1)
       (package-initialize)
 
       (load-theme 'zerodark t)

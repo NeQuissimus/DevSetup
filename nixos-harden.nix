@@ -137,7 +137,7 @@ in {
   system.autoUpgrade = {
     channel = mkDefault "https://nixos.org/channels/nixos-18.03";
     dates = "9:00";
-    enable = false;
+    enable = mkDefault false;
   };
 
   users.users.root.shell = pkgs.nologin; # Make sure to have a user with a password :D

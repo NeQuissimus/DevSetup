@@ -322,12 +322,14 @@ in mkHome {
     '';
 
     ".zshrc".content = ''
+      #!/usr/env/bin zsh
+
       # oh-my-zsh
-      ZSH_THEME="nequissimus"
-      ZSH_CUSTOM="/home/${user}/dev/nequi-zsh"
-      CASE_SENSITIVE="false"
-      HIST_STAMPS="dd.mm.yyyy"
-      plugins=(docker git gitignore)
+      export ZSH_THEME="nequissimus"
+      export ZSH_CUSTOM="/home/${user}/dev/nequi-zsh"
+      export CASE_SENSITIVE="false"
+      export HIST_STAMPS="dd.mm.yyyy"
+      export plugins=(docker git gitignore)
 
       # ENV
       export TERMINAL="xterm"
@@ -341,7 +343,7 @@ in mkHome {
       ZSH="''${ZSH:-/nix/var/nix/profiles/per-user/${user}/profile/share/oh-my-zsh}"
 
       # Load oh-my-zsh
-      [[ -e "/home/${user}/.nix-profile/etc/profile.d/nix.sh" ]] && source  /home/${user}/.nix-profile/etc/profile.d/nix.sh
+      [[ -e "/home/${user}/.nix-profile/etc/profile.d/nix.sh" ]] && source /home/${user}/.nix-profile/etc/profile.d/nix.sh
       [[ -e "''${ZSH}/oh-my-zsh.sh" ]] && source "''${ZSH}/oh-my-zsh.sh"
 
       # Fix ZSH
@@ -377,48 +379,38 @@ in mkHome {
       alias volume='awk -F"[][]" "/dB/ { print $2 }" <(amixer sget Master)'
 
       # Docker tools
-      function docker_clean() { docker kill $(docker ps -q); docker rm $(docker ps -a -q) }
-      function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi }
-      function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q) }
-      function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq }
-      function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2 }
+      function docker_clean() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); }
+      function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi; }
+      function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q); }
+      function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq; }
+      function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2; }
 
       # Docker all the things
       DOCKER_KAFKA_IMAGE="solsson/kafka:1.1"
       DOCKER_ZOOKEEPER_IMAGE="zookeeper:3.5"
-      function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack }
-      function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles }
-      function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine }
-      function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq }
-      function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7 }
-      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper "''${DOCKER_ZOOKEEPER_IMAGE}" }
-      function docker_kafka() { docker kill kafka; docker_zk; docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh "''${DOCKER_KAFKA_IMAGE}" ./config/server.properties --override zookeeper.connect=zookeeper:2181 }
+      function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack; }
+      function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles; }
+      function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine; }
+      function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq; }
+      function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7; }
+      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper "''${DOCKER_ZOOKEEPER_IMAGE}"; }
+      function docker_kafka() { docker kill kafka; docker_zk; docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh "''${DOCKER_KAFKA_IMAGE}" ./config/server.properties --override zookeeper.connect=zookeeper:2181; }
 
       # Kafka
-      function kafka_consume() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@
-      }
-      function kafka_consume_key() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@ --property "print.key=true"
-      }
-      function kafka_produce() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1
-      }
-      function kafka_produce_key() {
-        docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"
-      }
-      function kafka_topic() {
-        docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1
-      }
+      function kafka_consume() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@;}
+      function kafka_consume_key() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@ --property "print.key=true";}
+      function kafka_produce() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic "$1";}
+      function kafka_produce_key() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"; }
+      function kafka_topic() { docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1; }
 
       # Nix review PRs
-      function noxpr() { nix-shell -p nox --run "nox-review pr $1" }
+      function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 
       # Tools
-      function sbt() { args="$@"; nix-shell -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}" }
-      function amm() { nix-shell -p ammonite --command "amm" }
-      function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}" }
-      function kubectl() { args="$@"; nix-shell -p kubectl --command "kubectl ''${args}" }
+      function sbt() { args="$@"; nix-shell -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
+      function amm() { nix-shell -p ammonite --command "amm"; }
+      function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}"; }
+      function kubectl() { args="$@"; nix-shell -p kubectl --command "kubectl ''${args}"; }
 
       # Include shell completions
       type -p kubectl >> /dev/null && source <(kubectl completion zsh)

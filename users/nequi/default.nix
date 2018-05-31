@@ -7,11 +7,6 @@ in mkHome {
   inherit user;
 
   files = {
-    ".Xresources".content = ''
-      Emacs*toolBar: 0
-      Emacs*menuBar: 0
-    '';
-
     ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
 
     ".emacs.d/init.el".content = ''
@@ -161,10 +156,18 @@ in mkHome {
               signingkey = 0588CEBD610D7123
     '';
 
-#    ".nanorc".content = ''
-#      include ~/.nano/syntax/ALL.nanorc
-#      set const
-#    '';
+    ".sbt/1.0/plugins/splain.scala".content = ''
+      import sbt._
+      import Keys._
+
+      object Splain extends AutoPlugin {
+        override def trigger = allRequirements
+
+        override def projectSettings = Seq(
+          addCompilerPlugin("io.tryp" % "splain" % "0.3.1" cross CrossVersion.patch)
+        )
+      }
+    '';
 
     ".Xdefaults".content = ''
       *background: #222222
@@ -203,6 +206,11 @@ in mkHome {
       URxvt*scrollWithBuffer: true
       URxvt.saveLines: 250000
       URxvt*iso14755: False
+    '';
+
+    ".Xresources".content = ''
+      Emacs*toolBar: 0
+      Emacs*menuBar: 0
     '';
 
     ".xmonad/xmonad.hs".content = ''

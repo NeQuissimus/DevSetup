@@ -403,6 +403,8 @@ in mkHome {
       function kafka_produce_key() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"; }
       function kafka_topic() { docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1; }
 
+      function kafka_prod_topic() { docker run --add-host=kaf001cmb01p.internal:10.1.110.136 --entrypoint ./bin/kafka-topics.sh "''${DOCKER_KAFKA_IMAGE}" --zookeeper kaf001cmb01p.internal:2182 --describe --topic "$1" }
+
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 

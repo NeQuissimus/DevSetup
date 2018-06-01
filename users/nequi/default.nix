@@ -404,6 +404,7 @@ in mkHome {
       function kafka_topic() { docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1; }
 
       function kafka_prod_topic() { docker run --add-host=kaf001cmb01p.internal:10.1.110.136 --entrypoint ./bin/kafka-topics.sh "''${DOCKER_KAFKA_IMAGE}" --zookeeper kaf001cmb01p.internal:2182 --describe --topic "$1" }
+      function kafka_prod_consume() {  docker run --rm -it --add-host=kaf001cmb01p.internal:10.1.110.136 --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kaf001cmb01p.internal:9093 --topic $@ }
 
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }

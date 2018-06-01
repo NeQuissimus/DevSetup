@@ -9,10 +9,12 @@ in
     auto-complete
     dockerfile-mode
     haskell-mode
+    hl-todo
     indent-guide
     json-mode
     magit
     markdown-mode
+    neotree
     nix-mode
     projectile
     rust-mode

@@ -51,6 +51,11 @@ in mkHome {
       ;; modes
       (electric-indent-mode 0)
 
+      ;; neotree
+      (setq neo-theme 'nerd)
+      (setq neo-force-change-root t)
+      (setq neo-autorefresh t)
+
       ;; global keybindings
       (global-unset-key (kbd "C-z"))
       (global-set-key (kbd "C-x f") 'projectile-find-file)
@@ -80,7 +85,6 @@ in mkHome {
         (interactive)
         (erc-tls :server "irc.gitter.im" :port 6697))
 
-
       (set-default-font "Hasklig")
 
       (defun my-correct-symbol-bounds (pretty-alist)
@@ -109,6 +113,18 @@ in mkHome {
         (prettify-symbols-mode))
 
       (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
+
+      (add-hook 'prog-mode-hook 'hl-todo-mode)
+
+      (defun neotree-startup ()
+        (interactive)
+        (neotree-show)
+        (call-interactively 'other-window))
+
+      (if (daemonp)
+          (add-hook 'server-switch-hook #'neotree-startup)
+        (add-hook 'after-init-hook #'neotree-startup)
+      )
 
       (ac-config-default)
     '';

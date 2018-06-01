@@ -156,19 +156,6 @@ in mkHome {
               signingkey = 0588CEBD610D7123
     '';
 
-    ".sbt/1.0/plugins/splain.scala".content = ''
-      import sbt._
-      import Keys._
-
-      object Splain extends AutoPlugin {
-        override def trigger = allRequirements
-
-        override def projectSettings = Seq(
-          addCompilerPlugin("io.tryp" % "splain" % "0.3.1" cross CrossVersion.patch)
-        )
-      }
-    '';
-
     ".Xdefaults".content = ''
       *background: #222222
       *foreground: #babdb6

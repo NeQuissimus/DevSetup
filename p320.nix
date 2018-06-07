@@ -102,7 +102,8 @@
 
   users.users.nequi.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM942CkKG99a2Ru09v9CZRxY4sjWT+a+JQ/37qEzF8jV tsteinbach@es-lxx-detimste"
   ];
 
-  virtualisation.docker.package = pkgs.docker-edge;
+ # virtualisation.docker.package = pkgs.docker-edge;
 }

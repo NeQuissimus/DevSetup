@@ -50,7 +50,6 @@
       rofi
       rxvt_unicode-with-plugins
       skopeo
-      vscode
 
       ((pkgs.callPackage ./nixpkgs/nix-home.nix) { })
     ];

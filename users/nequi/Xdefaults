@@ -1,0 +1,36 @@
+*background: #222222
+*foreground: #babdb6
+*color0: #000000
+*color8: #555753
+*color1: #ff6565
+*color9: #ff8d8d
+*color2: #93d44f
+*color10: #c8e7a8
+*color3: #eab93d
+*color11: #ffc123
+*color4: #604a87
+*color12: #3465a4
+*color5: #ce5c00
+*color13: #f57900
+*color6: #89b6e2
+*color14: #46a4ff
+*color7: #cccccc
+*color15: #ffffff
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
+
+URxvt*font: xft:DejaVu Sans Mono:size=12,xft:Monospace:size=12
+URxvt*geometry: 112x22
+URxvt*urlLauncher: firefox
+URxvt*scrollBar: false
+URxvt*scrollBar_right: true
+URxvt*scrollColor: #000000
+URxvt*scrollTtyKeypress: true
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt.saveLines: 250000
+URxvt*iso14755: False

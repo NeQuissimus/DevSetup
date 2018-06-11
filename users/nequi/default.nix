@@ -3,219 +3,31 @@ with import <nixhome> { inherit stdenv; inherit pkgs; };
 with lib;
 let
   user = "nequi";
+  checkout = "/home/${user}/dev/DevSetup";
+  base = "${checkout}/users/nequi";
 in mkHome {
   inherit user;
 
   files = {
+    # Rofi
     ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
 
-    ".emacs.d/init.el".content = ''
-      (scroll-bar-mode -1)
-      (package-initialize)
+    # Emacs
+    ".emacs.d/init.el".content = lib.fileContents "${base}/init.el";
 
-      (load-theme 'zerodark t)
-      (zerodark-setup-modeline-format)
+    # Git
+    ".gitconfig".content = lib.fileContents "${base}/gitconfig";
 
-      (setq
-       inhibit-startup-screen t
-       create-lockfiles nil
-       make-backup-files nil
-       column-number-mode t
-       scroll-error-top-bottom t
-       show-paren-delay 0.5
-       use-package-always-ensure t
-       show-trailing-whitespace t
-       sentence-end-double-space nil)
+    # Firefox
+    ".mozilla/firefox/profiles.ini".content = lib.fileContents "${base}/mozilla/firefox/profiles.init";
+    ".mozilla/firefox/7ty7knlr.default/extensions.json".content = lib.fileContents "${base}/mozilla/firefox/extensions.json";
+    ".mozilla/firefox/7ty7knlr.default/user.js".content = lib.fileContents "${base}/mozilla/firefox/user.js";
 
-      (set-language-environment "UTF-8")
-      (set-default-coding-systems 'utf-8)
+    # X
+    ".Xdefaults".content = lib.fileContents "${base}/Xdefaults";
+    ".Xresources".content = lib.fileContents "${base}/Xresources";
 
-      (setq whitespace-style '(face trailing tabs))
-      (custom-set-faces
-       '(whitespace-tab ((t (:background "red")))))
-      (global-whitespace-mode)
-
-      ;; Load files from disk when changed
-      (global-auto-revert-mode t)
-
-      ;; Remove white-spaces when saving
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-      ;; buffer local variables
-      (setq-default
-       indent-tabs-mode nil
-       tab-width 2
-       c-basic-offset 2
-       buffer-file-coding-system 'utf-8-unix)
-
-      ;; modes
-      (electric-indent-mode 0)
-
-      ;; neotree
-      (setq neo-theme 'nerd)
-      (setq neo-force-change-root t)
-      (setq neo-autorefresh t)
-
-      ;; global keybindings
-      (global-unset-key (kbd "C-z"))
-      (global-set-key (kbd "C-x f") 'projectile-find-file)
-      (define-key global-map (kbd "RET") 'newline-and-indent)
-      (global-set-key (kbd "C-x g") 'magit-status)
-
-      ;; Allocate more memory
-      (setq gc-cons-threshold 20000000)
-
-      (require 'smartparens-config)
-      (smartparens-global-mode)
-
-      (projectile-global-mode)
-
-      ;; Gitter + Irc
-      (use-package erc
-        :commands erc erc-tls
-        :init
-        (setq
-         erc-prompt-for-password t ;; prefer ~/.authinfo for passwords
-         erc-hide-list '("JOIN" "PART" "QUIT")
-         erc-autojoin-channels-alist
-         '(("irc.gitter.im" "#scalaz/scalaz"))))
-
-      (defun gitter()
-        "Connect to Gitter."
-        (interactive)
-        (erc-tls :server "irc.gitter.im" :port 6697))
-
-      (set-default-font "Hasklig")
-
-      (defun my-correct-symbol-bounds (pretty-alist)
-        (mapcar (lambda (el)
-              (setcdr el (string ?\t (cdr el)))
-                el)
-            pretty-alist))
-
-      (defun my-ligature-list (ligatures codepoint-start)
-        (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
-          (-zip-pair ligatures codepoints)))
-
-      (setq my-hasklig-ligatures
-        (let* ((ligs '("&&" "***" "*>" "\\\\" "||" "|>" "::"
-                   "==" "===" "==>" "=>" "=<<" "!!" ">>"
-                   ">>=" ">>>" ">>-" ">-" "->" "-<" "-<<"
-                   "<*" "<*>" "<|" "<|>" "<$>" "<>" "<-"
-                   "<<" "<<<" "<+>" ".." "..." "++" "+++"
-                   "/=" ":::" ">=>" "->>" "<=>" "<=<" "<->")))
-      (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
-
-      ;; nice glyphs for haskell with hasklig
-      (defun my-set-hasklig-ligatures ()
-        (setq prettify-symbols-alist
-          (append my-hasklig-ligatures prettify-symbols-alist))
-        (prettify-symbols-mode))
-
-      (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
-
-      (add-hook 'prog-mode-hook 'hl-todo-mode)
-
-      (defun neotree-startup ()
-        (interactive)
-        (neotree-show)
-        (call-interactively 'other-window))
-
-      (if (daemonp)
-          (add-hook 'server-switch-hook #'neotree-startup)
-        (add-hook 'after-init-hook #'neotree-startup)
-      )
-
-      (ac-config-default)
-    '';
-
-    ".gitconfig".content = ''
-      [alias]
-              bclean = "!f() { git fetch --prune && git branch --merged ''${1-master} | grep -v " ''${1-master}$" | xargs -r git branch -d && git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs -r git branch -d; }; f"
-              clear = clean -xfd
-              findcommit = !"git rev-list --all | xargs git grep '$1'"
-              hard = reset --hard origin/master
-              lastcommit = for-each-ref --sort=committerdate refs --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %ae (%(color:green)%(committerdate:relative)%(color:reset))'
-              lg = log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>[%G?]%Creset%C(auto)%d%Creset' --abbrev-commit
-              ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-              pr = "!f() { git fetch origin pull/''${1}/head:pr-''${1}; git checkout pr-''${1}; }; f"
-              prup = "!f() { git fetch upstream pull/''${1}/head:pr-''${1}; git checkout pr-''${1}; }; f"
-              rename = "!f() { git push -u origin origin/"''${1}":refs/heads/"''${2}"; git push origin :"''${1}"; }; f"
-              stable = "!f() { git checkout release-18.03  && git pull && git cherry-pick -x ''${1} && git push && git checkout master; }; f"
-              t = tag -s -a
-              undo = reset HEAD~1 --mixed
-              up = !git pull --rebase --prune $@ && git submodule update --init --recursive
-      [apply]
-              whitespace = fix
-      [branch]
-              autosetuprebase = always
-      [commit]
-              gpgsign = true
-      [core]
-              excludesfile = ~/.gitignore
-              pager = less
-              whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-      [diff]
-              compactionHeuristic = true
-      [interactive]
-              diffFilter = diff-highlight
-      [pull]
-              rebase = true
-      [push]
-              default = upstream
-              followTags = true
-      [tag]
-              forceSignAnnotated = true
-      [user]
-              email = tim@nequissimus.com
-              name = Tim Steinbach
-              signingkey = 0588CEBD610D7123
-    '';
-
-    ".Xdefaults".content = ''
-      *background: #222222
-      *foreground: #babdb6
-      *color0: #000000
-      *color8: #555753
-      *color1: #ff6565
-      *color9: #ff8d8d
-      *color2: #93d44f
-      *color10: #c8e7a8
-      *color3: #eab93d
-      *color11: #ffc123
-      *color4: #604a87
-      *color12: #3465a4
-      *color5: #ce5c00
-      *color13: #f57900
-      *color6: #89b6e2
-      *color14: #46a4ff
-      *color7: #cccccc
-      *color15: #ffffff
-
-      Xft.dpi: 96
-      Xft.antialias: true
-      Xft.rgba: rgb
-      Xft.hinting: true
-      Xft.hintstyle: hintslight
-
-      URxvt*font: xft:DejaVu Sans Mono:size=12,xft:Monospace:size=12
-      URxvt*geometry: 112x22
-      URxvt*urlLauncher: firefox
-      URxvt*scrollBar: false
-      URxvt*scrollBar_right: true
-      URxvt*scrollColor: #000000
-      URxvt*scrollTtyKeypress: true
-      URxvt*scrollTtyOutput: false
-      URxvt*scrollWithBuffer: true
-      URxvt.saveLines: 250000
-      URxvt*iso14755: False
-    '';
-
-    ".Xresources".content = ''
-      Emacs*toolBar: 0
-      Emacs*menuBar: 0
-    '';
-
+    # XMonad
     ".xmonad/xmonad.hs".content = ''
       import Control.Monad (liftM2)
       import XMonad
@@ -324,6 +136,7 @@ in mkHome {
             }
     '';
 
+    # ZSH
     ".zshrc".content = ''
       #!/usr/env/bin zsh
 

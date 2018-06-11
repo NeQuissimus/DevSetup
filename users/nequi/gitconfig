@@ -1,0 +1,40 @@
+[alias]
+        bclean = "!f() { git fetch --prune && git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d && git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs -r git branch -d; }; f"
+        clear = clean -xfd
+        findcommit = !"git rev-list --all | xargs git grep '$1'"
+        hard = reset --hard origin/master
+        lastcommit = for-each-ref --sort=committerdate refs --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %ae (%(color:green)%(committerdate:relative)%(color:reset))'
+        lg = log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>[%G?]%Creset%C(auto)%d%Creset' --abbrev-commit
+        ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+        pr = "!f() { git fetch origin pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
+        prup = "!f() { git fetch upstream pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
+        rename = "!f() { git push -u origin origin/"${1}":refs/heads/"${2}"; git push origin :"${1}"; }; f"
+        stable = "!f() { git checkout release-18.03  && git pull && git cherry-pick -x ${1} && git push && git checkout master; }; f"
+        t = tag -s -a
+        undo = reset HEAD~1 --mixed
+        up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+[apply]
+        whitespace = fix
+[branch]
+        autosetuprebase = always
+[commit]
+        gpgsign = true
+[core]
+        excludesfile = ~/.gitignore
+        pager = less
+        whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+[diff]
+        compactionHeuristic = true
+[interactive]
+        diffFilter = diff-highlight
+[pull]
+        rebase = true
+[push]
+        default = upstream
+        followTags = true
+[tag]
+        forceSignAnnotated = true
+[user]
+        email = tim@nequissimus.com
+        name = Tim Steinbach
+        signingkey = 0588CEBD610D7123

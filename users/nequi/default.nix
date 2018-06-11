@@ -20,7 +20,6 @@ in mkHome {
 
     # Firefox
     ".mozilla/firefox/profiles.ini".content = lib.fileContents "${base}/mozilla/firefox/profiles.init";
-    ".mozilla/firefox/7ty7knlr.default/extensions.json".content = lib.fileContents "${base}/mozilla/firefox/extensions.json";
     ".mozilla/firefox/7ty7knlr.default/user.js".content = lib.fileContents "${base}/mozilla/firefox/user.js";
 
     # X

@@ -141,8 +141,9 @@
     };
 
     zsh = {
+      autosuggestions.enable = true;
+
       enable = true;
-      enableAutosuggestions = true;
       enableCompletion = true;
 
       ohMyZsh = {

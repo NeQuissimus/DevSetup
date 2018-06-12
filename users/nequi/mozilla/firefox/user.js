@@ -195,9 +195,9 @@ user_pref("camera.control.face_detection.enabled",              false);
 
 // PREF: Set the default search engine to DuckDuckGo (disabled)
 // https://support.mozilla.org/en-US/questions/948134
-//user_pref("browser.search.defaultenginename",         "DuckDuckGo");
-//user_pref("browser.search.order.1",                           "DuckDuckGo");
-//user_pref("keyword.URL",                                                      "https://duckduckgo.com/html/?q=!+");
+user_pref("browser.search.defaultenginename",                 "DuckDuckGo");
+user_pref("browser.search.order.1",                           "DuckDuckGo");
+user_pref("keyword.URL",                                      "https://duckduckgo.com/html/?q=!+");
 
 // PREF: Disable GeoIP lookup on your address to set default search engine region
 // https://trac.torproject.org/projects/tor/ticket/16254
@@ -293,13 +293,13 @@ user_pref("javascript.options.asmjs",                           false);
 // PREF: Disable SVG in OpenType fonts
 // https://wiki.mozilla.org/SVGOpenTypeFonts
 // https://github.com/iSECPartners/publications/tree/master/reports/Tor%20Browser%20Bundle
-user_pref("gfx.font_rendering.opentype_svg.enabled",            false);
+//user_pref("gfx.font_rendering.opentype_svg.enabled",            false);
 
 // PREF: Disable in-content SVG rendering (Firefox >= 53)
 // NOTICE: Disabling SVG support breaks many UI elements on many sites
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1216893
 // https://github.com/iSECPartners/publications/raw/master/reports/Tor%20Browser%20Bundle/Tor%20Browser%20Bundle%20-%20iSEC%20Deliverable%201.3.pdf#16
-user_pref("svg.disabled", true);
+//user_pref("svg.disabled", true);
 
 
 // PREF: Disable video stats to reduce fingerprinting threat
@@ -563,8 +563,8 @@ user_pref("browser.safebrowsing.downloads.remote.enabled",      false);
 // PREF: Disable Pocket
 // https://support.mozilla.org/en-US/kb/save-web-pages-later-pocket-firefox
 // https://github.com/pyllyukko/user.js/issues/143
-user_pref("browser.pocket.enabled",                             false);
-user_pref("extensions.pocket.enabled",                          false);
+//user_pref("browser.pocket.enabled",                             false);
+//user_pref("extensions.pocket.enabled",                          false);
 
 /******************************************************************************
  * SECTION: Automatic connections                                             *
@@ -597,7 +597,7 @@ user_pref("browser.search.suggest.enabled",                     false);
 // PREF: Disable "Show search suggestions in location bar results"
 user_pref("browser.urlbar.suggest.searches",                    false);
 // PREF: When using the location bar, don't suggest URLs from browsing history
-user_pref("browser.urlbar.suggest.history",                     false);
+user_pref("browser.urlbar.suggest.history",                     true);
 
 // PREF: Disable SSDP
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1111967
@@ -710,14 +710,14 @@ user_pref("browser.cache.offline.enable",                       false);
 // NOTICE: Clearing open windows on Firefox exit causes 2 windows to open when Firefox starts https://bugzilla.mozilla.org/show_bug.cgi?id=1334945
 user_pref("privacy.sanitize.sanitizeOnShutdown",                true);
 user_pref("privacy.clearOnShutdown.cache",                      true);
-//user_pref("privacy.clearOnShutdown.cookies",                  true);
+user_pref("privacy.clearOnShutdown.cookies",                    false);
 user_pref("privacy.clearOnShutdown.downloads",                  true);
 user_pref("privacy.clearOnShutdown.formdata",                   true);
-user_pref("privacy.clearOnShutdown.history",                    true);
+user_pref("privacy.clearOnShutdown.history",                    false);
 user_pref("privacy.clearOnShutdown.offlineApps",                true);
-//user_pref("privacy.clearOnShutdown.passwords",                        true);
-user_pref("privacy.clearOnShutdown.sessions",                   true);
-user_pref("privacy.clearOnShutdown.openWindows",                true);
+user_pref("privacy.clearOnShutdown.passwords",                  true);
+user_pref("privacy.clearOnShutdown.sessions",                   false);
+user_pref("privacy.clearOnShutdown.openWindows",                false);
 
 // PREF: Set time range to "Everything" as default in "Clear Recent History"
 user_pref("privacy.sanitize.timeSpan",                          0);
@@ -725,14 +725,14 @@ user_pref("privacy.sanitize.timeSpan",                          0);
 // PREF: Clear everything but "Site Preferences" in "Clear Recent History"
 user_pref("privacy.cpd.offlineApps",                            true);
 user_pref("privacy.cpd.cache",                                  true);
-user_pref("privacy.cpd.cookies",                                true);
+user_pref("privacy.cpd.cookies",                                false);
 user_pref("privacy.cpd.downloads",                              true);
 user_pref("privacy.cpd.formdata",                               true);
 user_pref("privacy.cpd.history",                                true);
-user_pref("privacy.cpd.sessions",                               true);
+user_pref("privacy.cpd.sessions",                               false);
 
 // PREF: Don't remember browsing history
-user_pref("places.history.enabled",                             false);
+user_pref("places.history.enabled",                             true);
 
 // PREF: Disable disk cache
 // http://kb.mozillazine.org/Browser.cache.disk.enable
@@ -754,7 +754,7 @@ user_pref("browser.download.manager.retention",                 0);
 // PREF: Disable password manager (disabled)
 // NOTICE: Make sure to set a Master password to protect Firefox's password storage against basic malware that could extract your password information
 // CIS Version 1.2.0 October 21st, 2011 2.5.2
-// user_pref("signon.rememberSignons",                          false);
+user_pref("signon.rememberSignons",                             false);
 
 // PREF: Disable form autofill, don't save information entered in web page forms and the Search Bar
 user_pref("browser.formfill.enable",                            false);
@@ -844,8 +844,8 @@ user_pref("browser.download.useDownloadDir",                    false);
 // PREF: Disable the "new tab page" feature and show a blank tab instead
 // https://wiki.mozilla.org/Privacy/Reviews/New_Tab
 // https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
-user_pref("browser.newtabpage.enabled",                         false);
-user_pref("browser.newtab.url",                                 "about:blank");
+user_pref("browser.newtabpage.enabled",                         true);
+user_pref("browser.newtab.url",                                 "about:home");
 
 // PREF: Disable new tab tile ads & preload
 // http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
@@ -854,7 +854,7 @@ user_pref("browser.newtab.url",                                 "about:blank");
 // https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-source
 // https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
 // TODO: deprecated? not in DXR, some dead links
-user_pref("browser.newtabpage.enhanced",                        false);
+user_pref("browser.newtabpage.enhanced",                        true);
 user_pref("browser.newtab.preload",                             false);
 user_pref("browser.newtabpage.directory.ping",                  "");
 user_pref("browser.newtabpage.directory.source",                "data:text/plain,{}");
@@ -1120,3 +1120,5 @@ user_pref("browser.tabs.remote.autostart.2", false);
 user_pref("browser.newtabpage.activity-stream.section.highlights.collapsed", true);
 user_pref("browser.newtabpage.activity-stream.section.topstories.collapsed", true);
 user_pref("browser.newtabpage.activity-stream.section.topstories.showDisclaimer", false);
+user_pref("browser.startup.firstrunSkipsHomepage", false);
+user_pref("browser.startup.homepage_override.mstone", "ignore");

@@ -3,8 +3,7 @@
 with lib;
 
 let
-  # https://github.com/NixOS/nixpkgs/issues/39225
-  kernelPkgs = if (config.fileSystems."/".fsType == "zfs") then pkgs.linuxPackages_copperhead_lts else pkgs.linuxPackages_copperhead_stable;
+  kernelPkgs = pkgs.linuxPackages_copperhead_stable;
 in {
   boot = {
     blacklistedKernelModules = [

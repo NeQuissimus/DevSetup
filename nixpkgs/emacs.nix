@@ -16,6 +16,7 @@ in
     markdown-mode
     neotree
     nix-mode
+    org-jira
     projectile
     rust-mode
     scala-mode

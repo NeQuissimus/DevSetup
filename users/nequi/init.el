@@ -39,6 +39,11 @@
 ;; modes
 (electric-indent-mode 0)
 
+;; org-jira
+(setq jiralib-url "https://jira.esentire.com")
+(setq request-log-level 'debug)
+(setq request-message-level 'debug)
+
 ;; neotree
 (setq neo-theme 'nerd)
 (setq neo-force-change-root t)

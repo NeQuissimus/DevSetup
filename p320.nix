@@ -78,6 +78,7 @@
 
   security.pki.certificates = [
     (lib.fileContents ./registry.crt)
+    (lib.fileContents ./ca.internal.crt.pem)
   ];
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''

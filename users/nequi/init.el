@@ -23,6 +23,8 @@
  '(whitespace-tab ((t (:background "red")))))
 (global-whitespace-mode)
 
+(ac-config-default)
+
 ;; Load files from disk when changed
 (global-auto-revert-mode t)
 
@@ -41,6 +43,8 @@
 
 ;; org-jira
 (setq jiralib-url "https://jira.esentire.com")
+(add-hook 'prog-mode-hook 'org-jira-mode)
+(global-set-key (kbd "C-c ii") 'org-jira-get-issue)
 
 ;; neotree
 (setq neo-theme 'nerd)
@@ -60,21 +64,6 @@
 (smartparens-global-mode)
 
 (projectile-global-mode)
-
-;; Gitter + Irc
-(use-package erc
-  :commands erc erc-tls
-  :init
-  (setq
-   erc-prompt-for-password t ;; prefer ~/.authinfo for passwords
-   erc-hide-list '("JOIN" "PART" "QUIT")
-   erc-autojoin-channels-alist
-   '(("irc.gitter.im" "#scalaz/scalaz"))))
-
-(defun gitter()
-  "Connect to Gitter."
-  (interactive)
-  (erc-tls :server "irc.gitter.im" :port 6697))
 
 (set-default-font "Hasklig")
 
@@ -104,7 +93,6 @@
   (prettify-symbols-mode))
 
 (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
-
 (add-hook 'prog-mode-hook 'hl-todo-mode)
 
 (defun neotree-startup ()
@@ -126,4 +114,3 @@
   (goto-char (point-min))
   (while (search-forward "\n" nil t) (replace-match "" nil t)))
 
-(ac-config-default)

@@ -3,7 +3,7 @@
 with lib;
 
 let
-  kernelPkgs = pkgs.linuxPackages_copperhead_stable;
+  kernelPkgs = pkgs.linuxPackages_latest_hardened;
 in {
   boot = {
     blacklistedKernelModules = [

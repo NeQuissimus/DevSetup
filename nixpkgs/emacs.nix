@@ -14,6 +14,7 @@ in
     json-mode
     magit
     markdown-mode
+    multiple-cursors
     neotree
     nix-mode
     org-jira

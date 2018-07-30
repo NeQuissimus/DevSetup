@@ -141,8 +141,6 @@
     };
 
     zsh = {
-      autosuggestions.enable = true;
-
       enable = true;
       enableCompletion = true;
 
@@ -207,8 +205,6 @@
     upower.enable = true;
     urxvtd.enable = true;
   };
-
-  system.nixos.stateVersion = "18.09";
 
   time = {
     timeZone = "America/Toronto";

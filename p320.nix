@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
+  imports = [ ./nixos-common.nix ./nixos-common-1803.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
   boot.loader.systemd-boot.enable = true;
 
@@ -96,7 +96,7 @@
   ];
 
   system.autoUpgrade = {
-    channel = "https://nixos.org/channels/nixos-unstable";
+    channel = "https://nixos.org/channels/nixos-18.03";
     enable = true;
   };
 
@@ -104,6 +104,4 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM942CkKG99a2Ru09v9CZRxY4sjWT+a+JQ/37qEzF8jV tsteinbach@es-lxx-detimste"
   ];
-
- # virtualisation.docker.package = pkgs.docker-edge;
 }

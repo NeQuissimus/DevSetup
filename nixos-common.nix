@@ -206,6 +206,8 @@
     urxvtd.enable = true;
   };
 
+  system.stateVersion = "18.09";
+
   time = {
     timeZone = "America/Toronto";
   };

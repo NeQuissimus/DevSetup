@@ -114,3 +114,7 @@
   (goto-char (point-min))
   (while (search-forward "\n" nil t) (replace-match "" nil t)))
 
+(custom-set-variables
+ '(safe-local-variable-values
+   (quote
+    ((bug-reference-bug-regexp . "\\(\\(?:[Ii]ssue \\|[Ff]ixe[ds] \\|[Rr]esolve[ds]? \\|[Cc]lose[ds]? \\|[Pp]\\(?:ull [Rr]equest\\|[Rr]\\) \\|(\\)#\\([0-9]+\\))?\\)")))))

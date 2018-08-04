@@ -94,7 +94,6 @@ in {
 
   security = {
     apparmor.enable = true;
-    chromiumSuidSandbox.enable = lib.mkDefault true;
     hideProcessInformation = true;
     lockKernelModules = true;
     sudo = {

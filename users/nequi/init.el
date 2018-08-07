@@ -15,6 +15,11 @@
  show-trailing-whitespace t
  sentence-end-double-space nil)
 
+(setq history-length 100)
+(put 'minibuffer-history 'history-length 50)
+(put 'evil-ex-history 'history-length 50)
+(put 'kill-ring 'history-length 25)
+
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 

@@ -23,7 +23,7 @@
     "10.1.108.103" = ["github.internal" "github.esentire.com"];
     "10.1.108.152" = ["jen001p"];
     "10.1.108.153" = ["jen002p"];
-    "10.1.108.154" = ["jen003"];
+    "10.1.108.154" = ["jen003" "registry.internal" "portus-1.internal"];
     "10.1.110.54" = ["artifactory.internal"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
@@ -32,7 +32,6 @@
     "10.1.110.191" = ["hipchat.esentire.com"];
     "10.1.110.208" = ["jenkins.internal"];
     "10.1.110.243" = ["gerrit.internal"];
-    "10.1.110.57" = ["registry.internal" "portus-1.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
     "10.1.204.234" = ["soc.uat"];

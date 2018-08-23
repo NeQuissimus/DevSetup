@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./nixos-common-1809.nix ./nixos-harden.nix ./nixos-xmonad.nix ./nixos-zfs.nix ./ux305c-hardware.nix ./ux305c-wifi.nix ];
+  imports = [ ./nixos-common.nix ./nixos-common-1803.nix ./nixos-harden.nix ./nixos-xmonad.nix ./nixos-zfs.nix ./ux305c-hardware.nix ./ux305c-wifi.nix ];
 
   boot.loader.grub = {
     device = "nodev";
@@ -56,11 +56,11 @@
     ${autocutsel}/bin/autocutsel -s PRIMARY &
   '';
 
-  services.xserver.resolutions = [
-    { x = 1920; y = 1080; }
-    { x = 1280; y = 800; }
-    { x = 1024; y = 768; }
-  ];
+#  services.xserver.resolutions = [
+#    { x = 1920; y = 1080; }
+#    { x = 1280; y = 800; }
+#    { x = 1024; y = 768; }
+#  ];
 
   services.xserver.videoDriver = "intel";
 

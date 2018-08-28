@@ -206,7 +206,7 @@ in mkHome {
       DOCKER_ZOOKEEPER_IMAGE="zookeeper:3.5"
       function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack; }
       function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles; }
-      function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 --name postgres postgres:9-alpine; }
+      function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --name postgres postgres:9-alpine; }
       function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq; }
       function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7; }
       function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper "''${DOCKER_ZOOKEEPER_IMAGE}"; }

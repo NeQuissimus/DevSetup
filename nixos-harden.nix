@@ -3,8 +3,8 @@
 with lib;
 
 let
-  # kernelPkgs = pkgs.linuxPackages_latest_hardened;
-  kernelPkgs = import ./nixpkgs/grsec-4.9.nix { inherit pkgs; };
+  kernelPkgs = pkgs.linuxPackages_latest_hardened;
+  # kernelPkgs = import ./nixpkgs/grsec-4.9.nix { inherit pkgs; };
 in {
   boot = {
     blacklistedKernelModules = [

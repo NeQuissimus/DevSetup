@@ -10,7 +10,10 @@ in mkHome {
 
   files = {
     # Rofi
-    ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi-unwrapped}/share/rofi/themes/sidebar.rasi";
+    ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
+
+    # Ammonite
+    ".ammonite/predef.sc".content = "interp.repositories() ++= Seq(coursier.maven.MavenRepository(\"https://oss.sonatype.org/content/repositories/releases\"))";
 
     # Emacs
     ".emacs.d/init.el".content = lib.fileContents "${base}/init.el";

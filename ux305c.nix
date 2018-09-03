@@ -10,6 +10,8 @@
     version = 2;
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_hardened;
+
   networking.hostName = "nixus";
 
   networking.hosts = {

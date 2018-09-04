@@ -36,6 +36,7 @@
       # Basics
       alsaUtils
       autocutsel
+      bat
       binutils
       conky
       dnsutils

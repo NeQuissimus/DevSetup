@@ -9,7 +9,7 @@
         pr = "!f() { git fetch origin pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
         prup = "!f() { git fetch upstream pull/${1}/head:pr-${1}; git checkout pr-${1}; }; f"
         rename = "!f() { git push -u origin origin/"${1}":refs/heads/"${2}"; git push origin :"${1}"; }; f"
-        stable = "!f() { git checkout release-18.03  && git pull && git cherry-pick -x ${1} && git push && git checkout master; }; f"
+        stable = "!f() { git checkout release-18.09  && git pull && git cherry-pick -x ${1} && git push && git checkout master; }; f"
         t = tag -s -a
         undo = reset HEAD~1 --mixed
         up = !git pull --rebase --prune $@ && git submodule update --init --recursive

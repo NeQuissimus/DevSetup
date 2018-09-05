@@ -122,6 +122,17 @@
   };
 
   programs = {
+    nano = {
+      nanorc = ''
+        set linenumbers
+        set tabsize 2
+        set tabstospaces
+        set trimblanks
+        set unix
+      '';
+      syntaxHighlight = true;
+    };
+
     ssh = {
       agentTimeout = "4h";
       extraConfig = ''

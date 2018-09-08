@@ -26,6 +26,17 @@ in mkHome {
     ".mozilla/firefox/7ty7knlr.default/user.js".content = lib.fileContents "${base}/mozilla/firefox/user.js";
     ".mozilla/firefox/7ty7knlr.default/browser-extension-data/michal.simonfy@gmail.com/storage.js".content = lib.fileContents "${base}/mozilla/firefox/sites.js";
 
+    # Nano
+    ".nanorc".content = ''
+      set linenumbers
+      set tabsize 2
+      set tabstospaces
+      set trimblanks
+      set unix
+
+      include ${pkgs.nanorc}/share/*.nanorc
+    '';
+
     # X
     ".Xdefaults".content = lib.fileContents "${base}/Xdefaults";
     ".Xresources".content = lib.fileContents "${base}/Xresources";

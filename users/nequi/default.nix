@@ -29,6 +29,7 @@ in mkHome {
     # Nano
     ".nanorc".content = ''
       set linenumbers
+      set rebindkeypad # https://savannah.gnu.org/bugs/?54642
       set tabsize 2
       set tabstospaces
       set trimblanks

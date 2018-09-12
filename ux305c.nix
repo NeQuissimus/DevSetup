@@ -58,12 +58,6 @@
     ${autocutsel}/bin/autocutsel -s PRIMARY &
   '';
 
-#  services.xserver.resolutions = [
-#    { x = 1920; y = 1080; }
-#    { x = 1280; y = 800; }
-#    { x = 1024; y = 768; }
-#  ];
-
   services.xserver.videoDriver = "intel";
 
   virtualisation.docker.package = pkgs.docker-edge;

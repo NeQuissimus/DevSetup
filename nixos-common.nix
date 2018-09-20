@@ -174,6 +174,7 @@
 
         address=/bmcm-security-esentire.net/0.0.0.0
         address=/cowrk.me/0.0.0.0
+        address=/esentiire.com/0.0.0.0
         address=/esentire-email-security.com/0.0.0.0
         address=/esentireapis.com/0.0.0.0
         address=/esentiredns.com/0.0.0.0

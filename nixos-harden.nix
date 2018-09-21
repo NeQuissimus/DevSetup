@@ -84,8 +84,6 @@ in {
       allowPing = false;
       enable = true;
     };
-
-    tcpcrypt.enable = true;
   };
 
   nix = {

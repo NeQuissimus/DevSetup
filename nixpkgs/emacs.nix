@@ -8,6 +8,7 @@ in
   ]) ++ (with epkgs.melpaPackages; [
     auto-complete
     dockerfile-mode
+    flycheck
     haskell-mode
     hl-todo
     indent-guide

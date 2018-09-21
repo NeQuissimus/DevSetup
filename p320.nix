@@ -12,6 +12,7 @@
   environment.systemPackages = with pkgs; [
     google-chrome
     hipchat
+    kubectl
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

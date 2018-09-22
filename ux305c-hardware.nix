@@ -9,27 +9,21 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
-  boot.initrd.luks.devices = [ { name = "root"; device = "/dev/sda2"; } ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "nixoszfs/root/nixos";
-      fsType = "zfs";
-    };
-
-  fileSystems."/home" =
-    { device = "nixoszfs/home";
-      fsType = "zfs";
+    { device = "/dev/disk/by-uuid/45733137-be18-44d2-a8dd-23b5677e80a3";
+      fsType = "btrfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4E3B-1B0F";
+    { device = "/dev/disk/by-uuid/858D-6F73";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/zd0"; }
+    [ { device = "/dev/disk/by-uuid/6f2c7028-c00e-4fb3-a008-a010243269ea"; }
     ];
 
   nix.maxJobs = lib.mkDefault 4;

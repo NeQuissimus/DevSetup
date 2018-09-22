@@ -19,6 +19,7 @@ in {
     initrd.kernelModules = [
       "ahci"
       "aesni-intel"
+      "iso9660" # Mount CDs
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
       "vfat" # /boot

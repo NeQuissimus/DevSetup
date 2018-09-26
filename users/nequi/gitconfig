@@ -38,3 +38,5 @@
         email = tim@nequissimus.com
         name = Tim Steinbach
         signingkey = C5629893DE283C96
+[merge]
+        renamelimit = 4096

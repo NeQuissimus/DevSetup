@@ -200,6 +200,7 @@ in mkHome {
       alias diff='diff --color'
       alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'
       alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
+      alias grep='rg'
       alias ls='exa'
       alias mvn='mvn -q'
       alias nano='nano -E -w -c'

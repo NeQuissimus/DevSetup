@@ -48,6 +48,7 @@
       i3lock-fancy
       jq
       oh-my-zsh
+      ripgrep
       rofi
       rxvt_unicode-with-plugins
       skopeo
@@ -189,7 +190,6 @@
     };
 
     nscd.enable = false;
-    nixosManual.enable = false;
 
     ntp = {
       enable = true;

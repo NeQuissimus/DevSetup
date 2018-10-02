@@ -25,6 +25,8 @@
     };
   };
 
+  documentation.nixos.enable = false;
+
   environment = {
     etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
 
@@ -143,6 +145,7 @@
     };
 
     zsh = {
+      autosuggestions.enable = true;
       enable = true;
       enableCompletion = true;
 

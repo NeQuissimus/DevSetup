@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./nixos-common-1809.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
+  imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
   boot.loader.systemd-boot.enable = true;
 

@@ -5,7 +5,6 @@ let
   emacsWithPackages = (pkgs.emacsPackagesNgGen myEmacs).emacsWithPackages;
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
-  ]) ++ (with epkgs.melpaPackages; [
     auto-complete
     dockerfile-mode
     flycheck

@@ -13,6 +13,7 @@
     google-chrome
     hipchat
     kubectl
+    scala
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

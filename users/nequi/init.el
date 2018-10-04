@@ -23,6 +23,7 @@
 (global-set-key (kbd "C-x f") 'projectile-find-file)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
 
 (use-package magit
   :commands magit-status

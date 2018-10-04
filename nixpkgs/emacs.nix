@@ -18,9 +18,7 @@ in
     multiple-cursors
     neotree
     nix-mode
-    org-jira
     projectile
-    rust-mode
     scala-mode
     smartparens
     smooth-scrolling
@@ -29,5 +27,4 @@ in
     zerodark-theme
   ]) ++ (with epkgs.elpaPackages; [
     beacon
-    nameless
   ]))

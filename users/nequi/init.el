@@ -1,60 +1,22 @@
-(scroll-bar-mode -1)
 (package-initialize)
 
+(require 'smartparens-config)
+
+(beacon-mode 1)
+(electric-indent-mode 0)
+(global-auto-revert-mode t)
+(global-flycheck-mode)
+(global-whitespace-mode)
 (load-theme 'zerodark t)
+(projectile-global-mode)
+(scroll-bar-mode -1)
+(set-default-coding-systems 'utf-8)
+(set-frame-font "Hasklig")
+(set-language-environment "UTF-8")
+(smartparens-global-mode)
 (zerodark-setup-modeline-format)
 
-(setq
- inhibit-startup-screen t
- create-lockfiles nil
- make-backup-files nil
- column-number-mode t
- scroll-error-top-bottom t
- show-paren-delay 0.5
- use-package-always-ensure t
- show-trailing-whitespace t
- sentence-end-double-space nil)
-
-(setq history-length 100)
-(put 'minibuffer-history 'history-length 50)
-(put 'evil-ex-history 'history-length 50)
-(put 'kill-ring 'history-length 25)
-
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
-
-(setq whitespace-style '(face trailing tabs))
-(custom-set-faces
- '(whitespace-tab ((t (:background "red")))))
-(global-whitespace-mode)
-
 (ac-config-default)
-
-;; Load files from disk when changed
-(global-auto-revert-mode t)
-
-;; Remove white-spaces when saving
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; buffer local variables
-(setq-default
- indent-tabs-mode nil
- tab-width 2
- c-basic-offset 2
- buffer-file-coding-system 'utf-8-unix)
-
-;; modes
-(electric-indent-mode 0)
-
-;; org-jira
-(setq jiralib-url "https://jira.esentire.com")
-(add-hook 'prog-mode-hook 'org-jira-mode)
-(global-set-key (kbd "C-c ii") 'org-jira-get-issue)
-
-;; neotree
-(setq neo-theme 'nerd)
-(setq neo-force-change-root t)
-(setq neo-autorefresh t)
 
 ;; global keybindings
 (global-unset-key (kbd "C-z"))
@@ -62,15 +24,45 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x g") 'magit-status)
 
-;; Allocate more memory
-(setq gc-cons-threshold 20000000)
+(use-package magit
+  :commands magit-status
+  :init (setq
+         git-commit-style-convention-checks nil)
+  :bind (("C-x g" . magit-status))
+)
 
-(require 'smartparens-config)
-(smartparens-global-mode)
+(setq-default
+ indent-tabs-mode nil
+ tab-width 2
+ c-basic-offset 2
+ buffer-file-coding-system 'utf-8-unix
+)
 
-(projectile-global-mode)
+(setq
+ column-number-mode t
+ create-lockfiles nil
+ gc-cons-threshold 20000000
+ history-length 100
+ inhibit-startup-screen t
+ make-backup-files nil
+ neo-autorefresh t
+ neo-force-change-root t
+ neo-theme 'nerd
+ scroll-error-top-bottom t
+ sentence-end-double-space nil
+ show-paren-delay 0.5
+ show-trailing-whitespace t
+ use-package-always-ensure t
+ vc-handled-backends nil
+ whitespace-style '(face trailing tabs)
+)
 
-(set-default-font "Hasklig")
+(put 'minibuffer-history 'history-length 50)
+(put 'evil-ex-history 'history-length 50)
+(put 'kill-ring 'history-length 25)
+
+(custom-set-faces
+ '(whitespace-tab ((t (:background "red")))))
 
 (defun my-correct-symbol-bounds (pretty-alist)
   (mapcar (lambda (el)
@@ -97,18 +89,10 @@
     (append my-hasklig-ligatures prettify-symbols-alist))
   (prettify-symbols-mode))
 
-(add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
-(add-hook 'prog-mode-hook 'hl-todo-mode)
-
 (defun neotree-startup ()
   (interactive)
   (neotree-show)
   (call-interactively 'other-window))
-
-(if (daemonp)
-    (add-hook 'server-switch-hook #'neotree-startup)
-  (add-hook 'after-init-hook #'neotree-startup)
-)
 
 ;; http://www.accidentalrebel.com/posts/minifying-buffer-contents-in-emacs.html
 (defun minify-buffer()
@@ -123,3 +107,12 @@
  '(safe-local-variable-values
    (quote
     ((bug-reference-bug-regexp . "\\(\\(?:[Ii]ssue \\|[Ff]ixe[ds] \\|[Rr]esolve[ds]? \\|[Cc]lose[ds]? \\|[Pp]\\(?:ull [Rr]equest\\|[Rr]\\) \\|(\\)#\\([0-9]+\\))?\\)")))))
+
+(add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
+(add-hook 'prog-mode-hook 'hl-todo-mode)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(if (daemonp)
+    (add-hook 'server-switch-hook #'neotree-startup)
+  (add-hook 'after-init-hook #'neotree-startup)
+)

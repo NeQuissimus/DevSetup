@@ -27,7 +27,9 @@
 (use-package magit
   :commands magit-status
   :init (setq
-         git-commit-style-convention-checks nil)
+         git-commit-style-convention-checks nil
+         magit-log-section-commit-count 20
+         )
   :bind (("C-x g" . magit-status))
 )
 

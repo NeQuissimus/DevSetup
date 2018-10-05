@@ -5,6 +5,9 @@ let
   emacsWithPackages = (pkgs.emacsPackagesNgGen myEmacs).emacsWithPackages;
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
+    magit
+  ]) ++ (with epkgs.melpaPackages; [
+    all-the-icons
     auto-complete
     dockerfile-mode
     flycheck
@@ -12,7 +15,6 @@ in
     hl-todo
     indent-guide
     json-mode
-    magit
     markdown-mode
     multiple-cursors
     neotree

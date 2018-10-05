@@ -46,6 +46,9 @@
  create-lockfiles nil
  gc-cons-threshold 20000000
  history-length 100
+ initial-scratch-message nil
+ inhibit-startup-echo-area-message t
+ inhibit-startup-message t
  inhibit-startup-screen t
  make-backup-files nil
  neo-autorefresh t
@@ -59,6 +62,8 @@
  vc-handled-backends nil
  whitespace-style '(face trailing tabs)
 )
+
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 (put 'minibuffer-history 'history-length 50)
 (put 'evil-ex-history 'history-length 50)

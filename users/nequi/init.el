@@ -54,6 +54,7 @@
  neo-autorefresh t
  neo-force-change-root t
  neo-theme 'nerd
+ neo-window-width 30
  scroll-error-top-bottom t
  sentence-end-double-space nil
  show-paren-delay 0.5
@@ -110,6 +111,17 @@
   (mark-whole-buffer)
   (goto-char (point-min))
   (while (search-forward "\n" nil t) (replace-match "" nil t)))
+
+;; Set the neo-window-width to the current width of the
+;; neotree window, to trick neotree into resetting the
+;; width back to the actual window width.
+;; Fixes: https://github.com/jaypei/emacs-neotree/issues/262
+(eval-after-load "neotree"
+  '(add-to-list 'window-size-change-functions
+                (lambda (frame)
+                  (let ((neo-window (neo-global--get-window)))
+                    (unless (null neo-window)
+                      (setq neo-window-width (window-width neo-window)))))))
 
 (custom-set-variables
  '(safe-local-variable-values

@@ -160,15 +160,12 @@ in mkHome {
       export ZSH_CUSTOM="/home/${user}/dev/nequi-zsh"
       export CASE_SENSITIVE="false"
       export HIST_STAMPS="dd.mm.yyyy"
-      export plugins=(docker git gitignore)
+      export plugins=(docker emacs git gitignore kubectl minikube postgres sbt scala)
 
       # ENV
       export TERMINAL="xterm"
       export TERM="linux"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
-
-      export GOOGLE_APPLICATION_CREDENTIALS="''${HOME}/Documents/service_account.json"
-      export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 
       # ZSH for non-NixOS
       ZSH="''${ZSH:-/nix/var/nix/profiles/per-user/${user}/profile/share/oh-my-zsh}"
@@ -246,10 +243,6 @@ in mkHome {
       function sbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }
       function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}"; }
-
-      # Include shell completions
-      type -p kubectl >> /dev/null && source <(kubectl completion zsh)
-      type -p minikube >> /dev/null && source <(minikube completion zsh)
     '';
   };
 }

@@ -199,6 +199,8 @@
       servers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
     };
 
+    openssh.enable = true;
+
     redshift = {
       enable = false;
       latitude = "43.18";
@@ -225,6 +227,12 @@
       isNormalUser = true;
       name = "nequi";
       uid = 1000;
+      openssh.authorizedKeys.keyFiles = [
+        (builtins.fetchurl {
+          url = "https://github.com/NeQuissimus.keys";
+          sha256 = "14mg3ra36nxddqljb5fz360i7f1a1g1w3fv9wqb20fdgkk5rc2l5";
+        })
+      ];
     };
 
     users.docker = {

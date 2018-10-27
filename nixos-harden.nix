@@ -79,6 +79,10 @@ in {
     loader.systemd-boot.editor = false;
   };
 
+  environment = {
+    etc."ssh_moduli".text = (lib.fileContents ./etc/moduli);
+  };
+
   networking = {
     firewall = {
       allowedTCPPorts = [ ];
@@ -137,7 +141,33 @@ in {
       enable = true;
     };
 
-    openssh.permitRootLogin = "no";
+    openssh = {
+      allowSFTP = false;
+      challengeResponseAuthentication = false;
+      enable = mkDefault false;
+      extraConfig = ''
+        ClientAliveInterval 300
+        ClientAliveCountMax 2
+      '';
+      hostKeys = [
+        { path = "/etc/ssh/ssh_host_ed25519_key"; rounds = 127; type = "ed25519"; }
+        { bits = 4096; path = "/etc/ssh/ssh_host_rsa_key"; type = "rsa"; }
+      ];
+      kexAlgorithms = [
+        "curve25519-sha256@libssh.org"
+        "diffie-hellman-group14-sha256"
+        "diffie-hellman-group16-sha512"
+        "diffie-hellman-group18-sha512"
+      ];
+      macs =  [
+        "hmac-sha2-512-etm@openssh.com"
+        "hmac-sha2-256-etm@openssh.com"
+        "umac-128-etm@openssh.com"
+      ];
+      moduliFile = "/etc/ssh_moduli";
+      passwordAuthentication = false;
+      permitRootLogin = "no";
+    };
   };
 
   system.autoUpgrade = {

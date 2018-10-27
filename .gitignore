@@ -29,6 +29,7 @@ _config/sublime-text-3/Packages/bz2/
 _config/sublime-text-3/Packages/ssl-linux/
 etc/hosts
 etc/hosts.tmp
+etc/moduli
 nixpkgs/result
 bin/
 rootfs.tar.xz

@@ -41,22 +41,10 @@
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
   };
 
-  services.kbfs.enable = false;
-  services.keybase.enable = false;
-
   services.dnsmasq.servers = [
     "9.9.9.9"
     "10.0.10.6"
   ];
 
-  services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
-    ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
-    ${autocutsel}/bin/autocutsel &
-    ${autocutsel}/bin/autocutsel -s PRIMARY &
-  '';
-
   services.xserver.videoDriver = "intel";
-
-  virtualisation.docker.package = pkgs.docker-edge;
 }

@@ -43,6 +43,7 @@
       conky
       dnsutils
       exa
+      feh
       firefox
       gitFull
       gnupg1compat
@@ -116,8 +117,6 @@
       automatic = true;
       dates = [ "14:00" ];
     };
-
-    useSandbox = true;
   };
 
   nixpkgs.config = {
@@ -178,8 +177,10 @@
 
         address=/bmcm-security-esentire.net/0.0.0.0
         address=/cowrk.me/0.0.0.0
+        address=/esentife.com/0.0.0.0
         address=/esentiire.com/0.0.0.0
         address=/esentire-email-security.com/0.0.0.0
+        address=/esentire.cam/0.0.0.0
         address=/esentireapis.com/0.0.0.0
         address=/esentiredns.com/0.0.0.0
         address=/esentrie.com/0.0.0.0
@@ -211,6 +212,13 @@
     tlp.enable = true;
     upower.enable = true;
     urxvtd.enable = true;
+
+    xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
+      ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
+      ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
+      ${autocutsel}/bin/autocutsel &
+      ${autocutsel}/bin/autocutsel -s PRIMARY &
+    '';
   };
 
   system.stateVersion = "18.09";

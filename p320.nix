@@ -46,8 +46,6 @@
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
-  networking.firewall.allowedTCPPorts = [ ];
-
   nixpkgs.config = {
     firefox.enableAdobeFlash = true;
     firefox.enableAdobeFlashDRM = true;
@@ -73,7 +71,6 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
   };
 
   security.pki.certificates = [
@@ -83,7 +80,7 @@
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
     sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP1 --crtc 1 --primary --auto --pos 0x0 --output HDMI2 --crtc 2 --rotate left --auto --pos 1920x0
-    ${xorg.xsetroot}/bin/xsetroot -solid "#222222" &
+    ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
     ${autocutsel}/bin/autocutsel -s PRIMARY &
@@ -97,12 +94,7 @@
   ];
 
   system.autoUpgrade = {
-    channel = "https://nixos.org/channels/nixos-18.03";
+    channel = "https://nixos.org/channels/nixos-18.09";
     enable = true;
   };
-
-  users.users.nequi.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHYnkuOuI4NS9IrEWuq/+QFHLz7JE/ZlvNZT0I2a1wk nequi@nixus"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM942CkKG99a2Ru09v9CZRxY4sjWT+a+JQ/37qEzF8jV tsteinbach@es-lxx-detimste"
-  ];
 }

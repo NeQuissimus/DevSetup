@@ -91,7 +91,7 @@ in {
   };
 
   nix = {
-    allowedUsers = [ "nequi" "@wheel" ];
+    allowedUsers = [ "nequi" "root" "@wheel" ];
 
     requireSignedBinaryCaches = true;
 

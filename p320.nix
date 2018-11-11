@@ -94,7 +94,7 @@
   ];
 
   system.autoUpgrade = {
-    channel = "https://nixos.org/channels/nixos-18.09";
+    channel = "https://nixos.org/channels/nixos-unstable";
     enable = true;
   };
 }

@@ -68,9 +68,10 @@
       emacs-all-the-icons-fonts
       font-awesome_4
       hasklig
+      powerline-fonts
     ];
 
-    fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ];
+    fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono for Powerline" ];
   };
 
   hardware = {
@@ -149,6 +150,7 @@
       enableCompletion = true;
 
       ohMyZsh = {
+        customPkgs = [ pkgs.spaceship-prompt ];
         enable = true;
       };
 

@@ -47,4 +47,9 @@
   ];
 
   services.xserver.videoDriver = "intel";
+
+  system.autoUpgrade = {
+    channel = "https://nixos.org/channels/nixos-unstable";
+    enable = true;
+  };
 }

@@ -15,6 +15,9 @@ in mkHome {
     # Ammonite
     ".ammonite/predef.sc".content = "interp.repositories() ++= Seq(coursier.maven.MavenRepository(\"https://oss.sonatype.org/content/repositories/releases\"))";
 
+    # Nix
+    ".config/nixpkgs/config.nix".content = "{ allowUnfree = true; }";
+
     # Emacs
     ".emacs.d/init.el".content = lib.fileContents "${base}/init.el";
 
@@ -156,8 +159,10 @@ in mkHome {
       #!/usr/env/bin zsh
 
       # oh-my-zsh
-      export ZSH_THEME="nequissimus"
-      export ZSH_CUSTOM="/home/${user}/dev/nequi-zsh"
+      export ZSH_THEME="spaceship"
+      export SPACESHIP_CHAR_SYMBOL="λ "
+      export SPACESHIP_PROMPT_SEPARATE_LINE=false
+      export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker kubecontext exec_time battery jobs exit_code char)
       export CASE_SENSITIVE="false"
       export HIST_STAMPS="dd.mm.yyyy"
       export plugins=(docker emacs git gitignore kubectl minikube postgres sbt scala)
@@ -240,7 +245,7 @@ in mkHome {
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 
       # Tools
-      function sbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
+      function sbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }
       function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}"; }
     '';

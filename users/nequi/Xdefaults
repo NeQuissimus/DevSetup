@@ -23,7 +23,7 @@ Xft.rgba: rgb
 Xft.hinting: true
 Xft.hintstyle: hintslight
 
-URxvt*font: xft:DejaVu Sans Mono:size=12,xft:Monospace:size=12
+URxvt*font: xft:DejaVu Sans Mono for Powerline:size=12,xft:Monospace:size=12
 URxvt*geometry: 112x22
 URxvt*urlLauncher: firefox
 URxvt*scrollBar: false

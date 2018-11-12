@@ -163,7 +163,7 @@ in mkHome {
       export ZSH_THEME="spaceship"
       export SPACESHIP_CHAR_SYMBOL="λ "
       export SPACESHIP_PROMPT_SEPARATE_LINE=false
-      export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker kubecontext exec_time battery jobs exit_code char)
+      export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker exec_time battery jobs exit_code char)
       export CASE_SENSITIVE="false"
       export HIST_STAMPS="dd.mm.yyyy"
       export plugins=(docker emacs git gitignore kubectl minikube postgres sbt scala)

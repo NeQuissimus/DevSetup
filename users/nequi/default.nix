@@ -23,6 +23,7 @@ in mkHome {
 
     # Git
     ".gitconfig".content = lib.fileContents "${base}/gitconfig";
+    ".gitignore".content = lib.fileContents "${base}/gitignore";
 
     # Firefox
     ".mozilla/firefox/profiles.ini".content = lib.fileContents "${base}/mozilla/firefox/profiles.init";

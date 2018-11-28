@@ -71,6 +71,7 @@ in mkHome {
           , className =? "Atom" --> viewShift "2"
           , className =? "Code" --> viewShift "2"
           , className =? "HipChat" --> viewShift "0"
+          , className =? "Slack" --> viewShift "0"
           , appName =? "desktop_window" --> doIgnore
           ]
           where viewShift = doF . liftM2 (.) W.greedyView W.shift

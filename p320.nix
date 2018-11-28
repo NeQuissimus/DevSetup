@@ -14,6 +14,7 @@
     hipchat
     kubectl
     scala
+    slack
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

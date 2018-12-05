@@ -200,6 +200,7 @@ in mkHome {
       unsetopt correct_all
 
       # Aliases
+      alias bluesteel_notifications="nix-shell -p kafkacat --command 'kafkacat -b kaf001cmb01p.internal:9093 -C -t notifications -K \"|\" -o beginning -q -e' | cut -d '|' -f 3 | jq -R 'fromjson?' -c | jq -s 'sort_by(.start) | .[]'"
       alias cat='bat'
       alias diff='diff --color'
       alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'

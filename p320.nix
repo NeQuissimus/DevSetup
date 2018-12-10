@@ -23,7 +23,7 @@
 
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
-    "10.1.108.103" = ["github.internal" "github.esentire.com"];
+    "10.1.108.118" = ["github.internal" "github.esentire.com"];
     "10.1.108.152" = ["jen001p"];
     "10.1.108.153" = ["jen002p"];
     "10.1.108.154" = ["jen003" "registry.internal" "portus-1.internal"];

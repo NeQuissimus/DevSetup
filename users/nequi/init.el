@@ -34,6 +34,9 @@
   :bind (("C-x g" . magit-status))
 )
 
+(custom-set-variables
+ '(magit-cherry-pick-arguments (quote ("-x"))))
+
 (setq-default
  indent-tabs-mode nil
  tab-width 2
@@ -122,11 +125,6 @@
                   (let ((neo-window (neo-global--get-window)))
                     (unless (null neo-window)
                       (setq neo-window-width (window-width neo-window)))))))
-
-(custom-set-variables
- '(safe-local-variable-values
-   (quote
-    ((bug-reference-bug-regexp . "\\(\\(?:[Ii]ssue \\|[Ff]ixe[ds] \\|[Rr]esolve[ds]? \\|[Cc]lose[ds]? \\|[Pp]\\(?:ull [Rr]equest\\|[Rr]\\) \\|(\\)#\\([0-9]+\\))?\\)")))))
 
 (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
 (add-hook 'prog-mode-hook 'hl-todo-mode)

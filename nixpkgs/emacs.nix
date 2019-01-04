@@ -15,11 +15,14 @@ in
     hl-todo
     indent-guide
     json-mode
+    lsp-mode
+    lsp-ui
     markdown-mode
     multiple-cursors
     neotree
     nix-mode
     projectile
+    sbt-mode
     scala-mode
     smartparens
     smooth-scrolling

@@ -4,7 +4,7 @@ with lib;
 let
   user = "nequi";
   checkout = "/home/${user}/dev/DevSetup";
-  base = "${checkout}/users/nequi";
+  base = "${checkout}/users/${user}";
 in mkHome {
   inherit user;
 

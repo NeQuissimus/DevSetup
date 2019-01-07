@@ -53,7 +53,6 @@
       oh-my-zsh
       ripgrep
       rofi
-      rxvt_unicode-with-plugins
       skopeo
 
       ((pkgs.callPackage ./nixpkgs/nix-home.nix) { })
@@ -213,7 +212,11 @@
 
     tlp.enable = true;
     upower.enable = true;
-    urxvtd.enable = true;
+
+    urxvtd = {
+      enable = true;
+      package = pkgs.rxvt_unicode.override { perlSupport = false; };
+    };
 
     xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
       ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &

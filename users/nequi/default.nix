@@ -43,7 +43,10 @@ in mkHome {
     '';
 
     # X
-    ".Xdefaults".content = lib.fileContents "${base}/Xdefaults";
+    ".xinitrc".content = ''
+      xrdb ~/.Xresources
+      [[ -f ~/.Xdefaults ]] && xrdb -merge ~/.Xdefaults
+    '';
     ".Xresources".content = lib.fileContents "${base}/Xresources";
 
     # XMonad

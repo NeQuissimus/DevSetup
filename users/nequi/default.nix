@@ -173,7 +173,7 @@ in mkHome {
       export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker exec_time battery jobs exit_code char)
       export CASE_SENSITIVE="false"
       export HIST_STAMPS="dd.mm.yyyy"
-      export plugins=(docker emacs git gitignore kubectl minikube postgres sbt scala)
+      export plugins=(docker emacs git gitignore kubectl minikube postgres sbt scala ssh-agent)
 
       # ENV
       export TERMINAL="xterm"

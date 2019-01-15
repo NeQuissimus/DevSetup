@@ -27,6 +27,7 @@
     "10.1.108.152" = ["jen001p"];
     "10.1.108.153" = ["jen002p"];
     "10.1.108.154" = ["jen003" "registry.internal" "portus-1.internal"];
+    "10.1.108.160" = ["jen004p"];
     "10.1.110.54" = ["artifactory.internal"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];

@@ -25,6 +25,9 @@ in mkHome {
     ".gitconfig".content = lib.fileContents "${base}/gitconfig";
     ".gitignore".content = lib.fileContents "${base}/gitignore";
 
+    #GnuPG
+    ".gnupg/gpg.conf".content = lib.fileContents "${base}/gpg.conf";
+
     # Firefox
     ".mozilla/firefox/profiles.ini".content = lib.fileContents "${base}/mozilla/firefox/profiles.init";
     ".mozilla/firefox/7ty7knlr.default/user.js".content = lib.fileContents "${base}/mozilla/firefox/user.js";

@@ -21,7 +21,7 @@ Emacs*toolBar: 0
 Emacs*menuBar: 0
 
 URxvt*cutchars: "`\"'&()*,:;<=>?[\\]^{|}$"
-URxvt*fading: 15
+URxvt*fading: 30
 URxvt*font: xft:DejaVu Sans Mono for Powerline:size=12,xft:Monospace:size=12
 URxvt*geometry: 112x22
 URxvt*loginShell: true

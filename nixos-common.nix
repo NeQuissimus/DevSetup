@@ -45,7 +45,7 @@
       exa
       feh
       firefox
-      gitFull
+      git
       gnupg1compat
       htop
       i3lock-fancy
@@ -220,6 +220,7 @@
 
     xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
       ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
+      ${conky}/bin/conky -c ~/.conky &
       ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
       ${autocutsel}/bin/autocutsel &
       ${autocutsel}/bin/autocutsel -s PRIMARY &

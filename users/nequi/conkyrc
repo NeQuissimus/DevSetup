@@ -1,0 +1,78 @@
+conky.config = {
+  alignment = 'middle_right',
+  background = true,
+  border_inner_margin = 10,
+  border_outer_margin = 0,
+  cpu_avg_samples = 2,
+  default_color = '#FFFFFF',
+  double_buffer = true,
+  draw_borders = false,
+  draw_graph_borders = false,
+  draw_outline = false,
+  draw_shades = true,
+  font = 'DejaVu Sans Mono for Powerline:size=11',
+  gap_x = 20,
+  gap_y = 0,
+  imlib_cache_size = 0,
+  minimum_height = 1000,
+  minimum_width = 350,
+  net_avg_samples = 2,
+  no_buffers = true,
+  out_to_console = false,
+  override_utf8_locale = true,
+  own_window = true,
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+  own_window_transparent = true,
+  own_window_type = 'desktop',
+  text_buffer_size = 32768,
+  update_interval = 2,
+  uppercase = false,
+  use_xft = true,
+  xftalpha = 0.6,
+  xinerama_head = 2,
+};
+
+conky.text = [[
+  ${font FontAwesome}${font} ${time %Y-%m-%d}  ${font FontAwesome}${font}${voffset -2} ${time %H:%M}  ${font FontAwesome}${font} ${kernel}
+
+
+  ${if_up wlp1s0}${font FontAwesome}${font} ${addrs wlp1s0} | ${wireless_link_qual_perc wlp1s0}% @ ${wireless_essid wlp1s0}${endif}
+
+
+  ${font FontAwesome}${font} ${battery} | ${battery_time} left
+
+
+  ${if_up wlp1s0}${font FontAwesome}${font} ${font FontAwesome}${font} ${upspeed wlp1s0}${font FontAwesome}${goto 202}${font} ${downspeed wlp1s0}
+  ${voffset 5}${goto 20}${upspeedgraph wlp1s0 20,178 333333 CCCCCC}${goto 202}${downspeedgraph wlp1s0 20,175 CCCCCC 333333}${endif}
+
+
+  ${font FontAwesome}${font} ${font FontAwesome}${font} ${diskio_read}${font FontAwesome}${goto 202}${font} ${diskio_write}
+  ${voffset 5}${goto 20}${diskiograph_read 20,178 333333 CCCCCC}${goto 202}${diskiograph_write 20,175 CCCCCC 333333}
+
+
+  ${font FontAwesome}${font} ${mem}/${memmax} (${memperc}%) | Swap: ${swapperc}%
+
+
+  ${font FontAwesome}${font} ${cpu cpu0}% avg
+  ${voffset 5}CPU1: ${cpu cpu1}% @ ${freq2 cpu1}${goto 230}${cpubar 7,120 cpu1}
+  CPU2: ${cpu cpu2}% @ ${freq2 cpu2}${goto 230}${cpubar 7,120 cpu2}
+  CPU3: ${cpu cpu3}% @ ${freq2 cpu3}${goto 230}${cpubar 7,120 cpu3}
+  CPU4: ${cpu cpu4}% @ ${freq2 cpu4}${goto 230}${cpubar 7,120 cpu4}
+
+
+  ${font FontAwesome}${font}  ${threads} Threads | ${processes} Processes
+  ${voffset 5}${top name 1} ${goto 180}${top pid 1}${goto 235}${top cpu 1}${goto 290}${top mem 1}
+  ${top name 2} ${goto 180}${top pid 2}${goto 235}${top cpu 2}${goto 290}${top mem 2}
+  ${top name 3} ${goto 180}${top pid 3}${goto 235}${top cpu 3}${goto 290}${top mem 3}
+  ${top name 4} ${goto 180}${top pid 4}${goto 235}${top cpu 4}${goto 290}${top mem 4}
+  ${top name 5} ${goto 180}${top pid 5}${goto 235}${top cpu 5}${goto 290}${top mem 5}
+  ${top name 6} ${goto 180}${top pid 6}${goto 235}${top cpu 6}${goto 290}${top mem 6}
+  ${top name 7} ${goto 180}${top pid 7}${goto 235}${top cpu 7}${goto 290}${top mem 7}
+  ${top name 8} ${goto 180}${top pid 8}${goto 235}${top cpu 8}${goto 290}${top mem 8}
+  ${top name 9} ${goto 180}${top pid 9}${goto 235}${top cpu 9}${goto 290}${top mem 9}
+  ${top name 10} ${goto 180}${top pid 10}${goto 235}${top cpu 10}${goto 290}${top mem 10}
+  ${color #444444}Name ${goto 200}Pid${goto 255}Cpu%${goto 310}Mem%${color}
+
+
+  ${font FontAwesome}${font} ${curl https://wttr.in/?0FTq 10}
+]];

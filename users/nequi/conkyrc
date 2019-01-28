@@ -36,14 +36,17 @@ conky.text = [[
   ${font FontAwesome}${font} ${time %Y-%m-%d}  ${font FontAwesome}${font}${voffset -2} ${time %H:%M}  ${font FontAwesome}${font} ${kernel}
 
 
-  ${if_up wlp1s0}${font FontAwesome}${font} ${addrs wlp1s0} | ${wireless_link_qual_perc wlp1s0}% @ ${wireless_essid wlp1s0}${endif}
+  ${if_up wlp1s0}${font FontAwesome}${font} ${addrs wlp1s0} | ${wireless_link_qual_perc wlp1s0}% @ ${wireless_essid wlp1s0}
 
 
-  ${font FontAwesome}${font} ${battery} | ${battery_time} left
+  ${endif}
+  ${if_existing /proc/acpi/battery}${font FontAwesome}${font} ${battery} | ${battery_time} left
 
-
+  ${endif}
   ${if_up wlp1s0}${font FontAwesome}${font} ${font FontAwesome}${font} ${upspeed wlp1s0}${font FontAwesome}${goto 202}${font} ${downspeed wlp1s0}
   ${voffset 5}${goto 20}${upspeedgraph wlp1s0 20,178 333333 CCCCCC}${goto 202}${downspeedgraph wlp1s0 20,175 CCCCCC 333333}${endif}
+  ${if_up eno1}${font FontAwesome}${font} ${font FontAwesome}${font} ${upspeed eno1}${font FontAwesome}${goto 202}${font} ${downspeed eno1}
+  ${voffset 5}${goto 20}${upspeedgraph eno1 20,178 333333 CCCCCC}${goto 202}${downspeedgraph eno1 20,175 CCCCCC 333333}${endif}
 
 
   ${font FontAwesome}${font} ${font FontAwesome}${font} ${diskio_read}${font FontAwesome}${goto 202}${font} ${diskio_write}

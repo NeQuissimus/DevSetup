@@ -29,6 +29,7 @@
 
   environment = {
     etc."dnsmasq.hosts".text = (lib.fileContents ./etc/hosts);
+    etc."docker-daemon.json".text = ''{"bip": "192.168.1.5/24"}'';
 
     sessionVariables = {
       TERMINFO_DIRS = "/run/current-system/sw/share/terminfo";
@@ -258,6 +259,7 @@
   virtualisation = {
     docker = {
       enable = true;
+      extraOptions = ''--config-file=/etc/docker-daemon.json'';
     };
   };
 }

@@ -12,7 +12,6 @@
   environment.systemPackages = with pkgs; [
     awscli
     google-chrome
-    hipchat
     kubectl
     scala
     slack-dark

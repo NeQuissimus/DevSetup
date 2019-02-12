@@ -447,6 +447,7 @@ user_pref("xpinstall.whitelist.required", true); // [DEFAULT: true]
 
 /** CUSTOM **/
 user_pref("browser.display.use_document_fonts", 1);
+user_pref("browser.newtabpage.enabled", true);
 user_pref("browser.onboarding.tour-type", "new");
 user_pref("browser.onboarding.tour.onboarding-tour-addons.completed", true);
 user_pref("browser.onboarding.tour.onboarding-tour-customize.completed", true);
@@ -467,7 +468,8 @@ user_pref("browser.urlbar.suggest.history", true);
 user_pref("browser.urlbar.suggest.searches", true);
 user_pref("keyword.enabled", true);
 user_pref("network.cookie.thirdparty.sessionOnly", false);
-user_pref("pdfjs.disabled", true);
+user_pref("pdfjs.disabled", false);
+user_pref("privacy.clearOnShutdown.cookies", false);
 user_pref("privacy.clearOnShutdown.history", false);
 user_pref("privacy.clearOnShutdown.openWindows", false);
 user_pref("privacy.clearOnShutdown.sessions", false);

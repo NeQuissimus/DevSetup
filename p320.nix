@@ -11,10 +11,10 @@
 
   environment.systemPackages = with pkgs; [
     awscli
-    google-chrome
     kubectl
     scala
     slack-dark
+    vivaldi
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

@@ -80,6 +80,7 @@ in mkHome {
           , isDialog --> doFloat
           , className =? "Chromium-browser" --> viewShift "\62057"
           , className =? "Firefox" --> viewShift "\62057"
+          , className =? "Vivaldi-stable" --> viewShift "\62057"
           , className =? "Emacs" --> viewShift "\61729"
           , className =? "Slack" --> viewShift "\61848"
           , appName =? "desktop_window" --> doIgnore

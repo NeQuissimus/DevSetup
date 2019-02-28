@@ -66,7 +66,7 @@
     fonts = with pkgs; [
       dejavu_fonts
       emacs-all-the-icons-fonts
-      font-awesome_4
+      font-awesome
       hasklig
       powerline-fonts
     ];

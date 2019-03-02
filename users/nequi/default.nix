@@ -129,7 +129,7 @@ in mkHome {
     '';
 
     ".xmobar/config".content = ''
-         Config { font = "xft:Font Awesome:size=9, xft:DejaVu Sans Mono:size=8:antialias=true"
+         Config { font = "xft:DejaVu Sans Mono:size=8:antialias=true,Font Awesome 5 Free Solid:size=9,Font Awesome 5 Brands Regular:size=9"
             , additionalFonts = []
             , borderColor = "black"
             , border = BottomB
@@ -170,7 +170,7 @@ in mkHome {
                          ]
             , sepChar = "%"
             , alignSep = "}{"
-            , template = "%StdinReader% }{  %multicpu% |  %memory% MiB |  %dynnetwork% |  %date% |  %battery% |  %uname%"
+            , template = "%StdinReader% }{  %multicpu% |  %memory% MiB |  %dynnetwork% |  %date% |  %battery% |  %uname%"
             }
     '';
 

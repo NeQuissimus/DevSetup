@@ -276,7 +276,13 @@ in mkHome {
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 
       # Tools
-      function sbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
+      function sbt() {
+        args="$@"
+        if [ -f "''${HOME}/.sbt/repositories" ]; then
+          repo="-Dsbt.override.build.repos=true"
+        fi
+        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
+      }
       function bigsbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }
       function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}"; }

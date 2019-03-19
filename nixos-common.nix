@@ -5,8 +5,10 @@
     enableContainers = false;
 
     kernel.sysctl = {
-      "vm.dirty_background_ratio" = 2; # Write back to disk at %
-      "vm.dirty_ratio" = 3; # Write back to disk at %
+      "vm.dirty_background_ratio" = 20; # Max % of RAM with dirty pages before reclaim
+      "vm.dirty_ratio" = 30; # Max % of RAM with dirty pages before STW
+      "vm.dirty_writeback_centisecs" = 500; # Frequency pages are reclaimed
+      "vm.dirty_expire_centisecs" = 3000; # Max age of dirty pages
       "vm.drop_caches" = 1; # Drop caches early
       "vm.swappiness" = 1; # Minimum swap usage
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure

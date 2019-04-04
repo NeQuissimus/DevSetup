@@ -184,6 +184,7 @@ in mkHome {
       export SPACESHIP_PROMPT_SEPARATE_LINE=false
       export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker exec_time battery jobs exit_code char)
       export CASE_SENSITIVE="false"
+      export GPG_TTY="$(tty)"
       export HIST_STAMPS="dd.mm.yyyy"
       export HISTCONTROL="ignoredups"
       export plugins=(docker emacs git gitignore jira kubectl minikube postgres sbt scala ssh-agent)

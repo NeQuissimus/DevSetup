@@ -275,7 +275,41 @@ in mkHome {
       function kafka_prod_consume() {  docker run --rm -it --add-host=kaf001cmb01p.internal:10.1.110.136 --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kaf001cmb01p.internal:9093 --topic $@ }
 
       # Nix updates
-      function nix-updates() { cd "''${HOME}/dev/upstream_nix/" && git checkout master && git pull && ./pkgs/os-specific/linux/kernel/update.sh && ./pkgs/applications/networking/browsers/vivaldi/update.sh && ./pkgs/applications/audio/spotify/update.sh && ./pkgs/applications/networking/browsers/chromium/update.sh && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && ./pkgs/shells/zsh/oh-my-zsh/update.sh && nix-build -A linux_4_4.configfile -A linux_4_9.configfile -A linux_4_14.configfile -A linux_4_19.configfile -A linux_5_0.configfile -A linux_latest.configfile -A linux_hardened.configfile -A linux_latest_hardened.configfile -A linux_testing.configfile && nix-build ./nixos/release.nix -A tests.jenkins.x86_64-linux -A tests.kernel-latest.x86_64-linux -A tests.kernel-lts.x86_64-linux -A tests.switchTest.x86_64-linux }
+      function nix-updates() {
+      # Need https://github.com/NixOS/nixpkgs/pull/59098
+      # ./pkgs/applications/version-management/git-and-tools/git/update.sh
+      # Needs a channel push
+      # ./pkgs/shells/zsh/oh-my-zsh/update.sh
+
+        cd "''${HOME}/dev/upstream_nix/" \
+        && git checkout master \
+        && git pull \
+        && ./pkgs/os-specific/linux/kernel/update.sh \
+        && ./pkgs/applications/networking/browsers/vivaldi/update.sh \
+        && ./pkgs/applications/audio/spotify/update.sh \
+        && ./pkgs/applications/networking/browsers/chromium/update.sh \
+        && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh \
+        && ./pkgs/development/tools/continuous-integration/jenkins/update.sh \
+        && nix-build -A linux_4_4.configfile \
+          -A linux_4_9.configfile \
+          -A linux_4_14.configfile \
+          -A linux_4_19.configfile \
+          -A linux_5_0.configfile \
+          -A linux_latest.configfile \
+          -A linux_hardened.configfile \
+          -A linux_latest_hardened.configfile \
+          -A linux_testing.configfile \
+          -A vivaldi \
+          -A spotify \
+          -A chromium \
+          -A zoom-us \
+          -A jenkins \
+          -A oh-my-zsh \
+        && nix-build ./nixos/release.nix -A tests.jenkins.x86_64-linux \
+          -A tests.kernel-latest.x86_64-linux \
+          -A tests.kernel-lts.x86_64-linux \
+          -A tests.switchTest.x86_64-linux
+      }
 
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }

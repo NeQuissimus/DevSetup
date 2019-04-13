@@ -276,35 +276,18 @@ in mkHome {
 
       # Nix updates
       function nix-updates() {
-      # Need https://github.com/NixOS/nixpkgs/pull/59098
-      # ./pkgs/applications/version-management/git-and-tools/git/update.sh
-      # Needs a channel push
-      # ./pkgs/shells/zsh/oh-my-zsh/update.sh
+      # https://github.com/NixOS/nixpkgs/pull/57800
+      # ./pkgs/applications/audio/spotify/update.sh \
 
-        cd "''${HOME}/dev/upstream_nix/" \
+      cd "''${HOME}/dev/upstream_nix/" \
         && git checkout master \
         && git pull \
-        && ./pkgs/os-specific/linux/kernel/update.sh \
-        && ./pkgs/applications/networking/browsers/vivaldi/update.sh \
-        && ./pkgs/applications/audio/spotify/update.sh \
-        && ./pkgs/applications/networking/browsers/chromium/update.sh \
-        && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh \
-        && ./pkgs/development/tools/continuous-integration/jenkins/update.sh \
-        && nix-build -A linux_4_4.configfile \
-          -A linux_4_9.configfile \
-          -A linux_4_14.configfile \
-          -A linux_4_19.configfile \
-          -A linux_5_0.configfile \
-          -A linux_latest.configfile \
-          -A linux_hardened.configfile \
-          -A linux_latest_hardened.configfile \
-          -A linux_testing.configfile \
-          -A vivaldi \
-          -A spotify \
-          -A chromium \
-          -A zoom-us \
-          -A jenkins \
-          -A oh-my-zsh \
+        && ./pkgs/os-specific/linux/kernel/update.sh && (nix-build -A linux_4_4.configfile -A linux_4_9.configfile -A linux_4_14.configfile -A linux_4_19.configfile -A linux_5_0.configfile -A linux_latest.configfile -A linux_hardened.configfile -A linux_latest_hardened.configfile -A linux_testing.configfile || (git reset --hard origin/master && git checkout -- .)) \
+        && ./pkgs/applications/networking/browsers/vivaldi/update.sh && (nix-build -A vivaldi || (git reset --mixed HEAD~2 && git checkout -- .)) && (nix-build -A vivaldi-ffmpeg-codecs || (git reset --mixed HEAD~1 && git checkout -- .))  \
+        && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh && (nix-build -A zoom-us || (git reset --mixed HEAD~1 && git checkout -- .)) \
+        && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && (nix-build -A jenkins || (git reset --mixed HEAD~1 && git checkout -- .)) \
+        && ./pkgs/applications/version-management/git-and-tools/git/update.sh && (nix-build -A git || (git reset --mixed HEAD~1 && git checkout -- .)) \
+        && ./pkgs/shells/zsh/oh-my-zsh/update.sh && (nix-build -A oh-my-zsh || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && nix-build ./nixos/release.nix -A tests.jenkins.x86_64-linux \
           -A tests.kernel-latest.x86_64-linux \
           -A tests.kernel-lts.x86_64-linux \

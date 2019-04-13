@@ -70,6 +70,7 @@ in {
     kernelParams = [
       "nohibernate" # Disable hibernation
       "page_poison=1" # Poison memory pages, wiping freed memory
+      "pti=on" # Kernel page isolation
       "slab_nomerge" # Disable slab merging (Slab = chunk of memory)
       "slub_debug=FZP" # Enable sanity checks (F), redzoning (Z) and poisoning (P)
       "vsyscall=none" # vsyscall is obsolete

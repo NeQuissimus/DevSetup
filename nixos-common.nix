@@ -47,7 +47,6 @@
       dnsutils
       exa
       feh
-      firefox
       git
       gnupg1compat
       htop
@@ -57,6 +56,8 @@
       ripgrep
       rofi
       skopeo
+
+      (vivaldi.override { proprietaryCodecs = true; })
 
       ((pkgs.callPackage ./nixpkgs/nix-home.nix) { })
     ];

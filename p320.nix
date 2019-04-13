@@ -14,7 +14,6 @@
     kubectl
     scala
     slack-dark
-    (vivaldi.override { proprietaryCodecs = true; })
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";

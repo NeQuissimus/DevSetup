@@ -15,6 +15,7 @@
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
     "10.0.10.10" = ["serenitybysarah.ca"];
+    "172.16.0.254" = ["wifi.esentire.com"];
     "0.0.0.0" = ["ftp.au.debian.org"];
   };
 

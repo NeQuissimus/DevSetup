@@ -42,7 +42,7 @@
     "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.dev"];
     #"10.203.1.107" = ["kubeapi.dev"];
-    "172.16.0.254" = ["captiveportal-login.esentire.com"];
+    "172.16.0.254" = ["captiveportal-login.esentire.com" "wifi.esentire.com"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };

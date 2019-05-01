@@ -199,7 +199,7 @@
       resolveLocalQueries = false;
     };
 
-    nscd.enable = false;
+    nscd.enable = lib.mkDefault false;
 
     ntp = {
       enable = true;

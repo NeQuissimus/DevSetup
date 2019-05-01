@@ -11,12 +11,15 @@
 
   environment.systemPackages = with pkgs; [
     awscli
+    gitter
     kubectl
     scala
     slack-dark
   ];
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
+
+  networking.firewall.allowedTCPPorts = [ 631 ]; # CUPS
 
   networking.hostName = "nixus-desktop";
 
@@ -52,6 +55,9 @@
     firefox.enableAdobeFlashDRM = true;
   };
 
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+
   # List will be flipped
   services.dnsmasq.servers = [
     "64.6.64.6" # Verisign
@@ -70,6 +76,8 @@
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
   };
 
+  services.nscd.enable = true;
+
   services.openssh = {
     enable = true;
   };
@@ -78,6 +86,10 @@
     (lib.fileContents ./registry.crt)
     (lib.fileContents ./ca.internal.crt.pem)
   ];
+
+  services.printing = {
+    enable = true;
+  };
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
     sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP1 --crtc 1 --primary --auto --pos 0x0 --output HDMI2 --crtc 2 --rotate left --auto --pos 1920x0

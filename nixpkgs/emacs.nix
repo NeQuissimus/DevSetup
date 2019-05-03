@@ -5,18 +5,19 @@ let
   emacsWithPackages = (pkgs.emacsPackagesNgGen myEmacs).emacsWithPackages;
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
-    magit
   ]) ++ (with epkgs.melpaPackages; [
     all-the-icons
     auto-complete
     dockerfile-mode
     flycheck
+    forge
     haskell-mode
     hl-todo
     indent-guide
     json-mode
     lsp-mode
     lsp-ui
+    magit
     markdown-mode
     multiple-cursors
     neotree

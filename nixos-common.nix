@@ -128,6 +128,13 @@
     allowUnfree = true;
   };
 
+  powerManagement = {
+    enable = true;
+    powerUpCommands = ''
+      ${pkgs.hdparm}/sbin/hdparm -B 255 /dev/sda
+    '';
+  };
+
   programs = {
     ssh = {
       agentTimeout = "4h";

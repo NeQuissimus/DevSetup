@@ -222,7 +222,13 @@
       temperature.night = 1900;
     };
 
-    tlp.enable = true;
+    tlp = {
+      enable = true;
+      extraConfig = ''
+        DISK_APM_LEVEL_ON_BAT="254 254"
+      '';
+    };
+
     upower.enable = true;
 
     urxvtd = {

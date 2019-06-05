@@ -14,7 +14,7 @@
 (set-frame-font "Hasklig")
 (set-language-environment "UTF-8")
 (smartparens-global-mode)
-(zerodark-setup-modeline-format)
+;; (zerodark-setup-modeline-format)
 
 (ac-config-default)
 
@@ -128,6 +128,7 @@
 
 (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
 (add-hook 'prog-mode-hook 'hl-todo-mode)
+(add-hook 'prog-mode-hook 'nyan-mode)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (if (daemonp)

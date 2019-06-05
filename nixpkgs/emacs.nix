@@ -22,6 +22,7 @@ in
     multiple-cursors
     neotree
     nix-mode
+    nyan-mode
     projectile
     sbt-mode
     scala-mode

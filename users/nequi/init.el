@@ -3,18 +3,16 @@
 (require 'smartparens-config)
 
 (beacon-mode 1)
-(electric-indent-mode 0)
 (global-auto-revert-mode t)
 (global-flycheck-mode)
 (global-whitespace-mode)
-(load-theme 'zerodark t)
+(load-theme 'spacemacs-dark t)
 (projectile-global-mode)
 (scroll-bar-mode -1)
 (set-default-coding-systems 'utf-8)
 (set-frame-font "Hasklig")
 (set-language-environment "UTF-8")
 (smartparens-global-mode)
-;; (zerodark-setup-modeline-format)
 
 (ac-config-default)
 
@@ -23,6 +21,7 @@
 (global-set-key (kbd "C-x f") 'projectile-find-file)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x g") 'magit-status)
+;;(global-set-key (kbd "C-x t") 'kubernetes-overview)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
 
 (use-package magit
@@ -128,7 +127,9 @@
 
 (add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
 (add-hook 'prog-mode-hook 'hl-todo-mode)
-(add-hook 'prog-mode-hook 'nyan-mode)
+(add-hook 'prog-mode-hook #'nyan-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'scala-mode-hook #'aggressive-indent-mode)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (if (daemonp)

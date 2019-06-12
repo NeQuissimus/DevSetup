@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  ad=lib.fileContents ./etc/ad;
+in {
   imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
   boot.loader.systemd-boot.enable = true;
@@ -8,6 +10,8 @@
   boot.kernel.sysctl = {
     "vm.max_map_count" = 262144; # Increase map count for ElasticSearch
   };
+
+  environment.etc."ethernet.pem".text = (lib.fileContents ./etc/ethernet.pem);
 
   environment.systemPackages = with pkgs; [
     awscli
@@ -48,6 +52,25 @@
     "172.16.0.254" = ["captiveportal-login.esentire.com" "wifi.esentire.com"];
 
     "0.0.0.0" = [ "ftp.au.debian.org" ];
+  };
+
+  networking.networkmanager = {
+    enable = true;
+
+    extraConfig = ''
+      [connection]
+      id=eSentire Office
+      uuid=1ad250e1-a36c-4729-8062-2c4436e8beb5
+      type=ethernet
+      permissions=
+
+      [802-1x]
+      ca-cert=/etc/ethernet.pem
+      eap=peap;
+      identity=ESENTIRE\\tsteinbach
+      password=${ad}
+      phase2-auth=mschapv2
+    '';
   };
 
   nixpkgs.config = {
@@ -92,7 +115,7 @@
   };
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output DP1 --crtc 1 --primary --auto --pos 0x0 --output HDMI2 --crtc 2 --rotate left --auto --pos 1920x0
+    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output HDMI2 --primary --crtc 2 --auto --pos 0x500 --output DP1 --crtc 1 --auto --rotate left --pos 1920x0 --output HDMI1 --crtc 1 --auto --pos 3000x0 --rotate left &
     ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
@@ -102,6 +125,7 @@
   services.xserver.videoDriver = "intel";
 
   services.xserver.xrandrHeads = [
+    "HDMI1" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI1"; }
     "DP1" { output = "DP1"; primary = true; }
     "HDMI2" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI2"; }
   ];

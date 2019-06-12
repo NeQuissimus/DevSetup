@@ -30,6 +30,8 @@ _config/sublime-text-3/Packages/ssl-linux/
 etc/hosts
 etc/hosts.tmp
 etc/moduli
+etc/ad
+etc/ethernet.pem
 nixpkgs/result
 bin/
 rootfs.tar.xz

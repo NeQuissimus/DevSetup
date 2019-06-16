@@ -39,6 +39,8 @@ in {
       "vboxnetflt" # VirtualBox
       "vboxnetadp" # VirtualBox
       "vboxdrv" # VirtualBox
+    ] ++ optionals (config.hardware.u2f.enable) [
+      "usbhid" # Allow plug'n'play
     ];
 
     kernel.sysctl = {
@@ -82,6 +84,8 @@ in {
   environment = {
     etc."ssh_moduli".text = (lib.fileContents ./etc/moduli);
   };
+
+  hardware.u2f.enable = mkDefault true;
 
   networking = {
     firewall = {

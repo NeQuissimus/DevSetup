@@ -80,7 +80,6 @@
   hardware = {
     cpu.intel.updateMicrocode = true;
     pulseaudio.enable = true;
-    u2f.enable = true;
   };
 
   i18n = {

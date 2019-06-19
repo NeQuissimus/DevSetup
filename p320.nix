@@ -23,7 +23,7 @@ in {
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
 
-  networking.firewall.allowedTCPPorts = [ 631 ]; # CUPS
+  networking.firewall.allowedTCPPorts = [ 53 631 ];
 
   networking.hostName = "nixus-desktop";
 
@@ -71,6 +71,8 @@ in {
       password=${ad}
       phase2-auth=mschapv2
     '';
+
+    insertNameservers = [ "127.0.0.1#53" ];
   };
 
   nixpkgs.config = {
@@ -90,8 +92,9 @@ in {
     "10.3.114.53" # Internal
     "10.3.115.20" # Internal
     "10.1.120.31" # Internal
-    "1.1.1.1" # CloudFlare
     "10.1.115.20" # Internal
+    "1.1.1.1" # CloudFlare
+    "9.9.9.9" # Quad 9
   ];
 
   services.emacs = {

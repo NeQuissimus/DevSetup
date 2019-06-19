@@ -1,5 +1,7 @@
 .metals
 .bloop
+.scalafix.conf
+.scalafmt.conf
 
 # Created by https://www.gitignore.io/api/emacs,linux
 # Edit at https://www.gitignore.io/?templates=emacs,linux

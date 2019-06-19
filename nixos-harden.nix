@@ -21,6 +21,7 @@ in {
       "iso9660" # Mount CDs
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
+      "tun"
       "vfat" # /boot
     ] ++ optionals (config.services.kbfs.enable) [
       "fuse" # KBFS
@@ -91,7 +92,7 @@ in {
     firewall = {
       allowedTCPPorts = [ ];
       allowPing = false;
-      enable = true;
+      enable = mkDefault true;
     };
   };
 
@@ -121,7 +122,7 @@ in {
   security = {
     apparmor.enable = true;
     hideProcessInformation = true;
-    lockKernelModules = true;
+    lockKernelModules = mkDefault true;
     sudo = {
       enable = true;
       wheelNeedsPassword = true;

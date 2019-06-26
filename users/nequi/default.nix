@@ -282,7 +282,7 @@ in mkHome {
       cd "''${HOME}/dev/upstream_nix/" \
         && git checkout master \
         && git pull \
-        && ./pkgs/os-specific/linux/kernel/update.sh && (nix-build -A linux_4_4.configfile -A linux_4_9.configfile -A linux_4_14.configfile -A linux_4_19.configfile -A linux_5_0.configfile -A linux_latest.configfile -A linux_hardened.configfile -A linux_latest_hardened.configfile -A linux_testing.configfile || (git reset --hard origin/master && git checkout -- .)) \
+        && ./pkgs/os-specific/linux/kernel/update.sh && (nix-build -A linux_4_4.configfile -A linux_4_9.configfile -A linux_4_14.configfile -A linux_4_19.configfile -A linux_latest.configfile -A linux_hardened.configfile -A linux_latest_hardened.configfile -A linux_testing.configfile || (git reset --hard origin/master && git checkout -- .)) \
         && ./pkgs/applications/networking/browsers/vivaldi/update.sh && (nix-build -A vivaldi || (git reset --mixed HEAD~2 && git checkout -- .)) && (nix-build -A vivaldi-ffmpeg-codecs || (git reset --mixed HEAD~1 && git checkout -- .))  \
         && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh && (nix-build -A zoom-us || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && (nix-build -A jenkins || (git reset --mixed HEAD~1 && git checkout -- .)) \
@@ -303,7 +303,7 @@ in mkHome {
         if [ -f "''${HOME}/.sbt/repositories" ]; then
           repo="-Dsbt.override.build.repos=true"
         fi
-        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
+        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} \"''${args}\"";
       }
       function bigsbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }

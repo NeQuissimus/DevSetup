@@ -23,7 +23,7 @@ in {
 
   environment.variables.QTWEBENGINE_DISABLE_SANDBOX = "1";
 
-  networking.firewall.allowedTCPPorts = [ 53 631 ];
+  networking.firewall.allowedTCPPorts = [ 22 53 631 ];
 
   networking.hostName = "nixus-desktop";
 

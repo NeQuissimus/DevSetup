@@ -44,7 +44,8 @@
 
   services.dnsmasq.servers = [
     "9.9.9.9"
-    "10.0.10.6"
+    "10.0.0.2"
+#    "10.0.10.6"
   ];
 
   services.xserver.videoDriver = "intel";

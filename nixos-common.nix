@@ -21,7 +21,7 @@
     };
 
     plymouth = {
-      enable = true;
+      enable = lib.mkDefault true;
       logo = "${pkgs.nixos-artwork.wallpapers.simple-light-gray}/share/artwork/gnome/nix-wallpaper-simple-light-gray.png";
       theme = "spinfinity";
     };
@@ -244,7 +244,7 @@
     '';
   };
 
-  system.stateVersion = "18.09";
+  system.stateVersion = "19.09";
 
   time = {
     timeZone = "America/Toronto";

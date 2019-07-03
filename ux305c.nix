@@ -1,13 +1,15 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./nixos-common.nix ./nixos-xmonad.nix ./ux305c-hardware.nix ./ux305c-wifi.nix ];
+  imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./ux305c-hardware.nix ./ux305c-wifi.nix ];
 
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
+
+    plymouth.enable = false;
 
     supportedFilesystems = [ "exfat" "zfs" ];
 
@@ -54,6 +56,8 @@
   ];
 
   services.xserver.videoDriver = "intel";
+
+  services.zfs.autoScrub.enable = true;
 
   system.autoUpgrade = {
     channel = "https://nixos.org/channels/nixos-unstable";

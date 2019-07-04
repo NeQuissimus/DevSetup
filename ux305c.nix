@@ -50,9 +50,8 @@
   };
 
   services.dnsmasq.servers = [
-    "9.9.9.9"
-    "10.0.0.2"
-#    "10.0.10.6"
+    "10.0.0.2" # Router
+    "10.1.115.20" # eSentire
   ];
 
   services.xserver.videoDriver = "intel";
@@ -63,4 +62,6 @@
     channel = "https://nixos.org/channels/nixos-unstable";
     enable = true;
   };
+
+  virtualisation.docker.storageDriver = "zfs";
 }

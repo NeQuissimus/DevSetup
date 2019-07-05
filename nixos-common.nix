@@ -179,13 +179,12 @@
 
       extraConfig = ''
         no-hosts
+        no-negcache
         addn-hosts=/etc/dnsmasq.hosts
-        strict-order
+        all-servers
         cache-size=2000
         local-ttl=3600
         min-cache-ttl=3600
-
-        conf-file=/etc/dnsmasq-conf.conf
 
         address=/bmcm-security-esentire.net/0.0.0.0
         address=/cowrk.me/0.0.0.0

@@ -303,7 +303,7 @@ in mkHome {
         if [ -f "''${HOME}/.sbt/repositories" ]; then
           repo="-Dsbt.override.build.repos=true"
         fi
-        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} \"''${args}\"";
+        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
       }
       function bigsbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }

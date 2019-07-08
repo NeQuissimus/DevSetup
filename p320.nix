@@ -35,8 +35,12 @@ in {
     "10.1.108.154" = ["jen003" "registry.internal" "portus-1.internal"];
     "10.1.108.160" = ["jen004p"];
     "10.1.110.54" = ["artifactory.internal"];
+    "10.1.110.95" = ["tickets.internal"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
+    "10.1.110.136" = ["kaf001cmb01p.internal"];
+    "10.1.110.137" = ["kaf002cmb01p.internal"];
+    "10.1.110.138" = ["kaf003cmb01p.internal"];
     "10.1.110.167" = ["jira.esentire.com" "jira.internal"];
     "10.1.110.178" = ["secnet.esentire.com"];
     "10.1.110.191" = ["hipchat.esentire.com"];
@@ -92,9 +96,9 @@ in {
     "10.3.114.53" # Internal
     "10.3.115.20" # Internal
     "10.1.120.31" # Internal
-    "10.1.115.20" # Internal
     "1.1.1.1" # CloudFlare
     "9.9.9.9" # Quad 9
+    "10.1.115.20" # Internal
   ];
 
   services.emacs = {

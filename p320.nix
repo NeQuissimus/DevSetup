@@ -48,6 +48,7 @@ in {
     "10.1.110.243" = ["gerrit.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
+    "10.1.204.60" = ["kubeapi.uat"];
     "10.1.204.234" = ["soc.uat"];
     "10.203.0.31" = ["kubeapi.qa"];
     "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];

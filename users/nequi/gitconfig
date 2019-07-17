@@ -25,6 +25,8 @@
         whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [diff]
         compactionHeuristic = true
+[github]
+        user = NeQuissimus
 [interactive]
         diffFilter = diff-highlight
 [pull]

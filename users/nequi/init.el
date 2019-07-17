@@ -4,6 +4,7 @@
 (require 'yasnippet)
 
 (beacon-mode 1)
+(indent-guide-global-mode)
 (global-auto-revert-mode t)
 (global-flycheck-mode)
 (yas-global-mode 1)
@@ -34,6 +35,9 @@
          )
   :bind (("C-x g" . magit-status))
 )
+
+(with-eval-after-load 'magit
+  (require 'forge))
 
 (custom-set-variables
  '(magit-cherry-pick-arguments (quote ("-x"))))

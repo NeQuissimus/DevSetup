@@ -1,10 +1,10 @@
 {
   hosts = {
     "10.1.108.118" = ["github.internal" "github.esentire.com"];
-    "10.1.108.152" = ["jen001p"];
-    "10.1.108.153" = ["jen002p"];
+    "10.1.108.152" = ["jen001p" "jen001p.cmb.internal"];
+    "10.1.108.153" = ["jen002p" "jen002p.cmb.internal"];
     "10.1.108.154" = ["jen003" "registry.internal" "portus-1.internal"];
-    "10.1.108.160" = ["jen004p"];
+    "10.1.108.160" = ["jen004p" "jen004p.cmb.internal"];
     "10.1.108.222" = ["influx1" "idb01cmb01p.internal"];
     "10.1.108.223" = ["influx2" "idb02cmb01p.internal"];
     "10.1.110.54" = ["artifactory.internal"];
@@ -23,9 +23,10 @@
     "10.1.114.20" = ["exchange.esentire.com"];
     "10.1.114.218" = ["artifactory.esentire.com"];
     "10.1.115.220" = ["kubeapi.internal"];
+    "10.1.115.239" = ["kubernetes.esentire.com"];
     "10.1.204.60" = ["kubeapi.uat"];
     "10.1.204.234" = ["soc.uat"];
-    "10.113.10.110" = ["git.eng.esentire.com"];
+    "10.113.2.146" = ["git.eng.esentire.com"];
     "10.203.0.31" = ["kubeapi.qa"];
     "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.dev"];

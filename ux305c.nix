@@ -18,6 +18,10 @@ in {
     zfs.requestEncryptionCredentials = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    slack-dark
+  ];
+
   networking.hostId = "123b567a";
   networking.hostName = "nixus";
 

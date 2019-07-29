@@ -135,7 +135,6 @@
 (add-hook 'prog-mode-hook 'hl-todo-mode)
 (add-hook 'prog-mode-hook #'nyan-mode)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'scala-mode-hook #'aggressive-indent-mode)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (if (daemonp)

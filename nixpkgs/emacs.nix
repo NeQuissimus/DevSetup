@@ -95,7 +95,6 @@ let
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; []) ++ (with epkgs.melpaPackages; [
     all-the-icons
-    aggressive-indent
     auto-complete
     dockerfile-mode
     company

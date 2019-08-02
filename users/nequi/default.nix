@@ -288,6 +288,7 @@ in mkHome {
         && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && (nix-build -A jenkins || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && ./pkgs/applications/version-management/git-and-tools/git/update.sh && (nix-build -A git || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && ./pkgs/shells/zsh/oh-my-zsh/update.sh && (nix-build -A oh-my-zsh || (git reset --mixed HEAD~1 && git checkout -- .)) \
+        && ./pkgs/applications/networking/instant-messengers/slack/update.sh && (nix-build -A slack-theme-black || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && nix-build ./nixos/release.nix -A tests.jenkins.x86_64-linux \
           -A tests.kernel-latest.x86_64-linux \
           -A tests.kernel-lts.x86_64-linux \

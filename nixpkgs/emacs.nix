@@ -104,6 +104,7 @@ in
     hl-todo
     indent-guide
     json-mode
+    kubernetes
     magit
     markdown-mode
     multiple-cursors

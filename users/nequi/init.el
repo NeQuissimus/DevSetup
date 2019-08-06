@@ -17,6 +17,8 @@
 (set-language-environment "UTF-8")
 (smartparens-global-mode)
 
+(set-mouse-color "#F06010")
+
 (ac-config-default)
 
 ;; global keybindings

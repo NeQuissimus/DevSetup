@@ -87,6 +87,11 @@
     defaultLocale = "en_CA.UTF-8";
   };
 
+  location = {
+    latitude = "43.18";
+    longitude = "-80.38";
+  };
+
   networking = {
     nameservers = [ "127.0.0.1" ];
     timeServers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
@@ -215,8 +220,6 @@
 
     redshift = {
       enable = false;
-      latitude = "43.18";
-      longitude = "-80.38";
       temperature.night = 1900;
     };
 

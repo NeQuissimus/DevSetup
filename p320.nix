@@ -59,6 +59,8 @@ in {
     firefox.enableAdobeFlashDRM = true;
   };
 
+  programs.dconf.enable = true; # libvirtd needs this
+
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
 
@@ -116,4 +118,6 @@ in {
     channel = "https://nixos.org/channels/nixos-unstable";
     enable = true;
   };
+
+  virtualisation.libvirtd.enable = true;
 }

@@ -26,7 +26,7 @@
     "10.1.115.239" = ["kubernetes.esentire.com"];
     "10.1.204.60" = ["kubeapi.uat"];
     "10.1.204.234" = ["soc.uat"];
-    "10.113.2.146" = ["git.eng.esentire.com"];
+    "10.113.1.247" = ["git.eng.esentire.com"];
     "10.203.0.31" = ["kubeapi.qa"];
     "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.dev"];

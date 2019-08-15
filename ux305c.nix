@@ -70,4 +70,9 @@ in {
   };
 
   virtualisation.docker.storageDriver = "zfs";
+
+  virtualisation.virtualbox.host = {
+    enable = true;
+    package = pkgs.virtualbox.override { enable32bitGuests = false; };
+  };
 }

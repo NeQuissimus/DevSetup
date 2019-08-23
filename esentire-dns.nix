@@ -7,8 +7,10 @@
     "10.1.108.160" = ["jen004p" "jen004p.cmb.internal"];
     "10.1.108.222" = ["influx1" "idb01cmb01p.internal"];
     "10.1.108.223" = ["influx2" "idb02cmb01p.internal"];
+    "10.1.110.9" = ["ca.internal"];
     "10.1.110.54" = ["artifactory.internal"];
     "10.1.110.95" = ["tickets.internal"];
+    "10.1.110.97" = ["kubelog.internal"];
     "10.1.110.113" = ["gems.internal"];
     "10.1.110.130" = ["build-01.internal"];
     "10.1.110.136" = ["kaf001cmb01p.internal"];

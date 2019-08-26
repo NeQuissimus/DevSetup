@@ -99,7 +99,7 @@ in {
   };
 
   services.xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
-    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output HDMI2 --primary --crtc 2 --auto --pos 0x500 --output DP1 --crtc 1 --auto --rotate left --pos 1920x0 --output HDMI1 --crtc 1 --auto --pos 3000x0 --rotate left &
+    sleep 3 && ${xlibs.xrandr}/bin/xrandr --output HDMI2 --primary --crtc 2 --auto --pos 0x1080 --output DP1 --crtc 1 --auto --pos 1920x0 --rotate left --output HDMI1 --crtc 1 --auto --pos 0x0 &
     ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
@@ -109,9 +109,9 @@ in {
   services.xserver.videoDriver = "intel";
 
   services.xserver.xrandrHeads = [
-    "HDMI1" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI1"; }
+    "HDMI1" { output = "HDMI1"; }
     "DP1" { output = "DP1"; primary = true; }
-    "HDMI2" { monitorConfig = ''Option "Rotate" "left"''; output = "HDMI2"; }
+    "HDMI2" { output = "HDMI2"; }
   ];
 
   system.autoUpgrade = {

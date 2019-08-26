@@ -100,7 +100,7 @@ in mkHome {
            | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [ xK_0 ])
            , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
         ++ [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-           | (key, sc) <- zip [xK_q, xK_w, xK_e] [0, 1, 2]
+           | (key, sc) <- zip [xK_q, xK_w, xK_e] [0, 2, 1]
            , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
       myPP = xmobarPP {
           ppOutput          = putStrLn

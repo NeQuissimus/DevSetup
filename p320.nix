@@ -104,6 +104,7 @@ in {
     ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
     ${autocutsel}/bin/autocutsel &
     ${autocutsel}/bin/autocutsel -s PRIMARY &
+    ${xautolock}/bin/xautolock -time 30 -locker slock &
   '';
 
   services.xserver.videoDriver = "intel";

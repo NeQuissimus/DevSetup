@@ -50,7 +50,6 @@
       git
       gnupg1compat
       htop
-      i3lock-fancy
       jq
       oh-my-zsh
       ripgrep
@@ -140,6 +139,8 @@
   };
 
   programs = {
+    slock.enable = true;
+
     ssh = {
       agentTimeout = "4h";
       extraConfig = ''

@@ -88,7 +88,7 @@ in mkHome {
           where viewShift = doF . liftM2 (.) W.greedyView W.shift
       myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
         ((modm, xK_Return), spawn $ XMonad.terminal conf),
-        ((modm .|. shiftMask, xK_l), spawn "i3lock-fancy"),
+        ((modm .|. shiftMask, xK_l), spawn "slock"),
         ((modm, xK_d), spawn "rofi -show run"),
         ((modm, xK_w), kill),
         ((modm, xK_Left), windows W.focusUp),

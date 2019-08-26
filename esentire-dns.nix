@@ -24,6 +24,7 @@
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
     "10.1.114.20" = ["exchange.esentire.com"];
     "10.1.114.218" = ["artifactory.esentire.com"];
+    "10.1.115.120" = ["soaapi.internal"];
     "10.1.115.220" = ["kubeapi.internal"];
     "10.1.115.239" = ["kubernetes.esentire.com"];
     "10.1.204.60" = ["kubeapi.uat"];

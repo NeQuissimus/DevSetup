@@ -187,7 +187,7 @@ in {
   };
 
   system.autoUpgrade = {
-    channel = mkDefault "https://nixos.org/channels/nixos-18.09";
+    channel = mkDefault "https://nixos.org/channels/nixos-19.09";
     dates = "9:00";
     enable = mkDefault false;
   };

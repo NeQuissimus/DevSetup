@@ -31,15 +31,9 @@ in mkHome {
     #GnuPG
     ".gnupg/gpg.conf".content = lib.fileContents "${base}/gpg.conf";
 
-    # Firefox
-    ".mozilla/firefox/profiles.ini".content = lib.fileContents "${base}/mozilla/firefox/profiles.init";
-    ".mozilla/firefox/7ty7knlr.default/user.js".content = lib.fileContents "${base}/mozilla/firefox/user.js";
-    ".mozilla/firefox/7ty7knlr.default/browser-extension-data/michal.simonfy@gmail.com/storage.js".content = lib.fileContents "${base}/mozilla/firefox/sites.js";
-
     # Nano
     ".nanorc".content = ''
       set linenumbers
-      set rebindkeypad # https://savannah.gnu.org/bugs/?54642
       set tabsize 2
       set tabstospaces
       set trimblanks
@@ -187,17 +181,11 @@ in mkHome {
       export GPG_TTY="$(tty)"
       export HIST_STAMPS="dd.mm.yyyy"
       export HISTCONTROL="ignoredups"
-      export plugins=(docker emacs git gitignore jira kubectl minikube postgres sbt scala ssh-agent)
+      export plugins=(docker emacs git gitignore kubectl postgres sbt scala ssh-agent)
 
       # Configure ssh-agent
       zstyle :omz:plugins:ssh-agent agent-forwarding on
-      zstyle :omz:plugins:ssh-agent lifetime 4h
-
-      # Point jira command to instance
-      export JIRA_URL="jira.esentire.com"
-      export JIRA_NAME="tsteinbach"
-      export JIRA_PREFIX="ATAD"
-      export JIRA_DEFAULT_ACTION="assigned"
+      zstyle :omz:plugins:ssh-agent lifetime 1h
 
       # ENV
       export TERMINAL="xterm"
@@ -230,11 +218,8 @@ in mkHome {
       unsetopt correct_all
 
       # Aliases
-      alias bluesteel_notifications="nix-shell -p kafkacat --command 'kafkacat -b kaf001cmb01p.internal:9093 -C -t notifications -K \"|\" -o beginning -q -e' | cut -d '|' -f 3 | jq -R 'fromjson?' -c | jq -s 'sort_by(.start) | .[]'"
       alias cat='bat'
       alias diff='diff --color'
-      alias fix_screens='xrandr --output DP2-3 --crtc 1 --auto --pos 0x0 --output DP2-2 --crtc 2 --primary --auto --pos 1920x0 --output eDP1 --auto --pos 3840x0'
-      alias fix_touchpad='sudo modprobe -r elan_i2c && sleep 5 && sudo modprobe elan_i2c' # ASUS UX305C
       alias grep='rg'
       alias ls='exa'
       alias mvn='mvn -q'
@@ -251,28 +236,6 @@ in mkHome {
       function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi; }
       function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q); }
       function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq; }
-      function docker_retag() { docker pull $1 && docker tag $1 $2 && docker push $2; }
-
-      # Docker all the things
-      DOCKER_KAFKA_IMAGE="solsson/kafka:1.1"
-      DOCKER_ZOOKEEPER_IMAGE="zookeeper:3.5"
-      function docker_elastic() { docker kill elasticsearch; docker rm elasticsearch; docker run -d --name elasticsearch -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" registry.internal/common/elasticsearch:5.6.3-noxpack; }
-      function docker_mongo() { docker kill mongo; docker rm mongo; docker run -d --name mongo registry.internal/common/mongo mongod --nojournal --smallfiles; }
-      function docker_postgres { docker kill postgres; docker rm postgres; docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --name postgres postgres:9-alpine; }
-      function docker_rabbit() { docker kill rabbit; docker rm rabbit; docker run -d -e RABBITMQ_NODENAME=rabbitmq --name rabbit registry.internal/common/rabbitmq; }
-      function docker_redis() { docker kill redis; docker rm redis; docker run -d --name redis -p 6379:6379 registry.internal/common/redis:3.0.7; }
-      function docker_zk { docker kill zookeeper; docker rm zookeeper; docker run -d -p 2181:2181 --name zookeeper "''${DOCKER_ZOOKEEPER_IMAGE}"; }
-      function docker_kafka() { docker kill kafka; docker_zk; docker run -h $(hostname) --rm -d -p 9092:9092 --name kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-server-start.sh "''${DOCKER_KAFKA_IMAGE}" ./config/server.properties --override zookeeper.connect=zookeeper:2181; }
-
-      # Kafka
-      function kafka_consume() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@;}
-      function kafka_consume_key() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kafka:9092 --topic $@ --property "print.key=true";}
-      function kafka_produce() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic "$1";}
-      function kafka_produce_key() { docker run --rm -it --link kafka:kafka --link zookeeper:zookeeper --entrypoint ./bin/kafka-console-producer.sh "''${DOCKER_KAFKA_IMAGE}" --broker-list kafka:9092 --topic $1 --property "parse.key=true" --property "key.separator=:"; }
-      function kafka_topic() { docker run --entrypoint ./bin/kafka-topics.sh --link zookeeper:zookeeper "''${DOCKER_KAFKA_IMAGE}" --zookeeper zookeeper:2181 --create --topic "$1" --if-not-exists --partitions 1 --replication-factor 1; }
-
-      function kafka_prod_topic() { docker run --entrypoint ./bin/kafka-topics.sh --add-host=kaf001cmb01p.internal:10.1.110.136 "''${DOCKER_KAFKA_IMAGE}" --zookeeper kaf001cmb01p.internal:2182 --create --topic "$1" --if-not-exists --partitions 16 --replication-factor 3; }
-      function kafka_prod_consume() {  docker run --rm -it --add-host=kaf001cmb01p.internal:10.1.110.136 --entrypoint ./bin/kafka-console-consumer.sh "''${DOCKER_KAFKA_IMAGE}" --bootstrap-server kaf001cmb01p.internal:9093 --topic $@ }
 
       # Nix updates
       function nix-updates() {
@@ -288,11 +251,7 @@ in mkHome {
         && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && (nix-build -A jenkins || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && ./pkgs/applications/version-management/git-and-tools/git/update.sh && (nix-build -A git || (git reset --mixed HEAD~1 && git checkout -- .)) \
         && ./pkgs/shells/zsh/oh-my-zsh/update.sh && (nix-build -A oh-my-zsh || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && ./pkgs/applications/networking/instant-messengers/slack/update.sh && (nix-build -A slack-theme-black || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && nix-build ./nixos/release.nix -A tests.jenkins.x86_64-linux \
-          -A tests.kernel-latest.x86_64-linux \
-          -A tests.kernel-lts.x86_64-linux \
-          -A tests.switchTest.x86_64-linux
+        && ./pkgs/applications/networking/instant-messengers/slack/update.sh && (nix-build -A slack-theme-black || (git reset --mixed HEAD~1 && git checkout -- .))
       }
 
       # Nix review PRs
@@ -306,9 +265,7 @@ in mkHome {
         fi
         nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
       }
-      function bigsbt() { args="$@"; nix-shell -p openjdk8 -p sbt-extras -p nodejs -p jekyll --command "sbt -J-Xms1G -J-Xmx8G ''${args}"; }
       function amm() { nix-shell -p ammonite --command "amm"; }
-      function travis() { args="$@"; nix-shell -p travis --command "travis ''${args}"; }
     '';
   };
 }

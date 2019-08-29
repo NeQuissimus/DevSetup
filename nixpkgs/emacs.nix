@@ -98,6 +98,7 @@ in
     auto-complete
     dockerfile-mode
     company
+    editorconfig
     flycheck
     forge
     haskell-mode

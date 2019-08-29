@@ -20,6 +20,7 @@
 (set-mouse-color "#F06010")
 
 (ac-config-default)
+(editorconfig-mode 1)
 
 ;; global keybindings
 (global-unset-key (kbd "C-z"))

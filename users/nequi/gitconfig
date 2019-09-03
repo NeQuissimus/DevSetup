@@ -42,3 +42,5 @@
         signingkey = 6C654787275A64F1
 [merge]
         renamelimit = 4096
+[github "github.esentire.com/api"]
+  user = tsteinbach

@@ -27,7 +27,7 @@
 (global-set-key (kbd "C-x f") 'projectile-find-file)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x g") 'magit-status)
-;;(global-set-key (kbd "C-x t") 'kubernetes-overview)
+(global-set-key (kbd "C-x t") 'kubernetes-overview)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
 
 (use-package magit
@@ -181,3 +181,8 @@
   :config (setq lsp-prefer-flymake nil))
 
 (use-package lsp-ui)
+
+(use-package forge
+  :config
+  (add-to-list 'forge-alist '("github.esentire.com" "github.esentire.com/api"
+                              "github.esentire.com" forge-github-repository)))

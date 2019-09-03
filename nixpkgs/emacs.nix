@@ -28,74 +28,12 @@ let
     };
   };
 
-  lsp-mode = (pkgs.emacsPackagesNgGen myEmacs).melpaBuild {
-    pname = "lsp-mode";
-    version = "20190606.1958";
-    src = fetchFromGitHub {
-      owner = "emacs-lsp";
-      repo = "lsp-mode";
-      rev = "34b769cebde2b7ba3f11230636a1fcd808551323";
-      sha256 = "1cxglnk2hpkfv7yhxfm4xyd3gfjw0x8ysab3v3fazprnsiz7xlxr";
-    };
-    packageRequires = with (pkgs.emacsPackagesNgGen myEmacs); [
-      dash
-      dash-functional
-      emacs
-      f
-      ht
-      markdown-mode
-      spinner
-    ];
-    recipe = pkgs.writeText "recipe" ''
-      (lsp-mode :repo "emacs-lsp/lsp-mode" :fetcher github)
-    '';
-  };
-
-  lsp-ui = (pkgs.emacsPackagesNgGen myEmacs).melpaBuild {
-    pname = "lsp-ui";
-    version = "20190523.1521";
-    src = fetchGit {
-      url = "https://github.com/emacs-lsp/lsp-ui.git";
-      rev = "3ccc3e3386732c3ee22c151e6b5215a0e4c99173";
-    };
-    packageRequires = with (pkgs.emacsPackagesNgGen myEmacs); [
-      dash
-      dash-functional
-      emacs
-      lsp-mode
-      markdown-mode
-    ];
-    recipe = pkgs.writeText "recipe" ''
-      (lsp-ui :repo "emacs-lsp/lsp-ui"
-              :fetcher github
-              :files (:defaults "lsp-ui-doc.html"))
-    '';
-    };
-
-  company-lsp = (pkgs.emacsPackagesNgGen myEmacs).melpaBuild {
-    pname = "company-lsp";
-    version = "20190525.207";
-    src = fetchGit {
-      url = "https://github.com/tigersoldier/company-lsp.git";
-      rev = "cd1a41583f2d71baef44604a14ea71f49b280bf0";
-    };
-    packageRequires = with (pkgs.emacsPackagesNgGen myEmacs); [
-      company
-      dash
-      emacs
-      lsp-mode
-      s
-    ];
-    recipe = pkgs.writeText "recipe" ''
-      (company-lsp :repo "tigersoldier/company-lsp" :fetcher github)
-    '';
-  };
-
   emacsWithPackages = (pkgs.emacsPackagesNgGen myEmacs).emacsWithPackages;
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; []) ++ (with epkgs.melpaPackages; [
     all-the-icons
     auto-complete
+    company-lsp
     dockerfile-mode
     company
     editorconfig
@@ -106,6 +44,8 @@ in
     indent-guide
     json-mode
     kubernetes
+    lsp-mode
+    lsp-ui
     magit
     markdown-mode
     multiple-cursors
@@ -124,9 +64,6 @@ in
   ]) ++ (with epkgs.elpaPackages; [
     beacon
   ]) ++ [
-    company-lsp
-    lsp-mode
-    lsp-ui
     myScalaMode
   ]
 )

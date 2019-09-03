@@ -87,8 +87,8 @@
   };
 
   location = {
-    latitude = "43.18";
-    longitude = "-80.38";
+    latitude = 43.18;
+    longitude = -80.38;
   };
 
   networking = {
@@ -105,7 +105,7 @@
       "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
     ];
 
-    buildCores = 4;
+    buildCores = 2;
 
     extraOptions = ''
       binary-caches-parallel-connections = 20
@@ -119,7 +119,7 @@
     };
 
     maxJobs = 8;
-    nrBuildUsers = 30;
+    nrBuildUsers = 10;
 
     optimise = {
       automatic = true;
@@ -220,7 +220,7 @@
     openssh.enable = true;
 
     redshift = {
-      enable = false;
+      enable = true;
       temperature.night = 1900;
     };
 

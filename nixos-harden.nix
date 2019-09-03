@@ -15,7 +15,7 @@ in {
 
     cleanTmpDir = true;
 
-    initrd.kernelModules = [
+    initrd.kernelModules = lib.unique [
       "ahci"
       "aesni-intel"
       "iso9660" # Mount CDs
@@ -25,6 +25,8 @@ in {
       "vfat" # /boot
     ] ++ optionals (config.services.kbfs.enable) [
       "fuse" # KBFS
+    ] ++ optionals (lib.any (x: x == "exfat") config.boot.supportedFilesystems) [
+      "fuse" # exfat
     ] ++ optionals (config.virtualisation.docker.enable) [
       "bridge" # Docker
       "br_netfilter" # Docker

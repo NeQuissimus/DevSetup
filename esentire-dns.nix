@@ -30,7 +30,6 @@
     "10.1.204.60" = ["kubeapi.uat"];
     "10.1.204.234" = ["soc.uat"];
     "10.8.0.177" = ["malkara-state.cpdmmx3wbbn6.us-east-1.rds.amazonaws.com"];
-    "10.113.13.31" = ["git.eng.esentire.com"];
     "10.203.0.31" = ["kubeapi.qa"];
     "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
     #"10.203.1.106" = ["kubeapi.dev"];

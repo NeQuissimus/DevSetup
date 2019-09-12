@@ -188,6 +188,7 @@ in mkHome {
       zstyle :omz:plugins:ssh-agent lifetime 1h
 
       # ENV
+      export PATH="''${HOME}/.local/bin:''${PATH}"
       export TERMINAL="xterm"
       export TERM="linux"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"

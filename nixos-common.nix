@@ -205,6 +205,8 @@
         address=/getlink.nl/0.0.0.0
         address=/philezone.com/0.0.0.0
         address=/threatlab.io/0.0.0.0
+
+        server=/esentire.com/10.1.115.20
       '';
 
       resolveLocalQueries = false;

@@ -50,8 +50,6 @@ in {
       password=${ad}
       phase2-auth=mschapv2
     '';
-
-    insertNameservers = [ "127.0.0.1#53" ];
   };
 
   nixpkgs.config = {

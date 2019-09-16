@@ -11,14 +11,11 @@
     "10.1.110.54" = ["artifactory.internal"];
     "10.1.110.95" = ["tickets.internal"];
     "10.1.110.97" = ["kubelog.internal"];
-    "10.1.110.113" = ["gems.internal"];
-    "10.1.110.130" = ["build-01.internal"];
     "10.1.110.136" = ["kaf001cmb01p.internal"];
     "10.1.110.137" = ["kaf002cmb01p.internal"];
     "10.1.110.138" = ["kaf003cmb01p.internal"];
     "10.1.110.167" = ["jira.esentire.com" "jira.internal"];
     "10.1.110.178" = ["secnet.esentire.com"];
-    "10.1.110.191" = ["hipchat.esentire.com"];
     "10.1.110.208" = ["jenkins.internal"];
     "10.1.110.243" = ["gerrit.internal"];
     "10.1.110.83" = ["confluence.internal" "confluence.esentire.com"];
@@ -30,10 +27,6 @@
     "10.1.204.60" = ["kubeapi.uat"];
     "10.1.204.234" = ["soc.uat"];
     "10.8.0.177" = ["malkara-state.cpdmmx3wbbn6.us-east-1.rds.amazonaws.com"];
-    "10.203.0.31" = ["kubeapi.qa"];
-    "10.203.1.101" = ["kubeapi.dev" "kubeapi.test"];
-    #"10.203.1.106" = ["kubeapi.dev"];
-    #"10.203.1.107" = ["kubeapi.dev"];
     "172.16.0.254" = ["captiveportal-login.esentire.com" "wifi.esentire.com"];
   };
 }

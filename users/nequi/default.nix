@@ -268,6 +268,8 @@ in mkHome {
         nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
       }
       function amm() { nix-shell -p ammonite --command "amm"; }
+
+      [ -f "''${HOME}/secrets.env" ] && source ''${HOME}/secrets.env
     '';
   };
 }

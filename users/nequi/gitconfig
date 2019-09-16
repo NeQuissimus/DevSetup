@@ -44,3 +44,6 @@
         renamelimit = 4096
 [github "github.esentire.com/api"]
   user = tsteinbach
+[hub]
+  host = git.eng.esentire.com
+  protocol = ssh

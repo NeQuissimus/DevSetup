@@ -39,17 +39,16 @@ in
     editorconfig
     flycheck
     forge
+    groovy-mode
     haskell-mode
     hl-todo
     indent-guide
     json-mode
-    kubernetes
     lsp-mode
     lsp-ui
     magit
     markdown-mode
     multiple-cursors
-    neotree
     nix-mode
     nyan-mode
     projectile
@@ -58,6 +57,10 @@ in
     smartparens
     smooth-scrolling
     spacemacs-theme
+    treemacs
+    treemacs-magit
+    treemacs-icons-dired
+    treemacs-projectile
     use-package
     yaml-mode
     yasnippet

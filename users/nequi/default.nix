@@ -46,6 +46,14 @@ in mkHome {
     ".xinitrc".content = ''
       xrdb ~/.Xresources
       [[ -f ~/.Xdefaults ]] && xrdb -merge ~/.Xdefaults
+      nix-shell -p xorg.xmodmap --command "xmodmap ~/.Xmodmap"
+    '';
+    ".Xmodmap".content = ''
+      keycode 66 = Mode_switch Multi_key
+      keycode 39 = s S ssharp
+      keycode 38 = a A adiaeresis Adiaeresis
+      keycode 30 = u U udiaeresis Udiaeresis
+      keycode 32 = o O odiaeresis Odiaeresis
     '';
     ".Xresources".content = lib.fileContents "${base}/Xresources";
 

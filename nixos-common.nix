@@ -208,10 +208,15 @@
         address=/threatlab.io/0.0.0.0
 
         server=/ag.esentire.com/9.9.9.9
+        server=/agg1.esentire.com/9.9.9.9
+        server=/agg2.esentire.com/9.9.9.9
         server=/agg3.esentire.com/9.9.9.9
         server=/agg4.esentire.com/9.9.9.9
+        server=/agg5.esentire.com/9.9.9.9
+        server=/agg6.esentire.com/9.9.9.9
         server=/agg7.esentire.com/9.9.9.9
         server=/agg8.esentire.com/9.9.9.9
+        server=/agg9.esentire.com/9.9.9.9
         server=/appgate-redirect.esentire.com/9.9.9.9
         server=/esentire.com/10.1.115.20
       '';

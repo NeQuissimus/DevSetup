@@ -2,7 +2,6 @@
 
 let
   ad = lib.fileContents ./etc/ad;
-  esentire-dns = import ./esentire-dns.nix;
 in {
   imports = [ ./nixos-common.nix ./nixos-harden.nix ./nixos-xmonad.nix ./p320-hardware.nix ];
 
@@ -31,7 +30,7 @@ in {
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
     "0.0.0.0" = [ "ftp.au.debian.org" ];
-  } // esentire-dns.hosts;
+  };
 
   networking.networkmanager = {
     enable = true;

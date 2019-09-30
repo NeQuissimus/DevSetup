@@ -9,6 +9,9 @@ in mkHome {
   inherit user;
 
   files = {
+    # Alacritty
+    ".config/alacritty/alacritty.yml".content = lib.fileContents "${base}/alacritty.yml";
+
     # Rofi
     ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
 
@@ -125,7 +128,7 @@ in mkHome {
           manageHook = myManageHook <+> manageDocks <+> manageHook def,
           modMask = mod4Mask,
           normalBorderColor = "#444444",
-          terminal = "urxvtc",
+          terminal = "alacritty",
           workspaces = myWorkspaces
         }
     '';
@@ -198,7 +201,7 @@ in mkHome {
       # ENV
       export PATH="''${HOME}/.local/bin:''${PATH}"
       export TERMINAL="xterm"
-      export TERM="linux"
+      export TERM="xterm-256color"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
 
       # ZSH for non-NixOS

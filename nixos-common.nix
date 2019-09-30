@@ -39,6 +39,7 @@
 
     systemPackages = with pkgs; [
       # Basics
+      alacritty
       alsaUtils
       autocutsel
       bat
@@ -219,6 +220,7 @@
         server=/agg9.esentire.com/9.9.9.9
         server=/appgate-redirect.esentire.com/9.9.9.9
         server=/esentire.com/10.1.115.20
+        server=/internal/10.1.115.20
       '';
 
       resolveLocalQueries = false;
@@ -246,11 +248,6 @@
     };
 
     upower.enable = true;
-
-    urxvtd = {
-      enable = true;
-      package = pkgs.rxvt_unicode.override { perlSupport = false; };
-    };
 
     xserver.displayManager.sessionCommands = with pkgs; lib.mkAfter ''
       ${feh}/bin/feh --bg-scale "${nixos-artwork.wallpapers.simple-dark-gray}/share/artwork/gnome/nix-wallpaper-simple-dark-gray.png" &

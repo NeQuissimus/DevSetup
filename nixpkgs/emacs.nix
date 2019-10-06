@@ -53,6 +53,7 @@ in
     nyan-mode
     projectile
     rainbow-delimiters
+    rust-mode
     sbt-mode
     smartparens
     smooth-scrolling

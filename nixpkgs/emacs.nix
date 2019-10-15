@@ -48,6 +48,7 @@ in
     lsp-ui
     magit
     markdown-mode
+    multi-term
     multiple-cursors
     nix-mode
     nyan-mode

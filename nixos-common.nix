@@ -221,6 +221,7 @@
         server=/appgate-redirect.esentire.com/9.9.9.9
         server=/esentire.com/10.1.115.20
         server=/internal/10.1.115.20
+        server=/uat/10.3.115.20
       '';
 
       resolveLocalQueries = false;

@@ -36,6 +36,7 @@
         followTags = true
 [tag]
         forceSignAnnotated = true
+        sort = version:refname
 [user]
         email = tim@nequissimus.com
         name = Tim Steinbach

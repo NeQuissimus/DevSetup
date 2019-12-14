@@ -52,7 +52,6 @@
 
   services.dnsmasq.servers = [
     "10.0.0.2" # Router
-    "10.1.115.20" # eSentire
   ];
 
   services.xserver.videoDriver = "intel";

@@ -276,7 +276,7 @@
       openssh.authorizedKeys.keyFiles = [
         (builtins.fetchurl {
           url = "https://github.com/NeQuissimus.keys";
-          sha256 = "0393a8swbz0xmc4j7rvg0l6xwrlpx599gax27i01rkhdzih9wrgz";
+          sha256 = "0jqxaz61n0jvm25bj7nyxjfkbsdrj1cm477fwxqm32wpfz0b23lf";
         })
       ];
     };

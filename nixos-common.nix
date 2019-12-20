@@ -27,6 +27,8 @@
     };
   };
 
+  console.keyMap = "us";
+
   documentation.nixos.enable = false;
 
   environment = {
@@ -84,7 +86,6 @@
   };
 
   i18n = {
-    consoleKeyMap = "us";
     defaultLocale = "en_CA.UTF-8";
   };
 

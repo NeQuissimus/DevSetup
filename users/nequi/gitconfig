@@ -40,7 +40,7 @@
 [user]
         email = tim@nequissimus.com
         name = Tim Steinbach
-        signingkey = 6C654787275A64F1
+        signingkey = FD36A5EAAC49035A
 [merge]
         renamelimit = 4096
 [github "github.esentire.com/api"]

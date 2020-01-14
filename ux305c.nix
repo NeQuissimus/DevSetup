@@ -55,9 +55,4 @@
   ];
 
   services.xserver.videoDriver = "intel";
-
-  services.zfs.autoScrub = {
-    enable = true;
-    interval = "hourly";
-  };
 }

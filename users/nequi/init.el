@@ -16,6 +16,7 @@
 (set-frame-font "Hasklig")
 (set-language-environment "UTF-8")
 (smartparens-global-mode)
+(global-prettify-symbols-mode +1)
 
 (set-mouse-color "#F06010")
 
@@ -52,23 +53,53 @@
 )
 
 (setq
+ coding-system-for-read 'utf-8
+ coding-system-for-write 'utf-8
  column-number-mode t
  create-lockfiles nil
  gc-cons-threshold 20000000
+ gnutls-verify-error t
  history-length 100
  initial-scratch-message nil
  inhibit-startup-echo-area-message t
  inhibit-startup-message t
  inhibit-startup-screen t
  make-backup-files nil
+ ring-bell-function 'ignore
  scroll-error-top-bottom t
  sentence-end-double-space nil
  show-paren-delay 0.5
  show-trailing-whitespace t
+ tls-checktrust t
  use-package-always-ensure t
  vc-handled-backends nil
  whitespace-style '(face trailing tabs)
+ x-stretch-cursor t
 )
+
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+
+(setq-default mode-line-format
+              '("%e" ; print error message about full memory.
+                mode-line-front-space
+                mode-line-buffer-identification
+                "   "
+                mode-line-position
+                "   "
+                mode-line-end-spaces))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+(put 'set-goal-column 'disabled nil)
+
+(prefer-coding-system 'utf-8)
 
 (put 'minibuffer-history 'history-length 50)
 (put 'evil-ex-history 'history-length 50)

@@ -9,7 +9,7 @@
 (global-flycheck-mode)
 (yas-global-mode 1)
 (global-whitespace-mode)
-(load-theme 'spacemacs-dark t)
+(load-theme 'ample t)
 (projectile-global-mode)
 (scroll-bar-mode -1)
 (set-default-coding-systems 'utf-8)

@@ -32,6 +32,7 @@ let
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; []) ++ (with epkgs.melpaPackages; [
     all-the-icons
+    ample-theme
     auto-complete
     company-lsp
     dockerfile-mode
@@ -58,7 +59,6 @@ in
     sbt-mode
     smartparens
     smooth-scrolling
-    spacemacs-theme
     treemacs
     treemacs-magit
     treemacs-icons-dired

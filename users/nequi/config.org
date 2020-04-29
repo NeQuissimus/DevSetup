@@ -1,0 +1,343 @@
+#+TITLE: Emacs Configuration
+#+OPTIONS: toc:nil num:nil
+
+* Load sensible-defaults
+
+https://github.com/hrs/sensible-defaults.el/
+
+#+BEGIN_SRC emacs-lisp
+  (load-file "~/.emacs.d/sensible-defaults.el")
+  (sensible-defaults/use-all-settings)
+  (sensible-defaults/use-all-keybindings)
+  (sensible-defaults/backup-to-temp-directory)
+#+END_SRC
+
+* Neater UI
+
+** Cleanup
+
+Remove a bunch of unused elements
+
+#+BEGIN_SRC emacs-lisp
+  (scroll-bar-mode -1)
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (set-window-scroll-bars (minibuffer-window) nil nil)
+  (setq frame-title-format '((:eval (projectile-project-name))))
+  (setq ring-bell-function 'ignore)
+  (setq scroll-conservatively 100)
+  (global-prettify-symbols-mode t)
+  (setq confirm-kill-emacs nil)
+#+END_SRC
+
+** Better modeline
+
+#+BEGIN_SRC emacs-lisp
+(setq-default mode-line-format
+              '("%e" ; print error message about full memory.
+                mode-line-front-space
+                mode-line-buffer-identification
+                "   "
+                mode-line-position
+                "   "
+                mode-line-end-spaces))
+#+END_SRC
+
+** Fonts
+
+Hasklig and its ligatures
+
+#+BEGIN_SRC emacs-lisp
+(set-frame-font "Hasklig")
+(add-hook 'prog-mode-hook 'hasklig-mode)
+#+END_SRC
+
+** Theme
+
+#+BEGIN_SRC emacs-lisp
+(load-theme 'ample t)
+#+END_SRC
+
+** Mouse
+
+I like the cursor to be obvious
+
+#+BEGIN_SRC emacs-lisp
+(set-mouse-color "#F06010")
+#+END_SRC
+
+** Beacon
+
+Briefly highlight the line we are on
+
+#+BEGIN_SRC emacs-lisp
+(beacon-mode 1)
+#+END_SRC
+
+** Shorter dialogues
+
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** Nyan cat
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook #'nyan-mode)
+#+END_SRC
+
+** Rainbow delimiters
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+#+END_SRC
+
+* Coding
+
+** Eliminate trailing whitespace
+
+#+BEGIN_SRC emacs-lisp
+(global-whitespace-mode)
+
+(setq
+  sentence-end-double-space nil
+  show-trailing-whitespace t
+  whitespace-style '(face trailing tabs)
+  x-stretch-cursor t
+)
+
+(custom-set-faces
+ '(whitespace-tab ((t (:background "red")))))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Indent with spaces
+
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ indent-tabs-mode nil
+ tab-width 2
+)
+#+END_SRC
+
+** Projects
+
+#+BEGIN_SRC emacs-lisp
+(projectile-global-mode)
+#+END_SRC
+
+** Smart parenthesis
+
+#+BEGIN_SRC emacs-lisp
+(require 'smartparens-config)
+(smartparens-global-mode)
+#+END_SRC
+
+** Indentation guide
+
+#+BEGIN_SRC
+(indent-guide-global-mode)
+#+END_SRC
+
+** Git
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :commands magit-status
+  :init (setq
+         git-commit-style-convention-checks nil
+         magit-log-section-commit-count 20
+         )
+  :bind (("C-x g" . magit-status))
+)
+
+(with-eval-after-load 'magit
+  (require 'forge))
+
+(custom-set-variables
+ '(magit-cherry-pick-arguments (quote ("-x"))))
+#+END_SRC
+
+** Markdown
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :commands gfm-mode
+
+  :mode (("\\.md$" . gfm-mode))
+
+  :config
+  (setq markdown-command "pandoc --standalone --mathjax --from=markdown")
+  (custom-set-faces
+   '(markdown-code-face ((t nil)))))
+#+END_SRC
+
+** Scala
+
+#+BEGIN_SRC emacs-lisp
+(use-package scala-mode
+  :mode "\\.s\\(cala\\|bt\\)$"
+  :hook (scala-mode . lsp)
+  :custom
+  (scala-indent:align-forms t)
+  (scala-indent:align-parameters t)
+  (scala-indent:indent-value-expression t)
+  (scala-indent:default-run-on-strategy)
+  (scala-indent:operator-strategy)
+  :config
+  (setq lsp-metals-server-command "~/bin/metals-emacs"))
+
+(use-package sbt-mode
+  :after scala-mode
+  :commands sbt-start sbt-command
+  :config
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map))
+
+(use-package company-lsp)
+
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  :hook (scala-mode . lsp)
+  :config (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ui)
+#+END_SRC
+
+** Project tree
+
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+          treemacs-deferred-git-apply-delay      0.5
+          treemacs-display-in-side-window        t
+          treemacs-eldoc-display                 t
+          treemacs-file-event-delay              5000
+          treemacs-file-follow-delay             0.2
+          treemacs-follow-after-init             t
+          treemacs-git-command-pipe              ""
+          treemacs-goto-tag-strategy             'refetch-index
+          treemacs-indentation                   2
+          treemacs-indentation-string            " "
+          treemacs-is-never-other-window         nil
+          treemacs-max-git-entries               5000
+          treemacs-missing-project-action        'ask
+          treemacs-no-png-images                 nil
+          treemacs-no-delete-other-windows       t
+          treemacs-project-follow-cleanup        nil
+          treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-position                      'left
+          treemacs-recenter-distance             0.1
+          treemacs-recenter-after-file-follow    nil
+          treemacs-recenter-after-tag-follow     nil
+          treemacs-recenter-after-project-jump   'always
+          treemacs-recenter-after-project-expand 'on-distance
+          treemacs-show-cursor                   nil
+          treemacs-show-hidden-files             t
+          treemacs-silent-filewatch              nil
+          treemacs-silent-refresh                nil
+          treemacs-sorting                       'alphabetic-desc
+          treemacs-space-between-root-nodes      t
+          treemacs-tag-follow-cleanup            t
+          treemacs-tag-follow-delay              1.5
+          treemacs-width                         35)
+
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null treemacs-python-executable)))
+      (`(t . t)
+       (treemacs-git-mode 'deferred))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+#+END_SRC
+
+* Organization
+
+** Org-Mode
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'hl-todo-mode)
+
+(setq org-log-done 'time)
+(setq org-support-shift-select 'always)
+
+(setq org-todo-keywords
+      '((sequence "TODO" "BLOCKED" "|" "DONE" "NOT NEEDED")))
+
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
+#+END_SRC
+
+** Exporting
+
+#+BEGIN_SRC emacs-lisp
+(setq org-confirm-babel-evaluate nil)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)))
+(use-package htmlize)
+(setq org-html-postamble nil)
+#+END_SRC
+
+* Writing
+
+** Spellcheck
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :config
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'gfm-mode-hook 'flyspell-mode)
+  (add-hook 'org-mode-hook 'flyspell-mode)
+
+  (add-hook 'git-commit-mode-hook 'flyspell-mode))
+#+END_SRC
+
+* Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(global-unset-key (kbd "C-z"))
+(global-set-key (kbd "C-x f") 'projectile-find-file)
+(define-key global-map (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
+#+END_SRC

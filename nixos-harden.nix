@@ -136,15 +136,12 @@ in {
   };
 
   services = {
-    dnscrypt-proxy = {
+    dnscrypt-proxy2 = {
       enable = true;
-      localPort = 43;
     };
 
     dnsmasq = {
       enable = true;
-
-      servers = [ "127.0.0.1#43" ];
     };
 
     fail2ban = {

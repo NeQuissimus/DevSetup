@@ -301,10 +301,22 @@ Briefly highlight the line we are on
 (setq org-support-shift-select 'always)
 
 (setq org-todo-keywords
-      '((sequence "TODO" "BLOCKED" "|" "DONE" "NOT NEEDED")))
+      '((sequence "TODO" "BLOCKED" "JACOB" "JORDAN" "MAYNALD" "NICOLE" "RYAN" "|" "DONE" "NOT NEEDED")))
 
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
+
+(setq org-archive-location "./_archived.org::")
+
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" 'file))
+
+(advice-add 'org-archive-subtree :after #'org-save-all-org-buffers)
 #+END_SRC
 
 ** Exporting

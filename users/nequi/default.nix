@@ -205,6 +205,7 @@ in mkHome {
       export TERMINAL="xterm"
       export TERM="xterm-256color"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
+      export XZ_DEFAULTS="-T 0"
 
       # ZSH for non-NixOS
       ZSH="''${ZSH:-/nix/var/nix/profiles/per-user/${user}/profile/share/oh-my-zsh}"

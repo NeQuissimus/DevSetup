@@ -75,13 +75,13 @@ set_from_resource $ws10 "0" "10"
 
 assign [class="Emacs"] $ws2
 assign [class="zoom"] $ws7
-assign [class="esets_gui"] $ws7
+assign [class="Esets_gui"] $ws7
 assign [class="Firefox"] $ws9
 assign [class="Slack"] $ws10
 
 for_window [class="zoom"] floating enable
 
-no_focus [class="esets_gui"]
+no_focus [class="Esets_gui"]
 
 ###############################################################################
 # Launcher dialogs

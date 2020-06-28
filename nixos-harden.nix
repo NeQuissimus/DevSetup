@@ -22,6 +22,7 @@ in {
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
       "tun"
+      "usbhid"
       "vfat" # /boot
     ] ++ optionals (config.services.kbfs.enable) [
       "fuse" # KBFS
@@ -42,8 +43,6 @@ in {
       "vboxnetflt" # VirtualBox
       "vboxnetadp" # VirtualBox
       "vboxdrv" # VirtualBox
-    ] ++ optionals (config.hardware.u2f.enable) [
-      "usbhid" # Allow plug'n'play
     ];
 
     kernel.sysctl = {
@@ -87,8 +86,6 @@ in {
   environment = {
     etc."ssh_moduli".text = (lib.fileContents ./etc/moduli);
   };
-
-  hardware.u2f.enable = mkDefault true;
 
   networking = {
     firewall = {

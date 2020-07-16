@@ -28,6 +28,7 @@ Remove a bunch of unused elements
   (setq scroll-conservatively 100)
   (global-prettify-symbols-mode t)
   (setq confirm-kill-emacs nil)
+  (global-display-line-numbers-mode)
 #+END_SRC
 
 ** Better modeline

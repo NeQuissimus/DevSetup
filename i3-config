@@ -80,6 +80,13 @@ assign [class="Firefox"] $ws9
 assign [class="Slack"] $ws10
 
 for_window [class="zoom"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="About"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 
 no_focus [class="Esets_gui"]
 

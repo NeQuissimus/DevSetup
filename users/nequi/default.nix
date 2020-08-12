@@ -194,7 +194,8 @@ in mkHome {
       export GPG_TTY="$(tty)"
       export HIST_STAMPS="dd.mm.yyyy"
       export HISTCONTROL="ignoredups"
-      export plugins=(docker emacs git github gitignore kubectl postgres sbt scala ssh-agent)
+      #export plugins=(docker emacs git github gitignore kubectl postgres sbt scala ssh-agent)
+      export plugins=(git)
 
       # Configure ssh-agent
       zstyle :omz:plugins:ssh-agent agent-forwarding on

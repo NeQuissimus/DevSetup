@@ -14,7 +14,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    slack-dark
+    minecraft
   ];
 
   networking.hostId = "123b567a";

@@ -4,6 +4,7 @@ window:
   dimensions:
     columns: 0
     lines: 0
+  dynamic_title: true
   padding:
     x: 0
     y: 0
@@ -49,7 +50,7 @@ colors:
     cyan:    '0x54ced6'
     white:   '0x282a2e'
   indexed_colors: []
-visual_bell:
+bell:
   animation: EaseOutExpo
   duration: 0
   color: '0xffffff'
@@ -65,7 +66,6 @@ mouse:
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
   save_to_clipboard: false
-dynamic_title: true
 cursor:
   style: Block
   unfocused_hollow: true

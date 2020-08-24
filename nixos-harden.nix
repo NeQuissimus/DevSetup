@@ -134,11 +134,11 @@ in {
 
   services = {
     dnscrypt-proxy2 = {
-      enable = true;
+      enable = mkDefault true;
     };
 
     dnsmasq = {
-      enable = true;
+      enable = mkDefault true;
     };
 
     fail2ban = {

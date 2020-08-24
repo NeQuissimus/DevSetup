@@ -94,7 +94,6 @@
   };
 
   networking = {
-    nameservers = [ "127.0.0.1" ];
     timeServers = [ "0.ca.pool.ntp.org" "1.ca.pool.ntp.org" "2.ca.pool.ntp.org" "3.ca.pool.ntp.org" ];
   };
 
@@ -120,8 +119,8 @@
       options = "--delete-older-than 60";
     };
 
-    maxJobs = 8;
-    nrBuildUsers = 10;
+    maxJobs = 2;
+    nrBuildUsers = 2;
 
     optimise = {
       automatic = true;
@@ -183,7 +182,7 @@
   services = {
     dnsmasq = {
       alwaysKeepRunning = true;
-      enable = true;
+      enable = lib.mkDefault true;
 
       extraConfig = ''
         no-hosts
@@ -237,15 +236,15 @@
     openssh.enable = true;
 
     redshift = {
-      enable = true;
+      enable = lib.mkDefault true;
       temperature.night = 1900;
     };
 
     tlp = {
       enable = true;
-      extraConfig = ''
-        DISK_APM_LEVEL_ON_BAT="254 254"
-      '';
+      settings = {
+        DISK_APM_LEVEL_ON_BAT = "254 254";
+      };
     };
 
     upower.enable = true;

@@ -23,7 +23,6 @@
   networking.hosts = {
     "127.0.0.1" = ["${config.networking.hostName}" "localhost"];
     "10.0.10.10" = ["serenitybysarah.ca"];
-    "172.16.0.254" = ["wifi.esentire.com"];
     "0.0.0.0" = ["ftp.au.debian.org"];
   };
 
@@ -45,14 +44,16 @@
     User nequi
   '';
 
+  services.dnsmasq.enable = false;
+
+  services.dnscrypt-proxy2.enable = false;
+
   services.emacs = {
     enable = true;
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
   };
 
-  services.dnsmasq.servers = [
-    "10.0.0.2" # Router
-  ];
+  services.redshift.enable = false;
 
   services.xserver.videoDriver = "intel";
 }

@@ -56,4 +56,6 @@
   services.redshift.enable = false;
 
   services.xserver.videoDriver = "intel";
+
+  virtualisation.docker.enable = false;
 }

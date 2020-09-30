@@ -1,5 +1,8 @@
-with import <nixpkgs> {};
-with import <nixhome> { inherit stdenv; inherit pkgs; };
+with import <nixpkgs> { };
+with import <nixhome> {
+  inherit stdenv;
+  inherit pkgs;
+};
 with lib;
 let
   user = "nequi";
@@ -10,10 +13,12 @@ in mkHome {
 
   files = {
     # Alacritty
-    ".config/alacritty/alacritty.yml".content = lib.fileContents "${base}/alacritty.yml";
+    ".config/alacritty/alacritty.yml".content =
+      lib.fileContents "${base}/alacritty.yml";
 
     # Rofi
-    ".config/rofi/config".content = "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
+    ".config/rofi/config".content =
+      "rofi.theme: ${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
 
     # Conky
     ".conky".content = lib.fileContents "${base}/conkyrc";
@@ -25,7 +30,8 @@ in mkHome {
     ".emacs.d/config.org".content = lib.fileContents "${base}/config.org";
     ".emacs.d/init.el".content = lib.fileContents "${base}/init.el";
     ".emacs.d/sensible-defaults.el" = fetchurl {
-      url = https://raw.githubusercontent.com/hrs/sensible-defaults.el/d9001f0efc9382f8587357f2670fc4d8594858af/sensible-defaults.el;
+      url =
+        "https://raw.githubusercontent.com/hrs/sensible-defaults.el/d9001f0efc9382f8587357f2670fc4d8594858af/sensible-defaults.el";
       sha256 = "09l03619bchh6dh0fnanvmwp50pmnv4x8c8qqgyv4kmwd553ba9n";
     };
 
@@ -136,49 +142,49 @@ in mkHome {
     '';
 
     ".xmobar/config".content = ''
-         Config { font = "xft:DejaVu Sans Mono:size=8:antialias=true,Font Awesome 5 Free Solid:size=9,Font Awesome 5 Brands Regular:size=9"
-            , additionalFonts = []
-            , borderColor = "black"
-            , border = BottomB
-            , bgColor = "black"
-            , fgColor = "grey"
-            , alpha = 255
-            , position = Bottom
-            , textOffset = -1
-            , iconOffset = -1
-            , lowerOnStart = False
-            , pickBroadest = False
-            , persistent = False
-            , hideOnStart = False
-            , iconRoot = "."
-            , allDesktops = True
-            , overrideRedirect = False
-            , commands = [ Run DynNetwork [ "--template" , "<dev>: <rx>kB/s | <tx>kB/s" ] 10
-                         , Run MultiCpu [ "--template" , "Cpu: <autobar>" ] 10
-                         , Run Memory ["-t","Mem: <used>"] 10
-                         , Run Com "uname" ["-r"] "" 36000
-                         , Run Date "%A, %d.%m.%Y %H:%M:%S" "date" 10
-                         , Run Battery        [ "--template" , "<acstatus>"
-                                  , "--Low"      , "10"        -- units: %
-                                  , "--High"     , "80"        -- units: %
-                                  , "--low"      , "darkred"
-                                  , "--normal"   , "darkorange"
-                                  , "--high"     , "darkgreen"
+      Config { font = "xft:DejaVu Sans Mono:size=8:antialias=true,Font Awesome 5 Free Solid:size=9,Font Awesome 5 Brands Regular:size=9"
+         , additionalFonts = []
+         , borderColor = "black"
+         , border = BottomB
+         , bgColor = "black"
+         , fgColor = "grey"
+         , alpha = 255
+         , position = Bottom
+         , textOffset = -1
+         , iconOffset = -1
+         , lowerOnStart = False
+         , pickBroadest = False
+         , persistent = False
+         , hideOnStart = False
+         , iconRoot = "."
+         , allDesktops = True
+         , overrideRedirect = False
+         , commands = [ Run DynNetwork [ "--template" , "<dev>: <rx>kB/s | <tx>kB/s" ] 10
+                      , Run MultiCpu [ "--template" , "Cpu: <autobar>" ] 10
+                      , Run Memory ["-t","Mem: <used>"] 10
+                      , Run Com "uname" ["-r"] "" 36000
+                      , Run Date "%A, %d.%m.%Y %H:%M:%S" "date" 10
+                      , Run Battery        [ "--template" , "<acstatus>"
+                               , "--Low"      , "10"        -- units: %
+                               , "--High"     , "80"        -- units: %
+                               , "--low"      , "darkred"
+                               , "--normal"   , "darkorange"
+                               , "--high"     , "darkgreen"
 
-                                  , "--" -- battery specific options
-                                            -- discharging status
-                                            , "-o"  , "<left>% (<timeleft>)"
-                                            -- AC "on" status
-                                            , "-O"  , "<fc=#dAA520>Charging</fc>"
-                                            -- charged status
-                                            , "-i"  , "<fc=#006000>Charged</fc>"
-                                  ] 50
-                         , Run StdinReader
-                         ]
-            , sepChar = "%"
-            , alignSep = "}{"
-            , template = "%StdinReader% }{  %multicpu% |  %memory% MiB |  %dynnetwork% |  %date% |  %battery% |  %uname%"
-            }
+                               , "--" -- battery specific options
+                                         -- discharging status
+                                         , "-o"  , "<left>% (<timeleft>)"
+                                         -- AC "on" status
+                                         , "-O"  , "<fc=#dAA520>Charging</fc>"
+                                         -- charged status
+                                         , "-i"  , "<fc=#006000>Charged</fc>"
+                               ] 50
+                      , Run StdinReader
+                      ]
+         , sepChar = "%"
+         , alignSep = "}{"
+         , template = "%StdinReader% }{  %multicpu% |  %memory% MiB |  %dynnetwork% |  %date% |  %battery% |  %uname%"
+         }
     '';
 
     # ZSH

@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
 with pkgs;
 
@@ -6,8 +6,8 @@ let
   myEmacs = pkgs.emacs;
 
   emacsWithPackages = (pkgs.emacsPackagesNgGen myEmacs).emacsWithPackages;
-in
-  emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; []) ++ (with epkgs.melpaPackages; [
+in emacsWithPackages (epkgs:
+  (with epkgs.melpaStablePackages; [ ]) ++ (with epkgs.melpaPackages; [
     all-the-icons
     ample-theme
     auto-complete
@@ -47,8 +47,4 @@ in
     use-package
     yaml-mode
     yasnippet
-  ]) ++ (with epkgs.elpaPackages; [
-    beacon
-  ]) ++ [
-  ]
-)
+  ]) ++ (with epkgs.elpaPackages; [ beacon ]) ++ [ ])

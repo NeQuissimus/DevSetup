@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   boot.extraModprobeConfig = ''
     options zfs zfs_prefetch_disable=1
     options zfs zfs_arc_min=1073741824
@@ -8,8 +7,8 @@
 
   boot.zfs = {
     enableUnstable = true;
-    forceImportRoot = false;
-    forceImportAll = false;
+    forceImportRoot = true;
+    forceImportAll = true;
     requestEncryptionCredentials = true;
   };
 
@@ -30,7 +29,5 @@
     };
   };
 
-  virtualisation.docker = {
-    storageDriver = "zfs";
-  };
+  virtualisation.docker = { storageDriver = "zfs"; };
 }

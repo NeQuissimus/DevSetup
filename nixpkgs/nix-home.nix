@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
   '';
 
   meta = {
-    homepage = https://github.com/sheenobu/nix-home;
+    homepage = "https://github.com/sheenobu/nix-home";
     description = "Per-user configuration management via Nix";
     licenses = [ stdenv.lib.licenses.mit ];
     platforms = stdenv.lib.platforms.unix;

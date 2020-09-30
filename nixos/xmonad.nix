@@ -1,8 +1,5 @@
-{ config, lib, pkgs, ... }:
-rec {
-  environment.systemPackages = with pkgs; [
-    haskellPackages.xmobar
-  ];
+{ config, lib, pkgs, ... }: rec {
+  environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
 
   services.xserver = {
     autorun = true;
@@ -11,7 +8,8 @@ rec {
 
     displayManager = {
       lightdm = {
-        background = "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/artwork/gnome/nix-wallpaper-simple-blue.png";
+        background =
+          "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/artwork/gnome/nix-wallpaper-simple-blue.png";
         enable = true;
 
         extraSeatDefaults = ''

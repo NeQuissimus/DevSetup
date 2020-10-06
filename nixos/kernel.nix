@@ -7,6 +7,29 @@
       "ax25"
       "netrom"
       "rose"
+
+      # Old or rare or insufficiently audited filesystems
+      "adfs"
+      "affs"
+      "bfs"
+      "befs"
+      "cramfs"
+      "efs"
+      "erofs"
+      "exofs"
+      "freevxfs"
+      "f2fs"
+      "hfs"
+      "hpfs"
+      "jfs"
+      "minix"
+      "nilfs2"
+      "ntfs"
+      "omfs"
+      "qnx4"
+      "qnx6"
+      "sysv"
+      "ufs"
     ];
 
     initrd.kernelModules = lib.unique ([
@@ -82,6 +105,7 @@
 
     kernelParams = [
       "nohibernate" # Disable hibernation
+      "page_alloc.shuffle=1" # Enable page allocator randomization
       "page_poison=1" # Poison memory pages, wiping freed memory
       "pti=on" # Kernel page isolation
       "slab_nomerge" # Disable slab merging (Slab = chunk of memory)
@@ -91,5 +115,10 @@
 
   };
 
-  security.lockKernelModules = true;
+  security = {
+    forcePageTableIsolation = true;
+    hideProcessInformation = true;
+    lockKernelModules = true;
+    protectKernelImage = true;
+  };
 }

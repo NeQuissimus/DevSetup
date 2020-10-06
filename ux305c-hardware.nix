@@ -16,7 +16,7 @@
   fileSystems."/" = {
     device = "rpool/nixos";
     fsType = "zfs";
-    options = [ "nosuid" "noexec" ];
+    options = [ ];
   };
 
   fileSystems."/home" = {

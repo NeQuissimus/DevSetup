@@ -9,6 +9,7 @@ in {
     ./nixos/kernel.nix
     ./nixos/networking.nix
     ./nixos/nix.nix
+    ./nixos/security.nix
     ./nixos/ssh.nix
     ./nixos/users.nix
     ./nixos/xmonad.nix
@@ -33,6 +34,8 @@ in {
     enable = true;
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
   };
+
+  services.redshift.enable = false;
 
   services.xserver.videoDriver = "intel";
 

@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  base = ../.;
+let base = ../.;
 in {
   nix = {
     allowedUsers = [ "nequi" "root" "@wheel" ];

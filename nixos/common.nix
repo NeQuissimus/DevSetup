@@ -81,16 +81,6 @@
     slock.enable = true;
   };
 
-  security = {
-    apparmor.enable = true;
-    hideProcessInformation = true;
-    rngd.enable = false;
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = true;
-    };
-  };
-
   services = {
 
     fwupd.enable = true;

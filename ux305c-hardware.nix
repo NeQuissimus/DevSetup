@@ -10,7 +10,7 @@
   boot.extraModulePackages = [ ];
 
   boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r rpool/nixos@blank
+    zfs rollback -r rpool/nixos@fresh
   '';
 
   fileSystems."/" = {

@@ -4,6 +4,8 @@
   systemd.user.services.emacs.unitConfig.ConditionGroup = "users";
 
   users = {
+    mutableUsers = false;
+
     users = {
       docker = {
         subUidRanges = [{

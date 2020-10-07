@@ -82,7 +82,6 @@
   };
 
   services = {
-
     fwupd.enable = true;
 
     logind.extraConfig = ''

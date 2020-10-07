@@ -16,6 +16,7 @@ in {
     ./nixos/zfs.nix
     ./nixos/zsh.nix
     ./ux305c-hardware.nix
+    ./ux305c-secrets.nix
     ./ux305c-wifi.nix
   ];
 

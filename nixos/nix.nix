@@ -18,6 +18,7 @@ in {
     extraOptions = ''
       binary-caches-parallel-connections = 20
       connect-timeout = 10
+      experimental-features = nix-command flakes
     '';
 
     gc = {
@@ -39,6 +40,9 @@ in {
       automatic = true;
       dates = [ "20:30" ];
     };
+
+
+    package = pkgs.nixUnstable;
 
     requireSignedBinaryCaches = true;
 

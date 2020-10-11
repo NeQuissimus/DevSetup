@@ -212,6 +212,7 @@ in mkHome {
       export TERMINAL="xterm"
       export TERM="xterm-256color"
       export JAVA_HOME="''${$(readlink -e $(type -p java))%*/bin/java}"
+      export _JAVA_AWT_WM_NONREPARENTING="1"
       export XZ_DEFAULTS="-T 0"
 
       # ZSH for non-NixOS

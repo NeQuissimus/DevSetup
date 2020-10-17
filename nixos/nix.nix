@@ -41,7 +41,6 @@ in {
       dates = [ "20:30" ];
     };
 
-
     package = pkgs.nixUnstable;
 
     requireSignedBinaryCaches = true;

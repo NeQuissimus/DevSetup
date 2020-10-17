@@ -171,8 +171,8 @@ in {
 
     openssh = {
       enable = true;
-      passwordAuthentication = true; # FIX
-      permitRootLogin = "yes"; # FIX
+      passwordAuthentication = false;
+      permitRootLogin = "no";
     };
 
     prometheus.exporters.dnsmasq = {

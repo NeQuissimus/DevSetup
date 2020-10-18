@@ -19,7 +19,7 @@ let
       "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts";
   };
 in {
-  imports = [ ./hardware-configuration.nix ./nixos/docker.nix ];
+  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/telegraf.nix ./nixos/docker.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -47,14 +47,20 @@ in {
 
   documentation.nixos.enable = false;
 
-  environment = { systemPackages = with pkgs; [ certbot inetutils screen ]; };
+  environment = {
+    etc."grafana/dashboards/dns.json".source = ./6910p-grafana/dns.json;
+    etc."grafana/dashboards/wireless.json".source =
+      ./6910p-grafana/wireless.json;
+
+    systemPackages = with pkgs; [ certbot inetutils screen ];
+  };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
 
   networking = {
     firewall = {
       allowPing = false;
-      allowedTCPPorts = [ 22 53 8086 8888 ];
+      allowedTCPPorts = [ 22 53 config.services.grafana.port ];
       allowedUDPPorts = [ 53 ];
       enable = true;
     };
@@ -144,13 +150,30 @@ in {
         no-hosts
         no-negcache
         no-resolv
-        hostsdir=${dnsmasq_filters_path}
+        addn-hosts=${dnsmasq_filters_path}
         all-servers
         cache-size=2000
         local-ttl=3600
         min-cache-ttl=3600
       '';
       servers = [ "127.0.0.1#5300" ];
+    };
+
+    grafana = {
+      addr = "";
+      enable = true;
+      provision = {
+        enable = true;
+        dashboards = [{ options.path = "/etc/grafana/dashboards/"; }];
+        datasources = [{
+          name = "InfluxDB";
+          type = "influxdb";
+          database = "nequissimus";
+          editable = false;
+          access = "proxy";
+          url = ("http://localhost:8086");
+        }];
+      };
     };
 
     influxdb.enable = true;
@@ -179,6 +202,173 @@ in {
       enable = true;
       leasesPath = "/var/lib/dnsmasq/dnsmasq.leases";
     };
+
+    telegraf = {
+      enable = true;
+      extraConfig = {
+        inputs = {
+          minecraft = {
+            port = "25576";
+            server = "10.0.10.38";
+          };
+
+          prometheus.urls = [
+            "http://localhost:9436/metrics"
+            "http://localhost:8080/"
+            "http://localhost:9153"
+          ];
+        };
+
+        outputs.influxdb = {
+          database = "nequissimus";
+          urls = [ "http://localhost:8086" ];
+        };
+      };
+      rawConfig = ''
+        [[inputs.snmp]]
+          agents = [ "10.0.0.2:161", "10.0.0.3:161" ]
+
+          [[inputs.snmp.field]]
+            name = "hostname"
+            oid = ".1.3.6.1.2.1.1.5.0"
+            is_tag = true
+          [[inputs.snmp.field]]
+            name = "uptime"
+            oid = ".1.3.6.1.2.1.1.3.0"
+          [[inputs.snmp.field]]
+            name = "cpu-frequency"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.14.0"
+          [[inputs.snmp.field]]
+            name = "cpu-load"
+            oid = ".1.3.6.1.2.1.25.3.3.1.2.1"
+          [[inputs.snmp.field]]
+            name = "active-fan"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.9.0"
+          [[inputs.snmp.field]]
+            name = "voltage"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.8.0"
+          [[inputs.snmp.field]]
+            name = "temperature"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.10.0"
+          [[inputs.snmp.field]]
+            name = "processor-temperature"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.11.0"
+          [[inputs.snmp.field]]
+            name = "current"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.13.0"
+          [[inputs.snmp.field]]
+            name = "fan-speed"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.17.0"
+          [[inputs.snmp.field]]
+            name = "fan-speed2"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.18.0"
+          [[inputs.snmp.field]]
+            name = "power-consumption"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.12.0"
+          [[inputs.snmp.field]]
+            name = "psu1-state"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.15.0"
+          [[inputs.snmp.field]]
+            name = "psu2-state"
+            oid = ".1.3.6.1.4.1.14988.1.1.3.16.0"
+
+          # Interfaces
+          [[inputs.snmp.table]]
+            name = "snmp-interfaces"
+            inherit_tags = ["hostname"]
+            [[inputs.snmp.table.field]]
+              name = "if-name"
+              oid = ".1.3.6.1.2.1.2.2.1.2"
+              is_tag = true
+            [[inputs.snmp.table.field]]
+              name = "mac-address"
+              oid = ".1.3.6.1.2.1.2.2.1.6"
+              is_tag = true
+
+            [[inputs.snmp.table.field]]
+              name = "actual-mtu"
+              oid = ".1.3.6.1.2.1.2.2.1.4"
+            [[inputs.snmp.table.field]]
+              name = "admin-status"
+              oid = ".1.3.6.1.2.1.2.2.1.7"
+            [[inputs.snmp.table.field]]
+              name = "oper-status"
+              oid = ".1.3.6.1.2.1.2.2.1.8"
+            [[inputs.snmp.table.field]]
+              name = "bytes-in"
+              oid = ".1.3.6.1.2.1.31.1.1.1.6"
+            [[inputs.snmp.table.field]]
+              name = "packets-in"
+              oid = ".1.3.6.1.2.1.31.1.1.1.7"
+            [[inputs.snmp.table.field]]
+              name = "discards-in"
+              oid = ".1.3.6.1.2.1.2.2.1.13"
+            [[inputs.snmp.table.field]]
+              name = "errors-in"
+              oid = ".1.3.6.1.2.1.2.2.1.14"
+            [[inputs.snmp.table.field]]
+              name = "bytes-out"
+              oid = ".1.3.6.1.2.1.31.1.1.1.10"
+            [[inputs.snmp.table.field]]
+              name = "packets-out"
+              oid = ".1.3.6.1.2.1.31.1.1.1.11"
+            [[inputs.snmp.table.field]]
+              name = "discards-out"
+              oid = ".1.3.6.1.2.1.2.2.1.19"
+            [[inputs.snmp.table.field]]
+              name= "errors-out"
+              oid= ".1.3.6.1.2.1.2.2.1.20"
+
+          # Wireless interfaces
+          [[inputs.snmp.table]]
+            name = "snmp-wireless-interfaces"
+            inherit_tags = ["hostname"]
+            [[inputs.snmp.table.field]]
+              name = "ssid"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.4"
+              is_tag = true
+            [[inputs.snmp.table.field]]
+              name = "bssid"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.5"
+              is_tag = true
+
+            [[inputs.snmp.table.field]]
+              name = "tx-rate"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.2"
+            [[inputs.snmp.table.field]]
+              name = "rx-rate"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.3"
+            [[inputs.snmp.table.field]]
+              name = "client-count"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.6"
+            [[inputs.snmp.table.field]]
+              name = "frequency"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.7"
+            [[inputs.snmp.table.field]]
+              name = "band"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.8"
+            [[inputs.snmp.table.field]]
+              name = "noise-floor"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.9"
+            [[inputs.snmp.table.field]]
+              name = "overall-ccq"
+              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.10"
+          # Memory usage (storage/RAM)
+          [[inputs.snmp.table]]
+            name = "snmp-memory-usage"
+            inherit_tags = ["hostname"]
+            [[inputs.snmp.table.field]]
+              name = "memory-name"
+              oid = ".1.3.6.1.2.1.25.2.3.1.3"
+              is_tag = true
+            [[inputs.snmp.table.field]]
+              name = "total-memory"
+              oid = ".1.3.6.1.2.1.25.2.3.1.5"
+            [[inputs.snmp.table.field]]
+              name = "used-memory"
+              oid = ".1.3.6.1.2.1.25.2.3.1.6"
+      '';
+    };
   };
 
   system = {
@@ -198,12 +388,13 @@ in {
     startAt = "hourly";
 
     path = with pkgs; [ curl ];
-    script = ''
-      rm -rf ${dnsmasq_filters_path}
-      mkdir -p ${dnsmasq_filters_path}
-    '' + builtins.concatStringsSep "\n" (lib.mapAttrsToList
-      (key: value: "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^[^#]|0.0.0.0 |g' > ${dnsmasq_filters_path}/${key}")
-      dnsmasq_filters);
+    script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
+      "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
+      dnsmasq_filters) + ''
+
+        cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}
+        rm -rf ${dnsmasq_filters_path}.tmp
+      '';
   };
 
   time = { timeZone = "America/Toronto"; };

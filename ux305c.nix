@@ -9,6 +9,7 @@ in {
     ./nixos/kernel.nix
     ./nixos/networking.nix
     ./nixos/nix.nix
+#    ./nixos/nushell.nix
     ./nixos/security.nix
     ./nixos/ssh.nix
     ./nixos/users.nix
@@ -39,6 +40,8 @@ in {
   services.redshift.enable = false;
 
   services.xserver.videoDriver = "intel";
+
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
   virtualisation.docker.enable = false;
 }

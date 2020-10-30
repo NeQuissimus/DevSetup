@@ -302,7 +302,7 @@ Briefly highlight the line we are on
 (setq org-support-shift-select 'always)
 
 (setq org-todo-keywords
-      '((sequence "TODO" "BLOCKED" "JACOB" "JORDAN" "MAYNALD" "NICOLE" "RYAN" "|" "DONE" "NOT NEEDED")))
+      '((sequence "TODO" "BLOCKED" "JACOB" "JORDAN" "JOSIE" "RYAN" "SAMIRA" "|" "DONE" "NOT NEEDED")))
 
 (eval-after-load "org"
   '(require 'ox-gfm nil t))

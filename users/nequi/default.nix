@@ -39,8 +39,11 @@ in mkHome {
     ".gitconfig".content = lib.fileContents "${base}/gitconfig";
     ".gitignore".content = lib.fileContents "${base}/gitignore";
 
-    #GnuPG
+    # GnuPG
     ".gnupg/gpg.conf".content = lib.fileContents "${base}/gpg.conf";
+
+    # Nixpkgs updates
+    ".local/bin/nix-updates" = lib.fileContents "${base}/nix-updates.sh";
 
     # Nano
     ".nanorc".content = ''
@@ -208,6 +211,7 @@ in mkHome {
       zstyle :omz:plugins:ssh-agent lifetime 1h
 
       # ENV
+      export NIXPKGS_CHECKOUT="''${HOME}/dev/upstream_nix"
       export PATH="''${HOME}/.local/bin:''${PATH}"
       export TERMINAL="xterm"
       export TERM="xterm-256color"
@@ -260,23 +264,6 @@ in mkHome {
       function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi; }
       function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q); }
       function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq; }
-
-      # Nix updates
-      function nix-updates() {
-      # https://github.com/NixOS/nixpkgs/pull/57800
-      # ./pkgs/applications/audio/spotify/update.sh \
-
-      cd "''${HOME}/dev/upstream_nix/" \
-        && git checkout master \
-        && git pull \
-        && ./pkgs/os-specific/linux/kernel/update.sh && (nix-build -A linux_4_4.configfile -A linux_4_9.configfile -A linux_4_14.configfile -A linux_4_19.configfile -A linux_latest.configfile -A linux_hardened.configfile -A linux_latest_hardened.configfile -A linux_testing.configfile || (git reset --hard origin/master && git checkout -- .)) \
-        && ./pkgs/applications/networking/browsers/vivaldi/update.sh && (nix-build -A vivaldi || (git reset --mixed HEAD~2 && git checkout -- .)) && (nix-build -A vivaldi-ffmpeg-codecs || (git reset --mixed HEAD~1 && git checkout -- .))  \
-        && ./pkgs/applications/networking/instant-messengers/zoom-us/update.sh && (nix-build -A zoom-us || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && ./pkgs/development/tools/continuous-integration/jenkins/update.sh && (nix-build -A jenkins || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && ./pkgs/applications/version-management/git-and-tools/git/update.sh && (nix-build -A git || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && ./pkgs/shells/zsh/oh-my-zsh/update.sh && (nix-build -A oh-my-zsh || (git reset --mixed HEAD~1 && git checkout -- .)) \
-        && ./pkgs/applications/networking/instant-messengers/slack/update.sh && (nix-build -A slack-theme-black || (git reset --mixed HEAD~1 && git checkout -- .))
-      }
 
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }

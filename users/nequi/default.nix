@@ -23,6 +23,14 @@ in mkHome {
     # Conky
     ".conky".content = lib.fileContents "${base}/conkyrc";
 
+    # LSD
+    ".config/lsd/config.yaml".content = ''
+      date: +%F %T
+      icons:
+        theme: unicode
+      total-size: true
+    '';
+
     # Nix
     ".config/nixpkgs/config.nix".content = "{ allowUnfree = true; }";
 
@@ -43,7 +51,10 @@ in mkHome {
     ".gnupg/gpg.conf".content = lib.fileContents "${base}/gpg.conf";
 
     # Nixpkgs updates
-    ".local/bin/nix-updates" = lib.fileContents "${base}/nix-updates.sh";
+    ".local/bin/nix-updates" = {
+      content = lib.fileContents "${base}/nix-updates.sh";
+      mode = "0500";
+    };
 
     # Nano
     ".nanorc".content = ''
@@ -249,7 +260,7 @@ in mkHome {
       alias diff='diff --color'
       alias git='hub'
       alias grep='rg'
-      alias ls='exa'
+      alias ls='lsd'
       alias mvn='mvn -q'
       alias nano='nano -E -w -c'
       alias nix-repair-store='nix-store --verify --check-contents --repair'

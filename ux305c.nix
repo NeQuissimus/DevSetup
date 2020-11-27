@@ -9,7 +9,6 @@ in {
     ./nixos/kernel.nix
     ./nixos/networking.nix
     ./nixos/nix.nix
-#    ./nixos/nushell.nix
     ./nixos/security.nix
     ./nixos/ssh.nix
     ./nixos/users.nix
@@ -21,7 +20,10 @@ in {
     ./ux305c-wifi.nix
   ];
 
-  environment.systemPackages = with pkgs; [ minecraft ];
+  environment.systemPackages = with pkgs; [
+    firefox-esr
+    minecraft
+  ];
 
   networking.hostId = "123b567a";
   networking.hostName = "nixus";
@@ -31,6 +33,10 @@ in {
     "10.0.10.10" = [ "serenitybysarah.ca" ];
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
+
+  nixpkgs.overlays = [
+    (import ./ux305c-overlay.nix {})
+  ];
 
   services.emacs = {
     enable = true;

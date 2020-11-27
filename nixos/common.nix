@@ -19,20 +19,16 @@
     systemPackages = with pkgs; [
       # Basics
       alacritty
-      alsaUtils
       autocutsel
       bat
-      binutils
       conky
-      dnsutils
-      exa
       feh
-      firefox-esr
       git
       gitAndTools.hub
       gnupg1compat
       htop
       jq
+      lsd
       oh-my-zsh
       ripgrep
       rofi
@@ -43,7 +39,7 @@
   };
 
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
 
     fonts = with pkgs; [
       dejavu_fonts

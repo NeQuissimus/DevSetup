@@ -28,8 +28,7 @@ git checkout master
 git reset --hard origin/master
 git pull
 
-#update "ammonite"
-
+update "ammonite"
 updateNoTest "coursier"
 updateNoTest "httpstat"
 updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
@@ -46,6 +45,10 @@ updateScript "scala_2_11"
 updateScript "scala_2_12"
 updateScript "scala_2_13"
 updateScript "xterm"
+
+# Needs test, reference to update script
+./pkgs/games/minecraft/update.sh
+nix-build -A minecraft
 
 # Kernel is its own beast...
 ./pkgs/os-specific/linux/kernel/update.sh

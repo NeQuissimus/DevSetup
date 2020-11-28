@@ -18,7 +18,7 @@ function update() {
 
 function updateNoTest() {
   local package="${1}"
-  nix-update "${package}" --commit
+  nix-update "${package}" --commit --build
 }
 
 cd "${NIXPKGS_CHECKOUT}"
@@ -29,9 +29,12 @@ git reset --hard origin/master
 git pull
 
 update "ammonite"
+update "bat"
 updateNoTest "coursier"
 updateNoTest "httpstat"
 updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
+update "jq"
+update "lsd"
 update "sbt"
 
 # https://github.com/Mic92/nix-update/issues/11
@@ -39,16 +42,14 @@ updateScript "oh-my-zsh"
 updateScript "sbt-extras"
 
 updateScript "jenkins"
+updateScript "minecraft"
+updateScript "minecraft-server"
 updateScript "nano"
 updateScript "scala_2_10"
 updateScript "scala_2_11"
 updateScript "scala_2_12"
 updateScript "scala_2_13"
 updateScript "xterm"
-
-# Needs test, reference to update script
-./pkgs/games/minecraft/update.sh
-nix-build -A minecraft
 
 # Kernel is its own beast...
 ./pkgs/os-specific/linux/kernel/update.sh

@@ -44,10 +44,7 @@ updateScript "sbt-extras"
 #update "jq"
 
 updateScript "jenkins"
-
-#https://github.com/NixOS/nixpkgs/pull/107046
-#updateScript "minecraft"
-
+updateScript "minecraft"
 updateScript "minecraft-server"
 updateScript "nano"
 updateScript "scala_2_10"

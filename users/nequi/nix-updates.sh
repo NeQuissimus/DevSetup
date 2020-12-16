@@ -33,7 +33,6 @@ update "bat"
 updateNoTest "coursier"
 updateNoTest "httpstat"
 updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
-update "jq"
 update "lsd"
 update "sbt"
 
@@ -41,8 +40,14 @@ update "sbt"
 updateScript "oh-my-zsh"
 updateScript "sbt-extras"
 
+# https://github.com/Mic92/nix-update/issues/29
+#update "jq"
+
 updateScript "jenkins"
-updateScript "minecraft"
+
+#https://github.com/NixOS/nixpkgs/pull/107046
+#updateScript "minecraft"
+
 updateScript "minecraft-server"
 updateScript "nano"
 updateScript "scala_2_10"
@@ -58,8 +63,8 @@ nix-build -A linux_4_4.configfile \
           -A linux_4_14.configfile \
           -A linux_4_19.configfile \
           -A linux_5_4.configfile \
-          -A linux_5_8.configfile \
           -A linux_5_9.configfile \
+          -A linux_5_10.configfile \
           -A linux_latest.configfile \
           -A linux_hardened.configfile \
           -A linux_latest_hardened.configfile \

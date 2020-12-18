@@ -31,10 +31,12 @@ git pull
 update "ammonite"
 update "bat"
 updateNoTest "coursier"
+updateNoTest "gitAndTools.hub"
 updateNoTest "httpstat"
 updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
 update "lsd"
 update "sbt"
+update "yq"
 
 # https://github.com/Mic92/nix-update/issues/11
 updateScript "oh-my-zsh"
@@ -42,6 +44,7 @@ updateScript "sbt-extras"
 
 # https://github.com/Mic92/nix-update/issues/29
 #update "jq"
+#updateNoTest "ripgrep"
 
 updateScript "jenkins"
 updateScript "minecraft"

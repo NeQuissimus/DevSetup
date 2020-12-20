@@ -206,10 +206,19 @@ in mkHome {
       #!/usr/env/bin zsh
 
       # oh-my-zsh
+      setopt HIST_IGNORE_ALL_DUPS
+      setopt HIST_IGNORE_DUPS
+      setopt INC_APPEND_HISTORY
+      setopt HIST_IGNORE_SPACE
+      setopt HIST_SAVE_NO_DUPS
+      export HISTSIZE=2500
+      export SAVEHIST=2500
+
+      export ZSH_AUTOSUGGEST_USE_ASYNC="true"
       export ZSH_THEME="spaceship"
       export SPACESHIP_CHAR_SYMBOL="λ "
       export SPACESHIP_PROMPT_SEPARATE_LINE=false
-      export SPACESHIP_PROMPT_ORDER=(dir git rust haskell docker exec_time battery jobs exit_code char)
+      export SPACESHIP_PROMPT_ORDER=(dir git exec_time battery jobs exit_code char)
       export CASE_SENSITIVE="false"
       export GPG_TTY="$(tty)"
       export HIST_STAMPS="dd.mm.yyyy"

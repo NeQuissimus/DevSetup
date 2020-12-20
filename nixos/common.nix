@@ -22,6 +22,7 @@
       autocutsel
       bat
       conky
+      fd
       feh
       git
       gitAndTools.hub

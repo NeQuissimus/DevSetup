@@ -2,7 +2,13 @@
 
 {
   programs.zsh = {
-    autosuggestions.enable = true;
+    autosuggestions = {
+      enable = true;
+      extraConfig = {
+        "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE" = "20";
+        "ZSH_AUTOSUGGEST_USE_ASYNC" = "true";
+      };
+    };
     enable = true;
     enableCompletion = true;
 

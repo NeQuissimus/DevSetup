@@ -23,6 +23,8 @@ in {
   environment.systemPackages = with pkgs; [
     firefox-esr
     minecraft
+
+    (import ./nixpkgs/nix-update.nix { pkgs = pkgs; lib = lib; })
   ];
 
   networking.hostId = "123b567a";

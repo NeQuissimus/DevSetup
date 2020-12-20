@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p nix-update git
+#!/usr/bin/env bash
 
 set -eux
 
@@ -13,12 +12,14 @@ function updateScript() {
 
 function update() {
   local package="${1}"
-  nix-update "${package}" --commit --test
+  shift
+  nix-update "${package}" --commit --test $@
 }
 
 function updateNoTest() {
   local package="${1}"
-  nix-update "${package}" --commit --build
+  shift
+  nix-update "${package}" --commit --build $@
 }
 
 cd "${NIXPKGS_CHECKOUT}"
@@ -43,7 +44,7 @@ updateScript "oh-my-zsh"
 updateScript "sbt-extras"
 
 # https://github.com/Mic92/nix-update/issues/29
-#update "jq"
+update "jq" -ve 'jq-(.*)'
 #updateNoTest "ripgrep"
 
 updateScript "jenkins"

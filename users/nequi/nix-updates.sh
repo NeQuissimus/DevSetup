@@ -22,6 +22,11 @@ function updateNoTest() {
   nix-update "${package}" --commit --build $@
 }
 
+function update_sudo() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:sudo-project/sudo.git '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^SUDO_||g' | tr '_' '.')"
+  nix-update sudo --commit --test --version "${latest}"
+}
+
 cd "${NIXPKGS_CHECKOUT}"
 git checkout -- .
 git clean -xdf

@@ -23,8 +23,14 @@ function updateNoTest() {
 }
 
 function update_sudo() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:sudo-project/sudo.git '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^SUDO_||g' | tr '_' '.')"
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/sudo-project/sudo '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^SUDO_||g' | tr '_' '.')"
   nix-update sudo --commit --test --version "${latest}"
+}
+
+function update_bind() {
+  majorMinor="$(nix-instantiate --eval -E "with import ./. {}; lib.versions.majorMinor (lib.getVersion bind)" | tr -d '"' | tr '.' '_')"
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://gitlab.isc.org/isc-projects/bind9.git v${majorMinor}'*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g' | tr '_' '.')"
+  nix-update bind --commit --test --version "${latest}"
 }
 
 cd "${NIXPKGS_CHECKOUT}"
@@ -50,7 +56,7 @@ updateScript "sbt-extras"
 
 # https://github.com/Mic92/nix-update/issues/29
 update "jq" -ve 'jq-(.*)'
-#updateNoTest "ripgrep"
+update "ripgrep" -ve '^([0-9].*)'
 
 updateScript "jenkins"
 updateScript "minecraft"
@@ -61,6 +67,10 @@ updateScript "scala_2_11"
 updateScript "scala_2_12"
 updateScript "scala_2_13"
 updateScript "xterm"
+
+# Custom versions / weird tags
+update_bind
+update_sudo
 
 # Kernel is its own beast...
 ./pkgs/os-specific/linux/kernel/update.sh

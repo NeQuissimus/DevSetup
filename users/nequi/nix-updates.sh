@@ -48,6 +48,7 @@ updateNoTest "httpstat"
 updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
 update "lsd"
 update "sbt"
+update "shadow"
 update "yq"
 
 # https://github.com/Mic92/nix-update/issues/11

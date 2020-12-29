@@ -213,6 +213,7 @@ in mkHome {
       setopt HIST_SAVE_NO_DUPS
       export HISTSIZE=2500
       export SAVEHIST=2500
+      export DISABLE_UPDATE_PROMPT=true
 
       export ZSH_AUTOSUGGEST_USE_ASYNC="true"
       export ZSH_THEME="spaceship"

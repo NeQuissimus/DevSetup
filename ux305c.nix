@@ -24,7 +24,7 @@ in {
     firefox-esr
     minecraft
 
-    (import ./nixpkgs/nix-update.nix { pkgs = pkgs; lib = lib; })
+    (import ./nixpkgs/nix-update.nix { inherit pkgs; })
   ];
 
   networking.hostId = "123b567a";

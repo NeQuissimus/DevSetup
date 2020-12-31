@@ -6,13 +6,13 @@ with pkgs.python3Packages;
 
 buildPythonApplication rec {
   pname = "nix-update";
-  version = "0.2+4";
+  version = "0.3";
 
   src = fetchFromGitHub {
     owner = "NeQuissimus";
     repo = pname;
-    rev = "4523d1027e828a4d4da065aaadc7c271a55379b7";
-    sha256 = "0610l7fih0lwm1h6b3xb3c2qxy3xjr4g7hl5bb1c6lscix4xcc2j";
+    rev = "0.3";
+    sha256 = "sha256-cMllWFPK6pwqrocjkZKjnELIdtW4tj5Yu6AMw7Zd2JU=";
   };
 
   makeWrapperArgs = [

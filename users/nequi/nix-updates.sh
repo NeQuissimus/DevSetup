@@ -22,15 +22,40 @@ function updateNoTest() {
   nix-update "${package}" --commit --build $@
 }
 
+function update_alsaFirmware() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-firmware '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
+  updateNoTest "alsa-firmware" --version "${latest}"
+}
+
+function update_alsaLib() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-lib '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
+  updateNoTest "alsaLib" --version "${latest}"
+}
+
+function update_alsaPlugins() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-plugins '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
+  updateNoTest "alsaPlugins" --version "${latest}"
+}
+
+function update_alsaTools() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-tools '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
+  updateNoTest "alsaTools" --version "${latest}"
+}
+
+function update_alsaUtils() {
+  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-utils '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
+  updateNoTest "alsaUtils" --version "${latest}"
+}
+
 function update_sudo() {
   latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/sudo-project/sudo '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^SUDO_||g' | tr '_' '.')"
-  nix-update sudo --commit --test --version "${latest}"
+  update "sudo" --version "${latest}"
 }
 
 function update_bind() {
   majorMinor="$(nix-instantiate --eval -E "with import ./. {}; lib.versions.majorMinor (lib.getVersion bind)" | tr -d '"' | tr '.' '_')"
   latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://gitlab.isc.org/isc-projects/bind9.git v${majorMinor}'*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g' | tr '_' '.')"
-  nix-update bind --commit --test --version "${latest}"
+  update "bind" --version "${latest}"
 }
 
 cd "${NIXPKGS_CHECKOUT}"
@@ -56,8 +81,8 @@ updateScript "oh-my-zsh"
 updateScript "sbt-extras"
 
 # https://github.com/Mic92/nix-update/issues/29
-update "jq" -ve 'jq-(.*)'
-update "ripgrep" -ve '^([0-9].*)'
+update "jq" -vr 'jq-(.*)'
+update "ripgrep" -vr '^([0-9].*)'
 
 updateScript "jenkins"
 updateScript "minecraft"
@@ -70,6 +95,11 @@ updateScript "scala_2_13"
 updateScript "xterm"
 
 # Custom versions / weird tags
+#update_alsaFirmware
+#update_alsaLib
+#update_alsaPlugins
+#update_alsaTools
+#update_alsaUtils
 update_bind
 update_sudo
 

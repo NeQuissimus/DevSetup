@@ -23,6 +23,7 @@ in emacsWithPackages (epkgs:
     hl-todo
     htmlize
     indent-guide
+    ivy
     json-mode
     lsp-mode
     lsp-ui

@@ -22,6 +22,7 @@
       autocutsel
       bat
       conky
+      exa
       fd
       feh
       git
@@ -29,7 +30,6 @@
       gnupg1compat
       htop
       jq
-      lsd
       oh-my-zsh
       ripgrep
       rofi

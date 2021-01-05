@@ -270,7 +270,7 @@ in mkHome {
       alias diff='diff --color'
       alias git='hub'
       alias grep='rg'
-      alias ls='lsd'
+      alias ls='exa'
       alias mvn='mvn -q'
       alias nano='nano -E -w -c'
       alias nix-repair-store='nix-store --verify --check-contents --repair'

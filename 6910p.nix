@@ -18,8 +18,17 @@ let
     steven_black =
       "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts";
   };
+
+  beats_port = 9515;
+  dnsmasq_port = 53;
+  syslog_port = 9514;
+
+  ip_ap = "10.0.0.3";
+  ip_imac_wifi = "10.0.10.1";
+  ip_imac_eth = "10.0.10.2";
+  ip_ux305c = "10.0.10.3";
 in {
-  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/telegraf.nix ./nixos/docker.nix ];
+  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -48,11 +57,7 @@ in {
   documentation.nixos.enable = false;
 
   environment = {
-    etc."grafana/dashboards/dns.json".source = ./6910p-grafana/dns.json;
-    etc."grafana/dashboards/wireless.json".source =
-      ./6910p-grafana/wireless.json;
-
-    systemPackages = with pkgs; [ certbot inetutils screen ];
+    systemPackages = with pkgs; [ ];
   };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
@@ -60,9 +65,25 @@ in {
   networking = {
     firewall = {
       allowPing = false;
-      allowedTCPPorts = [ 22 53 config.services.grafana.port ];
-      allowedUDPPorts = [ 53 ];
+      allowedTCPPorts = [];
+      allowedUDPPorts = [];
       enable = true;
+      extraCommands = ''
+        iptables -A INPUT -p tcp -s 10.0.0.0/8 --dport ${toString dnsmasq_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+        iptables -A INPUT -p udp -s 10.0.0.0/8 --dport ${toString dnsmasq_port} -m udp -j ACCEPT
+
+        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString (builtins.head config.services.openssh.ports)} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString config.services.kibana.port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+        iptables -A INPUT -p udp -s ${ip_imac_eth}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_imac_wifi}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_ap}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+
+        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+      '';
     };
 
     hostName = "hape";
@@ -105,7 +126,6 @@ in {
       enable = true;
       systemCronJobs = [
         "0 0 * * * root reboot"
-        "* * * * * nequi /home/nequi/stats/mikrotik-stats/start.sh"
       ];
     };
 
@@ -155,32 +175,93 @@ in {
         cache-size=2000
         local-ttl=3600
         min-cache-ttl=3600
+        port=${toString dnsmasq_port}
       '';
       servers = [ "127.0.0.1#5300" ];
     };
 
-    grafana = {
-      addr = "";
+    elasticsearch = {
       enable = true;
-      provision = {
-        enable = true;
-        dashboards = [{ options.path = "/etc/grafana/dashboards/"; }];
-        datasources = [{
-          name = "InfluxDB";
-          type = "influxdb";
-          database = "nequissimus";
-          editable = false;
-          access = "proxy";
-          url = ("http://localhost:8086");
-        }];
-      };
+      package = pkgs.elasticsearch7-oss;
     };
 
-    influxdb.enable = true;
+    elasticsearch-curator = {
+      actionYAML = ''
+        ---
+        actions:
+          1:
+            action: delete_indices
+            options:
+              allow_ilm_indices: true
+              ignore_empty_list: True
+              disable_action: False
+            filters:
+            - filtertype: pattern
+              kind: prefix
+              value: nequi-
+            - filtertype: age
+              source: name
+              direction: older
+              timestring: '%Y.%m.%d'
+              unit: days
+              unit_count: 180
+      '';
+      enable = true;
+    };
 
-    locate = { enable = true; };
+    journalbeat = {
+      enable = true;
+      extraConfig = ''
+        logging.metrics.enabled: false
+
+        journalbeat.inputs:
+          - paths: []
+
+        output.elasticsearch:
+          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
+      '';
+      package = pkgs.journalbeat7;
+    };
+
+    kibana = {
+      elasticsearch.hosts = [ "http://localhost:${toString config.services.elasticsearch.port}" ];
+      enable = true;
+      listenAddress = "0.0.0.0";
+      package = pkgs.kibana7-oss;
+    };
+
+    locate.enable = true;
 
     logind.extraConfig = "HandleLidSwitch=ignore";
+
+    logstash = {
+      enable = true;
+
+      inputConfig = ''
+        syslog {
+          port => ${toString syslog_port}
+          type => syslog
+        }
+        beats {
+          port => ${toString beats_port}
+        }
+      '';
+
+      filterConfig = ''
+        if [@metadata][beat] {
+          mutate { add_field => { "type" => "%{[@metadata][beat]}" } }
+        }
+      '';
+
+      outputConfig = ''
+        elasticsearch {
+          hosts => ["localhost:${toString config.services.elasticsearch.port}"]
+          index => "%{type}-%{+YYYY.MM.dd}"
+        }
+      '';
+
+      package = pkgs.logstash7-oss;
+    };
 
     ntp = {
       enable = true;
@@ -198,176 +279,49 @@ in {
       permitRootLogin = "no";
     };
 
+#    packetbeat = {
+#      enable = true;
+#      package = pkgs.packetbeat7;
+#
+#      extraConfig = ''
+#        packetbeat.flows:
+#          timeout: 30s
+#          period: 10s
+#
+#        packetbeat.protocols:
+#        - type: icmp
+#          enabled: true
+#        - type: dhcpv4
+#          ports: [67, 68]
+#        - type: dns
+#          ports: [53]
+#        - type: http
+#          ports: [80, 8080, 8000, 5000, 8002]
+#        - type: amqp
+#          ports: [5672]
+#        - type: cassandra
+#          ports: [9042]
+#        - type: memcache
+#          ports: [11211]
+#        - type: mysql
+#          ports: [3306,3307]
+#        - type: redis
+#          ports: [6379]
+#        - type: pgsql
+#          ports: [5432]
+#        - type: thrift
+#          ports: [9090]
+#        - type: tls
+#          ports: [443, 993, 995, 5223, 8443, 8883, 9243]
+#
+#        output.elasticsearch:
+#          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
+#      '';
+#    };
+
     prometheus.exporters.dnsmasq = {
       enable = true;
       leasesPath = "/var/lib/dnsmasq/dnsmasq.leases";
-    };
-
-    telegraf = {
-      enable = true;
-      extraConfig = {
-        inputs = {
-          minecraft = {
-            port = "25576";
-            server = "10.0.10.38";
-          };
-
-          prometheus.urls = [
-            "http://localhost:9436/metrics"
-            "http://localhost:8080/"
-            "http://localhost:9153"
-          ];
-        };
-
-        outputs.influxdb = {
-          database = "nequissimus";
-          urls = [ "http://localhost:8086" ];
-        };
-      };
-      rawConfig = ''
-        [[inputs.snmp]]
-          agents = [ "10.0.0.2:161", "10.0.0.3:161" ]
-
-          [[inputs.snmp.field]]
-            name = "hostname"
-            oid = ".1.3.6.1.2.1.1.5.0"
-            is_tag = true
-          [[inputs.snmp.field]]
-            name = "uptime"
-            oid = ".1.3.6.1.2.1.1.3.0"
-          [[inputs.snmp.field]]
-            name = "cpu-frequency"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.14.0"
-          [[inputs.snmp.field]]
-            name = "cpu-load"
-            oid = ".1.3.6.1.2.1.25.3.3.1.2.1"
-          [[inputs.snmp.field]]
-            name = "active-fan"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.9.0"
-          [[inputs.snmp.field]]
-            name = "voltage"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.8.0"
-          [[inputs.snmp.field]]
-            name = "temperature"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.10.0"
-          [[inputs.snmp.field]]
-            name = "processor-temperature"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.11.0"
-          [[inputs.snmp.field]]
-            name = "current"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.13.0"
-          [[inputs.snmp.field]]
-            name = "fan-speed"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.17.0"
-          [[inputs.snmp.field]]
-            name = "fan-speed2"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.18.0"
-          [[inputs.snmp.field]]
-            name = "power-consumption"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.12.0"
-          [[inputs.snmp.field]]
-            name = "psu1-state"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.15.0"
-          [[inputs.snmp.field]]
-            name = "psu2-state"
-            oid = ".1.3.6.1.4.1.14988.1.1.3.16.0"
-
-          # Interfaces
-          [[inputs.snmp.table]]
-            name = "snmp-interfaces"
-            inherit_tags = ["hostname"]
-            [[inputs.snmp.table.field]]
-              name = "if-name"
-              oid = ".1.3.6.1.2.1.2.2.1.2"
-              is_tag = true
-            [[inputs.snmp.table.field]]
-              name = "mac-address"
-              oid = ".1.3.6.1.2.1.2.2.1.6"
-              is_tag = true
-
-            [[inputs.snmp.table.field]]
-              name = "actual-mtu"
-              oid = ".1.3.6.1.2.1.2.2.1.4"
-            [[inputs.snmp.table.field]]
-              name = "admin-status"
-              oid = ".1.3.6.1.2.1.2.2.1.7"
-            [[inputs.snmp.table.field]]
-              name = "oper-status"
-              oid = ".1.3.6.1.2.1.2.2.1.8"
-            [[inputs.snmp.table.field]]
-              name = "bytes-in"
-              oid = ".1.3.6.1.2.1.31.1.1.1.6"
-            [[inputs.snmp.table.field]]
-              name = "packets-in"
-              oid = ".1.3.6.1.2.1.31.1.1.1.7"
-            [[inputs.snmp.table.field]]
-              name = "discards-in"
-              oid = ".1.3.6.1.2.1.2.2.1.13"
-            [[inputs.snmp.table.field]]
-              name = "errors-in"
-              oid = ".1.3.6.1.2.1.2.2.1.14"
-            [[inputs.snmp.table.field]]
-              name = "bytes-out"
-              oid = ".1.3.6.1.2.1.31.1.1.1.10"
-            [[inputs.snmp.table.field]]
-              name = "packets-out"
-              oid = ".1.3.6.1.2.1.31.1.1.1.11"
-            [[inputs.snmp.table.field]]
-              name = "discards-out"
-              oid = ".1.3.6.1.2.1.2.2.1.19"
-            [[inputs.snmp.table.field]]
-              name= "errors-out"
-              oid= ".1.3.6.1.2.1.2.2.1.20"
-
-          # Wireless interfaces
-          [[inputs.snmp.table]]
-            name = "snmp-wireless-interfaces"
-            inherit_tags = ["hostname"]
-            [[inputs.snmp.table.field]]
-              name = "ssid"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.4"
-              is_tag = true
-            [[inputs.snmp.table.field]]
-              name = "bssid"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.5"
-              is_tag = true
-
-            [[inputs.snmp.table.field]]
-              name = "tx-rate"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.2"
-            [[inputs.snmp.table.field]]
-              name = "rx-rate"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.3"
-            [[inputs.snmp.table.field]]
-              name = "client-count"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.6"
-            [[inputs.snmp.table.field]]
-              name = "frequency"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.7"
-            [[inputs.snmp.table.field]]
-              name = "band"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.8"
-            [[inputs.snmp.table.field]]
-              name = "noise-floor"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.9"
-            [[inputs.snmp.table.field]]
-              name = "overall-ccq"
-              oid = ".1.3.6.1.4.1.14988.1.1.1.3.1.10"
-          # Memory usage (storage/RAM)
-          [[inputs.snmp.table]]
-            name = "snmp-memory-usage"
-            inherit_tags = ["hostname"]
-            [[inputs.snmp.table.field]]
-              name = "memory-name"
-              oid = ".1.3.6.1.2.1.25.2.3.1.3"
-              is_tag = true
-            [[inputs.snmp.table.field]]
-              name = "total-memory"
-              oid = ".1.3.6.1.2.1.25.2.3.1.5"
-            [[inputs.snmp.table.field]]
-              name = "used-memory"
-              oid = ".1.3.6.1.2.1.25.2.3.1.6"
-      '';
     };
   };
 
@@ -397,7 +351,9 @@ in {
       '';
   };
 
-  time = { timeZone = "America/Toronto"; };
+  systemd.services.journalbeat.serviceConfig.RestartSec = "30";
+
+  time.timeZone = "America/Toronto";
 
   users = {
     extraUsers = {
@@ -421,10 +377,5 @@ in {
         uid = 1000;
       };
     };
-  };
-
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
   };
 }

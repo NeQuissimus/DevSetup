@@ -36,13 +36,25 @@ in {
     "0.0.0.0" = [ "ftp.au.debian.org" ];
   };
 
-  nixpkgs.overlays = [
-    (import ./ux305c-overlay.nix {})
-  ];
+  nixpkgs.overlays = [ (import ./ux305c-overlay.nix { }) ];
 
   services.emacs = {
     enable = true;
     package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
+  };
+
+  services.journalbeat = {
+    enable = true;
+    extraConfig = ''
+      logging.metrics.enabled: false
+
+      journalbeat.inputs:
+        - paths: []
+
+      output.logstash:
+        hosts: ["10.0.10.26:9515"]
+    '';
+    package = pkgs.journalbeat7;
   };
 
   services.redshift.enable = false;

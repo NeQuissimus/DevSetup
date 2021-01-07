@@ -42,3 +42,4 @@ Xft.hinting: true
 Xft.hintstyle: hintslight
 
 i3-wm.program.lock = i3lock-fancy
+i3-wm.bar.trayoutput: primary

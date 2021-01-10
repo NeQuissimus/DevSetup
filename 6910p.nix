@@ -26,9 +26,12 @@ let
   ip_ap = "10.0.0.3";
   ip_imac_wifi = "10.0.10.1";
   ip_imac_eth = "10.0.10.2";
+  ip_nas = "10.0.0.32";
+  ip_pine = "10.0.10.10";
+  ip_raspi4 = "10.0.10.38";
   ip_ux305c = "10.0.10.3";
 in {
-  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ];
+  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/packetbeat.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -75,13 +78,18 @@ in {
         iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString (builtins.head config.services.openssh.ports)} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
         iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString config.services.kibana.port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 
-        iptables -A INPUT -p udp -s ${ip_imac_eth}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_imac_wifi}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_ap}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_nas}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_pine}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
+        iptables -A INPUT -p udp -s ${ip_raspi4}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
         iptables -A INPUT -p udp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
 
+        iptables -A INPUT -p tcp -s ${ip_nas}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+        iptables -A INPUT -p tcp -s ${ip_pine}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+        iptables -A INPUT -p tcp -s ${ip_raspi4}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
         iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 
+        iptables -A INPUT -p tcp -s ${ip_pine}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+        iptables -A INPUT -p tcp -s ${ip_raspi4}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
         iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
       '';
     };
@@ -182,6 +190,12 @@ in {
 
     elasticsearch = {
       enable = true;
+      extraConf = ''
+        cluster.max_shards_per_node: 100000
+        node.name: "elasticsearch"
+        node.master: true
+        node.data: true
+      '';
       package = pkgs.elasticsearch7-oss;
     };
 
@@ -249,6 +263,7 @@ in {
 
       filterConfig = ''
         if [@metadata][beat] {
+          mutate { remove_field => [ "type" ] }
           mutate { add_field => { "type" => "%{[@metadata][beat]}" } }
         }
       '';
@@ -279,9 +294,14 @@ in {
       permitRootLogin = "no";
     };
 
-#    packetbeat = {
-#      enable = true;
-#      package = pkgs.packetbeat7;
+    packetbeat = {
+      enable = true;
+      package = pkgs.packetbeat7;
+
+      protocols = {
+        dhcpv4.enable = true;
+        dns.enable = true;
+      };
 #
 #      extraConfig = ''
 #        packetbeat.flows:
@@ -313,11 +333,12 @@ in {
 #          ports: [9090]
 #        - type: tls
 #          ports: [443, 993, 995, 5223, 8443, 8883, 9243]
-#
-#        output.elasticsearch:
-#          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
-#      '';
-#    };
+      #
+      extraConfig = ''
+        output.elasticsearch:
+          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
+      '';
+    };
 
     prometheus.exporters.dnsmasq = {
       enable = true;

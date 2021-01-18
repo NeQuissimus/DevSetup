@@ -11,4 +11,8 @@
       };
     }
   );
+
+  minecraft = super.minecraft.override { jre = super.jre8; };
+
+  zfs = super.zfsUnstable;
 }

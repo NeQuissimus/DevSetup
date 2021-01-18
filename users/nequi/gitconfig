@@ -34,13 +34,15 @@
 [push]
         default = upstream
         followTags = true
+[submodule]
+        recurse = true
 [tag]
         forceSignAnnotated = true
         sort = version:refname
 [user]
         email = tim@nequissimus.com
         name = Tim Steinbach
-        signingkey = FD36A5EAAC49035A
+        signingkey = ACD70987F33D77B8A956E89FA8AECBD02786E3F0
 [merge]
         renamelimit = 4096
 [github "github.esentire.com/api"]

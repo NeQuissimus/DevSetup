@@ -23,15 +23,16 @@ let
   dnsmasq_port = 53;
   syslog_port = 9514;
 
+  ip_router = "10.0.0.2";
   ip_ap = "10.0.0.3";
   ip_imac_wifi = "10.0.10.1";
   ip_imac_eth = "10.0.10.2";
-  ip_nas = "10.0.0.32";
+  ip_nas = "10.0.0.33";
   ip_pine = "10.0.10.10";
   ip_raspi4 = "10.0.10.38";
   ip_ux305c = "10.0.10.3";
 in {
-  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/packetbeat.nix ];
+  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/packetbeat.nix ./extras/6910p-dhcp.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -66,6 +67,8 @@ in {
   i18n = { defaultLocale = "en_US.UTF-8"; };
 
   networking = {
+    defaultGateway = "10.0.0.2";
+
     firewall = {
       allowPing = false;
       allowedTCPPorts = [];
@@ -95,6 +98,15 @@ in {
     };
 
     hostName = "hape";
+
+    interfaces."enp0s25".ipv4.addresses = [{
+      address = "10.0.10.26";
+      prefixLength = 16;
+    }];
+
+    nameservers = ["127.0.0.1" "9.9.9.9"];
+    useDHCP = false;
+    usePredictableInterfaceNames = true;
   };
 
   nix = {
@@ -191,6 +203,7 @@ in {
     elasticsearch = {
       enable = true;
       extraConf = ''
+        # Apply manually, see https://github.com/elastic/elasticsearch/issues/40803
         cluster.max_shards_per_node: 100000
         node.name: "elasticsearch"
         node.master: true
@@ -218,7 +231,7 @@ in {
               direction: older
               timestring: '%Y.%m.%d'
               unit: days
-              unit_count: 180
+              unit_count: 30
       '';
       enable = true;
     };
@@ -264,7 +277,7 @@ in {
       filterConfig = ''
         if [@metadata][beat] {
           mutate { remove_field => [ "type" ] }
-          mutate { add_field => { "type" => "%{[@metadata][beat]}" } }
+          mutate { add_field => { "type" => "%{[@metadata][beat]}-%{[@metadata][version]}" } }
         }
       '';
 
@@ -302,38 +315,7 @@ in {
         dhcpv4.enable = true;
         dns.enable = true;
       };
-#
-#      extraConfig = ''
-#        packetbeat.flows:
-#          timeout: 30s
-#          period: 10s
-#
-#        packetbeat.protocols:
-#        - type: icmp
-#          enabled: true
-#        - type: dhcpv4
-#          ports: [67, 68]
-#        - type: dns
-#          ports: [53]
-#        - type: http
-#          ports: [80, 8080, 8000, 5000, 8002]
-#        - type: amqp
-#          ports: [5672]
-#        - type: cassandra
-#          ports: [9042]
-#        - type: memcache
-#          ports: [11211]
-#        - type: mysql
-#          ports: [3306,3307]
-#        - type: redis
-#          ports: [6379]
-#        - type: pgsql
-#          ports: [5432]
-#        - type: thrift
-#          ports: [9090]
-#        - type: tls
-#          ports: [443, 993, 995, 5223, 8443, 8883, 9243]
-      #
+
       extraConfig = ''
         output.elasticsearch:
           hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
@@ -366,6 +348,11 @@ in {
     script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
       "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
       dnsmasq_filters) + ''
+
+        echo '${ip_router} router.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
+        echo '${ip_ap} ap.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
+        echo '${ip_nas} nas.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
+        echo '${ip_pine} pine.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
 
         cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}
         rm -rf ${dnsmasq_filters_path}.tmp

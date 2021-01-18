@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let secrets = ./ux305c-secrets.nix;
+let secrets = ./extras/ux305c-secrets.nix;
 in {
   imports = [
     ./nixos/boot.nix
@@ -16,8 +16,8 @@ in {
     ./nixos/zfs.nix
     ./nixos/zsh.nix
     ./ux305c-hardware.nix
-    ./ux305c-secrets.nix
-    ./ux305c-wifi.nix
+    ./extras/ux305c-secrets.nix
+    ./extras/ux305c-wifi.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -61,7 +61,10 @@ in {
 
   services.xserver.videoDriver = "intel";
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+  system.autoUpgrade = {
+    channel = "https://nixos.org/channels/nixos-unstable";
+    enable = true;
+  };
 
   virtualisation.docker.enable = false;
 }

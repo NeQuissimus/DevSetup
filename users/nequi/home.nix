@@ -979,6 +979,9 @@ in {
 
   xsession.windowManager.xmonad = {
     enable = true;
+
+    extraPackages = haskellPackages: [ haskellPackages.xmonad-contrib ];
+
     config = pkgs.writeText "xmonad.hs" ''
       import Control.Monad (liftM2)
       import XMonad

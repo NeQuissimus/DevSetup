@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
 with pkgs;
 with pkgs.lib;
@@ -6,18 +6,17 @@ with pkgs.python3Packages;
 
 buildPythonApplication rec {
   pname = "nix-update";
-  version = "0.3.2";
+  version = "0.3.2+1";
 
   src = fetchFromGitHub {
     owner = "NeQuissimus";
     repo = pname;
-    rev = "0.3.2";
-    sha256 = "1ykxr0yah7zl06igm7wiji9zx3y0xpjc37hbfhn6gnir6ssa0kqp";
+    rev = "acc95546ee1a402d89b444fecacdb1b25aa223fe";
+    sha256 = "1wz0abmx0kybxh5ida4vpjrmfjj1rjyam2y10dk9vmrz49780p6z";
   };
 
-  makeWrapperArgs = [
-    "--prefix" "PATH" ":" (lib.makeBinPath [ nixFlakes nix-prefetch ])
-  ];
+  makeWrapperArgs =
+    [ "--prefix" "PATH" ":" (lib.makeBinPath [ nixFlakes nix-prefetch ]) ];
 
   checkPhase = ''
     $out/bin/nix-update --help >/dev/null

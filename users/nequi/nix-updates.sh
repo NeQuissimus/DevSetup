@@ -4,6 +4,8 @@ set -eux
 
 p="$(pwd)"
 
+nix_update="/opt/dev/nix-update/result/bin/nix-update"
+
 function updateScript() {
   local package="${1}"
   yes '' | nix-shell maintainers/scripts/update.nix --argstr path "${package}" --argstr commit true
@@ -13,13 +15,13 @@ function updateScript() {
 function update() {
   local package="${1}"
   shift
-  nix-update "${package}" --commit --test $@
+  "${nix_update}" "${package}" --commit --test $@
 }
 
 function updateNoTest() {
   local package="${1}"
   shift
-  nix-update "${package}" --commit --build $@
+  "${nix_update}" "${package}" --commit --build $@
 }
 
 function update_alsaFirmware() {
@@ -119,6 +121,7 @@ nix-build -A linux_4_4.configfile \
 nix-build ./nixos/release.nix -A tests.kernel-latest.x86_64-linux \
           -A tests.kernel-testing.x86_64-linux \
           -A tests.kernel-lts.x86_64-linux \
-          -A tests.latestKernel.login.x86_64-linux
+          -A tests.latestKernel.login.x86_64-linux \
+          -A tests.latestKernel.hardened.x86_64-linux
 
 cd "${p}"

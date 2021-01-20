@@ -126,17 +126,11 @@ Briefly highlight the line we are on
 
 #+BEGIN_SRC emacs-lisp
 (projectile-global-mode)
-;(setq projectile-enable-caching nil)
+(setq projectile-enable-caching nil)
 (setq projectile-indexing-method 'alien)
 (setq projectile-project-search-path '("~/dev/" "/opt/dev/"))
 (setq projectile-sort-order 'recently-active)
 (setq projectile-completion-system 'ivy)
-(setq projectile-require-project-root t)
-(defcustom projectile-project-root-functions
-  '(projectile-root-bottom-up)
-  "A list of functions for finding project roots."
-  :group 'projectile
-  :type '(repeat function))
 #+END_SRC
 
 ** Smart parenthesis

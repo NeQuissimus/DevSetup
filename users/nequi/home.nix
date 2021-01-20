@@ -934,6 +934,8 @@ in {
         function amm() { nix-shell -p ammonite --command "amm"; }
 
         function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
+
+        [[ -f "${config.home.homeDirectory}/.zshextras" ]] && source "${config.home.homeDirectory}/.zshextras"
       '';
 
       sessionVariables = {

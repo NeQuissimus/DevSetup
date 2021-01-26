@@ -5,7 +5,7 @@ in {
   imports = [
     ./nixos/boot.nix
     ./nixos/common.nix
-    ./nixos/docker.nix
+    ./nixos/firejail.nix
     ./nixos/kernel.nix
     ./nixos/networking.nix
     ./nixos/nix.nix
@@ -14,14 +14,12 @@ in {
     ./nixos/users.nix
     ./nixos/xmonad.nix
     ./nixos/zfs.nix
-    ./nixos/zsh.nix
     ./ux305c-hardware.nix
     ./extras/ux305c-secrets.nix
     ./extras/ux305c-wifi.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    firefox-esr
     minecraft
 
     (import ./nixpkgs/nix-update.nix { inherit pkgs; })
@@ -37,11 +35,6 @@ in {
   };
 
   nixpkgs.overlays = [ (import ./ux305c-overlay.nix { }) ];
-
-  services.emacs = {
-    enable = true;
-    package = import ./nixpkgs/emacs.nix { pkgs = pkgs; };
-  };
 
   services.journalbeat = {
     enable = true;
@@ -65,6 +58,4 @@ in {
     channel = "https://nixos.org/channels/nixos-unstable";
     enable = true;
   };
-
-  virtualisation.docker.enable = false;
 }

@@ -4,7 +4,7 @@ set -eux
 
 p="$(pwd)"
 
-nix_update="/opt/dev/nix-update/result/bin/nix-update"
+nix_update="/home/nequi/dev/nix-update/result/bin/nix-update"
 
 function updateScript() {
   local package="${1}"

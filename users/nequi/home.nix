@@ -781,8 +781,6 @@ in {
         ]) ++ (with epkgs.elpaPackages; [ beacon ]);
     };
 
-    firefox.enable = true;
-
     gpg.enable = true;
 
     git = {

@@ -801,6 +801,7 @@ in {
         apply.whitespace = "fix";
         branch.autosetuprebase = "always";
         core.whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+        init.defaultBranch = "main";
         merge.renamelimit = "4096";
         pull.rebase = "true";
         push.default = "upstream";

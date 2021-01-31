@@ -34,6 +34,8 @@ Remove a bunch of unused elements
 ** Better modeline
 
 #+BEGIN_SRC emacs-lisp
+(setq column-number-mode t)
+(setq column-number-indicator-zero-based nil)
 (setq-default mode-line-format
               '("%e" ; print error message about full memory.
                 mode-line-front-space
@@ -56,7 +58,7 @@ Hasklig and its ligatures
 ** Theme
 
 #+BEGIN_SRC emacs-lisp
-(load-theme 'ample t)
+(load-theme 'apropospriate-dark t)
 #+END_SRC
 
 ** Mouse
@@ -296,6 +298,11 @@ Briefly highlight the line we are on
   :ensure t)
 #+END_SRC
 
+** Terminal
+#+BEGIN_SRC emacs-lisp
+(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no")
+(setq vterm-max-scrollback 100000)
+#+END_SRC
 * Organization
 
 ** Org-Mode
@@ -357,5 +364,6 @@ Briefly highlight the line we are on
 (global-set-key (kbd "C-x f") 'projectile-find-file)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x t") 'vterm)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
 #+END_SRC

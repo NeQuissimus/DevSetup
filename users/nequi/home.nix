@@ -739,7 +739,7 @@ in {
       extraPackages = epkgs:
         (with epkgs.melpaPackages; [
           all-the-icons
-          ample-theme
+          apropospriate-theme
           auto-complete
           company-lsp
           dockerfile-mode
@@ -776,6 +776,7 @@ in {
           treemacs-icons-dired
           treemacs-projectile
           use-package
+          vterm
           yaml-mode
           yasnippet
         ]) ++ (with epkgs.elpaPackages; [ beacon ]);
@@ -913,6 +914,22 @@ in {
 
         unsetopt correct_all
 
+        vterm_printf(){
+          if [ -n "$TMUX" ]; then
+            # Tell tmux to pass the escape sequences through
+            printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+          elif [ "''${TERM%%-*}" = "screen" ]; then
+            # GNU screen (screen, screen-256color, screen-256color-bce)
+            printf "\eP\e]%s\007\e\\" "$1"
+          else
+            printf "\e]%s\e\\" "$1"
+          fi
+        }
+
+        if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+          alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
+        fi
+
         function docker_clean() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); }
         function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi; }
         function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q); }
@@ -939,10 +956,12 @@ in {
 
       sessionVariables = {
         _JAVA_AWT_WM_NONREPARENTING = "1";
+        BAT_THEME = "Monokai Extended Bright";
         JAVA_HOME = "${pkgs.openjdk8}";
         PATH = "${config.home.homeDirectory}/.local/bin:$PATH";
-        TERMINAL = "xterm";
+        TERMINAL = "xterm-256color";
         XZ_DEFAULTS = "-T 0";
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=239";
       };
 
       shellAliases = {

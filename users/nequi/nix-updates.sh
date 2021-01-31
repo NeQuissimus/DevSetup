@@ -112,7 +112,6 @@ nix-build -A linux_4_4.configfile \
           -A linux_4_14.configfile \
           -A linux_4_19.configfile \
           -A linux_5_4.configfile \
-          -A linux_5_9.configfile \
           -A linux_5_10.configfile \
           -A linux_latest.configfile \
           -A linux_hardened.configfile \
@@ -122,6 +121,7 @@ nix-build ./nixos/release.nix -A tests.kernel-latest.x86_64-linux \
           -A tests.kernel-testing.x86_64-linux \
           -A tests.kernel-lts.x86_64-linux \
           -A tests.latestKernel.login.x86_64-linux \
-          -A tests.latestKernel.hardened.x86_64-linux
+          -A tests.latestKernel.hardened.x86_64-linux \
+          -A tests.kernel-latest-ath-user-regd.x86_64-linux
 
 cd "${p}"

@@ -99,10 +99,16 @@ in {
 
     hostName = "hape";
 
-    interfaces."enp0s25".ipv4.addresses = [{
-      address = "10.0.10.26";
-      prefixLength = 16;
-    }];
+    interfaces."enp0s25" = {
+      ipv4.addresses = [{
+        address = "10.0.10.26";
+        prefixLength = 16;
+      }];
+      ipv6.addresses = [{
+        address = "fd00:1872::100";
+        prefixLength = 117;
+      }];
+    };
 
     nameservers = ["127.0.0.1" "9.9.9.9"];
     useDHCP = false;

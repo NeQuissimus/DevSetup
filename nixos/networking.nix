@@ -2,8 +2,11 @@
 
 {
   networking = {
+    enableIPv6 = true;
+
     firewall = {
       allowedTCPPorts = lib.mkDefault [ ];
+      allowedUDPPorts = lib.mkDefault [ ];
       allowPing = false;
       enable = true;
     };

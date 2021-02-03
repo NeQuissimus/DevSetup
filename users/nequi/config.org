@@ -99,8 +99,14 @@ Briefly highlight the line we are on
 
 ** Eliminate trailing whitespace
 
+Highlight trailing whitespace only outside vterm
+
 #+BEGIN_SRC emacs-lisp
-(global-whitespace-mode)
+(define-global-minor-mode my-global-whitespace-mode whitespace-mode
+  (lambda ()
+    (unless (derived-mode-p 'vterm-mode)
+      (whitespace-mode))))
+(my-global-whitespace-mode 1)
 
 (setq
   sentence-end-double-space nil

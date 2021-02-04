@@ -4,18 +4,19 @@ set -eux
 
 p="$(pwd)"
 
-nix_update="/home/nequi/dev/nix-update/result/bin/nix-update"
+nix_update="${HOME}/dev/nix-update/result/bin/nix-update"
 
 function updateScript() {
   local package="${1}"
   yes '' | nix-shell maintainers/scripts/update.nix --argstr path "${package}" --argstr commit true
   nix-build -A "${package}.tests"
+  nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
 }
 
 function update() {
   local package="${1}"
   shift
-  "${nix_update}" "${package}" --commit --test $@
+  "${nix_update}" "${package}" --commit --test --review $@
 }
 
 function updateNoTest() {
@@ -102,7 +103,7 @@ updateScript "xterm"
 #update_alsaPlugins
 #update_alsaTools
 #update_alsaUtils
-update_bind
+#update_bind
 update_sudo
 
 # Kernel is its own beast...

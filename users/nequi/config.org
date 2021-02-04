@@ -302,6 +302,7 @@ Briefly highlight the line we are on
 #+BEGIN_SRC emacs-lisp
 (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no")
 (setq vterm-max-scrollback 100000)
+(setq vterm-shell "fish")
 #+END_SRC
 * Organization
 

@@ -13,6 +13,12 @@ function updateScript() {
   nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
 }
 
+function updateScriptNoTest() {
+  local package="${1}"
+  yes '' | nix-shell maintainers/scripts/update.nix --argstr path "${package}" --argstr commit true
+  nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
+}
+
 function update() {
   local package="${1}"
   shift
@@ -91,10 +97,10 @@ updateScript "jenkins"
 updateScript "minecraft"
 updateScript "minecraft-server"
 updateScript "nano"
-updateScript "scala_2_10"
-updateScript "scala_2_11"
-updateScript "scala_2_12"
-updateScript "scala_2_13"
+updateScriptNoTest "scala_2_10"
+updateScriptNoTest "scala_2_11"
+updateScriptNoTest "scala_2_12"
+updateScriptNoTest "scala_2_13"
 updateScript "xterm"
 
 # Custom versions / weird tags

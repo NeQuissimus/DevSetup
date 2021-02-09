@@ -11,6 +11,7 @@
         editorconfig
         flycheck
         forge
+        golden-ratio
         groovy-mode
         haskell-mode
         hasklig-mode

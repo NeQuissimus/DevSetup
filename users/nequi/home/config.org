@@ -134,6 +134,9 @@ Highlight trailing whitespace only outside vterm
    indent-tabs-mode nil
    tab-width 2
   )
+
+  (load-file "~/.emacs.d/sublima.el")
+  (setq sh-basic-offset 2)
 #+END_SRC
 
 ** Projects

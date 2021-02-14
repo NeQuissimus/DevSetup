@@ -1,11 +1,5 @@
 { pkgs, config, ... }:
-let
-  sensible-defaults = pkgs.fetchurl {
-    url =
-      "https://raw.githubusercontent.com/hrs/sensible-defaults.el/d9001f0efc9382f8587357f2670fc4d8594858af/sensible-defaults.el";
-    sha256 = "09l03619bchh6dh0fnanvmwp50pmnv4x8c8qqgyv4kmwd553ba9n";
-  };
-in {
+{
   imports = [
     ./home/alacritty.nix
     ./home/emacs.nix
@@ -18,9 +12,6 @@ in {
   home = {
     file = {
       ".conky".source = ./conkyrc;
-      ".emacs.d/config.org".source = ./config.org;
-      ".emacs.d/init.el".source = ./init.el;
-      ".emacs.d/sensible-defaults.el".source = sensible-defaults;
       ".config/nixpkgs/config.nix".source = ./config.nix;
       ".local/bin/nix-updates".source = ./nix-updates.sh;
 

@@ -1,4 +1,23 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  sensible-defaults = pkgs.fetchurl {
+    url =
+      "https://raw.githubusercontent.com/hrs/sensible-defaults.el/d9001f0efc9382f8587357f2670fc4d8594858af/sensible-defaults.el";
+    sha256 = "09l03619bchh6dh0fnanvmwp50pmnv4x8c8qqgyv4kmwd553ba9n";
+  };
+  sublima = pkgs.fetchurl {
+    url =
+      "https://raw.githubusercontent.com/Parveshdhull/sublima/5c7acd0eb8e5b6dad5f9a662e7d6f4a927d5683c/sublima.el";
+    sha256 = "1gv9ngbffp0069a0yrvz65w0ncbjm10bkmib0dw74k282pqsxc5n";
+  };
+in {
+  home.file = {
+    ".emacs.d/config.org".source = ./config.org;
+    ".emacs.d/init.el".source = ./init.el;
+    ".emacs.d/sensible-defaults.el".source = sensible-defaults;
+    ".emacs.d/sublima.el".source = sublima;
+  };
+
   programs.emacs = {
     extraPackages = epkgs:
       (with epkgs.melpaPackages; [

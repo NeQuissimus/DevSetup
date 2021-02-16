@@ -76,7 +76,7 @@
 
       "kernel.dmesg_restrict" = true; # Restrict dmesg access
       "kernel.kexec_load_disabled" = true; # Prevent kernel reload
-      "kernel.kptr_restrict" = lib.mkOverride 500 2; # Hide kernel pointers
+      "kernel.kptr_restrict" = lib.mkForce 2; # Hide kernel pointers
       "kernel.unprivileged_bpf_disabled" = true; # Prevent privilege escalation
       "kernel.yama.ptrace_scope" = 1; # Limit ptrace
       "net.core.bpf_jit_enable" = false; # Turn off bpf JIT
@@ -101,7 +101,7 @@
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
     };
 
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest_hardened;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_latest_hardened;
 
     kernelParams = [
       "nohibernate" # Disable hibernation

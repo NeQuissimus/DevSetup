@@ -3,6 +3,8 @@
 let secrets = ./extras/ux305c-secrets.nix;
 in {
   imports = [
+    <nixpkgs/nixos/modules/profiles/hardened.nix>
+
     ./nixos/boot.nix
     ./nixos/common.nix
     ./nixos/firejail.nix
@@ -19,10 +21,13 @@ in {
     ./extras/ux305c-wifi.nix
   ];
 
+  environment.memoryAllocator.provider = "jemalloc";
+
   environment.systemPackages = with pkgs; [
     minecraft
 
     (import ./nixpkgs/nix-update.nix { inherit pkgs; })
+    (import ./nixpkgs/kconfig-hardened-check.nix { inherit pkgs; })
   ];
 
   networking.hostId = "123b567a";

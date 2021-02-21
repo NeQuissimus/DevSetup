@@ -6,54 +6,89 @@ p="$(pwd)"
 
 nix_update="${HOME}/dev/nix-update/result/bin/nix-update"
 
+BASE_BRANCH="master"
+BASE_REMOTE="origin"
+PUSH_REMOTE="downstream"
+
+BRANCHES=()
+
+function needCommand() {
+  type -p "${1}"
+}
+
+needCommand "cat"
+needCommand "fold"
+needCommand "git"
+needCommand "head"
+needCommand "nix-build"
+needCommand "nix-instantiate"
+needCommand "nix-shell"
+needCommand "tr"
+needCommand "yes"
+
+function hasTests() {
+  local package="${1}"
+  nix-instantiate --eval -E "with import ./. {}; ${package}.passthru.tests" >/dev/null 2>&1
+}
+
+function createBranch() {
+  local package="${1}"
+  local random="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)"
+
+  cd "${NIXPKGS_CHECKOUT}"
+  git checkout -- .
+  git clean -xdf
+  git checkout "${BASE_BRANCH}"
+  git reset --hard "${BASE_REMOTE}/${BASE_BRANCH}"
+  git pull
+
+  git checkout -b "${package}_${random}"
+}
+
+function pushBranch() {
+  local branch="$(git branch --show-current)"
+
+  if [ "$(git cherry master | grep '\+')" ]; then
+    git push "${PUSH_REMOTE}" "${branch}"
+    BRANCHES+=("${branch}")
+  fi
+
+  git checkout "${BASE_BRANCH}"
+  git branch -D "${branch}"
+}
+
 function updateScript() {
   local package="${1}"
   yes '' | nix-shell maintainers/scripts/update.nix --argstr path "${package}" --argstr commit true
-  nix-build -A "${package}.tests"
-  nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
-}
-
-function updateScriptNoTest() {
-  local package="${1}"
-  yes '' | nix-shell maintainers/scripts/update.nix --argstr path "${package}" --argstr commit true
+  hasTests "${package}" && nix-build -A "${package}.tests"
   nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
 }
 
 function update() {
   local package="${1}"
+  (hasTests "${package}" && updateWithTest $@) || updateNoTest $@
+}
+
+function updateWithTest() {
+  local package="${1}"
   shift
-  "${nix_update}" "${package}" --commit --test --review $@
+  "${nix_update}" "${package}" --commit --test --review --format $@
 }
 
 function updateNoTest() {
   local package="${1}"
   shift
-  "${nix_update}" "${package}" --commit --build $@
+  "${nix_update}" "${package}" --commit --build --review --format $@
 }
 
-function update_alsaFirmware() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-firmware '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
-  updateNoTest "alsa-firmware" --version "${latest}"
-}
+function updateWithBranch() {
+  createBranch "${!#}"
 
-function update_alsaLib() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-lib '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
-  updateNoTest "alsaLib" --version "${latest}"
-}
+  for package in "${@}"; do
+    update "${package}"
+  done
 
-function update_alsaPlugins() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-plugins '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
-  updateNoTest "alsaPlugins" --version "${latest}"
-}
-
-function update_alsaTools() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-tools '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
-  updateNoTest "alsaTools" --version "${latest}"
-}
-
-function update_alsaUtils() {
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/alsa-project/alsa-utils '*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g')"
-  updateNoTest "alsaUtils" --version "${latest}"
+  pushBranch
 }
 
 function update_sudo() {
@@ -61,58 +96,41 @@ function update_sudo() {
   update "sudo" --version "${latest}"
 }
 
-function update_bind() {
-  majorMinor="$(nix-instantiate --eval -E "with import ./. {}; lib.versions.majorMinor (lib.getVersion bind)" | tr -d '"' | tr '.' '_')"
-  latest="$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://gitlab.isc.org/isc-projects/bind9.git v${majorMinor}'*' | tail --lines=1 | cut --delimiter='/' --fields=3 | sed 's|^v||g' | tr '_' '.')"
-  update "bind" --version "${latest}"
-}
 
-cd "${NIXPKGS_CHECKOUT}"
-git checkout -- .
-git clean -xdf
-git checkout master
-git reset --hard origin/master
-git pull
+updateWithBranch "ammonite"
+updateWithBranch "bat"
+updateWithBranch "coursier"
+updateWithBranch "gitAndTools.hub"
+updateWithBranch "httpstat"
+updateWithBranch "python3Packages.botocore" "python3Packages.boto3" "awscli"
+updateWithBranch "python3Packages.protobuf3-to-dict" "python3Packages.smdebug-rulesconfig" "python3Packages.sagemaker"
+updateWithBranch "lsd"
+updateWithBranch "sbt"
+updateWithBranch "shadow"
+updateWithBranch "yq"
 
-update "ammonite"
-update "bat"
-updateNoTest "coursier"
-updateNoTest "gitAndTools.hub"
-updateNoTest "httpstat"
-updateNoTest "python3Packages.botocore" && updateNoTest "python3Packages.boto3" && update "awscli"
-update "lsd"
-update "sbt"
-update "shadow"
-update "yq"
+createBranch "jq" && update "jq" -vr 'jq-(.*)' && pushBranch
+createBranch "ripgrep" && update "ripgrep" -vr '^([0-9].*)' && pushBranch
 
 # https://github.com/Mic92/nix-update/issues/11
-updateScript "oh-my-zsh"
-updateScript "sbt-extras"
+createBranch "omz" && updateScript "oh-my-zsh" && pushBranch
+createBranch "sbtextras" && updateScript "sbt-extras" && pushBranch
 
-# https://github.com/Mic92/nix-update/issues/29
-update "jq" -vr 'jq-(.*)'
-update "ripgrep" -vr '^([0-9].*)'
-
-updateScript "jenkins"
-updateScript "minecraft"
-updateScript "minecraft-server"
-updateScript "nano"
-updateScriptNoTest "scala_2_10"
-updateScriptNoTest "scala_2_11"
-updateScriptNoTest "scala_2_12"
-updateScriptNoTest "scala_2_13"
-updateScript "xterm"
+createBranch "jenkins" && updateScript "jenkins" && pushBranch
+createBranch "minecraft" && updateScript "minecraft" && pushBranch
+createBranch "minecraft-server" && updateScript "minecraft-server" && pushBranch
+createBranch "nano" && updateScript "nano" && pushBranch
+createBranch "scala210" && updateScript "scala_2_10" && pushBranch
+createBranch "scala211" && updateScript "scala_2_11" && pushBranch
+createBranch "scala212" && updateScript "scala_2_12" && pushBranch
+createBranch "scala213" && updateScript "scala_2_13" && pushBranch
+createBranch "xterm" && updateScript "xterm" && pushBranch
 
 # Custom versions / weird tags
-#update_alsaFirmware
-#update_alsaLib
-#update_alsaPlugins
-#update_alsaTools
-#update_alsaUtils
-#update_bind
-update_sudo
+createBranch "sudo" && update_sudo && pushBranch
 
 # Kernel is its own beast...
+createBranch "kernels"
 ./pkgs/os-specific/linux/kernel/update.sh
 nix-build -A linux_4_4.configfile \
           -A linux_4_9.configfile \
@@ -120,6 +138,7 @@ nix-build -A linux_4_4.configfile \
           -A linux_4_19.configfile \
           -A linux_5_4.configfile \
           -A linux_5_10.configfile \
+          -A linux_5_11.configfile \
           -A linux_latest.configfile \
           -A linux_hardened.configfile \
           -A linux_latest_hardened.configfile \
@@ -130,5 +149,8 @@ nix-build ./nixos/release.nix -A tests.kernel-latest.x86_64-linux \
           -A tests.latestKernel.login.x86_64-linux \
           -A tests.latestKernel.hardened.x86_64-linux \
           -A tests.kernel-latest-ath-user-regd.x86_64-linux
+pushBranch
+
+echo "${BRANCHES[@]}"
 
 cd "${p}"

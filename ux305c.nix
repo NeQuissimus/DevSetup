@@ -21,7 +21,7 @@ in {
     ./extras/ux305c-wifi.nix
   ];
 
-  environment.memoryAllocator.provider = "jemalloc";
+  environment.memoryAllocator.provider = "libc";
 
   environment.systemPackages = with pkgs; [
     minecraft

@@ -33,7 +33,6 @@ function hasTests() {
 
 function createBranch() {
   local package="${1}"
-  local random="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)"
 
   cd "${NIXPKGS_CHECKOUT}"
   git checkout -- .
@@ -42,14 +41,14 @@ function createBranch() {
   git reset --hard "${BASE_REMOTE}/${BASE_BRANCH}"
   git pull
 
-  git checkout -b "${package}_${random}"
+  git checkout -b "${package}"
 }
 
 function pushBranch() {
   local branch="$(git branch --show-current)"
 
   if [ "$(git cherry master | grep '\+')" ]; then
-    git push "${PUSH_REMOTE}" "${branch}"
+    git push -f "${PUSH_REMOTE}" "${branch}"
     BRANCHES+=("${branch}")
   fi
 

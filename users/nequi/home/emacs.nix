@@ -19,7 +19,7 @@ in {
       ".emacs.d/sublima.el".source = sublima;
     };
 
-    packages = with pkgs; [ ispell vale ];
+    packages = with pkgs; [ ispell ];
   };
 
   programs.emacs = {
@@ -33,7 +33,6 @@ in {
         company
         editorconfig
         flycheck
-        flycheck-vale
         forge
         golden-ratio
         groovy-mode

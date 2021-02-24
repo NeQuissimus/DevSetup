@@ -338,9 +338,6 @@ Highlight trailing whitespace only outside vterm
     (add-hook 'org-mode-hook 'flyspell-mode)
 
     (add-hook 'git-commit-mode-hook 'flyspell-mode))
-
-  (require 'flycheck-vale)
-  (flycheck-vale-setup)
 #+END_SRC
 
 * Organization

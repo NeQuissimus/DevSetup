@@ -11,11 +11,15 @@ let
     sha256 = "1gv9ngbffp0069a0yrvz65w0ncbjm10bkmib0dw74k282pqsxc5n";
   };
 in {
-  home.file = {
-    ".emacs.d/config.org".source = ./config.org;
-    ".emacs.d/init.el".source = ./init.el;
-    ".emacs.d/sensible-defaults.el".source = sensible-defaults;
-    ".emacs.d/sublima.el".source = sublima;
+  home = {
+    file = {
+      ".emacs.d/config.org".source = ./config.org;
+      ".emacs.d/init.el".source = ./init.el;
+      ".emacs.d/sensible-defaults.el".source = sensible-defaults;
+      ".emacs.d/sublima.el".source = sublima;
+    };
+
+    packages = with pkgs; [ ispell vale ];
   };
 
   programs.emacs = {
@@ -29,6 +33,7 @@ in {
         company
         editorconfig
         flycheck
+        flycheck-vale
         forge
         golden-ratio
         groovy-mode

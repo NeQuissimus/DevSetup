@@ -117,7 +117,6 @@
 
   security = {
     forcePageTableIsolation = true;
-    hideProcessInformation = true;
     lockKernelModules = true;
     protectKernelImage = true;
   };

@@ -34,8 +34,6 @@
       ripgrep
       rofi
       skopeo
-
-      ((pkgs.callPackage ../nixpkgs/nix-home.nix) { })
     ];
   };
 

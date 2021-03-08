@@ -110,6 +110,7 @@
       "pti=on" # Kernel page isolation
       "slab_nomerge" # Disable slab merging (Slab = chunk of memory)
       "slub_debug=FZP" # Enable sanity checks (F), redzoning (Z) and poisoning (P)
+      "random.trust_cpu=off" # Enable or disable trusting the use of the CPU's random number generator
       "vsyscall=none" # vsyscall is obsolete
     ];
 

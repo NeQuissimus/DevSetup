@@ -41,7 +41,7 @@ function createBranch() {
   git reset --hard "${BASE_REMOTE}/${BASE_BRANCH}"
   git pull
 
-  git checkout -b "${package}"
+  git checkout -b "${package}" || (git branch -D "${package}" && git checkout -b "${package}")
 }
 
 function pushBranch() {
@@ -116,7 +116,10 @@ createBranch "omz" && updateScript "oh-my-zsh" && pushBranch
 createBranch "sbtextras" && updateScript "sbt-extras" && pushBranch
 
 createBranch "jenkins" && updateScript "jenkins" && pushBranch
-createBranch "minecraft" && updateScript "minecraft" && pushBranch
+
+#https://github.com/NixOS/nixpkgs/issues/114732
+#createBranch "minecraft" && updateScript "minecraft" && pushBranch
+
 createBranch "minecraft-server" && updateScript "minecraft-server" && pushBranch
 createBranch "nano" && updateScript "nano" && pushBranch
 createBranch "scala210" && updateScript "scala_2_10" && pushBranch

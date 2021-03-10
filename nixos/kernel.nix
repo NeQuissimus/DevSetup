@@ -3,33 +3,59 @@
 {
   boot = {
     blacklistedKernelModules = [
-      # Obscure network protocols
-      "ax25"
-      "netrom"
-      "rose"
-
-      # Old or rare or insufficiently audited filesystems
       "adfs"
+      "af_802154"
       "affs"
-      "bfs"
+      "appletalk"
+      "atm"
+      "ax25"
       "befs"
+      "bfs"
+      "bluetoth"
+      "btusb"
+      "can"
+      "cifs"
       "cramfs"
+      "dccp"
+      "decnet"
+      "econet"
       "efs"
       "erofs"
       "exofs"
-      "freevxfs"
       "f2fs"
+      "freevxfs"
+      "gfs2"
       "hfs"
+      "hfsplus"
       "hpfs"
+      "ipx"
+      "jffs2"
       "jfs"
       "minix"
+      "n-hdlc"
+      "netrom"
+      "nfs"
+      "nfsv3"
+      "nfsv4"
       "nilfs2"
       "ntfs"
       "omfs"
+      "p8022"
+      "p8023"
+      "psnap"
       "qnx4"
       "qnx6"
+      "rds"
+      "rose"
+      "sctp"
+      "squashfs"
       "sysv"
+      "tipc"
+      "udf"
       "ufs"
+      "uvcvideo"
+      "vivid"
+      "x25"
     ];
 
     initrd.kernelModules = lib.unique ([
@@ -67,6 +93,8 @@
     kernel.sysctl = {
       "dev.tty.ldisc_autoload" = 0; # Prevent loading vulnerable line disciplines
 
+      "fs.protected_fifos" = 2; # Prevent FIFOs in world-writable environments
+      "fs.protected_regular" = 2; # Prevent files in world-writable environments
       "fs.protected_symlinks" = 1; # Limit access to links
       "fs.protected_hardlinks" = 1; # Limit access to links
 
@@ -112,12 +140,12 @@
 
       #      "user.max_user_namespaces" = 0; # Disable user namespaces, breaks Nix 2.0
 
-      "vm.dirty_background_ratio" =
-        20; # Max % of RAM with dirty pages before reclaim
+      "vm.dirty_background_ratio" = 20; # Max % of RAM with dirty pages before reclaim
       "vm.dirty_ratio" = 30; # Max % of RAM with dirty pages before STW
       "vm.dirty_writeback_centisecs" = 500; # Frequency pages are reclaimed
       "vm.dirty_expire_centisecs" = 3000; # Max age of dirty pages
       "vm.drop_caches" = 1; # Drop caches early
+      "vm.max_map_count" = 524240; # Increase page number
       "vm.mmap_min_addr" = 65535; # Enforce memory beyond NULL space
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
       "vm.mmap_rnd_compat_bits" = 16; # Raise ASLR entropy
@@ -129,14 +157,28 @@
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest_hardened;
 
     kernelParams = [
+      "debugfs=off" # No debugfs
+      "init_on_alloc=1" # Zero memory on allocation
+      "init_on_free=1" # Zero memory on free
       "nohibernate" # Disable hibernation
+      "oops=panic" # Prevent "oops" exploits
+      "quiet loglevel=0" # Prevent information leak upon boot
       "page_alloc.shuffle=1" # Enable page allocator randomization
-      "page_poison=1" # Poison memory pages, wiping freed memory
       "pti=on" # Kernel page isolation
       "slab_nomerge" # Disable slab merging (Slab = chunk of memory)
-      "slub_debug=FZP" # Enable sanity checks (F), redzoning (Z) and poisoning (P)
+      "slub_debug=FZ" # Enable sanity checks (F), redzoning (Z)
       "random.trust_cpu=off" # Enable or disable trusting the use of the CPU's random number generator
       "vsyscall=none" # vsyscall is obsolete
+
+      # Spectre
+      "kvm.nx_huge_pages=force"
+      "l1tf=full,force"
+      "mds=full,nosmt"
+      "nosmt=force"
+      "spec_store_bypass_disable=on"
+      "spectre_v2=on"
+      "tsx=off"
+      "tsx_async_abort=full,nosmt"
     ];
 
   };

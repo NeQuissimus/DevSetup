@@ -45,6 +45,8 @@
     packages = with pkgs; [ nano ];
   };
 
+  news.display = "silent";
+
   programs = {
     alacritty.enable = true;
 

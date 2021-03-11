@@ -62,7 +62,6 @@
       "ahci"
       "aesni-intel"
       "iso9660" # Mount CDs
-      "iwlwifi"
       "nls-cp437" # /boot
       "nls-iso8859-1" # /boot
       "tun"
@@ -181,7 +180,6 @@
       "tsx=off"
       "tsx_async_abort=full,nosmt"
     ];
-
   };
 
   security = {

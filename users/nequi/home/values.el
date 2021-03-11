@@ -1,0 +1,1 @@
+((magit-cherry-pick "-x"))

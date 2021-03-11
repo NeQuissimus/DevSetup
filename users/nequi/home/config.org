@@ -177,9 +177,6 @@ Highlight trailing whitespace only outside vterm
 
   (with-eval-after-load 'magit
     (require 'forge))
-
-  (custom-set-variables
-   '(magit-cherry-pick-arguments (quote ("-x"))))
 #+END_SRC
 
 ** Markdown

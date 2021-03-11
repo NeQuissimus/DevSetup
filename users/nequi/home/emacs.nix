@@ -17,6 +17,7 @@ in {
       ".emacs.d/init.el".source = ./init.el;
       ".emacs.d/sensible-defaults.el".source = sensible-defaults;
       ".emacs.d/sublima.el".source = sublima;
+      ".emacs.d/transient/values.el".source = ./values.el;
     };
 
     packages = with pkgs; [ ispell ];

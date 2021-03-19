@@ -1,4 +1,23 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  pname = "nequi-zsh";
+  nequi-zsh = pkgs.stdenv.mkDerivation rec {
+    version = "1.1";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "NeQuissimus";
+      repo = "nequi-zsh";
+      sha256 = "sha256-vlcBsRsMy5GiKO4egpX3vUS8EJTLr2UWLJF1az7rHA8=";
+      rev = "v${version}";
+    };
+
+    installPhase = ''
+      mkdir -p "$out/share/zsh/themes/"
+      install -Dm0644 themes/nequissimus.zsh-theme "$out/share/zsh/themes/"
+    '';
+  };
+in
+{
   programs.zsh = {
     enableAutosuggestions = true;
     enableCompletion = true;
@@ -94,7 +113,7 @@
     };
 
     oh-my-zsh = {
-      custom = "${pkgs.spaceship-prompt}/share/zsh";
+      custom = "${nequi-zsh}/share/zsh";
       enable = true;
 
       extraConfig = ''
@@ -102,14 +121,14 @@
 
         export DISABLE_UPDATE_PROMPT=true
         export ZSH_AUTOSUGGEST_USE_ASYNC="true"
-        export SPACESHIP_CHAR_SYMBOL="λ "
-        export SPACESHIP_PROMPT_SEPARATE_LINE=false
-        export SPACESHIP_PROMPT_ORDER=(dir git exec_time battery jobs exit_code char)
+        export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="300"
+        export ZSH_AUTOSUGGEST_MANUAL_REBIND=""
+        export ZSH_AUTOSUGGEST_STRATEGY=("history" "completion")
       '';
 
       plugins = [ "git" "sudo" ];
 
-      theme = "spaceship";
+      theme = "nequissimus";
     };
   };
 }

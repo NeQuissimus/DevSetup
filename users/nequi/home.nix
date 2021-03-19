@@ -3,7 +3,6 @@
   imports = [
     ./home/alacritty.nix
     ./home/emacs.nix
-    ./home/fish.nix
     ./home/git.nix
     ./home/xmonad.nix
     ./home/zsh.nix
@@ -42,7 +41,7 @@
       ".Xresources".source = ./Xresources;
     };
 
-    packages = with pkgs; [ nano ];
+    packages = with pkgs; [ nano nyxt ];
   };
 
   news.display = "silent";
@@ -51,8 +50,6 @@
     alacritty.enable = true;
 
     emacs.enable = true;
-
-    fish.enable = true;
 
     gpg.enable = true;
 
@@ -89,7 +86,7 @@
       serverAliveInterval = 240;
     };
 
-    zsh.enable = false;
+    zsh.enable = true;
   };
 
   xsession.windowManager.xmonad.enable = true;

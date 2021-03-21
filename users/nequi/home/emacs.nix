@@ -29,7 +29,6 @@ in {
         all-the-icons
         apropospriate-theme
         auto-complete
-        company-lsp
         dockerfile-mode
         company
         editorconfig

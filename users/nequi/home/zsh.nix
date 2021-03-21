@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
-  pname = "nequi-zsh";
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
+    pname = "nequi-zsh";
     version = "1.1";
 
     src = pkgs.fetchFromGitHub {

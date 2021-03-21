@@ -29,6 +29,8 @@ Remove a bunch of unused elements
   (global-prettify-symbols-mode t)
   (setq confirm-kill-emacs nil)
   (global-display-line-numbers-mode)
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
 #+END_SRC
 
 ** Better modeline
@@ -216,8 +218,6 @@ Highlight trailing whitespace only outside vterm
      'minibuffer-complete-word
      'self-insert-command
      minibuffer-local-completion-map))
-
-  (use-package company-lsp)
 
   (use-package flycheck
     :init (global-flycheck-mode))

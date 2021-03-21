@@ -9,12 +9,27 @@
       undo = "reset HEAD~1 --mixed";
     };
 
-    delta.enable = true;
+    delta = {
+      enable = true;
+
+      options = {
+        decorations = {
+          commit-decoration-style = "bold yellow box ul";
+          file-style = "bold yellow ul";
+          file-decoration-style = "none";
+        };
+
+        features = "line-numbers";
+        inspect-raw-lines = "false";
+        whitespace-error-style = "22 reverse";
+      };
+    };
 
     extraConfig = {
       apply.whitespace = "fix";
       branch.autosetuprebase = "always";
       core.whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+      diff.colorMoved = "default";
       init.defaultBranch = "main";
       merge.renamelimit = "4096";
       pull.rebase = "true";

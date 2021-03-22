@@ -314,7 +314,7 @@ Highlight trailing whitespace only outside vterm
 #+BEGIN_SRC emacs-lisp
   (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no")
   (setq vterm-max-scrollback 100000)
-  (setq vterm-shell "fish")
+  (setq vterm-shell "zsh")
 #+END_SRC
 
 ** Editorconfig

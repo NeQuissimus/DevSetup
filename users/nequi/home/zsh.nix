@@ -97,7 +97,7 @@ in
       PATH = "${config.home.homeDirectory}/.local/bin:$PATH";
       TERMINAL = "xterm-256color";
       XZ_DEFAULTS = "-T 0";
-      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=239";
+      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=3";
     };
 
     shellAliases = {

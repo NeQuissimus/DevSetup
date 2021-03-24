@@ -94,6 +94,7 @@ in
       _JAVA_AWT_WM_NONREPARENTING = "1";
       BAT_THEME = "Monokai Extended Bright";
       JAVA_HOME = "${pkgs.openjdk8}";
+      JQ_COLORS = "1;39:0;39:0;39:0;39:0;32:1;39:1;39";
       PATH = "${config.home.homeDirectory}/.local/bin:$PATH";
       TERMINAL = "xterm-256color";
       XZ_DEFAULTS = "-T 0";

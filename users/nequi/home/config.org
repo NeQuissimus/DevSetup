@@ -366,6 +366,13 @@ Highlight trailing whitespace only outside vterm
   (advice-add 'org-archive-subtree :after #'org-save-all-org-buffers)
 #+END_SRC
 
+** Org-Roam
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'org-roam-mode)
+  (setq org-roam-directory "/opt/dev/ata/meetings/")
+#+END_SRC
+
 ** Exporting
 
 #+BEGIN_SRC emacs-lisp
@@ -386,4 +393,9 @@ Highlight trailing whitespace only outside vterm
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x t") 'vterm)
   (global-set-key (kbd "C-c m c") 'mc/edit-lines)
+  (global-set-key (kbd "C-c n r") #'org-roam-buffer-toggle-display)
+  (global-set-key (kbd "C-c n i") #'org-roam-insert)
+  (global-set-key (kbd "C-c n /") #'org-roam-find-file)
+  (global-set-key (kbd "C-c n b") #'org-roam-switch-to-buffer)
+  (global-set-key (kbd "C-c n d") #'org-roam-find-directory)
 #+END_SRC

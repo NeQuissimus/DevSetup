@@ -20,7 +20,7 @@ in {
       ".emacs.d/transient/values.el".source = ./values.el;
     };
 
-    packages = with pkgs; [ ispell ];
+    packages = with pkgs; [ ispell sqlite ];
   };
 
   programs.emacs = {
@@ -51,6 +51,7 @@ in {
         multiple-cursors
         nix-mode
         nyan-mode
+        org-roam
         ox-gfm
         projectile
         rainbow-delimiters

@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   imports = [
+    ../../extras/home.nix
+
     ./home/alacritty.nix
     ./home/emacs.nix
     ./home/git.nix
@@ -83,6 +85,7 @@
       '';
 
       hashKnownHosts = true;
+
       serverAliveInterval = 240;
     };
 

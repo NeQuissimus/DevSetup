@@ -20,18 +20,9 @@
       # Basics
       alacritty
       autocutsel
-      bat
       conky
-      exa
       fd
       feh
-      git
-      gitAndTools.hub
-      gnupg1compat
-      htop
-      jq
-      oh-my-zsh
-      ripgrep
       rofi
       skopeo
     ];

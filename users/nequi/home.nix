@@ -43,7 +43,20 @@
       ".Xresources".source = ./Xresources;
     };
 
-    packages = with pkgs; [ nano nyxt ];
+    packages = with pkgs; [
+      awscli
+      bat
+      exa
+      firefox
+      htop
+      kubectl
+      jq
+      nano
+      nyxt
+      ripgrep
+      slack
+      xclip
+    ];
   };
 
   news.display = "silent";

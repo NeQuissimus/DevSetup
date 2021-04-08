@@ -39,6 +39,7 @@
     };
 
     ignores = [
+      ".bsp"
       ".metals"
       ".bloop"
       ".scalafix.conf"

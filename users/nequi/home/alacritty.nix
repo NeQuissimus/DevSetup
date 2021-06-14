@@ -600,7 +600,6 @@
         double_click.threshold = 300;
         hide_when_typing = false;
         triple_click.threshold = 300;
-        url.modifiers = "None";
       };
 
       mouse_bindings = [{

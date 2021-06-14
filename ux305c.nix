@@ -14,6 +14,7 @@ in {
     ./nixos/security.nix
     ./nixos/ssh.nix
     ./nixos/users.nix
+    ./nixos/wireless.nix
     ./nixos/xmonad.nix
     ./nixos/zfs.nix
     ./ux305c-hardware.nix
@@ -40,20 +41,6 @@ in {
   };
 
   nixpkgs.overlays = [ (import ./ux305c-overlay.nix { }) ];
-
-  services.journalbeat = {
-    enable = true;
-    extraConfig = ''
-      logging.metrics.enabled: false
-
-      journalbeat.inputs:
-        - paths: []
-
-      output.logstash:
-        hosts: ["10.0.10.26:9515"]
-    '';
-    package = pkgs.journalbeat7;
-  };
 
   services.redshift.enable = false;
 

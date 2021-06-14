@@ -97,7 +97,7 @@
   };
 
   system.autoUpgrade = {
-    channel = lib.mkDefault "https://nixos.org/channels/nixos-20.09";
+    channel = lib.mkDefault "https://nixos.org/channels/nixos-21.05";
     dates = "9:00";
     enable = lib.mkDefault false;
   };

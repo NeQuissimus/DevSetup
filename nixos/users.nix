@@ -9,7 +9,6 @@
     users = {
       docker = {
         isSystemUser = true;
-
         subUidRanges = [{
           startUid = 100000;
           count = 65536;

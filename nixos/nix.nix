@@ -29,10 +29,10 @@ in {
 
     maxJobs = 2;
 
-    nixPath = [
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "nixos-config=${toString base}/ux305c.nix"
-    ];
+#    nixPath = [
+#      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+#      "nixos-config=${toString base}/ux305c.nix"
+#    ];
 
     nrBuildUsers = 2;
 

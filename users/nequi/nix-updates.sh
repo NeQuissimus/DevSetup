@@ -98,16 +98,16 @@ function update_sudo() {
 
 updateWithBranch "ammonite"
 updateWithBranch "bat"
-updateWithBranch "coursier"
 updateWithBranch "gitAndTools.hub"
 updateWithBranch "httpstat"
-updateWithBranch "python3Packages.botocore" "python3Packages.boto3" "awscli"
+updateWithBranch "python3Packages.botocore" "python3Packages.s3transfer" "python3Packages.boto3" "awscli"
 updateWithBranch "python3Packages.protobuf3-to-dict" "python3Packages.smdebug-rulesconfig" "python3Packages.sagemaker"
 updateWithBranch "lsd"
 updateWithBranch "sbt"
 updateWithBranch "shadow"
 updateWithBranch "yq"
 
+createBranch "coursier" && update "coursier" -vr '^([^\+]*)$' && pushBranch
 createBranch "jq" && update "jq" -vr 'jq-(.*)' && pushBranch
 createBranch "ripgrep" && update "ripgrep" -vr '^([0-9].*)' && pushBranch
 
@@ -140,17 +140,18 @@ nix-build -A linux_4_4.configfile \
           -A linux_4_19.configfile \
           -A linux_5_4.configfile \
           -A linux_5_10.configfile \
-          -A linux_5_11.configfile \
+          -A linux_5_12.configfile \
           -A linux_latest.configfile \
           -A linux_hardened.configfile \
           -A linux_latest_hardened.configfile \
           -A linux_testing.configfile
-nix-build ./nixos/release.nix -A tests.kernel-latest.x86_64-linux \
-          -A tests.kernel-testing.x86_64-linux \
-          -A tests.kernel-lts.x86_64-linux \
-          -A tests.latestKernel.login.x86_64-linux \
-          -A tests.latestKernel.hardened.x86_64-linux \
-          -A tests.kernel-latest-ath-user-regd.x86_64-linux
+nix-build ./nixos/release.nix -A tests.kernel-generic.linux_4_9.x86_64-linux \
+          -A tests.kernel-generic.linux_4_9.x86_64-linux \
+          -A tests.kernel-generic.linux_4_14.x86_64-linux \
+          -A tests.kernel-generic.linux_4_19.x86_64-linux \
+          -A tests.kernel-generic.linux_5_4.x86_64-linux \
+          -A tests.kernel-generic.linux_5_10.x86_64-linux \
+          -A tests.hardened.x86_64-linux
 pushBranch
 
 echo "${BRANCHES[@]}"

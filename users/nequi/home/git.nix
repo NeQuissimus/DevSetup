@@ -28,8 +28,11 @@
     extraConfig = {
       apply.whitespace = "fix";
       branch.autosetuprebase = "always";
+      core.commitGraph = "true";
       core.whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+      diff.algorithm = "patience";
       diff.colorMoved = "default";
+      gc.writeCommitGraph = "true";
       init.defaultBranch = "main";
       merge.renamelimit = "4096";
       pull.rebase = "true";
@@ -70,12 +73,8 @@
       "/network-security.data"
     ];
 
-    signing = {
-      key = "ACD70987F33D77B8A956E89FA8AECBD02786E3F0";
-      signByDefault = true;
-    };
+    signing.signByDefault = true;
 
-    userEmail = "tim@nequissimus.com";
     userName = "Tim Steinbach";
   };
 

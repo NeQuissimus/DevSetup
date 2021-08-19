@@ -1,21 +1,13 @@
 { pkgs, config, lib, ... }:
 {
   imports = [
-    ../../extras/home.nix
-
-    ./home/alacritty.nix
     ./home/emacs.nix
     ./home/git.nix
-    ./home/xmonad.nix
     ./home/zsh.nix
   ];
 
   home = {
     file = {
-      ".conky".source = ./conkyrc;
-      ".config/nixpkgs/config.nix".source = ./config.nix;
-      ".local/bin/nix-updates".source = ./nix-updates.sh;
-
       ".nanorc".text = ''
         set linenumbers
         set tabsize 2
@@ -25,53 +17,34 @@
 
         include ${pkgs.nanorc}/share/*.nanorc
       '';
-
-      ".xinitrc".text = ''
-        xrdb ~/.Xresources
-        [[ -f ~/.Xdefaults ]] && xrdb -merge ~/.Xdefaults
-        nix-shell -p xorg.xmodmap --command "xmodmap ~/.Xmodmap"
-      '';
-
-      ".Xmodmap".text = ''
-        keycode 66 = Mode_switch Multi_key
-        keycode 39 = s S ssharp
-        keycode 38 = a A adiaeresis Adiaeresis
-        keycode 30 = u U udiaeresis Udiaeresis
-        keycode 32 = o O odiaeresis Odiaeresis
-      '';
-
-      ".Xresources".source = ./Xresources;
     };
 
     packages = with pkgs; [
-      awscli
       bat
       exa
-      firefox
       htop
-      kubectl
       jq
       nano
-      nyxt
       ripgrep
-      slack
-      xclip
     ];
   };
 
   news.display = "silent";
 
   programs = {
-    alacritty.enable = true;
-
     emacs.enable = true;
 
-    gpg.enable = true;
-
-    git = {
+   git = {
       enable = true;
-      signing.key = "ACD70987F33D77B8A956E89FA8AECBD02786E3F0";
-      userEmail = "tim@nequissimus.com";
+      extraConfig = {
+        credential.helper = "store --file /opt/dev/var/private/git_credential_store";
+        url."https://github.com/Shopify/".insteadOf = [ "git@github.com:Shopify/" "git@github.com:shopify/" "ssh://git@github.com/Shopify/" "ssh://git@github.com/shopify/" ];
+      };
+      signing = {
+        key = "058F3C6EC7452F0015428BE13F563A8A6F0D693F";
+        gpgPath = "/nix/var/nix/gcroots/dev-profiles/dev-support-dev-profile/bin/gpg-auto-pin";
+      };
+      userEmail = "tim.steinbach@shopify.com";
     };
 
     htop.enable = true;
@@ -79,11 +52,6 @@
     home-manager.enable = true;
 
     jq.enable = true;
-
-    rofi = {
-      enable = true;
-      theme = "${pkgs.rofi}/share/rofi/themes/sidebar.rasi";
-    };
 
     ssh = {
       enable = true;
@@ -108,6 +76,4 @@
 
     zsh.enable = true;
   };
-
-  xsession.windowManager.xmonad.enable = true;
 }

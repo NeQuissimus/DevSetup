@@ -20,7 +20,7 @@ in {
       ".emacs.d/transient/values.el".source = ./values.el;
     };
 
-    packages = with pkgs; [ ispell sqlite ];
+    packages = with pkgs; [ hasklig ispell sqlite ];
   };
 
   programs.emacs = {

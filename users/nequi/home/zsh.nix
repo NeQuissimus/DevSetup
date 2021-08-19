@@ -88,6 +88,11 @@ in
       function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
 
       [[ -f "${config.home.homeDirectory}/.zshextras" ]] && source "${config.home.homeDirectory}/.zshextras"
+
+      [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
+      if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+      [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
     '';
 
     sessionVariables = {
@@ -107,10 +112,6 @@ in
       grep = "${pkgs.ripgrep}/bin/rg";
       ls = "${pkgs.exa}/bin/exa";
       nano = "${pkgs.nano}/bin/nano -E -w -c";
-      volume = ''
-        awk -F"[][]" "/dB/" { print $$2 }" <(${pkgs.alsaUtils}/bin/amixer sget Master)'';
-      volume_down = "${pkgs.alsaUtils}/bin/amixer -q sset Master 5%-; volume";
-      volume_up = "${pkgs.alsaUtils}/bin/amixer -q sset Master 5%+; volume";
     };
 
     oh-my-zsh = {

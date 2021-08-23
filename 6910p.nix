@@ -8,20 +8,11 @@ let
       "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt";
     disconnectme_tracking =
       "https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt";
-    energized_regional =
-      "https://block.energized.pro/extensions/regional/formats/hosts";
-    energized_unified = "https://block.energized.pro/unified/formats/hosts";
-    energized_xtreme =
-      "https://block.energized.pro/extensions/xtreme/formats/hosts";
     notracking =
       "https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt";
     steven_black =
       "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts";
   };
-
-  beats_port = 9515;
-  dnsmasq_port = 53;
-  syslog_port = 9514;
 
   ip_router = "10.0.0.2";
   ip_ap = "10.0.0.3";
@@ -32,7 +23,7 @@ let
   ip_raspi4 = "10.0.10.38";
   ip_ux305c = "10.0.10.3";
 in {
-  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./modules/packetbeat.nix ./extras/6910p-dhcp.nix ];
+  imports = [ ./6910p-hardware.nix ./6910p-secrets.nix ./extras/6910p-dhcp.nix ];
 
   boot = {
     cleanTmpDir = true;
@@ -79,21 +70,6 @@ in {
         iptables -A INPUT -p udp -s 10.0.0.0/8 --dport ${toString dnsmasq_port} -m udp -j ACCEPT
 
         iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString (builtins.head config.services.openssh.ports)} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString config.services.kibana.port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-
-        iptables -A INPUT -p udp -s ${ip_nas}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_pine}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_raspi4}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m udp -j ACCEPT
-
-        iptables -A INPUT -p tcp -s ${ip_nas}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_pine}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_raspi4}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString syslog_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-
-        iptables -A INPUT -p tcp -s ${ip_pine}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_raspi4}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_ux305c}/32 --dport ${toString beats_port} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
       '';
     };
 
@@ -144,8 +120,6 @@ in {
   };
 
   nixpkgs = { config = { allowUnfree = true; }; };
-
-  security = { hideProcessInformation = true; };
 
   services = {
     cron = {
@@ -206,96 +180,9 @@ in {
       servers = [ "127.0.0.1#5300" ];
     };
 
-    elasticsearch = {
-      enable = true;
-      extraConf = ''
-        # Apply manually, see https://github.com/elastic/elasticsearch/issues/40803
-        cluster.max_shards_per_node: 100000
-        node.name: "elasticsearch"
-        node.master: true
-        node.data: true
-      '';
-      package = pkgs.elasticsearch7-oss;
-    };
-
-    elasticsearch-curator = {
-      actionYAML = ''
-        ---
-        actions:
-          1:
-            action: delete_indices
-            options:
-              allow_ilm_indices: true
-              ignore_empty_list: True
-              disable_action: False
-            filters:
-            - filtertype: pattern
-              kind: prefix
-              value: nequi-
-            - filtertype: age
-              source: name
-              direction: older
-              timestring: '%Y.%m.%d'
-              unit: days
-              unit_count: 30
-      '';
-      enable = true;
-    };
-
-    journalbeat = {
-      enable = true;
-      extraConfig = ''
-        logging.metrics.enabled: false
-
-        journalbeat.inputs:
-          - paths: []
-
-        output.elasticsearch:
-          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
-      '';
-      package = pkgs.journalbeat7;
-    };
-
-    kibana = {
-      elasticsearch.hosts = [ "http://localhost:${toString config.services.elasticsearch.port}" ];
-      enable = true;
-      listenAddress = "0.0.0.0";
-      package = pkgs.kibana7-oss;
-    };
-
     locate.enable = true;
 
     logind.extraConfig = "HandleLidSwitch=ignore";
-
-    logstash = {
-      enable = true;
-
-      inputConfig = ''
-        syslog {
-          port => ${toString syslog_port}
-          type => syslog
-        }
-        beats {
-          port => ${toString beats_port}
-        }
-      '';
-
-      filterConfig = ''
-        if [@metadata][beat] {
-          mutate { remove_field => [ "type" ] }
-          mutate { add_field => { "type" => "%{[@metadata][beat]}-%{[@metadata][version]}" } }
-        }
-      '';
-
-      outputConfig = ''
-        elasticsearch {
-          hosts => ["localhost:${toString config.services.elasticsearch.port}"]
-          index => "%{type}-%{+YYYY.MM.dd}"
-        }
-      '';
-
-      package = pkgs.logstash7-oss;
-    };
 
     ntp = {
       enable = true;
@@ -312,36 +199,16 @@ in {
       passwordAuthentication = false;
       permitRootLogin = "no";
     };
-
-    packetbeat = {
-      enable = true;
-      package = pkgs.packetbeat7;
-
-      protocols = {
-        dhcpv4.enable = true;
-        dns.enable = true;
-      };
-
-      extraConfig = ''
-        output.elasticsearch:
-          hosts: ["http://localhost:${toString config.services.elasticsearch.port}"]
-      '';
-    };
-
-    prometheus.exporters.dnsmasq = {
-      enable = true;
-      leasesPath = "/var/lib/dnsmasq/dnsmasq.leases";
-    };
   };
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-20.09";
+      channel = "https://nixos.org/channels/nixos-21.05";
       dates = "19:00";
       enable = true;
     };
 
-    stateVersion = "20.09";
+    stateVersion = "21.05";
   };
 
   systemd.services.dnsblocklists = {
@@ -352,7 +219,7 @@ in {
 
     path = with pkgs; [ curl ];
     script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
-      "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
+      "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|.*shopify.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
       dnsmasq_filters) + ''
 
         echo '${ip_router} router.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
@@ -376,6 +243,7 @@ in {
         extraGroups = [ "docker" ];
         group = "users";
         home = "/home/nequi";
+        isNormalUser = true;
         name = "nequi";
 
         openssh = {

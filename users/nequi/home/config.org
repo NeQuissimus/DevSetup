@@ -21,7 +21,7 @@ Remove a bunch of unused elements
 #+BEGIN_SRC emacs-lisp
   (scroll-bar-mode -1)
   (tool-bar-mode 0)
-  (menu-bar-mode 0)
+  (menu-bar-mode 1)
   (set-window-scroll-bars (minibuffer-window) nil nil)
   (setq frame-title-format '((:eval (projectile-project-name))))
   (setq ring-bell-function 'ignore)

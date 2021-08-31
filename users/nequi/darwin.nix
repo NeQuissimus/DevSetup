@@ -17,6 +17,9 @@
 
         include ${pkgs.nanorc}/share/*.nanorc
       '';
+
+      ".skhdrc".source = ./skhdrc;
+      ".yabairc".source = ./yabairc;
     };
 
     packages = with pkgs; [

@@ -1,0 +1,7 @@
+# brew install koekeishiya/formulae/skhd
+
+cmd - b : yabai -m space --balance
+cmd - right: yabai -m window --focus next
+cmd - left: yabai -m window --focus prev
+cmd + shift - right: yabai -m window --swap next
+cmd + shift - left: yabai -m window --swap prev

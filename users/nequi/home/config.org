@@ -370,7 +370,6 @@ Highlight trailing whitespace only outside vterm
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook 'org-roam-mode)
-  (setq org-roam-directory "/opt/dev/ata/meetings/")
 #+END_SRC
 
 ** Exporting

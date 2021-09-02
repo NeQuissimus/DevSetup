@@ -6,3 +6,4 @@ cmd - left: yabai -m window --focus prev
 cmd + shift - right: yabai -m window --swap next
 cmd + shift - left: yabai -m window --swap prev
 cmd + shift - y: brew services restart yabai && brew services restart skhd
+cmd - return: open -a iTerm ~

@@ -43,6 +43,7 @@ in {
         indent-guide
         ivy
         json-mode
+        lsp-metals
         lsp-mode
         lsp-ui
         magit

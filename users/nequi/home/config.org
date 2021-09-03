@@ -147,7 +147,7 @@ Highlight trailing whitespace only outside vterm
   (projectile-global-mode)
   (setq projectile-enable-caching nil)
   (setq projectile-indexing-method 'alien)
-  (setq projectile-project-search-path '("~/dev/" "/opt/dev/"))
+  (setq projectile-project-search-path '("~/dev/" "/opt/dev/" "~/src/"))
   (setq projectile-sort-order 'recently-active)
   (setq projectile-completion-system 'ivy)
 #+END_SRC
@@ -199,16 +199,8 @@ Highlight trailing whitespace only outside vterm
 
 #+BEGIN_SRC emacs-lisp
   (use-package scala-mode
-    :mode "\\.s\\(cala\\|bt\\)$"
-    :hook (scala-mode . lsp)
-    :custom
-    (scala-indent:align-forms t)
-    (scala-indent:align-parameters t)
-    (scala-indent:indent-value-expression t)
-    (scala-indent:default-run-on-strategy)
-    (scala-indent:operator-strategy)
-    :config
-    (setq lsp-metals-server-command "~/bin/metals-emacs"))
+  :interpreter
+    ("scala" . scala-mode))
 
   (use-package sbt-mode
     :after scala-mode
@@ -224,9 +216,11 @@ Highlight trailing whitespace only outside vterm
 
   (use-package lsp-mode
     :hook (scala-mode . lsp)
+          (lsp-mode . lsp-lens-mode)
     :config (setq lsp-prefer-flymake nil))
 
   (use-package lsp-ui)
+  (use-package lsp-metals)
 #+END_SRC
 
 ** Project tree

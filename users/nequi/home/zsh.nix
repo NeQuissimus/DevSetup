@@ -83,6 +83,10 @@ in
         nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
       }
 
+      function sbtBuild() {
+        sbt clean scalafmtAll compile coverage test coverageReport
+      }
+
       function amm() { nix-shell -p ammonite --command "amm"; }
 
       function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}

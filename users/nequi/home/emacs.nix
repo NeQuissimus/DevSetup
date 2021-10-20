@@ -61,6 +61,7 @@ in {
         scala-mode
         smartparens
         smooth-scrolling
+        toc-org
         treemacs
         treemacs-magit
         treemacs-icons-dired

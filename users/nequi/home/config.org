@@ -358,6 +358,11 @@ Highlight trailing whitespace only outside vterm
      "/DONE" 'file))
 
   (advice-add 'org-archive-subtree :after #'org-save-all-org-buffers)
+
+  (if (require 'toc-org nil t)
+    (progn
+      (add-hook 'org-mode-hook 'toc-org-mode)
+  (warn "toc-org not found"))
 #+END_SRC
 
 ** Org-Roam

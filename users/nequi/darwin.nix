@@ -23,11 +23,14 @@
     };
 
     packages = with pkgs; [
+      coreutils
       bat
       exa
+      gnused
       htop
       jq
       nano
+#      procps
       ripgrep
     ];
   };

@@ -84,7 +84,7 @@ in
       }
 
       function sbtBuild() {
-        sbt clean scalafmtAll compile coverage test coverageReport
+        sbt clean scalafmtSbt scalafmtAll compile scalafixAll coverage test coverageReport
       }
 
       function amm() { nix-shell -p ammonite --command "amm"; }
@@ -97,11 +97,26 @@ in
       if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
       [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+      export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
+
+      for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
+      kubectl-short-aliases
+
+      function podvvm() {
+        local line="$(kubectl --context=data-platform-a-us-central1-1 --namespace=pepto-infrastructure-staging-unrestricted get pods -o wide | grep kafka-connect | shuf | head -1)"
+        name="$(echo $line | awk '{print $1}')"
+        ip="$(echo $line | awk '{print $6}')"
+
+        sudo ifconfig lo0 alias ''${ip}/32
+        kubectl port-forward --context=data-platform-a-us-central1-1 --namespace=pepto-infrastructure-staging-unrestricted --address ''${ip} pods/''${name} 9011:9011
+        sudo ifconfig lo0 inet ''${ip} delete
+      }
     '';
 
     sessionVariables = {
       _JAVA_AWT_WM_NONREPARENTING = "1";
       BAT_THEME = "Monokai Extended Bright";
+      EDITOR = "nano";
       JAVA_HOME = "${pkgs.openjdk8}";
       JQ_COLORS = "1;39:0;39:0;39:0;39:0;32:1;39:1;39";
       PATH = "${config.home.homeDirectory}/.local/bin:$PATH";

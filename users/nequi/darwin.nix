@@ -26,7 +26,7 @@
       coreutils
       bat
       exa
-      gnused
+#      gnused
       htop
       jq
       nano

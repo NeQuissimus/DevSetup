@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 let
+  flycheck-inline = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/flycheck/flycheck-inline/0a2460e2cf550c756d9704c85f4b754d2c71d4d9/flycheck-inline.el";
+    sha256 = "13nxsnrp3jvzhm7v81rr2gvxbnmhb3qn4pm509cppymbnzkvkwk9";
+  };
   sensible-defaults = pkgs.fetchurl {
     url =
       "https://raw.githubusercontent.com/hrs/sensible-defaults.el/d9001f0efc9382f8587357f2670fc4d8594858af/sensible-defaults.el";
@@ -15,6 +19,7 @@ in {
     file = {
       ".emacs.d/config.org".source = ./config.org;
       ".emacs.d/init.el".source = ./init.el;
+      ".emacs.d/flycheck-inline.el".source = flycheck-inline;
       ".emacs.d/sensible-defaults.el".source = sensible-defaults;
       ".emacs.d/sublima.el".source = sublima;
       ".emacs.d/transient/values.el".source = ./values.el;

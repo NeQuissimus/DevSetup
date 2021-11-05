@@ -7,6 +7,7 @@ https://github.com/hrs/sensible-defaults.el/
 
 #+BEGIN_SRC emacs-lisp
   (load-file "~/.emacs.d/sensible-defaults.el")
+  (load-file "~/.emacs.d/flycheck-inline.el")
   (sensible-defaults/use-all-settings)
   (sensible-defaults/use-all-keybindings)
   (sensible-defaults/backup-to-temp-directory)
@@ -214,10 +215,14 @@ Highlight trailing whitespace only outside vterm
   (use-package flycheck
     :init (global-flycheck-mode))
 
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
   (use-package lsp-mode
     :hook (scala-mode . lsp)
           (lsp-mode . lsp-lens-mode)
-    :config (setq lsp-prefer-flymake nil))
+    :config (setq lsp-prefer-flymake nil)
+            (setq lsp-lens-enable t))
 
   (use-package lsp-ui)
   (use-package lsp-metals)

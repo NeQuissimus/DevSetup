@@ -14,6 +14,10 @@ let
       "https://raw.githubusercontent.com/Parveshdhull/sublima/5c7acd0eb8e5b6dad5f9a662e7d6f4a927d5683c/sublima.el";
     sha256 = "1gv9ngbffp0069a0yrvz65w0ncbjm10bkmib0dw74k282pqsxc5n";
   };
+
+  emacs-osx = (import (builtins.fetchTarball {
+      url = https://github.com/NeQuissimus/emacs-osx/archive/codesign.tar.gz;
+    }));
 in {
   home = {
     file = {
@@ -76,6 +80,8 @@ in {
         yaml-mode
         yasnippet
       ]) ++ (with epkgs.elpaPackages; [ beacon ]);
+
+    package = emacs-osx.emacsOsxNative;
   };
 
 }

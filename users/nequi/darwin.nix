@@ -48,7 +48,7 @@
       };
       signing = {
         key = "058F3C6EC7452F0015428BE13F563A8A6F0D693F";
-        gpgPath = "/nix/var/nix/gcroots/dev-profiles/dev-support-dev-profile/bin/gpg-auto-pin";
+        gpgPath = "/opt/dev/bin/gpg-auto-pin";
       };
       userEmail = "tim.steinbach@shopify.com";
     };

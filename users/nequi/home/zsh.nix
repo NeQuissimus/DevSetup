@@ -74,21 +74,6 @@ in
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 
-      # Tools
-      function sbt() {
-        args="$@"
-        if [ -f "${config.home.homeDirectory}/.sbt/repositories" ]; then
-          repo="-Dsbt.override.build.repos=true"
-        fi
-        nix-shell -p openjdk8 -p sbt-extras --command "sbt -J-Xms1G -J-Xmx8G ''${repo} ''${args}";
-      }
-
-      function sbtBuild() {
-        sbt clean scalafmtSbt scalafmtAll compile scalafixAll coverage test coverageReport
-      }
-
-      function amm() { nix-shell -p ammonite --command "amm"; }
-
       function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
 
       [[ -f "${config.home.homeDirectory}/.zshextras" ]] && source "${config.home.homeDirectory}/.zshextras"
@@ -96,6 +81,7 @@ in
       [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
       if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
       [[ -x /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
+      [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
 
       [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
       export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
@@ -128,7 +114,6 @@ in
 
     shellAliases = {
       cat = "${pkgs.bat}/bin/bat";
-      diff = "diff --color";
       grep = "${pkgs.ripgrep}/bin/rg";
       ls = "${pkgs.exa}/bin/exa";
       nano = "${pkgs.nano}/bin/nano -E -w -c";

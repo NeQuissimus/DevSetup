@@ -40,6 +40,7 @@ in {
         auto-complete
         dockerfile-mode
         company
+        dap-mode
         editorconfig
         flycheck
         forge
@@ -54,6 +55,7 @@ in {
         json-mode
         lsp-metals
         lsp-mode
+        lsp-treemacs
         lsp-ui
         magit
         markdown-mode
@@ -63,6 +65,7 @@ in {
         nyan-mode
         org-roam
         ox-gfm
+        posframe
         projectile
         rainbow-delimiters
         rust-mode

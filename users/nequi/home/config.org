@@ -34,6 +34,15 @@ Remove a bunch of unused elements
   (setq initial-scratch-message nil)
 #+END_SRC
 
+** Autosave files
+
+#+BEGIN_SRC emacs-lisp
+(setq auto-save-list-file-prefix "~/.emacs.d/autosave/")
+
+(setq auto-save-file-name-transforms
+      '((".*" "~/.emacs.d/autosave/" t)))
+#+END_SRC
+
 ** Better modeline
 
 #+BEGIN_SRC emacs-lisp
@@ -204,13 +213,14 @@ Highlight trailing whitespace only outside vterm
     ("scala" . scala-mode))
 
   (use-package sbt-mode
-    :after scala-mode
-    :commands sbt-start sbt-command
-    :config
-    (substitute-key-definition
-     'minibuffer-complete-word
-     'self-insert-command
-     minibuffer-local-completion-map))
+  :commands sbt-start sbt-command
+  :config
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+   (setq sbt:program-options '("-Dsbt.supershell=false"))
+  )
 
   (use-package flycheck
     :init (global-flycheck-mode))
@@ -225,7 +235,24 @@ Highlight trailing whitespace only outside vterm
             (setq lsp-lens-enable t))
 
   (use-package lsp-ui)
-  (use-package lsp-metals)
+  (use-package lsp-metals
+    :ensure t
+    :custom
+    (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
+    :hook (scala-mode . lsp))
+  (use-package yasnippet)
+
+  (use-package company
+    :hook (scala-mode . company-mode)
+    :config
+    (setq lsp-completion-provider :capf))
+
+  (use-package posframe)
+  (use-package dap-mode
+    :hook
+    (lsp-mode . dap-mode)
+    (lsp-mode . dap-ui-mode)
+  )
 #+END_SRC
 
 ** Project tree
@@ -277,6 +304,7 @@ Highlight trailing whitespace only outside vterm
       ;; using a Hi-DPI display, uncomment this to double the icon size.
       ;;(treemacs-resize-icons 44)
 
+      (treemacs-hide-gitignored-files-mode t)
       (treemacs-follow-mode t)
       (treemacs-filewatch-mode t)
       (treemacs-fringe-indicator-mode t)
@@ -295,6 +323,8 @@ Highlight trailing whitespace only outside vterm
           ("C-x t C-t" . treemacs-find-file)
           ("C-x t M-t" . treemacs-find-tag)))
 
+  (add-hook 'emacs-startup-hook 'treemacs)
+
   (use-package treemacs-projectile
     :after treemacs projectile
     :ensure t)
@@ -307,6 +337,9 @@ Highlight trailing whitespace only outside vterm
   (use-package treemacs-magit
     :after treemacs magit
     :ensure t)
+
+  (use-package lsp-treemacs)
+  (lsp-treemacs-sync-mode 1)
 #+END_SRC
 
 ** Terminal
@@ -347,7 +380,7 @@ Highlight trailing whitespace only outside vterm
   (setq org-support-shift-select 'always)
 
   (setq org-todo-keywords
-        '((sequence "TODO" "BLOCKED" "JACOB" "JORDAN" "RYAN" "SAMIRA" "|" "DONE" "NOT NEEDED")))
+        '((sequence "TODO" "BLOCKED" "|" "DONE" "NOT NEEDED")))
 
   (eval-after-load "org"
     '(require 'ox-gfm nil t))
@@ -370,12 +403,6 @@ Highlight trailing whitespace only outside vterm
 ;  (warn "toc-org not found"))
 #+END_SRC
 
-** Org-Roam
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'org-roam-mode)
-#+END_SRC
-
 ** Exporting
 
 #+BEGIN_SRC emacs-lisp
@@ -396,9 +423,4 @@ Highlight trailing whitespace only outside vterm
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x t") 'vterm)
   (global-set-key (kbd "C-c m c") 'mc/edit-lines)
-  (global-set-key (kbd "C-c n r") #'org-roam-buffer-toggle-display)
-  (global-set-key (kbd "C-c n i") #'org-roam-insert)
-  (global-set-key (kbd "C-c n /") #'org-roam-find-file)
-  (global-set-key (kbd "C-c n b") #'org-roam-switch-to-buffer)
-  (global-set-key (kbd "C-c n d") #'org-roam-find-directory)
 #+END_SRC

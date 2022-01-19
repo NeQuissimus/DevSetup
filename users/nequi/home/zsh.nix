@@ -66,15 +66,15 @@ in
         alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
       fi
 
-      function docker_clean() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); }
-      function docker_clean_dangling() { docker images -qf dangling=true | xargs -r docker rmi; }
-      function docker_clean_images() { docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi -f $(docker images -q); }
-      function docker_inspect() { (skopeo inspect docker://"$1" || docker inspect "$1") | jq; }
+      function docker_clean() { docker kill $(${pkgs.docker}/bin/docker ps -q); docker rm $(${pkgs.docker}/bin/docker ps -a -q); }
+      function docker_clean_dangling() { ${pkgs.docker}/bin/docker images -qf dangling=true | xargs -r ${pkgs.docker}/bin/docker rmi; }
+      function docker_clean_images() { ${pkgs.docker}/bin/docker kill $(${pkgs.docker}/bin/docker ps -q); ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker ps -a -q); ${pkgs.docker}/bin/docker rmi -f $(${pkgs.docker}/bin/docker images -q); }
+      function docker_inspect() { ( ${pkgs.skopeo}/bin/skopeo inspect docker://"$1" || ${pkgs.docker}/bin/docker inspect "$1") | jq; }
 
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 
-      function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
+      function gi() { ${pkgs.curl}/bin/curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
 
       [[ -f "${config.home.homeDirectory}/.zshextras" ]] && source "${config.home.homeDirectory}/.zshextras"
 
@@ -98,13 +98,20 @@ in
         kubectl port-forward --context=data-platform-a-us-central1-1 --namespace=pepto-infrastructure-staging-unrestricted --address ''${ip} pods/''${name} 9011:9011
         sudo ifconfig lo0 inet ''${ip} delete
       }
+
+      function tryjq() {
+        jq -R -r '. as $line | try fromjson catch $line'
+      }
     '';
 
     sessionVariables = {
       _JAVA_AWT_WM_NONREPARENTING = "1";
       BAT_THEME = "Monokai Extended Bright";
       EDITOR = "nano";
-      JAVA_HOME = "${pkgs.openjdk8}";
+      HOMEBREW_NO_ANALYTICS = "1";
+      HOMEBREW_NO_COLOR = "1";
+      HOMEBREW_NO_EMOJI = "1";
+      JAVA_HOME = "${pkgs.openjdk11}";
       JQ_COLORS = "1;39:0;39:0;39:0;39:0;32:1;39:1;39";
       PATH = "${config.home.homeDirectory}/.local/bin:$PATH";
       TERMINAL = "xterm-256color";
@@ -133,7 +140,7 @@ in
         export ZSH_AUTOSUGGEST_STRATEGY=("history" "completion")
       '';
 
-      plugins = [ "git" "sudo" ];
+      plugins = [ "docker" "git" "kubectl" "sbt" "scala" "sudo" ];
 
       theme = "nequissimus";
     };

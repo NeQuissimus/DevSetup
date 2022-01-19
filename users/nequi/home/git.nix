@@ -1,3 +1,4 @@
+
 { config, pkgs, ... }: {
   programs.git = {
     aliases = {
@@ -27,6 +28,7 @@
     };
 
     extraConfig = {
+      advice.detachedHead = "false";
       apply.whitespace = "fix";
       branch.autosetuprebase = "always";
       core.commitGraph = "true";

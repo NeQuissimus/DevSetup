@@ -30,6 +30,7 @@
       htop
       jq
       nano
+      pandoc
 #      procps
       ripgrep
     ];

@@ -58,6 +58,12 @@ Remove a bunch of unused elements
                   mode-line-end-spaces))
 #+END_SRC
 
+** Binaries from Nix profile
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'exec-path "/Users/nequi/.nix-profile/bin")
+#+END_SRC
+
 ** Fonts
 
 Hasklig and its ligatures

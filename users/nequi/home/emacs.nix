@@ -16,7 +16,7 @@ let
   };
 
   emacs-osx = (import (builtins.fetchTarball {
-      url = https://github.com/NeQuissimus/emacs-osx/archive/codesign.tar.gz;
+      url = https://github.com/NeQuissimus/emacs-osx/archive/main.tar.gz;
     }));
 in {
   home = {

@@ -44,6 +44,7 @@ in {
         editorconfig
         flycheck
         forge
+        go-mode
         golden-ratio
         groovy-mode
         haskell-mode

@@ -102,9 +102,15 @@ in
       function tryjq() {
         jq -R -r '. as $line | try fromjson catch $line'
       }
+
+      function fixnix() {
+        # macOS updates break Nix
+        grep -q "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" /etc/zshrc || echo "if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi" | sudo tee -a /etc/zshrc
+        grep -q "trusted-users" /etc/nix/nix.conf || (echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf && sudo launchctl stop org.nixos.nix-daemon && sudo launchctl start org.nixos.nix-daemon)
+      }
     '';
 
-    sessionVariables = {
+    localVariables = {
       _JAVA_AWT_WM_NONREPARENTING = "1";
       BAT_THEME = "Monokai Extended Bright";
       EDITOR = "nano";

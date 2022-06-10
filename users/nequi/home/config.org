@@ -62,6 +62,7 @@ Remove a bunch of unused elements
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'exec-path "/Users/nequi/.nix-profile/bin")
+  (add-to-list 'exec-path "/opt/homebrew/bin/")
 #+END_SRC
 
 ** Fonts
@@ -76,7 +77,7 @@ Hasklig and its ligatures
 ** Theme
 
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'apropospriate-dark t)
+  (load-theme 'material t)
 #+END_SRC
 
 ** Mouse

@@ -146,7 +146,7 @@ in
         export ZSH_AUTOSUGGEST_STRATEGY=("history" "completion")
       '';
 
-      plugins = [ "docker" "git" "kubectl" "sbt" "scala" "sudo" ];
+      plugins = [ "docker" "git" "gpg-agent" "kubectl" "sbt" "scala" "sudo" ];
 
       theme = "nequissimus";
     };

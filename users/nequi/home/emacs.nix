@@ -36,7 +36,6 @@ in {
     extraPackages = epkgs:
       (with epkgs.melpaPackages; [
         all-the-icons
-        apropospriate-theme
         auto-complete
         dockerfile-mode
         company
@@ -60,6 +59,7 @@ in {
         lsp-ui
         magit
         markdown-mode
+        material-theme
         multi-term
         multiple-cursors
         nix-mode
@@ -85,7 +85,7 @@ in {
         yasnippet
       ]) ++ (with epkgs.elpaPackages; [ beacon ]);
 
-    package = emacs-osx.emacsOsxNative;
+#    package = emacs-osx.emacsOsxNative;
   };
 
 }

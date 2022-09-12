@@ -19,6 +19,24 @@
 
   home = {
     file = {
+      ".config/kitty/kitty.conf".text = ''
+        # vim:fileencoding=utf-8:foldmethod=marker
+        background #111111
+        background_opacity 0.9
+        font_family      Hasklig
+        font_size 12.0
+        scrollback_lines 20000
+        detect_urls yes
+        strip_trailing_spaces always
+        enable_audio_bell no
+        window_alert_on_bell no
+        macos_quit_when_last_window_closed yes
+        macos_thicken_font 0.5
+
+        map shift+left send_text all \x1b\x62
+        map shift+right send_text all \x1b\x66
+      '';
+
       ".nanorc".text = ''
         set linenumbers
         set tabsize 2
@@ -33,6 +51,8 @@
       ".yabairc".source = ./yabairc;
     };
 
+    homeDirectory = "/Users/nequi/";
+
     packages = with pkgs; [
       coreutils
       bat
@@ -45,6 +65,9 @@
 #      procps
       ripgrep
     ];
+
+    username = "nequi";
+    stateVersion = "22.05";
   };
 
   news.display = "silent";
@@ -82,7 +105,7 @@
         Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
         ConnectTimeout 60
         ConnectionAttempts 60
-        HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa
+        HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa,rsa-sha2-512
         KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
         MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
         PasswordAuthentication no

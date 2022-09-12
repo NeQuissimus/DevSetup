@@ -2,7 +2,7 @@
 { config, pkgs, ... }: {
   programs.git = {
     aliases = {
-      bclean = "!(git branch --merged main | grep -v ' main$' | xargs git branch -D) || (git branch --merged master | grep -v ' master$' | xargs git branch -D)";
+      bclean = "!(git for-each-ref --format '%(refname:short)' refs/heads | grep -v 'master\\|main' | xargs git branch -D)";
       clear = "clean -dfx";
       lg =
         "log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>[%G?]%Creset%C(auto)%d%Creset' --abbrev-commit";

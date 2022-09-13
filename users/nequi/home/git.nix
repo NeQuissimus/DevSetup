@@ -32,6 +32,7 @@
       apply.whitespace = "fix";
       branch.autosetuprebase = "always";
       core.commitGraph = "true";
+      core.editor = "nano";
       core.whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
       diff.algorithm = "patience";
       diff.colorMoved = "default";

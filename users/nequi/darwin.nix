@@ -35,6 +35,8 @@
 
         map shift+left send_text all \x1b\x62
         map shift+right send_text all \x1b\x66
+
+        map ctrl+f launch --type=overlay --stdin-source=@screen_scrollback ${pkgs.fzf}/bin/fzf --no-sort --no-mouse -i --tac --exact
       '';
 
       ".nanorc".text = ''
@@ -57,6 +59,7 @@
       coreutils
       bat
       exa
+      fzf
 #      gnused
       htop
       jq

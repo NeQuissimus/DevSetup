@@ -86,7 +86,7 @@ in {
         yasnippet
       ]) ++ (with epkgs.elpaPackages; [ beacon ]);
 
-    package = emacs-osx.emacsOsxNative;
+#    package = emacs-osx.emacsOsxNative;
   };
 
 }

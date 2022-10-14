@@ -63,6 +63,7 @@
 #      gnused
       htop
       jq
+      kt
       nano
       pandoc
 #      procps

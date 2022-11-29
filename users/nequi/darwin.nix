@@ -58,14 +58,14 @@
     packages = with pkgs; [
       coreutils
       bat
-      exa
+#      exa
       fzf
 #      gnused
       htop
       jq
-      kt
+#      kt
       nano
-      pandoc
+#      pandoc
 #      procps
       ripgrep
     ];

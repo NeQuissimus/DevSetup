@@ -66,11 +66,6 @@ in
         alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
       fi
 
-      function docker_clean() { docker kill $(${pkgs.docker}/bin/docker ps -q); docker rm $(${pkgs.docker}/bin/docker ps -a -q); }
-      function docker_clean_dangling() { ${pkgs.docker}/bin/docker images -qf dangling=true | xargs -r ${pkgs.docker}/bin/docker rmi; }
-      function docker_clean_images() { ${pkgs.docker}/bin/docker kill $(${pkgs.docker}/bin/docker ps -q); ${pkgs.docker}/bin/docker rm $(${pkgs.docker}/bin/docker ps -a -q); ${pkgs.docker}/bin/docker rmi -f $(${pkgs.docker}/bin/docker images -q); }
-      function docker_inspect() { ( ${pkgs.skopeo}/bin/skopeo inspect docker://"$1" || ${pkgs.docker}/bin/docker inspect "$1") | jq; }
-
       # Nix review PRs
       function noxpr() { nix-shell -p nox --run "nox-review pr $1"; }
 

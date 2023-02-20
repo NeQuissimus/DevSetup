@@ -410,6 +410,21 @@ Highlight trailing whitespace only outside vterm
 
   (advice-add 'org-archive-subtree :after #'org-save-all-org-buffers)
 
+  (use-package org-roam
+    :ensure t
+    :init
+    (setq org-roam-v2-ack t)
+    :custom
+    (org-roam-directory "~/dev/notes")
+    (org-roam-completion-everywhere t)
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i"    . completion-at-point))
+    :config
+    (org-roam-setup))
+
 ; (if (require 'toc-org nil t)
 ;   (progn
 ;     (add-hook 'org-mode-hook 'toc-org-mode)

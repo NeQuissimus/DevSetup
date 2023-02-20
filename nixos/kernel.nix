@@ -154,7 +154,7 @@
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest_hardened;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_1_hardened;
 
     kernelParams = [
       "debugfs=off" # No debugfs
@@ -162,7 +162,7 @@
       "init_on_free=1" # Zero memory on free
       "nohibernate" # Disable hibernation
       "oops=panic" # Prevent "oops" exploits
-      "quiet loglevel=0" # Prevent information leak upon boot
+      ''quiet" "loglevel=0'' # Prevent information leak upon boot
       "page_alloc.shuffle=1" # Enable page allocator randomization
       "pti=on" # Kernel page isolation
       "slab_nomerge" # Disable slab merging (Slab = chunk of memory)

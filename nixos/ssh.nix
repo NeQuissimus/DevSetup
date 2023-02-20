@@ -58,7 +58,6 @@ in {
 
     openssh = {
       allowSFTP = false;
-      challengeResponseAuthentication = false;
       enable = lib.mkDefault false;
 
       extraConfig = ''
@@ -78,6 +77,8 @@ in {
           type = "rsa";
         }
       ];
+
+      kbdInteractiveAuthentication = false;
 
       kexAlgorithms = [
         "curve25519-sha256@libssh.org"

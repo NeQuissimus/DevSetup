@@ -4,10 +4,15 @@
   systemd.user.services.emacs.unitConfig.ConditionGroup = "users";
 
   users = {
-    mutableUsers = false;
+    mutableUsers = true;
+
+    groups = {
+      docker = {};
+    };
 
     users = {
       docker = {
+        group = "docker";
         isSystemUser = true;
         subUidRanges = [{
           startUid = 100000;
@@ -25,24 +30,15 @@
           ++ lib.optionals config.security.sudo.enable [ "wheel" ];
         isNormalUser = true;
         name = "nequi";
-        shell = pkgs.zsh;
+        shell = pkgs.bash;
         uid = 1000;
         openssh.authorizedKeys.keyFiles = [
           (builtins.fetchurl {
             url = "https://github.com/NeQuissimus.keys";
-            sha256 = "0jqxaz61n0jvm25bj7nyxjfkbsdrj1cm477fwxqm32wpfz0b23lf";
+            sha256 = "1zyj6sp4pj2jmbr5w78w00gfba3j0m9c00an7b36hkrr48ay6zh3";
           })
         ];
       };
-
-      # Make sure to have a user with a password :D
-      root.shell = if (lib.any (x: x != null) (map (user:
-        (user.hashedPassword != null || user.password != null
-          || user.passwordFile != null))
-        (lib.attrValues config.users.users))) then
-        pkgs.nologin
-      else
-        pkgs.bash;
     };
   };
 }

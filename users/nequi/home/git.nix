@@ -78,7 +78,7 @@
       "/network-security.data"
     ];
 
-    signing.signByDefault = true;
+#    signing.signByDefault = true;
 
     userName = "Tim Steinbach";
   };

@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 {
   imports = [
-    ./home/emacs.nix
+#    ./home/emacs.nix
     ./home/git.nix
     ./home/zsh.nix
 
@@ -53,7 +53,7 @@
       ".yabairc".source = ./yabairc;
     };
 
-    homeDirectory = "/Users/nequi/";
+    homeDirectory = "/Users/nequi";
 
     packages = with pkgs; [
       coreutils
@@ -81,18 +81,15 @@
 
    git = {
       enable = true;
-      extraConfig = {
-        credential = {
-          helper = "store --file /opt/dev/var/private/git_credential_store";
-          usehttppath = false;
-        };
-        url."https://github.com/Shopify/".insteadOf = [ "git@github.com:Shopify/" "git@github.com:shopify/" "ssh://git@github.com/Shopify/" "ssh://git@github.com/shopify/" ];
-      };
-      signing = {
-        key = "8857A5E1C57CD11B41742BEDB9D7E742569F32E1";
-        gpgPath = "/opt/dev/bin/gpg-auto-pin";
-      };
-      userEmail = "tim.steinbach@shopify.com";
+#      extraConfig = {
+#        credential.helper = "store --file /opt/dev/var/private/git_credential_store";
+#        url."https://github.com/Shopify/".insteadOf = [ "git@github.com:Shopify/" "git@github.com:shopify/" "ssh://git@github.com/Shopify/" "ssh://git@github.com/shopify/" ];
+#      };
+#      signing = {
+#        key = "058F3C6EC7452F0015428BE13F563A8A6F0D693F";
+#        gpgPath = "/opt/dev/bin/gpg-auto-pin";
+#      };
+      userEmail = "tim@nequissimus.com";
     };
 
     htop.enable = true;

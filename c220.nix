@@ -379,6 +379,11 @@ in {
     };
 
     upower.enable = true;
+
+    zfs.autoScrub = {
+      enable = true;
+      interval = "weekly";
+    };
   };
 
   systemd = {

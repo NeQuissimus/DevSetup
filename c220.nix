@@ -1,10 +1,7 @@
 { config, pkgs, lib, ... }:
 let
-  # TODO
-  prometheus_mikrotik_user = "foo";
-  prometheus_mikrotik_password = "bar";
-
   dnsmasq_filters_path = "/etc/dnsmasq/filters";
+  dnscrypt_filters_path = "/etc/dnscrypt/filters";
 
   dnsmasq_filters = {
     abuse_ch = "https://urlhaus.abuse.ch/downloads/hostfile/";
@@ -24,27 +21,23 @@ let
       "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts";
     ultimate_hosts =
       "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/master/hosts/hosts0";
-  };
-
-  dhcp = ipAddress: hostName: ethernetAddress: {
-    ipAddress = ipAddress;
-    hostName = hostName;
-    ethernetAddress = ethernetAddress;
+    windows_spy =
+      "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt";
   };
 
   dnsmasq_port = 53;
 
-  ip_router = "10.0.0.2";
-  ip_switch = "10.0.0.4";
-  ip_u6pro = "10.0.0.5";
-  ip_u6ext = "10.0.0.6";
-  ip_c220 = "10.0.0.52";
+  interface = "enp4s0f0";
 
-  pkgs_promExporter = (import ./nixpkgs/prometheus-exporter-dhcpd.nix { inherit pkgs; });
+  pkgs_promExporter =
+    (import ./nixpkgs/prometheus-exporter-dhcpd.nix { inherit pkgs; });
+
+  hosts = (import ./hosts.nix);
 in {
   imports = [
     ./c220-hardware.nix
 
+    #   ./nixos/elasticsearch.nix
     ./nixos/kernel.nix
     ./nixos/nix.nix
     ./nixos/security.nix
@@ -71,44 +64,27 @@ in {
       mode = "0777";
     };
 
-    systemPackages = with pkgs; [];
+    systemPackages = with pkgs; [ ];
   };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
 
   networking = {
-    defaultGateway = "10.0.0.2";
+    defaultGateway = hosts.router.ipAddress;
 
     firewall = {
-      allowPing = false;
-      allowedTCPPorts = [ 80 8443 ];
-      allowedUDPPorts = [ ];
+      allowPing = true;
+      allowedTCPPorts = [ dnsmasq_port 80 8443 ];
+      allowedUDPPorts = [ dnsmasq_port 67 ];
       enable = true;
-      extraCommands = ''
-        iptables -A INPUT -p tcp -s 10.0.0.0/8 --dport ${
-          toString dnsmasq_port
-        } -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p udp -s 10.0.0.0/8 --dport ${
-          toString dnsmasq_port
-        } -m udp -j ACCEPT
-
-        iptables -A INPUT -p udp -s ${ip_u6pro}/32 --dport 3478 -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_u6pro}/32 --dport 10001 -m udp -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_u6pro}/32 --dport 8443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_u6pro}/32 --dport 8080 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_u6ext}/32 --dport 3478 -m udp -j ACCEPT
-        iptables -A INPUT -p udp -s ${ip_u6ext}/32 --dport 10001 -m udp -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_u6ext}/32 --dport 8443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-        iptables -A INPUT -p tcp -s ${ip_u6ext}/32 --dport 8080 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-      '';
     };
 
     hostId = "8990a246";
-    hostName = "cyclops";
+    hostName = hosts.c220.hostName;
 
-    interfaces."enp4s0f0" = {
+    interfaces."${interface}" = {
       ipv4.addresses = [{
-        address = ip_c220;
+        address = hosts.c220.ipAddress;
         prefixLength = 16;
       }];
       ipv6.addresses = [{
@@ -125,37 +101,27 @@ in {
   services = {
     cron = {
       enable = true;
-      systemCronJobs = [ 
-        "0 17 * * * root reboot" 
-        "*/5 * * * * root /etc/prometheus.sh"
-      ];
+      systemCronJobs =
+        [ "0 17 * * 3 root reboot" "*/5 * * * * root /etc/prometheus.sh" ];
     };
 
     dhcpd4 = {
       enable = true;
 
       extraConfig = ''
-        option subnet-mask 255.255.0.0;
-        option broadcast-address 10.0.255.255;
-        option routers 10.0.0.2;
-        option domain-name-servers ${ip_c220};
-        option domain-name "nequissimus.com";
         subnet 10.0.0.0 netmask 255.255.0.0 {
-          range 10.0.255.1 10.0.255.100;
+          range 10.0.255.1 10.0.255.200;
           default-lease-time 600;
           max-lease-time 3600;
+          option routers ${hosts.router.ipAddress};
+          option domain-name-servers ${hosts.c220.ipAddress};
+          option domain-name "nequissimus.com";
         }
       '';
 
-      interfaces = [ ]; # All interfaces
+      interfaces = [ interface ];
 
-      machines = [
-        (dhcp ip_switch "mikrotik-switch-ether" "DC:2C:6E:2D:F5:BF")
-        (dhcp "10.0.0.5" "unifi-u6-pro" "60:22:32:1C:FA:C9")
-        (dhcp "10.0.0.6" "unifi-u6-extender" "D0:21:F9:F2:D2:BC")
-        (dhcp "10.0.0.33" "buffalo-nas-ether" "DC:FB:02:DA:11:C1")
-        (dhcp "10.0.0.37" "supermicro-ether" "0C:C4:7A:09:d7:F9")
-      ];
+      machines = (map (k: builtins.getAttr k hosts) (builtins.attrNames hosts));
     };
 
     dnscrypt-proxy2 = {
@@ -164,7 +130,7 @@ in {
       settings = {
         cache = true;
         cache_max_ttl = 600;
-        cache_size = 1024;
+        cache_size = 10000;
         cert_refresh_delay = 240;
         doh_servers = true;
         ignore_system_dns = true;
@@ -186,9 +152,7 @@ in {
             "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
           cache_file = "public-resolvers.md";
         };
-
       };
-
     };
 
     dnsmasq = {
@@ -230,8 +194,9 @@ in {
 
       virtualHosts.${config.services.grafana.settings.server.domain} = {
         locations."/" = {
-          proxyPass =
-            "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
+          proxyPass = "http://127.0.0.1:${
+              toString config.services.grafana.settings.server.http_port
+            }";
           proxyWebsockets = true;
         };
       };
@@ -259,24 +224,6 @@ in {
           leasesPath = "/var/lib/dnsmasq/dnsmasq.leases";
         };
 
-        mikrotik = {
-          configuration = {
-            devices = [{
-              name = "router";
-              address = "${ip_router}";
-              user = "${prometheus_mikrotik_user}";
-              password = "${prometheus_mikrotik_password}";
-            }];
-            features = {
-              bgp = true;
-              dhcp = true;
-              routes = true;
-              optics = true;
-            };
-          };
-          enable = true;
-        };
-
         node = {
           enable = true;
           enabledCollectors =
@@ -284,13 +231,15 @@ in {
           extraFlags = [ "--collector.textfile.directory=/var/lib/prometheus" ];
         };
 
-        unifi-poller = {
-          controllers = [{
-            url = "https://127.0.0.1:8443";
-          }];
-
+        smokeping = {
           enable = true;
-          listenAddress = "127.0.0.1";
+          hosts = [
+            "8.8.8.8"
+            "9.9.9.9"
+            hosts.router.ipAddress
+            hosts.pine64.ipAddress
+          ];
+          pingInterval = "30s";
         };
 
         zfs = { enable = true; };
@@ -312,16 +261,6 @@ in {
           }];
         }
         {
-          job_name = "mikrotik";
-          static_configs = [{
-            targets = [
-              "127.0.0.1:${
-                toString config.services.prometheus.exporters.mikrotik.port
-              }"
-            ];
-          }];
-        }
-        {
           job_name = "nodes";
           static_configs = [{
             targets = [
@@ -332,11 +271,11 @@ in {
           }];
         }
         {
-          job_name = "unifi";
+          job_name = "ping";
           static_configs = [{
             targets = [
-              "127.0.0.1:${
-                toString config.services.prometheus.exporters.unifi-poller.port
+              "localhost:${
+                toString config.services.prometheus.exporters.smokeping.port
               }"
             ];
           }];
@@ -356,7 +295,7 @@ in {
 
     radvd = {
       config = ''
-        interface enp0s25 {
+        interface ${interface} {
           AdvSendAdvert on;
           prefix fd00:1872:0:1::/64 {
             AdvOnLink on;
@@ -387,29 +326,30 @@ in {
   };
 
   systemd = {
-    services.dnsblocklists = {
-      enable = true;
-      description = "Download updated blacklists";
-      before = [ "dnsmasq.service" ];
-      startAt = "hourly";
+    services = {
+      dnsblocklists = {
+        enable = true;
+        description = "Download updated blacklists";
+        before = [ "dnsmasq.service" ];
+        startAt = "hourly";
 
-      path = with pkgs; [ curl ];
-      script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
-        "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|.*shopify.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
-      dnsmasq_filters) + ''
-          echo '${ip_router} router.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
-          echo '${ip_switch} switch.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
-          echo '${ip_c220} cyclops.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
-          echo '${ip_c220} ${config.services.grafana.settings.server.domain}' >> ${dnsmasq_filters_path}.tmp
+        path = with pkgs; [ curl ];
+        script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
+          "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|.*shopify.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
+          dnsmasq_filters) + "\n" + builtins.concatStringsSep "\n"
+          (lib.mapAttrsToList (key: value:
+            "echo '${value.ipAddress} ${value.hostName}.nequissimus.com' >> ${dnsmasq_filters_path}.tmp")
+            hosts) + ''
 
-          cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}
-          rm -rf ${dnsmasq_filters_path}.tmp
-        '';
+              echo '${hosts.c220.ipAddress} ${config.services.grafana.settings.server.domain}' >> ${dnsmasq_filters_path}.tmp
+
+              cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}
+              rm -rf ${dnsmasq_filters_path}.tmp
+            '';
+      };
     };
 
-    tmpfiles.rules = [
-      "d /var/lib/prometheus 0777 prometheus prometheus"
-    ];
+    tmpfiles.rules = [ "d /var/lib/prometheus 0777 prometheus prometheus" ];
   };
 
   time = { timeZone = "America/Toronto"; };

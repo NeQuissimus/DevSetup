@@ -1,3 +1,5 @@
+hosts.nix
+
 *-wifi.nix
 *-secrets.nix
 .DS_Store

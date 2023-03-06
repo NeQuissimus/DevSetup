@@ -102,7 +102,7 @@ in {
     cron = {
       enable = true;
       systemCronJobs =
-        [ "0 17 * * 3 root reboot" "*/5 * * * * root /etc/prometheus.sh" ];
+        [ "0 17 * * 0 root reboot" "*/5 * * * * root /etc/prometheus.sh" ];
     };
 
     dhcpd4 = {
@@ -183,6 +183,11 @@ in {
         http_addr = "127.0.0.1";
         http_port = 3000;
       };
+    };
+
+    loki = {
+      configFile = ./etc/loki.yaml;
+      enable = true;
     };
 
     nginx = {
@@ -293,6 +298,41 @@ in {
       ];
     };
 
+    promtail = {
+      enable = true;
+      configuration = {
+        server = {
+          http_listen_port = 9080;
+          grpc_listen_port = 0;
+        };
+        clients = [ { url = "http://localhost:3100/loki/api/v1/push"; } ];
+        scrape_configs = [
+          {
+            job_name = "system";
+            static_configs = [
+              {
+                targets = [ "localhost" ];
+                labels = {
+                  job = "varlogs";
+                  __path__ = "/var/log/*log";
+                };
+              }
+            ];
+          }
+          {
+            job_name = "journal";
+            journal = {
+              json = true;
+              max_age = "12h";
+              labels = {
+                job = "journal";
+              };
+            };
+          }
+        ];
+      };
+    };
+
     radvd = {
       config = ''
         interface ${interface} {
@@ -325,6 +365,12 @@ in {
     };
   };
 
+  system.autoUpgrade = {
+    channel = lib.mkDefault "https://nixos.org/channels/nixos-22.11";
+    dates = "15:00";
+    enable = true;
+  };
+
   systemd = {
     services = {
       dnsblocklists = {
@@ -350,7 +396,10 @@ in {
       };
     };
 
-    tmpfiles.rules = [ "d /var/lib/prometheus 0777 prometheus prometheus" ];
+    tmpfiles.rules = [ 
+      "d /var/lib/prometheus 0777 prometheus prometheus"
+      "d /var/lib/loki 0755 loki loki"
+    ];
   };
 
   time = { timeZone = "America/Toronto"; };

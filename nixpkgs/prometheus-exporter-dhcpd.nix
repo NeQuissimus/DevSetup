@@ -24,9 +24,9 @@ buildPythonApplication rec {
   '';
 
   src = fetchFromGitHub {
-    owner = "soerenschneider";
+    owner = "NeQuissimus";
     repo = pname;
-    rev = "3dc0ca073d97af50f0085f82c89513063b2efd77";
-    sha256 = "sha256-FQrPBSgLS4oL4c7mT9roWHOSIpXeIOtw5getJ1N4pf8=";
+    rev = "12d839a5fc444f81d4a9b5e424680521258a2fd3";
+    sha256 = "sha256-ycPpcbUaWNJ5xVy1XriQFYeYLiYAplN+71ufwMeox28=";
   };
 }

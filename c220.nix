@@ -341,6 +341,7 @@ in {
             "echo '${value.ipAddress} ${value.hostName}.nequissimus.com' >> ${dnsmasq_filters_path}.tmp")
             hosts) + ''
 
+              echo '0.0.0.0 wpad.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
               echo '${hosts.c220.ipAddress} ${config.services.grafana.settings.server.domain}' >> ${dnsmasq_filters_path}.tmp
 
               cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}

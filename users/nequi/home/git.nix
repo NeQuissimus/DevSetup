@@ -76,6 +76,7 @@
       ".projectile"
       ".dir-locals.el"
       "/network-security.data"
+      "manifests/staging/shopify-data-ingestion/cdc/tim.toml"
     ];
 
 #    signing.signByDefault = true;

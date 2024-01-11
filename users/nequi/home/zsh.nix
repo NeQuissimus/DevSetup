@@ -78,7 +78,11 @@ in
       [[ -x /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
       [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
 
-      [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+      [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
+
+      [[ -f /Users/nequi/src/github.com/Shopify/factoids-admin/bin/shell.sh ]] && source /Users/nequi/src/github.com/Shopify/factoids-admin/bin/shell.sh
+      export FPATH="/Users/nequi/src/github.com/Shopify/factoids-admin/.zsh:''${FPATH}"
+
       export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
 
       for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
@@ -123,7 +127,7 @@ in
     shellAliases = {
       cat = "${pkgs.bat}/bin/bat";
       grep = "${pkgs.ripgrep}/bin/rg";
-      ls = "${pkgs.exa}/bin/exa";
+      ls = "${pkgs.eza}/bin/eza";
       nano = "${pkgs.nano}/bin/nano -E -w -c";
     };
 
@@ -141,7 +145,7 @@ in
         export ZSH_AUTOSUGGEST_STRATEGY=("history" "completion")
       '';
 
-      plugins = [ "docker" "git" "gpg-agent" "kubectl" "sbt" "scala" "sudo" ];
+      plugins = [ "docker" "git" "gpg-agent" "kubectl" "mvn" "sbt" "scala" "sudo" ];
 
       theme = "nequissimus";
     };

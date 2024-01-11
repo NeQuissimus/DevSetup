@@ -13,7 +13,7 @@
   ];
 
   caches.cachix = [
-    "nequissimus"
+    #"nequissimus"
     "nix-community"
   ];
 
@@ -32,6 +32,7 @@
         window_alert_on_bell no
         macos_quit_when_last_window_closed yes
         macos_thicken_font 0.5
+        term xterm
 
         map shift+left send_text all \x1b\x62
         map shift+right send_text all \x1b\x66
@@ -72,6 +73,12 @@
 
     username = "nequi";
     stateVersion = "22.05";
+  };
+
+  manual = {
+    html.enable = false;
+    manpages.enable = false;
+    json.enable = false;
   };
 
   news.display = "silent";

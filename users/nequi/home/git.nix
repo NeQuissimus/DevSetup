@@ -80,7 +80,7 @@
       "manifests/staging/shopify-data-ingestion/cdc/tim.toml"
     ];
 
-#    signing.signByDefault = true;
+    signing.signByDefault = true;
 
     userName = "Tim Steinbach";
   };

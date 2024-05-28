@@ -4,6 +4,7 @@
     aliases = {
       bclean = "!(git for-each-ref --format '%(refname:short)' refs/heads | grep -v 'master\\|main' | xargs git branch -D)";
       clear = "clean -dfx";
+      fpush = "push --force-with-lease";
       lg =
         "log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>%Creset%C(auto)%d%Creset' --abbrev-commit";
       ll = ''

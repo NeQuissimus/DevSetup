@@ -1,45 +1,12 @@
 { pkgs, config, lib, ... }:
 {
   imports = [
-#    ./home/emacs.nix
     ./home/git.nix
     ./home/zsh.nix
-
-      (
-        let
-          declCachix = builtins.fetchTarball "https://github.com/jonascarpay/declarative-cachix/archive/a2aead56e21e81e3eda1dc58ac2d5e1dc4bf05d7.tar.gz";
-        in import "${declCachix}/home-manager.nix"
-      )
-  ];
-
-  caches.cachix = [
-    #"nequissimus"
-    "nix-community"
   ];
 
   home = {
     file = {
-      ".config/kitty/kitty.conf".text = ''
-        # vim:fileencoding=utf-8:foldmethod=marker
-        background #111111
-        background_opacity 0.9
-        font_family      Hasklig
-        font_size 12.0
-        scrollback_lines 20000
-        detect_urls yes
-        strip_trailing_spaces always
-        enable_audio_bell no
-        window_alert_on_bell no
-        macos_quit_when_last_window_closed yes
-        macos_thicken_font 0.5
-        term xterm
-
-        map shift+left send_text all \x1b\x62
-        map shift+right send_text all \x1b\x66
-
-        map ctrl+f launch --type=overlay --stdin-source=@screen_scrollback ${pkgs.fzf}/bin/fzf --no-sort --no-mouse -i --tac --exact
-      '';
-
       ".nanorc".text = ''
         set linenumbers
         set tabsize 2
@@ -57,17 +24,10 @@
     homeDirectory = "/Users/nequi";
 
     packages = with pkgs; [
-      coreutils
-      bat
-#      exa
       fzf
-#      gnused
       htop
       jq
-#      kt
       nano
-#      pandoc
-#      procps
       ripgrep
     ];
 
@@ -84,8 +44,6 @@
   news.display = "silent";
 
   programs = {
-    emacs.enable = true;
-
    git = {
       enable = true;
 #      extraConfig = {

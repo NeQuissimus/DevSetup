@@ -19,7 +19,7 @@ let
 in
 {
   programs.zsh = {
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
 
     initExtra = ''

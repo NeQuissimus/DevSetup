@@ -26,7 +26,7 @@
     packages = with pkgs; [
       fzf
       htop
-      jq
+      jaq
       nano
       ripgrep
     ];

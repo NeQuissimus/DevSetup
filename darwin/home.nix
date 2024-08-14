@@ -17,10 +17,18 @@ let
       install -Dm0644 themes/nequissimus.zsh-theme "$out/share/zsh/themes/"
     '';
   };
-
 in {
   home = {
-    packages = with pkgs; [ curl google-cloud-sdk jaq nixfmt-classic wezterm ];
+    packages = with pkgs; [
+      curl
+      (google-cloud-sdk.withExtraComponents [
+        google-cloud-sdk.components.bq
+        google-cloud-sdk.components.gke-gcloud-auth-plugin
+      ])
+      jaq
+      kubectl
+      nixfmt-classic
+    ];
 
     file = {
       ".nanorc".text = ''
@@ -228,20 +236,6 @@ in {
 
         function gi() { ${pkgs.curl}/bin/curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
 
-        [[ -f "/Users/nequi/.zshextras" ]] && source "/Users/nequi/.zshextras"
-
-        [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
-        #if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-        [[ -x /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
-        [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
-
-        [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
-
-        export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
-
-        for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
-        kubectl-short-aliases
-
         function tryjq() {
           jq -R -r '. as $line | try fromjson catch $line'
         }
@@ -251,6 +245,29 @@ in {
           grep -q "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" /etc/zshrc || echo "if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi" | sudo tee -a /etc/zshrc
           grep -q "trusted-users" /etc/nix/nix.conf || (echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf && sudo launchctl stop org.nixos.nix-daemon && sudo launchctl start org.nixos.nix-daemon)
         }
+
+        function fixkube() {
+          grep -q "nix/profiles/home-manager/home-path/bin/kubectl" /Users/nequi/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: /Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' /Users/nequi/.kube/config.shopify.cloudplatform
+        }
+
+        function update() {
+          nix-channel --update && nix run nix-darwin -- switch --flake /Users/nequi/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && nix-collect-garbage -d && brew update && brew upgrade && (yes | gcloud components update) && exit
+        }
+
+        # Load Nix
+        #if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+        # Tooling
+        [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
+        [[ -x /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
+        [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+        [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
+
+        # Kubernetes
+        export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
+        fixkube
+        for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
+        kubectl-short-aliases
       '';
 
       localVariables = {
@@ -275,7 +292,6 @@ in {
         grep = "${pkgs.ripgrep}/bin/rg";
         ls = "${pkgs.eza}/bin/eza";
         nano = "${pkgs.nano}/bin/nano -E -w -c";
-        nixfmt = "${pkgs.nixfmt-classic}/bin/nixfmt";
       };
 
       oh-my-zsh = {
@@ -299,5 +315,4 @@ in {
       };
     };
   };
-
 }

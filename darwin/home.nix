@@ -41,18 +41,6 @@ in {
         include ${pkgs.nanorc}/share/*.nanorc
       '';
 
-      ".wezterm.lua".text = ''
-        local wezterm = require 'wezterm'
-        local config = wezterm.config_builder()
-
-        config.color_scheme = 'AfterGlow'
-        config.hide_tab_bar_if_only_one_tab = true
-        config.window_background_opacity = 0.7
-        config.font = wezterm.font 'Fira Code'
-
-        return config
-      '';
-
       ".sbt/1.0/plugins/sbt-updates.sbt".text = ''
         addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.3")
       '';
@@ -200,6 +188,58 @@ in {
       serverAliveInterval = 240;
     };
 
+    vscode = {
+      enable = true;
+      enableUpdateCheck = false;
+
+      extensions = with pkgs.vscode-extensions; [
+        bbenoist.nix
+        brettm12345.nixfmt-vscode
+        eamodio.gitlens
+        github.copilot
+        ms-python.python
+        redhat.java
+        scala-lang.scala
+        scalameta.metals
+        vscjava.vscode-gradle
+        vscjava.vscode-java-pack
+      ];
+
+      userSettings = {
+        "github.copilot.editor.enableAutoCompletions" = true;
+        "files.watcherExclude" = {
+          "**/.bloop" = true;
+          "**/.metals" = true;
+          "**/.ammonite" = true;
+        };
+        "workbench.startupEditor" = "none";
+        "gitlens.statusBar.enabled" = false;
+        "gitlens.launchpad.indicator.enabled" = false;
+        "metals.enableIndentOnPaste" = true;
+        "editor.formatOnSave" = true;
+        "telemetry.telemetryLevel" = "off";
+        "gitlens.telemetry.enabled" = false;
+      };
+
+    };
+
+    wezterm = {
+      enable = true;
+      enableZshIntegration = true;
+
+      extraConfig = ''
+        local wezterm = require 'wezterm'
+        local config = wezterm.config_builder()
+
+        config.color_scheme = 'AfterGlow'
+        config.hide_tab_bar_if_only_one_tab = true
+        config.window_background_opacity = 0.7
+        config.font = wezterm.font 'Fira Code'
+
+        return config
+      '';
+    };
+
     zsh = {
       enable = true;
 
@@ -251,7 +291,7 @@ in {
         }
 
         function update() {
-          nix-channel --update && nix run nix-darwin -- switch --flake /Users/nequi/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && nix-collect-garbage -d && brew update && brew upgrade && (yes | gcloud components update) && exit
+          nix-channel --update && nix run nix-darwin -- switch --flake /Users/nequi/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && brew update && brew upgrade && (yes | gcloud components update) && exit
         }
 
         # Load Nix
@@ -278,7 +318,6 @@ in {
         HOMEBREW_NO_COLOR = "1";
         HOMEBREW_NO_EMOJI = "1";
         HOMEBREW_NO_ENV_HINTS = "1";
-        JAVA_HOME = "${pkgs.openjdk17}";
         JQ_COLORS = "1;39:0;39:0;39:0;39:0;32:1;39:1;39";
         PATH =
           "/nix/var/nix/profiles/system/sw/bin:/Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin:/Users/nequi/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/Users/nequi/.local/bin:$PATH";

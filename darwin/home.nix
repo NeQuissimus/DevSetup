@@ -206,19 +206,19 @@ in {
       ];
 
       userSettings = {
-        "github.copilot.editor.enableAutoCompletions" = true;
+        "editor.formatOnSave" = true;
         "files.watcherExclude" = {
           "**/.bloop" = true;
           "**/.metals" = true;
           "**/.ammonite" = true;
         };
-        "workbench.startupEditor" = "none";
-        "gitlens.statusBar.enabled" = false;
+        "github.copilot.editor.enableAutoCompletions" = true;
         "gitlens.launchpad.indicator.enabled" = false;
-        "metals.enableIndentOnPaste" = true;
-        "editor.formatOnSave" = true;
-        "telemetry.telemetryLevel" = "off";
+        "gitlens.statusBar.enabled" = false;
         "gitlens.telemetry.enabled" = false;
+        "metals.enableIndentOnPaste" = true;
+        "telemetry.telemetryLevel" = "off";
+        "workbench.startupEditor" = "none";
       };
 
     };
@@ -247,15 +247,15 @@ in {
       enableCompletion = true;
 
       initExtra = ''
-        setopt HIST_IGNORE_ALL_DUPS
-        setopt HIST_IGNORE_DUPS
-        setopt INC_APPEND_HISTORY
-        setopt HIST_IGNORE_SPACE
-        setopt HIST_SAVE_NO_DUPS
         export CASE_SENSITIVE="false"
         export GPG_TTY="$(tty)"
         export HIST_STAMPS="dd.mm.yyyy"
         export HISTCONTROL="ignoredups"
+        setopt HIST_IGNORE_ALL_DUPS
+        setopt HIST_IGNORE_DUPS
+        setopt HIST_IGNORE_SPACE
+        setopt HIST_SAVE_NO_DUPS
+        setopt INC_APPEND_HISTORY
 
         bindkey "^[Od" backward-word
         bindkey "^[Oc" forward-word

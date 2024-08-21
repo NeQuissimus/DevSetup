@@ -197,6 +197,7 @@ in {
         brettm12345.nixfmt-vscode
         eamodio.gitlens
         github.copilot
+        hashicorp.terraform
         ms-python.python
         redhat.java
         scala-lang.scala

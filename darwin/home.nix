@@ -208,6 +208,7 @@ in {
 
       userSettings = {
         "editor.formatOnSave" = true;
+        "files.associations" = { "*.ejson" = "json"; };
         "files.watcherExclude" = {
           "**/.bloop" = true;
           "**/.metals" = true;
@@ -222,6 +223,7 @@ in {
         "workbench.startupEditor" = "none";
       };
 
+      mutableExtensionsDir = false;
     };
 
     wezterm = {

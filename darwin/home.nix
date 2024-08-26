@@ -198,6 +198,7 @@ in {
         eamodio.gitlens
         github.copilot
         hashicorp.terraform
+        ms-azuretools.vscode-docker
         ms-python.python
         redhat.java
         scala-lang.scala

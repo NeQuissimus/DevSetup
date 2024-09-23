@@ -58,6 +58,14 @@ in {
   news.display = "silent";
 
   programs = {
+    bat.enable = true;
+
+    eza = {
+      enable = true;
+      icons = true;
+      git = true;
+    };
+
     git = {
       aliases = {
         bclean =
@@ -167,6 +175,8 @@ in {
 
     jq.enable = true;
 
+    ripgrep.enable = true;
+
     ssh = {
       enable = true;
 
@@ -210,12 +220,18 @@ in {
       userSettings = {
         "editor.formatOnSave" = true;
         "files.associations" = { "*.ejson" = "json"; };
+        "files.insertFinalNewline" = true;
+        "files.trimTrailingWhitespace" = true;
         "files.watcherExclude" = {
           "**/.bloop" = true;
           "**/.metals" = true;
           "**/.ammonite" = true;
         };
         "github.copilot.editor.enableAutoCompletions" = true;
+        "github.copilot.enable" = {
+          "*" = true;
+          "plaintext" = false;
+        };
         "gitlens.launchpad.indicator.enabled" = false;
         "gitlens.statusBar.enabled" = false;
         "gitlens.telemetry.enabled" = false;

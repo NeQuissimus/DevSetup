@@ -20,6 +20,7 @@ let
 in {
   home = {
     packages = with pkgs; [
+      comma
       curl
       (google-cloud-sdk.withExtraComponents [
         google-cloud-sdk.components.bq
@@ -208,20 +209,26 @@ in {
       enable = true;
       enableUpdateCheck = false;
 
-      extensions = with pkgs.vscode-extensions; [
-        bbenoist.nix
-        brettm12345.nixfmt-vscode
-        eamodio.gitlens
-        github.copilot
-        hashicorp.terraform
-        ms-azuretools.vscode-docker
-        ms-python.python
-        redhat.java
-        scala-lang.scala
-        scalameta.metals
-        vscjava.vscode-gradle
-        vscjava.vscode-java-pack
-      ];
+      extensions = with pkgs.vscode-extensions;
+        [
+          bbenoist.nix
+          brettm12345.nixfmt-vscode
+          eamodio.gitlens
+          github.copilot
+          hashicorp.terraform
+          ms-azuretools.vscode-docker
+          ms-python.python
+          redhat.java
+          scala-lang.scala
+          scalameta.metals
+          vscjava.vscode-gradle
+          vscjava.vscode-java-pack
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [{
+          name = "org-mode";
+          publisher = "vscode-org-mode";
+          version = "1.0.0";
+          sha256 = "sha256-o9CIjMlYQQVRdtTlOp9BAVjqrfFIhhdvzlyhlcOv5rY=";
+        }];
 
       userSettings = {
         "editor.formatOnSave" = true;
@@ -242,6 +249,7 @@ in {
         "gitlens.statusBar.enabled" = false;
         "gitlens.telemetry.enabled" = false;
         "metals.enableIndentOnPaste" = true;
+        "metals.serverVersion" = "1.3.5";
         "telemetry.telemetryLevel" = "off";
         "workbench.startupEditor" = "none";
       };
@@ -250,7 +258,7 @@ in {
     };
 
     wezterm = {
-      enable = false;
+      enable = true;
       enableZshIntegration = true;
 
       extraConfig = ''

@@ -11,8 +11,8 @@
 
   outputs = { self, darwin, nixpkgs, home-manager, ... }@inputs: {
     darwinConfigurations = rec {
-      "MBP" = darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
+      "Tims-MacBook-Pro" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
         modules = [
           ./global.nix
           home-manager.darwinModules.home-manager

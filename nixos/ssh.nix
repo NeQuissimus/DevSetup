@@ -1,15 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  moduli = pkgs.runCommand "moduli" { } ''
-    ${pkgs.openssh}/bin/ssh-keygen -M generate -O bits=2048 /tmp/moduli.candidates
-    ${pkgs.openssh}/bin/ssh-keygen -M screen -f /tmp/moduli.candidates $out
-  '';
-
-  moduli_file = "ssh_moduli";
-in {
-  environment.etc."${moduli_file}".source = moduli;
-
+{
   programs.ssh = {
     agentTimeout = "4h";
     extraConfig = ''
@@ -45,17 +36,6 @@ in {
   };
 
   services = {
-    fail2ban = {
-      daemonConfig = ''
-        [sshd]
-        maxretry = 3
-        findtime = 43200
-        bantime = 86400
-      '';
-
-      enable = lib.mkForce config.services.openssh.enable;
-    };
-
     openssh = {
       allowSFTP = false;
       enable = lib.mkDefault false;
@@ -78,24 +58,25 @@ in {
         }
       ];
 
-      kbdInteractiveAuthentication = false;
+      settings = {
+        KbdInteractiveAuthentication = false;
 
-      kexAlgorithms = [
-        "curve25519-sha256@libssh.org"
-        "diffie-hellman-group14-sha256"
-        "diffie-hellman-group16-sha512"
-        "diffie-hellman-group18-sha512"
-      ];
+        KexAlgorithms = [
+          "curve25519-sha256@libssh.org"
+          "diffie-hellman-group14-sha256"
+          "diffie-hellman-group16-sha512"
+          "diffie-hellman-group18-sha512"
+        ];
 
-      macs = [
-        "hmac-sha2-512-etm@openssh.com"
-        "hmac-sha2-256-etm@openssh.com"
-        "umac-128-etm@openssh.com"
-      ];
+        Macs = [
+          "hmac-sha2-512-etm@openssh.com"
+          "hmac-sha2-256-etm@openssh.com"
+          "umac-128-etm@openssh.com"
+        ];
 
-      moduliFile = "/etc/${moduli_file}";
-      passwordAuthentication = false;
-      permitRootLogin = "no";
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+      };
     };
   };
 }

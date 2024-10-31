@@ -58,7 +58,7 @@
       "x25"
     ];
 
-    initrd.kernelModules = lib.unique ([
+    initrd.kernelModules = [
       "ahci"
       "aesni-intel"
       "iso9660" # Mount CDs
@@ -67,28 +67,15 @@
       "tun"
       "usbhid"
       "vfat" # /boot
-    ] ++ lib.optionals (config.services.kbfs.enable) [
-      "fuse" # KBFS
-    ] ++ lib.optionals
-      (lib.any (x: x == "exfat") config.boot.supportedFilesystems) [
-        "fuse" # exfat
-      ] ++ lib.optionals (config.virtualisation.docker.enable) [
-        "bridge" # Docker
-        "br_netfilter" # Docker
-        "nf_nat" # Docker
-        "veth" # Docker
-        "xt_conntrack" # Docker
-        "xt_nat" # Docker
-      ] ++ lib.optionals (config.virtualisation.docker.enable
-        && !config.virtualisation.docker.liveRestore) [
-          "ip_vs" # Docker Swarm
-          "vxlan" # Docker Swarm
-        ] ++ lib.optionals (config.virtualisation.virtualbox.host.enable) [
-          "vboxpci" # VirtualBox
-          "vboxnetflt" # VirtualBox
-          "vboxnetadp" # VirtualBox
-          "vboxdrv" # VirtualBox
-        ]);
+      "bridge" # Docker
+      "br_netfilter" # Docker
+      "nf_nat" # Docker
+      "veth" # Docker
+      "xt_conntrack" # Docker
+      "xt_nat" # Docker
+      "ip_vs" # Docker Swarm
+      "vxlan" # Docker Swarm
+    ];
 
     kernel.sysctl = {
       "dev.tty.ldisc_autoload" = 0; # Prevent loading vulnerable line disciplines
@@ -137,6 +124,7 @@
       "net.ipv6.conf.default.accept_redirects" = 0; # Don't accept redirects
       "net.ipv6.conf.default.accept_source_route" = 0; # Don't accept source routes
       "net.ipv6.conf.default.secure_redirects" = 0; # No redirects
+      "net.ipv6.all.disable_ipv6" = 1; # Disable IPv6
 
       #      "user.max_user_namespaces" = 0; # Disable user namespaces, breaks Nix 2.0
 
@@ -154,7 +142,7 @@
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
-    kernelPackages = lib.mkForce pkgs.linuxPackages_6_1_hardened;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_6_hardened;
 
     kernelParams = [
       "debugfs=off" # No debugfs

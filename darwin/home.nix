@@ -46,7 +46,9 @@ in {
       '';
     };
 
+    homeDirectory = "/Users/nequi";
     stateVersion = "24.05";
+    username = "nequi";
   };
 
   manual = {
@@ -56,6 +58,10 @@ in {
   };
 
   news.display = "silent";
+
+  nix.gc.automatic = true;
+
+  nixpkgs.config.allowUnfree = true;
 
   programs = {
     bat.enable = true;
@@ -244,7 +250,7 @@ in {
     };
 
     wezterm = {
-      enable = true;
+      enable = false;
       enableZshIntegration = true;
 
       extraConfig = ''
@@ -307,7 +313,7 @@ in {
         }
 
         function fixkube() {
-          grep -q "nix/profiles/home-manager/home-path/bin/kubectl" /Users/nequi/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: /Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' /Users/nequi/.kube/config.shopify.cloudplatform
+          [ -e /Users/nequi/.kube/config.shopify.cloudplatform ] && (grep -q "nix/profiles/home-manager/home-path/bin/kubectl" /Users/nequi/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: /Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' /Users/nequi/.kube/config.shopify.cloudplatform)
         }
 
         function update() {
@@ -324,10 +330,12 @@ in {
         [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
 
         # Kubernetes
-        export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
-        fixkube
-        for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
-        kubectl-short-aliases
+        if [ -d "/Users/nequi/src/github.com/Shopify/cloudplatform" ]; then
+          export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
+          fixkube
+          for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
+          kubectl-short-aliases
+        fi
       '';
 
       localVariables = {

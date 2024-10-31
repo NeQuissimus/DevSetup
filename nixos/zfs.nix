@@ -6,7 +6,6 @@
   '';
 
   boot.zfs = {
-    enableUnstable = true;
     forceImportRoot = true;
     forceImportAll = true;
     requestEncryptionCredentials = true;

@@ -1,43 +1,10 @@
 { config, pkgs, lib, ... }:
-let
-  dnsmasq_filters_path = "/etc/dnsmasq/filters";
-  dnscrypt_filters_path = "/etc/dnscrypt/filters";
-
-  dnsmasq_filters = {
-    abuse_ch = "https://urlhaus.abuse.ch/downloads/hostfile/";
-    disconnectme_ad =
-      "https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt";
-    disconnectme_tracking =
-      "https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt";
-    notracking =
-      "https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt";
-    sinfonietta_gambling =
-      "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/gambling-hosts";
-    sinfonietta_porn =
-      "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/pornography-hosts";
-    sinfonietta_snuff =
-      "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/snuff-hosts";
-    steven_black =
-      "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts";
-    ultimate_hosts =
-      "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/master/hosts/hosts0";
-    windows_spy =
-      "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt";
-  };
-
-  dnsmasq_port = 53;
-
-  interface = "enp4s0f0";
-
-  pkgs_promExporter =
-    (import ./nixpkgs/prometheus-exporter-dhcpd.nix { inherit pkgs; });
-
-  hosts = (import ./hosts.nix);
+let interface = "enp4s0f0";
 in {
   imports = [
     ./c220-hardware.nix
 
-    #   ./nixos/elasticsearch.nix
+    ./nixos/docker.nix
     ./nixos/kernel.nix
     ./nixos/nix.nix
     ./nixos/security.nix
@@ -50,41 +17,50 @@ in {
   documentation.nixos.enable = false;
 
   environment = {
-    etc."prometheus.sh" = {
+    etc."minecraft/ops.json" = {
       text = ''
-        cp /var/lib/dnsmasq/dnsmasq.log /var/lib/dnsmasq/tmp.log
-        echo "" > /var/lib/dnsmasq/dnsmasq.log
-        grep '/etc/dnsmasq/filters' /var/lib/dnsmasq/tmp.log | grep -v ' read /etc/dnsmasq/filters' | sed 's|.*/etc/dnsmasq/filters \(.*\) is \(.*\)|dnsmasq_resolution{domain="\1",ip="\2"}|g' | sort | uniq -c | awk '{print $2 " " $1}' > /var/lib/prometheus/blocked.prom
-        grep 'reply' /var/lib/dnsmasq/tmp.log | grep -v 'query is duplicate' | grep -v '<CNAME>' | sed 's|.* reply \(.*\) is \(.*\)|dnsmasq_resolution{domain="\1",ip="\2"}|g' | sort | uniq -c | awk '{print $2 " " $1}' > /var/lib/prometheus/resolved.prom
-        grep 'query' /var/lib/dnsmasq/tmp.log | grep -v 'query is duplicate' | sed 's|.*query\[\(.*\)\] \(.*\) from \(.*\)|dnsmasq_queries{type="\1",domain="\2",origin="\3"}|g' | sed 's|type="type=65"|type="HTTPS"|g' | sed 's|type="type=64"|type="SVCB"|g' | sort | uniq -c | awk '{print $2 " " $1}' > /var/lib/prometheus/queries.prom
-        rm -f /var/lib/dnsmasq/tmp.log
-        cat /var/lib/dhcpd4/dhcpd.leases | sed -E 's|((starts\|ends\|cltt\|tstp).*[0-9]);|\1 EST;|g' > /tmp/leases
-        timeout -k 10 30s ${pkgs_promExporter}/dhcpd_lease_exporter.py -l /tmp/leases -t /var/lib/prometheus/leases.prom
+        [
+          {
+            "uuid": "106fcb90-9474-47d4-8663-58ffadbcef9a",
+            "name": "thenequissimus",
+            "level": 4,
+            "bypassesPlayerLimit": true
+          }
+        ]
       '';
-      mode = "0777";
+      mode = "0444";
     };
 
-    systemPackages = with pkgs; [ ];
+    etc."sysconfig/lm_sensors".text = ''
+      HWMON_MODULES="coretemp"
+    '';
+
+    systemPackages = with pkgs; [ git ];
   };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
 
   networking = {
-    defaultGateway = hosts.router.ipAddress;
+    defaultGateway = "10.0.0.2";
 
     firewall = {
       allowPing = true;
-      allowedTCPPorts = [ dnsmasq_port 80 8443 ];
-      allowedUDPPorts = [ dnsmasq_port 67 ];
+      allowedTCPPorts = [
+        80
+        8123
+        config.services.minecraft-server.serverProperties.server-port
+      ];
+      allowedUDPPorts =
+        [ config.services.minecraft-server.serverProperties.server-port ];
       enable = true;
     };
 
     hostId = "8990a246";
-    hostName = hosts.c220.hostName;
+    hostName = "c220";
 
     interfaces."${interface}" = {
       ipv4.addresses = [{
-        address = hosts.c220.ipAddress;
+        address = "10.0.0.52";
         prefixLength = 16;
       }];
       ipv6.addresses = [{
@@ -98,113 +74,43 @@ in {
     usePredictableInterfaceNames = true;
   };
 
+  powerManagement = {
+    cpuFreqGovernor = "powersave";
+    powertop.enable = true;
+  };
+
   services = {
-    cron = {
-      enable = true;
-      systemCronJobs =
-        [ "0 17 * * 0 root reboot" "*/5 * * * * root /etc/prometheus.sh" ];
-    };
+    logrotate.checkConfig =
+      false; # https://github.com/NixOS/nixpkgs/pull/237414
 
-    dhcpd4 = {
-      enable = true;
+    minecraft-server = {
+      dataDir = "/var/lib/minecraft";
+      declarative = true;
+      enable = false;
+      eula = true;
 
-      extraConfig = ''
-        subnet 10.0.0.0 netmask 255.255.0.0 {
-          range 10.0.255.1 10.0.255.200;
-          default-lease-time 600;
-          max-lease-time 3600;
-          option routers ${hosts.router.ipAddress};
-          option domain-name-servers ${hosts.c220.ipAddress};
-          option domain-name "nequissimus.com";
-        }
-      '';
+      jvmOpts =
+        "-Xms2G -Xmx8G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom";
 
-      interfaces = [ interface ];
+      package = pkgs.minecraftServers.vanilla-1-19;
 
-      machines = (map (k: builtins.getAttr k hosts) (builtins.attrNames hosts));
-    };
-
-    dnscrypt-proxy2 = {
-      enable = true;
-
-      settings = {
-        cache = true;
-        cache_max_ttl = 600;
-        cache_size = 10000;
-        cert_refresh_delay = 240;
-        doh_servers = true;
-        ignore_system_dns = true;
-        listen_addresses = [ "127.0.0.1:5300" "[::1]:5300" ];
-        log_files_max_size = 10;
-        keepalive = 30;
-        require_dnssec = true;
-        require_nofilter = true;
-        require_nolog = true;
-        server_names = [ "cloudflare" ];
-        timeout = 3000;
-
-        sources.public-resolvers = {
-          urls = [
-            "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-            "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-          ];
-          minisign_key =
-            "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-          cache_file = "public-resolvers.md";
-        };
+      serverProperties = {
+        allow-flight = true;
+        difficulty = 2;
+        enforce-whitelist = true;
+        level-seed = "5743982194324514800";
+        max-players = 5;
+        max-tick-time = 120000;
+        max-world-size = 15000;
+        motd = "NeQuissimus MC";
+        pvp = false;
+        server-port = 25565;
+        snooper-enabled = false;
+        spawn-protection = 0;
+        white-list = true;
       };
-    };
 
-    dnsmasq = {
-      alwaysKeepRunning = true;
-      enable = true;
-      extraConfig = ''
-        no-hosts
-        no-negcache
-        no-resolv
-        domain-needed
-        bogus-priv
-        addn-hosts=${dnsmasq_filters_path}
-        all-servers
-        cache-size=20000
-        local-ttl=3600
-        min-cache-ttl=600
-        log-queries
-        log-facility=/var/lib/dnsmasq/dnsmasq.log
-        port=${toString dnsmasq_port}
-      '';
-      servers = [ "127.0.0.1#5300" ];
-    };
-
-    grafana = {
-      enable = true;
-      settings.server = {
-        domain = "grafana.nequissimus.com";
-        http_addr = "127.0.0.1";
-        http_port = 3000;
-      };
-    };
-
-    loki = {
-      configFile = ./etc/loki.yaml;
-      enable = true;
-    };
-
-    nginx = {
-      enable = true;
-      recommendedGzipSettings = true;
-      recommendedOptimisation = true;
-      recommendedProxySettings = true;
-      recommendedTlsSettings = true;
-
-      virtualHosts.${config.services.grafana.settings.server.domain} = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${
-              toString config.services.grafana.settings.server.http_port
-            }";
-          proxyWebsockets = true;
-        };
-      };
+      whitelist = { germadian = "582bf397-4392-48b5-b7c1-7511aa15d51e"; };
     };
 
     ntp = {
@@ -219,143 +125,7 @@ in {
 
     openssh.enable = true;
 
-    prometheus = {
-      enable = true;
-
-      exporters = {
-        dnsmasq = {
-          dnsmasqListenAddress = "127.0.0.1:${toString dnsmasq_port}";
-          enable = true;
-          leasesPath = "/var/lib/dnsmasq/dnsmasq.leases";
-        };
-
-        node = {
-          enable = true;
-          enabledCollectors =
-            [ "cpu" "filesystem" "meminfo" "netdev" "os" "systemd" "textfile" ];
-          extraFlags = [ "--collector.textfile.directory=/var/lib/prometheus" ];
-        };
-
-        smokeping = {
-          enable = true;
-          hosts = [
-            "8.8.8.8"
-            "9.9.9.9"
-            hosts.router.ipAddress
-            hosts.pine64.ipAddress
-          ];
-          pingInterval = "30s";
-        };
-
-        zfs = { enable = true; };
-      };
-
-      port = 9001;
-
-      retentionTime = "30d";
-
-      scrapeConfigs = [
-        {
-          job_name = "dnsmasq";
-          static_configs = [{
-            targets = [
-              "127.0.0.1:${
-                toString config.services.prometheus.exporters.dnsmasq.port
-              }"
-            ];
-          }];
-        }
-        {
-          job_name = "nodes";
-          static_configs = [{
-            targets = [
-              "127.0.0.1:${
-                toString config.services.prometheus.exporters.node.port
-              }"
-            ];
-          }];
-        }
-        {
-          job_name = "ping";
-          static_configs = [{
-            targets = [
-              "localhost:${
-                toString config.services.prometheus.exporters.smokeping.port
-              }"
-            ];
-          }];
-        }
-        {
-          job_name = "zfs";
-          static_configs = [{
-            targets = [
-              "127.0.0.1:${
-                toString config.services.prometheus.exporters.zfs.port
-              }"
-            ];
-          }];
-        }
-      ];
-    };
-
-    promtail = {
-      enable = true;
-      configuration = {
-        server = {
-          http_listen_port = 9080;
-          grpc_listen_port = 0;
-        };
-        clients = [ { url = "http://localhost:3100/loki/api/v1/push"; } ];
-        scrape_configs = [
-          {
-            job_name = "system";
-            static_configs = [
-              {
-                targets = [ "localhost" ];
-                labels = {
-                  job = "varlogs";
-                  __path__ = "/var/log/*log";
-                };
-              }
-            ];
-          }
-          {
-            job_name = "journal";
-            journal = {
-              json = true;
-              max_age = "12h";
-              labels = {
-                job = "journal";
-              };
-            };
-          }
-        ];
-      };
-    };
-
-    radvd = {
-      config = ''
-        interface ${interface} {
-          AdvSendAdvert on;
-          prefix fd00:1872:0:1::/64 {
-            AdvOnLink on;
-            AdvAutonomous on;
-          };
-        };
-      '';
-
-      enable = true;
-    };
-
-    unifi = {
-      enable = true;
-      initialJavaHeapSize = 512;
-      maximumJavaHeapSize = 2048;
-      openFirewall = true;
-
-      jrePackage = pkgs.openjdk11;
-      unifiPackage = (import ./nixpkgs/unifi.nix { inherit pkgs; });
-    };
+    thermald.enable = true;
 
     upower.enable = true;
 
@@ -366,41 +136,82 @@ in {
   };
 
   system.autoUpgrade = {
-    channel = lib.mkDefault "https://nixos.org/channels/nixos-22.11";
+    channel = lib.mkDefault "https://nixos.org/channels/nixos-24.05";
     dates = "15:00";
     enable = true;
   };
 
   systemd = {
-    services = {
-      dnsblocklists = {
-        enable = true;
-        description = "Download updated blacklists";
-        before = [ "dnsmasq.service" ];
-        startAt = "hourly";
-
-        path = with pkgs; [ curl ];
-        script = builtins.concatStringsSep "\n" (lib.mapAttrsToList (key: value:
-          "curl -sSL ${value} | sed 's|^0.0.0.0 ||g' | sed 's|^127.0.0.1 ||g' | sed 's|^\\s*#.*||g' | sed 's|^\\s*::.*||g' | sed 's|.*shopify.*||g' | sed 's|^|0.0.0.0 |g' >> ${dnsmasq_filters_path}.tmp")
-          dnsmasq_filters) + "\n" + builtins.concatStringsSep "\n"
-          (lib.mapAttrsToList (key: value:
-            "echo '${value.ipAddress} ${value.hostName}.nequissimus.com' >> ${dnsmasq_filters_path}.tmp")
-            hosts) + ''
-
-              echo '0.0.0.0 wpad.nequissimus.com' >> ${dnsmasq_filters_path}.tmp
-              echo '${hosts.c220.ipAddress} ${config.services.grafana.settings.server.domain}' >> ${dnsmasq_filters_path}.tmp
-
-              cat ${dnsmasq_filters_path}.tmp | sort -u > ${dnsmasq_filters_path}
-              rm -rf ${dnsmasq_filters_path}.tmp
-            '';
-      };
-    };
-
-    tmpfiles.rules = [ 
-      "d /var/lib/prometheus 0777 prometheus prometheus"
-      "d /var/lib/loki 0755 loki loki"
+    tmpfiles.rules = [
+      "d /var/lib/mc 0755 nequi docker"
+      "d /var/lib/mc2 0755 nequi docker"
+      "d /var/lib/pihole 0755 nequi docker"
+      "d /var/lib/homeassistant 0755 nequi docker"
+      "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
   };
 
   time = { timeZone = "America/Toronto"; };
+
+  virtualisation.oci-containers = {
+    backend = "docker";
+
+    containers = {
+      homeassistant = {
+        autoStart = true;
+        volumes = [ "/var/lib/homeassistant:/config" ];
+        environment.TZ = "America/Toronto";
+        image =
+          "ghcr.io/home-assistant/home-assistant:stable@sha256:408a5a63e3e9a89ceb6ecd98345e54c86073314b4d94e217cd54f7208307406d";
+        extraOptions = [ "--network=host" ];
+      };
+
+      minecraftabe = {
+        autoStart = true;
+        environment = {
+          ALLOW_FLIGHT = "TRUE";
+          AUTOPAUSE_KNOCK_INTERFACE = "eth0";
+          AUTOPAUSE_TIMEOUT_EST = "60";
+          AUTOPAUSE_TIMEOUT_INIT = "60";
+          ENABLE_AUTOPAUSE = "TRUE";
+          ENABLE_ROLLING_LOGS = "TRUE";
+          EULA = "TRUE";
+          FTB_MODPACK_ID = "114";
+          FTB_MODPACK_VERSION_ID = "12147";
+          INIT_MEMORY = "2G";
+          JVM_DD_OPTS = "disable.watchdog:true";
+          MAX_MEMORY = "8G";
+          MAX_PLAYERS = "4";
+          MAX_TICK_TIME = "-1";
+          MOTD = "Abe Pack 1.6.0";
+          OPS = "thenequissimus,106fcb90-9474-47d4-8663-58ffadbcef9a";
+          SERVER_NAME = "NeQuissimus - Abe Pack 1.6.0";
+          SNOOPER_ENABLED = "FALSE";
+          TYPE = "FTBA";
+          USE_AIKAR_FLAGS = "TRUE";
+        };
+        image =
+          "itzg/minecraft-server:java17@sha256:b673a66b9cbc5de6eb278f044bbe0ac12ec47d8d49330d9c58770ebb2427c936";
+        ports = [ "23565:25565" ];
+        user = "root";
+        volumes = [ "/var/lib/mc2:/data" ];
+      };
+
+      pihole = {
+        autoStart = true;
+        environment = {
+          TZ = "America/Toronto";
+          WEBPASSWORD = "admin"; # This is fine
+        };
+        image =
+          "pihole/pihole:latest@sha256:e53305e9e00d7ac283763ca9f323cc95a47d0113a1e02eb9c6849f309d6202dd";
+        ports = [ "53:53/tcp" "53:53/udp" "80:80/tcp" ];
+        volumes = [
+          "/var/lib/pihole/etc-pihole:/etc/pihole"
+          "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
+        ];
+      };
+    };
+  };
 }
+

@@ -17,6 +17,20 @@ let
       install -Dm0644 themes/nequissimus.zsh-theme "$out/share/zsh/themes/"
     '';
   };
+
+  vscode_orgmode = {
+    name = "org-mode";
+    publisher = "vscode-org-mode";
+    version = "1.0.0";
+    sha256 = "sha256-o9CIjMlYQQVRdtTlOp9BAVjqrfFIhhdvzlyhlcOv5rY=";
+  };
+
+  vscode_nord = {
+    name = "nord-visual-studio-code";
+    publisher = "arcticicestudio";
+    version = "0.19.0";
+    sha256 = "sha256-awbqFv6YuYI0tzM/QbHRTUl4B2vNUdy52F4nPmv+dRU=";
+  };
 in {
   home = {
     packages = with pkgs; [
@@ -223,12 +237,10 @@ in {
           scalameta.metals
           vscjava.vscode-gradle
           vscjava.vscode-java-pack
-        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [{
-          name = "org-mode";
-          publisher = "vscode-org-mode";
-          version = "1.0.0";
-          sha256 = "sha256-o9CIjMlYQQVRdtTlOp9BAVjqrfFIhhdvzlyhlcOv5rY=";
-        }];
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          vscode_nord
+          vscode_orgmode
+        ];
 
       userSettings = {
         "editor.formatOnSave" = true;
@@ -251,6 +263,9 @@ in {
         "metals.enableIndentOnPaste" = true;
         "metals.serverVersion" = "1.3.5";
         "telemetry.telemetryLevel" = "off";
+        "workbench.colorTheme" = "Nord";
+        "workbench.preferredDarkColorTheme" = "Nord";
+        "workbench.preferredLightColorTheme" = "Nord";
         "workbench.startupEditor" = "none";
       };
 

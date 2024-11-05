@@ -140,9 +140,11 @@ in {
   };
 
   system.autoUpgrade = {
+    allowReboot = true;
     channel = lib.mkDefault "https://nixos.org/channels/nixos-24.05";
     dates = "15:00";
     enable = true;
+    operation = "boot";
   };
 
   systemd = {

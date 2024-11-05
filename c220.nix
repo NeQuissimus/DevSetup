@@ -47,6 +47,8 @@ in {
       allowPing = true;
       allowedTCPPorts = [
         80
+        8095
+        8097
         8123
         config.services.minecraft-server.serverProperties.server-port
       ];
@@ -80,6 +82,8 @@ in {
   };
 
   services = {
+    avahi.enable = true;
+
     logrotate.checkConfig =
       false; # https://github.com/NixOS/nixpkgs/pull/237414
 
@@ -147,6 +151,7 @@ in {
       "d /var/lib/mc2 0755 nequi docker"
       "d /var/lib/pihole 0755 nequi docker"
       "d /var/lib/homeassistant 0755 nequi docker"
+      "d /var/lib/musicassistant 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
   };
@@ -195,6 +200,23 @@ in {
         ports = [ "23565:25565" ];
         user = "root";
         volumes = [ "/var/lib/mc2:/data" ];
+      };
+
+      musicassistant = {
+        autoStart = true;
+        environment = { LOG_LEVEL = "info"; };
+
+        extraOptions = [
+          "--network=host"
+          "--cap-add=DAC_READ_SEARCH"
+          "--cap-add=SYS_ADMIN"
+          "--security-opt"
+          "apparmor:unconfined"
+        ];
+
+        image =
+          "ghcr.io/music-assistant/server:2.3.2@sha256:2e6f769f0a9863acea3a39d3207e41b39f325d3f36536851cc7e0509272d8a19";
+        volumes = [ "/var/lib/musicassistant:/data" ];
       };
 
       pihole = {

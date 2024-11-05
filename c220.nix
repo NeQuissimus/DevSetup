@@ -10,6 +10,7 @@ in {
     ./nixos/security.nix
     ./nixos/ssh.nix
     ./nixos/users.nix
+    ./nixos/zfs.nix
   ];
 
   console.keyMap = "us";
@@ -137,14 +138,6 @@ in {
       enable = true;
       interval = "weekly";
     };
-  };
-
-  system.autoUpgrade = {
-    allowReboot = true;
-    channel = lib.mkDefault "https://nixos.org/channels/nixos-24.05";
-    dates = "15:00";
-    enable = true;
-    operation = "boot";
   };
 
   systemd = {

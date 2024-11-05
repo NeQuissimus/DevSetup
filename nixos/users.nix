@@ -6,9 +6,7 @@
   users = {
     mutableUsers = true;
 
-    groups = {
-      docker = {};
-    };
+    groups = { docker = { }; };
 
     users = {
       docker = {
@@ -35,7 +33,8 @@
         openssh.authorizedKeys.keyFiles = [
           (builtins.fetchurl {
             url = "https://github.com/NeQuissimus.keys";
-            sha256 = "1zyj6sp4pj2jmbr5w78w00gfba3j0m9c00an7b36hkrr48ay6zh3";
+            sha256 =
+              "sha256:0847l3b374sn05zgshi6l3m61mbb4h5141cvhqdsg1jni6kw4mxs";
           })
         ];
       };

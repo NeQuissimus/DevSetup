@@ -1,6 +1,14 @@
 { config, lib, pkgs, ... }:
 
 {
+  system.autoUpgrade = {
+    allowReboot = true;
+    channel = lib.mkDefault "https://nixos.org/channels/nixos-24.05";
+    dates = "15:00";
+    enable = true;
+    operation = "boot";
+  };
+
   security = {
     allowSimultaneousMultithreading = true;
     apparmor.enable = true;

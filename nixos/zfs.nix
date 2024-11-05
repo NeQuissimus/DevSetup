@@ -5,12 +5,6 @@
     options zfs zfs_arc_max=2147483648
   '';
 
-  boot.zfs = {
-    forceImportRoot = true;
-    forceImportAll = true;
-    requestEncryptionCredentials = true;
-  };
-
   services.zfs = {
     autoScrub = {
       enable = true;

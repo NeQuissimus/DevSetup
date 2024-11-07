@@ -1,6 +1,11 @@
 { config, pkgs, lib, ... }:
 
 let
+  email = "tim.steinbach@shopify.com";
+  gpgKey = "F09D70D880F01FF54E51477B06A338C29C3CE904";
+  name = "Tim Steinbach";
+  username = "nequi";
+
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
     pname = "nequi-zsh";
     version = "1.1";
@@ -33,6 +38,8 @@ let
   };
 in {
   home = {
+    inherit username;
+
     packages = with pkgs; [
       comma
       curl
@@ -61,9 +68,8 @@ in {
       '';
     };
 
-    homeDirectory = "/Users/nequi";
+    homeDirectory = "/Users/${username}";
     stateVersion = "24.05";
-    username = "nequi";
   };
 
   manual = {
@@ -178,13 +184,13 @@ in {
       ];
 
       signing = {
-        key = "F09D70D880F01FF54E51477B06A338C29C3CE904";
+        key = gpgKey;
         gpgPath = "/opt/dev/bin/gpg-auto-pin";
         signByDefault = true;
       };
 
-      userEmail = "tim@nequissimus.com";
-      userName = "Tim Steinbach";
+      userEmail = email;
+      userName = name;
     };
 
     htop = {
@@ -255,6 +261,7 @@ in {
         "github.copilot.editor.enableAutoCompletions" = true;
         "github.copilot.enable" = {
           "*" = true;
+          "org" = false;
           "plaintext" = false;
         };
         "gitlens.launchpad.indicator.enabled" = false;
@@ -336,15 +343,15 @@ in {
         }
 
         function fixkube() {
-          [ -e /Users/nequi/.kube/config.shopify.cloudplatform ] && (grep -q "nix/profiles/home-manager/home-path/bin/kubectl" /Users/nequi/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: /Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' /Users/nequi/.kube/config.shopify.cloudplatform)
+          [ -e ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform ] && (grep -q "nix/profiles/home-manager/home-path/bin/kubectl" ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: ${config.home.homeDirectory}/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform)
         }
 
         function update() {
-          nix-channel --update && nix run nix-darwin -- switch --flake /Users/nequi/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && brew update && brew upgrade && (yes | gcloud components update) && exit
+          nix-channel --update && nix run nix-darwin -- switch --flake ${config.home.homeDirectory}/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && brew update && brew upgrade && (yes | gcloud components update) && exit
         }
 
         # Load Nix
-        #if [ -e /Users/nequi/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nequi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+        #if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then . ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
         # Tooling
         [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
@@ -353,10 +360,10 @@ in {
         [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
 
         # Kubernetes
-        if [ -d "/Users/nequi/src/github.com/Shopify/cloudplatform" ]; then
-          export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}/Users/nequi/.kube/config:/Users/nequi/.kube/config.shopify.cloudplatform
+        if [ -d "${config.home.homeDirectory}/src/github.com/Shopify/cloudplatform" ]; then
+          export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}${config.home.homeDirectory}/.kube/config:${config.home.homeDirectory}/.kube/config.shopify.cloudplatform
           fixkube
-          for file in /Users/nequi/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
+          for file in ${config.home.homeDirectory}/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
           kubectl-short-aliases
         fi
       '';
@@ -371,7 +378,7 @@ in {
         HOMEBREW_NO_ENV_HINTS = "1";
         JQ_COLORS = "1;39:0;39:0;39:0;39:0;32:1;39:1;39";
         PATH =
-          "/nix/var/nix/profiles/system/sw/bin:/Users/nequi/.local/state/nix/profiles/home-manager/home-path/bin:/Users/nequi/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/Users/nequi/.local/bin:$PATH";
+          "/nix/var/nix/profiles/system/sw/bin:${config.home.homeDirectory}/.local/state/nix/profiles/home-manager/home-path/bin:${config.home.homeDirectory}/.nix-profile/bin:/nix/var/nix/profiles/default/bin:${config.home.homeDirectory}/.local/bin:$PATH";
         TERMINAL = "xterm-256color";
         XZ_DEFAULTS = "-T 0";
         ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=3";

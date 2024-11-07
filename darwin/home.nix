@@ -250,6 +250,7 @@ in {
 
       userSettings = {
         "editor.formatOnSave" = true;
+        "editor.wordWrap" = true;
         "files.associations" = { "*.ejson" = "json"; };
         "files.insertFinalNewline" = true;
         "files.trimTrailingWhitespace" = true;

@@ -6,6 +6,10 @@ let
   name = "Tim Steinbach";
   username = "nequi";
 
+  mac-app-util-src = builtins.fetchTarball
+    "https://github.com/hraban/mac-app-util/archive/master.tar.gz";
+  mac-app-util = import mac-app-util-src { };
+
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
     pname = "nequi-zsh";
     version = "1.1";
@@ -37,6 +41,12 @@ let
     sha256 = "sha256-awbqFv6YuYI0tzM/QbHRTUl4B2vNUdy52F4nPmv+dRU=";
   };
 in {
+  fonts.fontconfig = {
+    defaultFonts.monospace = [ "Fira Code" ];
+
+    enable = true;
+  };
+
   home = {
     inherit username;
 
@@ -47,9 +57,13 @@ in {
         google-cloud-sdk.components.bq
         google-cloud-sdk.components.gke-gcloud-auth-plugin
       ])
+      fira-code
       jaq
       kubectl
+      nerdfonts
       nixfmt-classic
+      podman
+      rectangle
     ];
 
     file = {
@@ -72,6 +86,8 @@ in {
     stateVersion = "24.05";
   };
 
+  imports = [ mac-app-util.homeManagerModules.default ];
+
   manual = {
     html.enable = false;
     manpages.enable = false;
@@ -80,7 +96,19 @@ in {
 
   news.display = "silent";
 
-  nix.gc.automatic = true;
+  nix = {
+    gc.automatic = true;
+
+    package = pkgs.nix;
+
+    settings = {
+      substituters = [ "https://wezterm.cachix.org" "https://cache.nixos.org" ];
+      trusted-public-keys = [
+        "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
+    };
+  };
 
   nixpkgs.config.allowUnfree = true;
 
@@ -89,7 +117,7 @@ in {
 
     eza = {
       enable = true;
-      icons = true;
+      icons = "auto";
       git = true;
     };
 
@@ -284,17 +312,27 @@ in {
       enable = true;
       enableZshIntegration = true;
 
+      # WebGPU is a workaround - https://github.com/NixOS/nixpkgs/issues/336069
       extraConfig = ''
         local wezterm = require 'wezterm'
         local config = wezterm.config_builder()
 
         config.color_scheme = 'AfterGlow'
+        config.font = wezterm.font 'Fira Code'
+        config.front_end = 'WebGpu'
         config.hide_tab_bar_if_only_one_tab = true
         config.window_background_opacity = 0.7
-        config.font = wezterm.font 'Fira Code'
+        config.window_close_confirmation = 'NeverPrompt'
 
         return config
       '';
+    };
+
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+
+      settings = { theme = "cyberpunk"; };
     };
 
     zsh = {
@@ -341,6 +379,7 @@ in {
           # macOS updates break Nix
           grep -q "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" /etc/zshrc || echo "if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi" | sudo tee -a /etc/zshrc
           grep -q "trusted-users" /etc/nix/nix.conf || (echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf && sudo launchctl stop org.nixos.nix-daemon && sudo launchctl start org.nixos.nix-daemon)
+          [ $(id -u ${config.home.username}) = $(stat -f "%u" /nix) ] || sudo chown -R ${config.home.username}: /nix
         }
 
         function fixkube() {

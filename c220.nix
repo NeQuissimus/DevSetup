@@ -48,6 +48,8 @@ in {
       allowPing = true;
       allowedTCPPorts = [
         80
+        1400
+        3000
         8095
         8097
         8123
@@ -147,6 +149,7 @@ in {
       "d /var/lib/pihole 0755 nequi docker"
       "d /var/lib/homeassistant 0755 nequi docker"
       "d /var/lib/musicassistant 0755 nequi docker"
+      "d /var/lib/matter 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
   };
@@ -162,7 +165,15 @@ in {
         volumes = [ "/var/lib/homeassistant:/config" ];
         environment.TZ = "America/Toronto";
         image =
-          "ghcr.io/home-assistant/home-assistant:stable@sha256:408a5a63e3e9a89ceb6ecd98345e54c86073314b4d94e217cd54f7208307406d";
+          "ghcr.io/home-assistant/home-assistant:stable@sha256:2ddb0ceb186218e6daf423ac26be2e5a6ce1cd430c6064fe82d1d3d70b95cf38";
+        extraOptions = [ "--network=host" ];
+      };
+
+      matter = {
+        autoStart = true;
+        volumes = [ "/var/lib/matter:/data" ];
+        image =
+          "ghcr.io/home-assistant-libs/python-matter-server:stable@sha256:e291154e44accc5284ec14fbc52a32764a8286deb68b4d3b91b280ad644715d8";
         extraOptions = [ "--network=host" ];
       };
 
@@ -214,6 +225,14 @@ in {
         volumes = [ "/var/lib/musicassistant:/data" ];
       };
 
+      openwakeword = {
+        autoStart = true;
+        cmd = [ "--preload-model" "hey_jarvis" ];
+        image =
+          "rhasspy/wyoming-openwakeword:1.10.0@sha256:3165a5cd8aef84beb882e640aa1f5c01c97f8c0b1f50016164ecdf2ab65d033a";
+        ports = [ "10400:10400" ];
+      };
+
       pihole = {
         autoStart = true;
         environment = {
@@ -227,6 +246,22 @@ in {
           "/var/lib/pihole/etc-pihole:/etc/pihole"
           "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
         ];
+      };
+
+      piper = {
+        autoStart = true;
+        cmd = [ "--voice" "en_GB-jenny_dioco-medium" ];
+        image =
+          "rhasspy/wyoming-piper:1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f";
+        ports = [ "10200:10200" ];
+      };
+
+      whisper = {
+        autoStart = true;
+        cmd = [ "--model" "tiny-int8" "--language" "en" ];
+        image =
+          "rhasspy/wyoming-whisper:2.2.0@sha256:49d07d5d5ef10b27e228810426d94d3500555ba8ca619485dde4714d8ae85762";
+        ports = [ "10300:10300" ];
       };
     };
   };

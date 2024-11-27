@@ -40,6 +40,42 @@ let
     version = "0.19.0";
     sha256 = "sha256-awbqFv6YuYI0tzM/QbHRTUl4B2vNUdy52F4nPmv+dRU=";
   };
+
+  zellij-monocle = pkgs.stdenv.mkDerivation rec {
+    pname = "zellij-monocle";
+    version = "0.100.0";
+
+    src = pkgs.fetchurl {
+      url =
+        "https://github.com/imsnif/monocle/releases/download/v0.100.0/monocle.wasm";
+      sha256 = "sha256-MxS5OBEUdrcuRfvewLt+q24lb8J+3O4/yjbgMD6nnqQ=";
+    };
+
+    phases = [ "installPhase" "patchPhase" ];
+
+    installPhase = ''
+      mkdir -p "$out/share/zellij/"
+      install -Dm0644 $src "$out/share/zellij/monocle.wasm"
+    '';
+  };
+
+  zellij-zjstatus = pkgs.stdenv.mkDerivation rec {
+    pname = "zellij-zjstatus";
+    version = "0.19.0";
+
+    src = pkgs.fetchurl {
+      url =
+        "https://github.com/dj95/zjstatus/releases/download/v0.19.0/zjstatus.wasm";
+      sha256 = "sha256-xU2CA+okW8gg9l25mLWgaQFNnzoa8Z6KH0tenmiUvhM=";
+    };
+
+    phases = [ "installPhase" "patchPhase" ];
+
+    installPhase = ''
+      mkdir -p "$out/share/zellij/"
+      install -Dm0644 $src "$out/share/zellij/zjstatus.wasm"
+    '';
+  };
 in {
   fonts.fontconfig = {
     defaultFonts.monospace = [ "Fira Code" ];
@@ -64,9 +100,61 @@ in {
       nixfmt-classic
       podman
       rectangle
+      zellij-monocle
+      zellij-zjstatus
     ];
 
     file = {
+      ".config/zellij/config.kdl".text = ''
+        keybinds {
+            normal {
+                bind "Alt m" {
+                    LaunchOrFocusPlugin "file:${
+                      builtins.unsafeDiscardStringContext zellij-monocle
+                    }/share/zellij/monocle.wasm" {
+                        floating true
+                    };
+                    SwitchToMode "Normal"
+                }
+            }
+        }
+
+        theme "cyberpunk"
+      '';
+
+      ".config/zellij/layouts/default.kdl".text = ''
+        layout {
+          default_tab_template {
+            children
+            pane size=1 borderless=true {
+              plugin location="file:${
+                builtins.unsafeDiscardStringContext zellij-zjstatus
+              }/share/zellij/zjstatus.wasm" {
+                hide_frame_for_single_pane "true"
+
+                format_left  "{mode}#[fg=#89B4FA,bg=#181825,bold] {session}#[bg=#181825] {tabs}"
+                format_right "{datetime}"
+                format_space "#[bg=#181825]"
+
+                mode_normal          "#[bg=#89B4FA] "
+                mode_tmux            "#[bg=#ffc387] "
+                mode_default_to_mode "tmux"
+
+                tab_normal               "#[fg=#6C7086,bg=#181825] {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+                tab_active               "#[fg=#9399B2,bg=#181825,bold,italic] {index} {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+                tab_fullscreen_indicator "□ "
+                tab_sync_indicator       "  "
+                tab_floating_indicator   "󰉈 "
+
+                datetime          "#[fg=#9399B2,bg=#181825] {format} "
+                datetime_format   "%A, %d %b %Y %H:%M"
+                datetime_timezone "America/Toronto"
+              }
+            }
+          }
+        }
+      '';
+
       ".nanorc".text = ''
         set linenumbers
         set tabsize 2
@@ -331,8 +419,6 @@ in {
     zellij = {
       enable = true;
       enableZshIntegration = true;
-
-      settings = { theme = "cyberpunk"; };
     };
 
     zsh = {

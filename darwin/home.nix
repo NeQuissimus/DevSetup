@@ -6,9 +6,10 @@ let
   name = "Tim Steinbach";
   username = "nequi";
 
-  mac-app-util-src = builtins.fetchTarball
-    "https://github.com/hraban/mac-app-util/archive/master.tar.gz";
-  mac-app-util = import mac-app-util-src { };
+  declarative-nix = (let
+    declCachix = builtins.fetchTarball
+      "https://github.com/jonascarpay/declarative-cachix/archive/a2aead56e21e81e3eda1dc58ac2d5e1dc4bf05d7.tar.gz";
+  in import "${declCachix}/home-manager.nix");
 
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
     pname = "nequi-zsh";
@@ -77,6 +78,8 @@ let
     '';
   };
 in {
+  caches.cachix = [ "nequissimus" "nix-community" "wezterm" ];
+
   fonts.fontconfig = {
     defaultFonts.monospace = [ "Fira Code" ];
 
@@ -86,7 +89,19 @@ in {
   home = {
     inherit username;
 
+    # https://github.com/nix-community/home-manager/issues/1341
+    activation.link-apps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      rsyncArgs="--archive --checksum --chmod=-w --copy-unsafe-links --delete"
+      apps_source="$genProfilePath/home-path/Applications"
+      moniker="Home Manager Trampolines"
+      app_target_base="${config.home.homeDirectory}/Applications"
+      app_target="$app_target_base/$moniker"
+      mkdir -p "$app_target"
+      ${pkgs.rsync}/bin/rsync $rsyncArgs "$apps_source/" "$app_target"
+    '';
+
     packages = with pkgs; [
+      cachix
       comma
       curl
       (google-cloud-sdk.withExtraComponents [
@@ -174,7 +189,7 @@ in {
     stateVersion = "24.05";
   };
 
-  imports = [ mac-app-util.homeManagerModules.default ];
+  imports = [ declarative-nix ];
 
   manual = {
     html.enable = false;
@@ -188,14 +203,6 @@ in {
     gc.automatic = true;
 
     package = pkgs.nix;
-
-    settings = {
-      substituters = [ "https://wezterm.cachix.org" "https://cache.nixos.org" ];
-      trusted-public-keys = [
-        "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
-    };
   };
 
   nixpkgs.config.allowUnfree = true;

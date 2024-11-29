@@ -108,10 +108,10 @@ in {
         google-cloud-sdk.components.bq
         google-cloud-sdk.components.gke-gcloud-auth-plugin
       ])
-      fira-code
+      gradle
       jaq
       kubectl
-      nerdfonts
+      nerd-fonts.fira-code
       nixfmt-classic
       podman
       rectangle
@@ -366,6 +366,7 @@ in {
           scalameta.metals
           vscjava.vscode-gradle
           vscjava.vscode-java-pack
+          zxh404.vscode-proto3
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           vscode_nord
           vscode_orgmode
@@ -382,6 +383,9 @@ in {
           "**/.metals" = true;
           "**/.ammonite" = true;
         };
+        "editor.fontFamily" = "Fira Code";
+        "editor.fontLigatures" = true;
+        "editor.fontSize" = 12;
         "github.copilot.editor.enableAutoCompletions" = true;
         "github.copilot.enable" = {
           "*" = true;
@@ -412,8 +416,7 @@ in {
         local wezterm = require 'wezterm'
         local config = wezterm.config_builder()
 
-        config.color_scheme = 'AfterGlow'
-        config.font = wezterm.font 'Fira Code'
+        config.font = wezterm.font 'FiraCode Nerd Font'
         config.front_end = 'WebGpu'
         config.hide_tab_bar_if_only_one_tab = true
         config.window_background_opacity = 0.7
@@ -480,7 +483,7 @@ in {
         }
 
         function update() {
-          nix-channel --update && nix run nix-darwin -- switch --flake ${config.home.homeDirectory}/src/github.com/NeQuissimus/DevSetup/darwin/ --impure && brew update && brew upgrade && (yes | gcloud components update) && exit
+          nix-channel --update && home-manager switch && brew update && brew upgrade && (yes | gcloud components update) && clear
         }
 
         # Load Nix

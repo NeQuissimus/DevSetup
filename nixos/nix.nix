@@ -12,7 +12,7 @@ in {
     gc = {
       automatic = true;
       dates = "20:00";
-      options = "--delete-older-than 30";
+      options = "--delete-older-than 14d";
     };
 
     nrBuildUsers = 2;

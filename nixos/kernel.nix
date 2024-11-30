@@ -172,7 +172,6 @@
       "init_on_alloc=1" # Zero memory on allocation
       "init_on_free=1" # Zero memory on free
       "kfence.sample_interval=100" # Enable kfence
-      "mitigations=auto,nosmt" # Mitigates all known CPU vulnerabilities, disabling SMT *if needed*
       "nohibernate" # Disable hibernation
       "oops=panic" # Prevent "oops" exploits
       ''quiet" "loglevel=0'' # Prevent information leak upon boot
@@ -184,16 +183,6 @@
       "random.trust_cpu=off" # Enable or disable trusting the use of the CPU's random number generator
       "vdso32=0" # Make sure COMPAT_VDSO stays disabled
       "vsyscall=none" # vsyscall is obsolete
-
-      # Spectre
-      "kvm.nx_huge_pages=force"
-      "l1tf=full,force"
-      "mds=full,nosmt"
-      "nosmt=force"
-      "spec_store_bypass_disable=on"
-      "spectre_v2=on"
-      "tsx=off"
-      "tsx_async_abort=full,nosmt"
     ];
   };
 

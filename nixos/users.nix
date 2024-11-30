@@ -34,7 +34,7 @@
           (builtins.fetchurl {
             url = "https://github.com/NeQuissimus.keys";
             sha256 =
-              "sha256:0847l3b374sn05zgshi6l3m61mbb4h5141cvhqdsg1jni6kw4mxs";
+              "sha256:0sidlq3gwzdms5v9a81qxdwk3xi51d1gjkd259f0pl4x64nj4b4y";
           })
         ];
       };

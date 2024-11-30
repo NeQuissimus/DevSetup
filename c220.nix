@@ -181,6 +181,20 @@ in {
 
       minecraftabe = {
         autoStart = true;
+
+        # Start this one last
+        dependsOn = [
+          "homeassistant"
+          "matter"
+          "musicassistant"
+          "ollama"
+          "open-webui"
+          "openwakeword"
+          "pihole"
+          "piper"
+          "whisper"
+        ];
+
         environment = {
           ALLOW_FLIGHT = "TRUE";
           AUTOPAUSE_KNOCK_INTERFACE = "eth0";

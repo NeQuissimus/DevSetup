@@ -36,7 +36,7 @@ in {
       HWMON_MODULES="coretemp"
     '';
 
-    systemPackages = with pkgs; [ git ];
+    systemPackages = with pkgs; [ git htop ];
   };
 
   i18n = { defaultLocale = "en_US.UTF-8"; };
@@ -144,12 +144,14 @@ in {
 
   systemd = {
     tmpfiles.rules = [
+      "d /var/lib/homeassistant 0755 nequi docker"
+      "d /var/lib/matter 0755 nequi docker"
       "d /var/lib/mc 0755 nequi docker"
       "d /var/lib/mc2 0755 nequi docker"
-      "d /var/lib/pihole 0755 nequi docker"
-      "d /var/lib/homeassistant 0755 nequi docker"
       "d /var/lib/musicassistant 0755 nequi docker"
-      "d /var/lib/matter 0755 nequi docker"
+      "d /var/lib/ollama 0755 nequi docker"
+      "d /var/lib/open-webui 0755 nequi docker"
+      "d /var/lib/pihole 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
   };
@@ -165,7 +167,7 @@ in {
         volumes = [ "/var/lib/homeassistant:/config" ];
         environment.TZ = "America/Toronto";
         image =
-          "ghcr.io/home-assistant/home-assistant:stable@sha256:2ddb0ceb186218e6daf423ac26be2e5a6ce1cd430c6064fe82d1d3d70b95cf38";
+          "ghcr.io/home-assistant/home-assistant:2024.12.0b2@sha256:cf8ecd2153279acb661eb41586c33c955555bef3c2f57c211ce70f0e654fa689";
         extraOptions = [ "--network=host" ];
       };
 
@@ -221,8 +223,26 @@ in {
         ];
 
         image =
-          "ghcr.io/music-assistant/server:2.3.2@sha256:2e6f769f0a9863acea3a39d3207e41b39f325d3f36536851cc7e0509272d8a19";
+          "ghcr.io/music-assistant/server:2.3.3@sha256:c850589a57abacc835eaccc99fb784d68c3c4876ebc7bccf356a2e3fff6b5ed6";
         volumes = [ "/var/lib/musicassistant:/data" ];
+      };
+
+      ollama = {
+        autoStart = true;
+        image =
+          "ollama/ollama:0.4.6@sha256:5fc218daa2c02481f724df115fa4fdd7b45ceeb06a291ae700e582eea15d4332";
+        ports = [ "11434:11434" ];
+        volumes = [ "/var/lib/ollama:/root/.ollama" ];
+      };
+
+      open-webui = {
+        autoStart = true;
+        environment = { WEBUI_AUTH = "False"; };
+        extraOptions = [ "--add-host=host.docker.internal:host-gateway" ];
+        image =
+          "ghcr.io/open-webui/open-webui:0.4.6-ollama@sha256:42b0872ca05a10ee1e79584b26880f462b58c27f5d208e92aa90e94b61e6eb34";
+        ports = [ "3000:8080" ];
+        volumes = [ "/var/lib/open-webui:/app/backend/data" ];
       };
 
       openwakeword = {

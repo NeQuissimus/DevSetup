@@ -6,6 +6,13 @@ let
   name = "Tim Steinbach";
   username = "nequi";
 
+  alfred = (import ./apps/alfred.nix {
+    fetchurl = pkgs.fetchurl;
+    stdenvNoCC = pkgs.stdenvNoCC;
+    undmg = pkgs.undmg;
+    inherit lib;
+  });
+
   declarative-nix = (let
     declCachix = builtins.fetchTarball
       "https://github.com/jonascarpay/declarative-cachix/archive/a2aead56e21e81e3eda1dc58ac2d5e1dc4bf05d7.tar.gz";
@@ -96,11 +103,13 @@ in {
       moniker="Home Manager Trampolines"
       app_target_base="${config.home.homeDirectory}/Applications"
       app_target="$app_target_base/$moniker"
+      [ -e "$app_target" ] && chmod -R 700 "$app_target" && rm -rf "$app_target"
       mkdir -p "$app_target"
       ${pkgs.rsync}/bin/rsync $rsyncArgs "$apps_source/" "$app_target"
     '';
 
     packages = with pkgs; [
+      alfred
       cachix
       comma
       curl
@@ -190,6 +199,46 @@ in {
   };
 
   imports = [ declarative-nix ];
+
+  launchd = {
+    agents = {
+      alfred = {
+        enable = true;
+
+        config = {
+          ProgramArguments = [
+            "/usr/bin/open"
+            "~/Applications/Home Manager Trampolines/Alfred.app"
+          ];
+
+          KeepAlive = {
+            Crashed = true;
+            SuccessfulExit = true;
+          };
+
+          RunAtLoad = true;
+        };
+      };
+
+      rectangle = {
+        enable = true;
+
+        config = {
+          ProgramArguments = [
+            "/usr/bin/open"
+            "~/Applications/Home Manager Trampolines/Rectangle.app"
+          ];
+
+          KeepAlive = {
+            Crashed = true;
+            SuccessfulExit = true;
+          };
+
+          RunAtLoad = true;
+        };
+      };
+    };
+  };
 
   manual = {
     html.enable = false;

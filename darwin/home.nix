@@ -6,17 +6,28 @@ let
   name = "Tim Steinbach";
   username = "nequi";
 
+  mkAgent = { name }: {
+    enable = true;
+
+    config = {
+      ProgramArguments =
+        [ "/usr/bin/open" "~/Applications/Home Manager Trampolines/$name.app" ];
+
+      KeepAlive = {
+        Crashed = true;
+        SuccessfulExit = true;
+      };
+
+      RunAtLoad = true;
+    };
+  };
+
   alfred = (import ./apps/alfred.nix {
     fetchurl = pkgs.fetchurl;
     stdenvNoCC = pkgs.stdenvNoCC;
     undmg = pkgs.undmg;
     inherit lib;
   });
-
-  declarative-nix = (let
-    declCachix = builtins.fetchTarball
-      "https://github.com/jonascarpay/declarative-cachix/archive/a2aead56e21e81e3eda1dc58ac2d5e1dc4bf05d7.tar.gz";
-  in import "${declCachix}/home-manager.nix");
 
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
     pname = "nequi-zsh";
@@ -85,8 +96,6 @@ let
     '';
   };
 in {
-  caches.cachix = [ "nequissimus" "nix-community" "wezterm" ];
-
   fonts.fontconfig = {
     defaultFonts.monospace = [ "Fira Code" ];
 
@@ -198,45 +207,10 @@ in {
     stateVersion = "24.05";
   };
 
-  imports = [ declarative-nix ];
-
   launchd = {
     agents = {
-      alfred = {
-        enable = true;
-
-        config = {
-          ProgramArguments = [
-            "/usr/bin/open"
-            "~/Applications/Home Manager Trampolines/Alfred.app"
-          ];
-
-          KeepAlive = {
-            Crashed = true;
-            SuccessfulExit = true;
-          };
-
-          RunAtLoad = true;
-        };
-      };
-
-      rectangle = {
-        enable = true;
-
-        config = {
-          ProgramArguments = [
-            "/usr/bin/open"
-            "~/Applications/Home Manager Trampolines/Rectangle.app"
-          ];
-
-          KeepAlive = {
-            Crashed = true;
-            SuccessfulExit = true;
-          };
-
-          RunAtLoad = true;
-        };
-      };
+      alfred = mkAgent { name = "Alfred"; };
+      rectangle = mkAgent { name = "Rectangle"; };
     };
   };
 
@@ -249,7 +223,16 @@ in {
   news.display = "silent";
 
   nix = {
-    gc.automatic = true;
+    extraOptions = ''
+      binary-caches-parallel-connections = 20
+      connect-timeout = 10
+      experimental-features = nix-command flakes
+    '';
+
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 14d";
+    };
 
     package = pkgs.nix;
   };

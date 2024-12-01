@@ -150,6 +150,7 @@ in {
       "d /var/lib/mc2 0755 nequi docker"
       "d /var/lib/musicassistant 0755 nequi docker"
       "d /var/lib/ollama 0755 nequi docker"
+      "d /var/lib/openwakeword 0755 nequi docker"
       "d /var/lib/open-webui 0755 nequi docker"
       "d /var/lib/pihole 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
@@ -164,11 +165,22 @@ in {
     containers = {
       homeassistant = {
         autoStart = true;
-        volumes = [ "/var/lib/homeassistant:/config" ];
+
+        dependsOn = [
+          "matter"
+          "musicassistant"
+          "ollama"
+          "openwakeword"
+          "pihole"
+          "piper"
+          "whisper"
+        ];
+
         environment.TZ = "America/Toronto";
+        extraOptions = [ "--network=host" ];
         image =
           "ghcr.io/home-assistant/home-assistant:2024.12.0b2@sha256:cf8ecd2153279acb661eb41586c33c955555bef3c2f57c211ce70f0e654fa689";
-        extraOptions = [ "--network=host" ];
+        volumes = [ "/var/lib/homeassistant:/config" ];
       };
 
       matter = {
@@ -183,17 +195,7 @@ in {
         autoStart = true;
 
         # Start this one last
-        dependsOn = [
-          "homeassistant"
-          "matter"
-          "musicassistant"
-          "ollama"
-          "open-webui"
-          "openwakeword"
-          "pihole"
-          "piper"
-          "whisper"
-        ];
+        dependsOn = [ "homeassistant" ];
 
         environment = {
           ALLOW_FLIGHT = "TRUE";
@@ -243,6 +245,11 @@ in {
 
       ollama = {
         autoStart = true;
+        environment = {
+          OLLAMA_MAX_LOADED_MODELS = "1";
+          OLLAMA_MAX_QUEUE = "2";
+          OLLAMA_NUM_PARALLEL = "1";
+        };
         image =
           "ollama/ollama:0.4.6@sha256:5fc218daa2c02481f724df115fa4fdd7b45ceeb06a291ae700e582eea15d4332";
         ports = [ "11434:11434" ];
@@ -251,6 +258,7 @@ in {
 
       open-webui = {
         autoStart = true;
+        dependsOn = [ "ollama" ];
         environment = { WEBUI_AUTH = "False"; };
         extraOptions = [ "--add-host=host.docker.internal:host-gateway" ];
         image =
@@ -261,10 +269,11 @@ in {
 
       openwakeword = {
         autoStart = true;
-        cmd = [ "--preload-model" "hey_jarvis" ];
+        cmd = [ "--custom-model-dir" "/custom" "--preload-model" "hey_jarvis" ];
         image =
           "rhasspy/wyoming-openwakeword:1.10.0@sha256:3165a5cd8aef84beb882e640aa1f5c01c97f8c0b1f50016164ecdf2ab65d033a";
         ports = [ "10400:10400" ];
+        volumes = [ "/var/lib/openwakeword:/custom" ];
       };
 
       pihole = {

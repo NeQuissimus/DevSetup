@@ -54,30 +54,8 @@
 
     firewall = {
       allowPing = true;
-      allowedTCPPorts = [
-        111
-        139
-        445
-        2049
-        4000
-        4001
-        4002
-        20048
-        config.services.prometheus.exporters.node.port
-        config.services.prometheus.exporters.zfs.port
-      ];
-      allowedUDPPorts = [
-        111
-        149
-        445
-        2049
-        4000
-        4001
-        4002
-        20048
-        config.services.prometheus.exporters.node.port
-        config.services.prometheus.exporters.zfs.port
-      ];
+      allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
+      allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
       enable = true;
       extraCommands = ''
         iptables -A INPUT -p tcp -s 10.0.0.0/8 --dport 548 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -100,6 +78,12 @@
         "0 17 * * 0 root reboot"
         "0 18 * * * root ${pkgs.google-cloud-sdk}/bin/gsutil -m rsync -c -r /nfs/pictures gs://nequi-nas-p/"
       ];
+    };
+
+    immich = {
+      enable = true;
+      mediaLocation = "/home/Shares/Pictures";
+      openFirewall = true;
     };
 
     nfs.server = {
@@ -127,60 +111,6 @@
 
     openssh.enable = true;
 
-    samba = {
-      enable = true;
-      openFirewall = true;
-      securityType = "user";
-      extraConfig = ''
-        #        workgroup = WORKGROUP
-                server string = smbnix
-                netbios name = smbnix
-                security = user
-                hosts allow = 10.0.10.5 10.0.10.6 127.0.0.1 localhost
-                hosts deny = 0.0.0.0/0
-                guest account = nobody
-                map to guest = bad user
-                unix password sync = yes
-                ea support = yes
-                fruit:metadata = stream
-                fruit:model = MacSamba
-                fruit:veto_appledouble = no
-                fruit:posix_rename = yes
-                fruit:zero_file_id = yes
-                fruit:wipe_intentionally_left_blank_rfork = yes
-                fruit:delete_empty_adfiles = yes
-                min protocol = SMB2
-                vfs objects = fruit streams_xattr
-                veto files = /._*/.DS_Store/
-                delete veto files = yes
-      '';
-      shares = {
-        pictures = {
-          path = "/home/Shares/Pictures";
-          browseable = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "nequi";
-          "force group" = "users";
-          "valid users" = "nequi sarah";
-        };
-
-        tv = {
-          path = "/home/Shares/TV";
-          browseable = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "nequi";
-          "force group" = "users";
-          "valid users" = "nequi";
-        };
-      };
-    };
-
     smartd.enable = true;
   };
 
@@ -188,7 +118,7 @@
 
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-24.05";
+      channel = "https://nixos.org/channels/nixos-24.11";
       dates = "15:00";
       enable = true;
     };

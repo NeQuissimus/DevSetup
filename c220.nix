@@ -179,7 +179,7 @@ in {
         environment.TZ = "America/Toronto";
         extraOptions = [ "--network=host" ];
         image =
-          "ghcr.io/home-assistant/home-assistant:2024.12.0b2@sha256:cf8ecd2153279acb661eb41586c33c955555bef3c2f57c211ce70f0e654fa689";
+          "ghcr.io/home-assistant/home-assistant:2024.12.1@sha256:ec483debb415123b5ebe49b9e6b5021d055e5f62c832acc094503afa09bb448d";
         volumes = [ "/var/lib/homeassistant:/config" ];
       };
 
@@ -251,7 +251,7 @@ in {
           OLLAMA_NUM_PARALLEL = "1";
         };
         image =
-          "ollama/ollama:0.4.6@sha256:5fc218daa2c02481f724df115fa4fdd7b45ceeb06a291ae700e582eea15d4332";
+          "ollama/ollama:0.5.1@sha256:722ce8caba5f8b8bd2ee654b2e29466415be3071a704e3f4db1702b83c885f76";
         ports = [ "11434:11434" ];
         volumes = [ "/var/lib/ollama:/root/.ollama" ];
       };
@@ -293,7 +293,7 @@ in {
 
       piper = {
         autoStart = true;
-        cmd = [ "--voice" "en_GB-jenny_dioco-medium" ];
+        cmd = [ "--voice" "en_GB-northern_english_male-medium" ];
         image =
           "rhasspy/wyoming-piper:1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f";
         ports = [ "10200:10200" ];

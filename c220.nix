@@ -11,6 +11,7 @@ in {
     ./nixos/ssh.nix
     ./nixos/users.nix
     ./nixos/zfs.nix
+    ./nixos/zsh.nix
   ];
 
   console.keyMap = "us";
@@ -259,11 +260,22 @@ in {
       open-webui = {
         autoStart = true;
         dependsOn = [ "ollama" ];
-        environment = { WEBUI_AUTH = "False"; };
-        extraOptions = [ "--add-host=host.docker.internal:host-gateway" ];
+        environment = {
+          ENABLE_COMMUNITY_SHARING = "False";
+          ENABLE_MESSAGE_RATING = "False";
+          ENABLE_MODEL_FILTER = "True";
+          ENABLE_OPENAI_API = "False";
+          ENABLE_SIGNUP = "False";
+          MODEL_FILTER_LIST = "mistral:7b;qwen2.5:3b";
+          PORT = "3000";
+          SAFE_MODE = "True";
+          WEBUI_AUTH = "False";
+        };
+
+        extraOptions =
+          [ "--network=host" "--add-host=host.docker.internal:host-gateway" ];
         image =
-          "ghcr.io/open-webui/open-webui:0.4.6-ollama@sha256:42b0872ca05a10ee1e79584b26880f462b58c27f5d208e92aa90e94b61e6eb34";
-        ports = [ "3000:8080" ];
+          "ghcr.io/open-webui/open-webui:0.4.8@sha256:c1e4f0927fb0acd53bcbd8bbc92ecaf7ca36a23ee4cb8f25ce90c541012a473a";
         volumes = [ "/var/lib/open-webui:/app/backend/data" ];
       };
 

@@ -88,6 +88,14 @@ in {
   services = {
     avahi.enable = true;
 
+    cron = {
+      enable = true;
+      systemCronJobs = [
+        ''
+          0 * * * 0 nequi ${pkgs.curl}/bin/curl http://localhost:11434/api/chat -d '{"model": "qwen2.5:3b", "keep_alive": -1}' ''
+      ];
+    };
+
     logrotate.checkConfig =
       false; # https://github.com/NixOS/nixpkgs/pull/237414
 
@@ -210,7 +218,7 @@ in {
           FTB_MODPACK_VERSION_ID = "12147";
           INIT_MEMORY = "2G";
           JVM_DD_OPTS = "disable.watchdog:true";
-          MAX_MEMORY = "8G";
+          MAX_MEMORY = "16G";
           MAX_PLAYERS = "4";
           MAX_TICK_TIME = "-1";
           MOTD = "Abe Pack 1.6.0";

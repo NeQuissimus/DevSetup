@@ -28,7 +28,7 @@
           ++ lib.optionals config.security.sudo.enable [ "wheel" ];
         isNormalUser = true;
         name = "nequi";
-        shell = pkgs.bash;
+        shell = pkgs.zsh;
         uid = 1000;
         openssh.authorizedKeys.keyFiles = [
           (builtins.fetchurl {

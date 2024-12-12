@@ -15,7 +15,7 @@ in {
       options = "--delete-older-than 14d";
     };
 
-    nrBuildUsers = 2;
+    nrBuildUsers = 4;
 
     optimise = {
       automatic = true;
@@ -25,8 +25,8 @@ in {
     settings = {
       allowed-users = [ "nequi" "root" "@wheel" ];
       auto-optimise-store = true;
-      cores = 2;
-      max-jobs = 2;
+      cores = 4;
+      max-jobs = 4;
       require-sigs = true;
       sandbox = true;
       substituters = [ "https://cache.nixos.org" ];

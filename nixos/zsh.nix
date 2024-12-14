@@ -2,12 +2,12 @@
 let
   nequi-zsh = pkgs.stdenv.mkDerivation rec {
     pname = "nequi-zsh";
-    version = "1.1";
+    version = "1.2";
 
     src = pkgs.fetchFromGitHub {
       owner = "NeQuissimus";
       repo = "nequi-zsh";
-      sha256 = "sha256-vlcBsRsMy5GiKO4egpX3vUS8EJTLr2UWLJF1az7rHA8=";
+      sha256 = "sha256-dP1lPI+1y9mJ7JWY3NEfvkHVoYjVeHzJAI3Mzw8h3RE=";
       rev = "v${version}";
     };
 

@@ -10,6 +10,7 @@
     ./nixos/ssh.nix
     ./nixos/users.nix
     ./nixos/zfs.nix
+    ./nixos/zsh.nix
   ];
 
   boot = {
@@ -37,11 +38,15 @@
   documentation.nixos.enable = false;
 
   environment = {
+    etc."fuse.conf".text = ''
+      user_allow_other
+    '';
+
     etc."sysconfig/lm_sensors".text = ''
       HWMON_MODULES="coretemp"
     '';
 
-    systemPackages = with pkgs; [ ];
+    systemPackages = with pkgs; [ htop ];
   };
 
   hardware.cpu.intel.updateMicrocode = true;
@@ -54,12 +59,7 @@
 
     firewall = {
       allowPing = true;
-      allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
-      allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
       enable = true;
-      extraCommands = ''
-        iptables -A INPUT -p tcp -s 10.0.0.0/8 --dport 548 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-      '';
     };
 
     hostName = "supermicro";
@@ -75,26 +75,22 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 17 * * 0 root reboot"
-        "0 18 * * * root ${pkgs.google-cloud-sdk}/bin/gsutil -m rsync -c -r /nfs/pictures gs://nequi-nas-p/"
+        "0 17 * * 5 root reboot"
+        ''
+          0 18 * * 5 root ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 
     immich = {
       enable = true;
-      mediaLocation = "/home/Shares/Pictures";
+      host = "0.0.0.0";
+      mediaLocation = "/mnt/immich";
       openFirewall = true;
     };
 
-    nfs.server = {
+    jellyfin = {
       enable = true;
-      exports = ''
-        /nfs 10.0.10.5(rw,fsid=0,no_subtree_check,insecure)
-        /nfs/pictures 10.0.10.5(rw,nohide,no_subtree_check,insecure,sync,all_squash,anonuid=1000,anongid=100)
-      '';
-      lockdPort = 4001;
-      mountdPort = 4002;
-      statdPort = 4000;
+      openFirewall = true;
     };
 
     ntp = {
@@ -124,7 +120,29 @@
     };
   };
 
-  systemd.tmpfiles.rules = [ "d /etc/gcs 0700 root root" ];
+  systemd = {
+    services.immich_enc = {
+      after = [ "tank.mount" ];
+      before = [ "immich-server.service" "immich-machine-learning.service" ];
+
+      description = "Mount immich volume";
+      path = with pkgs; [ util-linux ];
+
+      serviceConfig = {
+        ExecStart = ''
+          ${
+            lib.getBin pkgs.gocryptfs
+          }/bin/gocryptfs -passfile /etc/gocryptfs -allow_other "/tank/immich_enc" "/mnt/immich"'';
+
+        Type = "forking";
+      };
+
+      requiredBy =
+        [ "immich-server.service" "immich-machine-learning.service" ];
+    };
+
+    tmpfiles.rules = [ "d /etc/gcs 0700 root root" ];
+  };
 
   time.timeZone = "America/Toronto";
 }

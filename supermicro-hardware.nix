@@ -19,11 +19,6 @@
     fsType = "ext4";
   };
 
-  fileSystems."/nfs/pictures" = {
-    device = "/home/Shares/Pictures";
-    options = [ "bind" ];
-  };
-
   swapDevices =
     [{ device = "/dev/disk/by-uuid/d6e24228-6d2c-47fb-beef-56d2e7f7206e"; }];
 

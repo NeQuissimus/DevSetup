@@ -1,5 +1,28 @@
 { config, pkgs, lib, ... }:
-let interface = "enp4s0f0";
+let
+  interface = "enp4s0f0";
+  dockerImages = {
+    homeAssistant =
+      "ghcr.io/home-assistant/home-assistant:2024.12.4@sha256:093f4255f1cd1bddabadfb109d5dbf56f87aaa2f419f6c0377f947ed0ab02204";
+    matter =
+      "ghcr.io/home-assistant-libs/python-matter-server:6.6.1@sha256:2057a36093e8a0e5a9d6c391a2be64401944783a6263e26c992b7790033304b5";
+    minecraft =
+      "itzg/minecraft-server:java17@sha256:3a50610894211a5bc7075b853372f8803065067a41d7965b177b297f5bb543a8";
+    musicAssistant =
+      "ghcr.io/music-assistant/server:2.3.3@sha256:c850589a57abacc835eaccc99fb784d68c3c4876ebc7bccf356a2e3fff6b5ed6";
+    ollama =
+      "ollama/ollama:0.5.4@sha256:18bfb1d605604fd53dcad20d0556df4c781e560ebebcd923454d627c994a0e37";
+    openWebui =
+      "ghcr.io/open-webui/open-webui:0.4.8@sha256:c1e4f0927fb0acd53bcbd8bbc92ecaf7ca36a23ee4cb8f25ce90c541012a473a";
+    openwakeword =
+      "rhasspy/wyoming-openwakeword:1.10.0@sha256:3165a5cd8aef84beb882e640aa1f5c01c97f8c0b1f50016164ecdf2ab65d033a";
+    pihole =
+      "pihole/pihole:2024.07.0@sha256:0def896a596e8d45780b6359dbf82fc8c75ef05b97e095452e67a0a4ccc95377";
+    piper =
+      "rhasspy/wyoming-piper:1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f";
+    whisper =
+      "rhasspy/wyoming-whisper:2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8";
+  };
 in {
   imports = [
     ./c220-hardware.nix
@@ -187,16 +210,14 @@ in {
 
         environment.TZ = "America/Toronto";
         extraOptions = [ "--network=host" ];
-        image =
-          "ghcr.io/home-assistant/home-assistant:2024.12.1@sha256:ec483debb415123b5ebe49b9e6b5021d055e5f62c832acc094503afa09bb448d";
+        image = dockerImages.homeAssistant;
         volumes = [ "/var/lib/homeassistant:/config" ];
       };
 
       matter = {
         autoStart = true;
         volumes = [ "/var/lib/matter:/data" ];
-        image =
-          "ghcr.io/home-assistant-libs/python-matter-server:stable@sha256:e291154e44accc5284ec14fbc52a32764a8286deb68b4d3b91b280ad644715d8";
+        image = dockerImages.matter;
         extraOptions = [ "--network=host" ];
       };
 
@@ -228,8 +249,7 @@ in {
           TYPE = "FTBA";
           USE_AIKAR_FLAGS = "TRUE";
         };
-        image =
-          "itzg/minecraft-server:java17@sha256:b673a66b9cbc5de6eb278f044bbe0ac12ec47d8d49330d9c58770ebb2427c936";
+        image = dockerImages.minecraft;
         ports = [ "23565:25565" ];
         user = "root";
         volumes = [ "/var/lib/mc2:/data" ];
@@ -247,8 +267,7 @@ in {
           "apparmor:unconfined"
         ];
 
-        image =
-          "ghcr.io/music-assistant/server:2.3.3@sha256:c850589a57abacc835eaccc99fb784d68c3c4876ebc7bccf356a2e3fff6b5ed6";
+        image = dockerImages.musicAssistant;
         volumes = [ "/var/lib/musicassistant:/data" ];
       };
 
@@ -259,8 +278,7 @@ in {
           OLLAMA_MAX_QUEUE = "2";
           OLLAMA_NUM_PARALLEL = "1";
         };
-        image =
-          "ollama/ollama:0.5.1@sha256:722ce8caba5f8b8bd2ee654b2e29466415be3071a704e3f4db1702b83c885f76";
+        image = dockerImages.ollama;
         ports = [ "11434:11434" ];
         volumes = [ "/var/lib/ollama:/root/.ollama" ];
       };
@@ -282,16 +300,14 @@ in {
 
         extraOptions =
           [ "--network=host" "--add-host=host.docker.internal:host-gateway" ];
-        image =
-          "ghcr.io/open-webui/open-webui:0.4.8@sha256:c1e4f0927fb0acd53bcbd8bbc92ecaf7ca36a23ee4cb8f25ce90c541012a473a";
+        image = dockerImages.openWebui;
         volumes = [ "/var/lib/open-webui:/app/backend/data" ];
       };
 
       openwakeword = {
         autoStart = true;
         cmd = [ "--custom-model-dir" "/custom" "--preload-model" "hey_jarvis" ];
-        image =
-          "rhasspy/wyoming-openwakeword:1.10.0@sha256:3165a5cd8aef84beb882e640aa1f5c01c97f8c0b1f50016164ecdf2ab65d033a";
+        image = dockerImages.openwakeword;
         ports = [ "10400:10400" ];
         volumes = [ "/var/lib/openwakeword:/custom" ];
       };
@@ -302,8 +318,7 @@ in {
           TZ = "America/Toronto";
           WEBPASSWORD = "admin"; # This is fine
         };
-        image =
-          "pihole/pihole:latest@sha256:e53305e9e00d7ac283763ca9f323cc95a47d0113a1e02eb9c6849f309d6202dd";
+        image = dockerImages.pihole;
         ports = [ "53:53/tcp" "53:53/udp" "80:80/tcp" ];
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"
@@ -314,16 +329,14 @@ in {
       piper = {
         autoStart = true;
         cmd = [ "--voice" "en_GB-northern_english_male-medium" ];
-        image =
-          "rhasspy/wyoming-piper:1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f";
+        image = dockerImages.piper;
         ports = [ "10200:10200" ];
       };
 
       whisper = {
         autoStart = true;
         cmd = [ "--model" "tiny-int8" "--language" "en" ];
-        image =
-          "rhasspy/wyoming-whisper:2.2.0@sha256:49d07d5d5ef10b27e228810426d94d3500555ba8ca619485dde4714d8ae85762";
+        image = dockerImages.whisper;
         ports = [ "10300:10300" ];
       };
     };

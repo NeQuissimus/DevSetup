@@ -427,6 +427,7 @@ in {
         "gitlens.launchpad.indicator.enabled" = false;
         "gitlens.statusBar.enabled" = false;
         "gitlens.telemetry.enabled" = false;
+        "gradle.nestedProjects" = true;
         "metals.enableIndentOnPaste" = true;
         "metals.serverVersion" = "1.3.5";
         "telemetry.telemetryLevel" = "off";

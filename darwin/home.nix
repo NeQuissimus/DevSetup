@@ -296,8 +296,7 @@ in {
         push.default = "upstream";
         submodule.recurse = "true";
         tag.sort = "version:refname";
-        credential.helper =
-          "store --file /opt/dev/var/private/git_credential_store";
+        credential.helper = "osxkeychain";
         url."https://github.com/Shopify/".insteadOf = [
           "git@github.com:Shopify/"
           "git@github.com:shopify/"
@@ -312,6 +311,7 @@ in {
         ".bloop"
         ".scalafix.conf"
         ".scalafmt.conf"
+        ".idea"
         # https://www.toptal.com/developers/gitignore/api/emacs
         "*~"
         "#*#"

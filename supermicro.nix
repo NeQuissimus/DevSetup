@@ -77,7 +77,7 @@
       systemCronJobs = [
         "0 17 * * 5 root reboot"
         ''
-          0 18 * * 5 root ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+          0 18 * * 5 root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 

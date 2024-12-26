@@ -5,15 +5,15 @@ let
     homeAssistant =
       "ghcr.io/home-assistant/home-assistant:2024.12.5@sha256:132ef461504be5c5ebd6e34e5d3fb3d7958bb6758a5136107eea9f84c299254a";
     matter =
-      "ghcr.io/home-assistant-libs/python-matter-server:6.6.1@sha256:2057a36093e8a0e5a9d6c391a2be64401944783a6263e26c992b7790033304b5";
+      "ghcr.io/home-assistant-libs/python-matter-server:7.0.0@sha256:1e371d6936c179fec67896180a8697448c2ccec628078f709bb4b271b040701b";
     minecraft =
       "itzg/minecraft-server:java17@sha256:3a50610894211a5bc7075b853372f8803065067a41d7965b177b297f5bb543a8";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.3.3@sha256:c850589a57abacc835eaccc99fb784d68c3c4876ebc7bccf356a2e3fff6b5ed6";
+      "ghcr.io/music-assistant/server:2.3.4@sha256:301cc44d2405e1f12953a44ddb65454630007755af9ada9d204bc1a3b9a06175";
     ollama =
       "ollama/ollama:0.5.4@sha256:18bfb1d605604fd53dcad20d0556df4c781e560ebebcd923454d627c994a0e37";
     openWebui =
-      "ghcr.io/open-webui/open-webui:0.4.8@sha256:c1e4f0927fb0acd53bcbd8bbc92ecaf7ca36a23ee4cb8f25ce90c541012a473a";
+      "ghcr.io/open-webui/open-webui:0.5.1@ sha256:a6f2a27e058bbb7b1278aae30b76a83e86d5fb118911582ac52e327714a76e46 ";
     openwakeword =
       "rhasspy/wyoming-openwakeword:1.10.0@sha256:3165a5cd8aef84beb882e640aa1f5c01c97f8c0b1f50016164ecdf2ab65d033a";
     pihole =

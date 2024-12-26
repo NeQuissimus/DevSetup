@@ -3,7 +3,7 @@ let
   interface = "enp4s0f0";
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2024.12.4@sha256:093f4255f1cd1bddabadfb109d5dbf56f87aaa2f419f6c0377f947ed0ab02204";
+      "ghcr.io/home-assistant/home-assistant:2024.12.5@sha256:132ef461504be5c5ebd6e34e5d3fb3d7958bb6758a5136107eea9f84c299254a";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:6.6.1@sha256:2057a36093e8a0e5a9d6c391a2be64401944783a6263e26c992b7790033304b5";
     minecraft =
@@ -114,8 +114,9 @@ in {
     cron = {
       enable = true;
       systemCronJobs = [
+        "27 1 * * 0 root reboot"
         ''
-          0 * * * 0 nequi ${pkgs.curl}/bin/curl http://localhost:11434/api/chat -d '{"model": "qwen2.5:3b", "keep_alive": -1}' ''
+          45 1 * * 0 nequi ${pkgs.curl}/bin/curl http://localhost:11434/api/chat -d '{"model": "qwen2.5:3b", "keep_alive": -1}' ''
       ];
     };
 

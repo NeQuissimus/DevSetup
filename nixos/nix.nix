@@ -22,6 +22,8 @@ in {
       dates = [ "20:30" ];
     };
 
+    package = pkgs.nixVersions.latest;
+
     settings = {
       allowed-users = [ "nequi" "root" "@wheel" ];
       auto-optimise-store = true;

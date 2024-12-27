@@ -4,7 +4,7 @@
   system.autoUpgrade = {
     allowReboot = true;
     channel = lib.mkDefault "https://nixos.org/channels/nixos-24.11";
-    dates = "15:00";
+    dates = "daily";
     enable = true;
     operation = "boot";
   };

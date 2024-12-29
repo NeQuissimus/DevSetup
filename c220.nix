@@ -132,7 +132,7 @@ in {
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels = [ "qwen2.5:3b" ];
+      loadModels = [ "qwen2.5:3b" "llava-phi3" ];
 
       openFirewall = true;
     };

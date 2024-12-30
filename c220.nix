@@ -4,6 +4,8 @@ let
   dockerImages = {
     homeAssistant =
       "ghcr.io/home-assistant/home-assistant:2024.12.5@sha256:132ef461504be5c5ebd6e34e5d3fb3d7958bb6758a5136107eea9f84c299254a";
+    immich-ml =
+      "ghcr.io/immich-app/immich-machine-learning:v1.123.0@sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.0@sha256:1e371d6936c179fec67896180a8697448c2ccec628078f709bb4b271b040701b";
     minecraft =
@@ -64,6 +66,7 @@ in {
         53 # Pihole
         80 # Pihole
         1400 # Home Assistant
+        3333 # Immich ML
         5580 # Matter
         8095 # Music Assistant
         8096 # Music Assistant
@@ -196,6 +199,7 @@ in {
   systemd = {
     tmpfiles.rules = [
       "d /var/lib/homeassistant 0755 nequi docker"
+      "d /var/lib/immich-ml 0755 nequi docker"
       "d /var/lib/matter 0755 nequi docker"
       "d /var/lib/mc 0755 nequi docker"
       "d /var/lib/mc2 0755 nequi docker"
@@ -222,11 +226,18 @@ in {
         volumes = [ "/var/lib/homeassistant:/config" ];
       };
 
+      immich-ml = {
+        autoStart = true;
+        image = dockerImages.immich-ml;
+        ports = [ "3333:3003" ];
+        volumes = [ "/var/lib/immich-ml:/cache" ];
+      };
+
       matter = {
         autoStart = true;
-        volumes = [ "/var/lib/matter:/data" ];
-        image = dockerImages.matter;
         extraOptions = [ "--network=host" ];
+        image = dockerImages.matter;
+        volumes = [ "/var/lib/matter:/data" ];
       };
 
       minecraftabe = {

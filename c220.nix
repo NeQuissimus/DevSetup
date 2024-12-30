@@ -67,6 +67,8 @@ in {
         80 # Pihole
         1400 # Home Assistant
         3333 # Immich ML
+        5353 # Matter
+        5540 # Matter
         5580 # Matter
         8095 # Music Assistant
         8096 # Music Assistant

@@ -62,12 +62,12 @@ let
 
   zellij-monocle = pkgs.stdenv.mkDerivation rec {
     pname = "zellij-monocle";
-    version = "0.100.0";
+    version = "0.100.2";
 
     src = pkgs.fetchurl {
       url =
-        "https://github.com/imsnif/monocle/releases/download/v0.100.0/monocle.wasm";
-      sha256 = "sha256-MxS5OBEUdrcuRfvewLt+q24lb8J+3O4/yjbgMD6nnqQ=";
+        "https://github.com/imsnif/monocle/releases/download/v0.100.2/monocle.wasm";
+      sha256 = "sha256-TLfizJEtl1tOdVyT5E5/DeYu+SQKCaibc1SQz0cTeSw=";
     };
 
     phases = [ "installPhase" "patchPhase" ];

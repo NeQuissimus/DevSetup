@@ -240,12 +240,26 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    bat.enable = true;
+    # bat.enable = true;
 
     eza = {
       enable = true;
       icons = "auto";
       git = true;
+    };
+
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+
+      settings = {
+        auto-update = "off";
+        background-opacity = 0.8;
+        confirm-close-surface = false;
+        font-family = "FiraCode Nerd Font Mono";
+        font-size = 12;
+        theme = "Teerb";
+      };
     };
 
     git = {
@@ -438,25 +452,6 @@ in {
       };
 
       mutableExtensionsDir = false;
-    };
-
-    wezterm = {
-      enable = true;
-      enableZshIntegration = true;
-
-      # WebGPU is a workaround - https://github.com/NixOS/nixpkgs/issues/336069
-      extraConfig = ''
-        local wezterm = require 'wezterm'
-        local config = wezterm.config_builder()
-
-        config.font = wezterm.font 'FiraCode Nerd Font'
-        config.front_end = 'WebGpu'
-        config.hide_tab_bar_if_only_one_tab = true
-        config.window_background_opacity = 0.7
-        config.window_close_confirmation = 'NeverPrompt'
-
-        return config
-      '';
     };
 
     zellij = {

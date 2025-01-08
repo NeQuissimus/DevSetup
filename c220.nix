@@ -3,17 +3,17 @@ let
   interface = "enp4s0f0";
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2024.12.5@sha256:132ef461504be5c5ebd6e34e5d3fb3d7958bb6758a5136107eea9f84c299254a";
+      "ghcr.io/home-assistant/home-assistant:2025.1@sha256:7db850eff6b858b6d01860cd76a10d993861f9bff140de85734ce01d153a62ca";
     immich-ml =
       "ghcr.io/immich-app/immich-machine-learning:v1.123.0@sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd";
     matter =
-      "ghcr.io/home-assistant-libs/python-matter-server:7.0.0@sha256:1e371d6936c179fec67896180a8697448c2ccec628078f709bb4b271b040701b";
+      "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
-      "itzg/minecraft-server:java17@sha256:3a50610894211a5bc7075b853372f8803065067a41d7965b177b297f5bb543a8";
+      "itzg/minecraft-server:java17@sha256:21496fbcfee0eaf149b85e04d0e02e5186ebb8266ea4f806bcf0500cccbd8174";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.3.4@sha256:301cc44d2405e1f12953a44ddb65454630007755af9ada9d204bc1a3b9a06175";
-    pihole =
-      "pihole/pihole:2024.07.0@sha256:0def896a596e8d45780b6359dbf82fc8c75ef05b97e095452e67a0a4ccc95377";
+      "ghcr.io/music-assistant/server:2.3.5@sha256:c9bd5dd2d1f3741649e5398c472b43fdb1c68ef69c8f8d0e0dd261c84cf0d3c1";
+    technitium =
+      "technitium/dns-server:13.3.0@sha256:4acc49f3cf01f6ab405332d1a2ce0a8c512007014d73a03013c17616b446095b";
   };
 in {
   imports = [
@@ -63,11 +63,11 @@ in {
     firewall = {
       allowPing = true;
       allowedTCPPorts = [
-        53 # Pihole
-        80 # Pihole
+        53 # Technitium
         1400 # Home Assistant
         3333 # Immich ML
         5353 # Matter
+        5380 # Technitium
         5540 # Matter
         5580 # Matter
         8095 # Music Assistant
@@ -199,6 +199,24 @@ in {
   };
 
   systemd = {
+    services.technitium-config = {
+      after = [ "docker-technitium.service" ];
+
+      description = "Configure Technitium";
+
+      path = with pkgs; [ curl ];
+
+      script = ''
+        export TOKEN=$(</var/lib/technitium/token) && \
+        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=olg.ca" && \
+        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=mqtt-mini.facebook.com" && \
+        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=transport.home.nest.com" && \
+        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=mqtt-us.roborock.com" && \
+        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=tile-api.com"
+      '';
+      wantedBy = [ "multi-user.target" ];
+    };
+
     tmpfiles.rules = [
       "d /var/lib/homeassistant 0755 nequi docker"
       "d /var/lib/immich-ml 0755 nequi docker"
@@ -206,7 +224,7 @@ in {
       "d /var/lib/mc 0755 nequi docker"
       "d /var/lib/mc2 0755 nequi docker"
       "d /var/lib/musicassistant 0755 nequi docker"
-      "d /var/lib/pihole 0755 nequi docker"
+      "d /var/lib/technitium 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
   };
@@ -220,7 +238,7 @@ in {
       homeassistant = {
         autoStart = true;
 
-        dependsOn = [ "matter" "musicassistant" "pihole" ];
+        dependsOn = [ "matter" "musicassistant" "technitium" ];
 
         environment.TZ = "America/Toronto";
         extraOptions = [ "--network=host" ];
@@ -292,18 +310,24 @@ in {
         volumes = [ "/var/lib/musicassistant:/data" ];
       };
 
-      pihole = {
+      technitium = {
         autoStart = true;
+
         environment = {
-          TZ = "America/Toronto";
-          WEBPASSWORD = "admin"; # This is fine
+          DNS_SERVER_DOMAIN = "technitium";
+          DNS_SERVER_ADMIN_PASSWORD = "admin";
+          DNS_SERVER_WEB_SERVICE_LOCAL_ADDRESSES = "0.0.0.0";
+          DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
+          DNS_SERVER_ENABLE_BLOCKING = "true";
+          DNS_SERVER_BLOCK_LIST_URLS =
+            "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts,https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/main/noai_hosts.txt,https://blocklistproject.github.io/Lists/smart-tv.txt,https://someonewhocares.org/hosts/zero/hosts,https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt,https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt,https://gitlab.com/quidsup/notrack-annoyance-blocklist/-/raw/master/annoyance.hosts,https://github.com/hagezi/dns-blocklists/raw/refs/heads/main/hosts/ultimate.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt,https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt,https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt,https://blocklistproject.github.io/Lists/abuse.txt,https://blocklistproject.github.io/Lists/ads.txt,https://blocklistproject.github.io/Lists/fraud.txt,https://blocklistproject.github.io/Lists/gambling.txt,https://blocklistproject.github.io/Lists/malware.txt,https://blocklistproject.github.io/Lists/phishing.txt,https://blocklistproject.github.io/Lists/porn.txt,https://blocklistproject.github.io/Lists/scam.txt,https://blocklistproject.github.io/Lists/tracking.txt";
+          DNS_SERVER_FORWARDERS = "9.9.9.11,149.112.112.11";
+          DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
-        image = dockerImages.pihole;
-        ports = [ "53:53/tcp" "53:53/udp" "80:80/tcp" ];
-        volumes = [
-          "/var/lib/pihole/etc-pihole:/etc/pihole"
-          "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
-        ];
+
+        image = dockerImages.technitium;
+        ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];
+        volumes = [ "/var/lib/technitium:/etc/dns" ];
       };
     };
   };

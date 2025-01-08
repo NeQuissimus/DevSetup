@@ -300,17 +300,20 @@ in {
         core.commitGraph = "true";
         core.editor = "nano";
         core.whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+        credential.helper = "osxkeychain";
         diff.algorithm = "patience";
         diff.colorMoved = "default";
         gc.writeCommitGraph = "true";
         help.autocorrect = "5";
         init.defaultBranch = "main";
         merge.renamelimit = "4096";
+        pull.ff = "only";
         pull.rebase = "true";
+        push.autoSetupRemote = "true";
         push.default = "upstream";
+        rebase.updateRefs = "true";
         submodule.recurse = "true";
         tag.sort = "version:refname";
-        credential.helper = "osxkeychain";
         url."https://github.com/Shopify/".insteadOf = [
           "git@github.com:Shopify/"
           "git@github.com:shopify/"
@@ -326,6 +329,7 @@ in {
         ".scalafix.conf"
         ".scalafmt.conf"
         ".idea"
+        ".intellij"
         # https://www.toptal.com/developers/gitignore/api/emacs
         "*~"
         "#*#"

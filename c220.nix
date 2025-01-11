@@ -3,7 +3,7 @@ let
   interface = "enp4s0f0";
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.1@sha256:7db850eff6b858b6d01860cd76a10d993861f9bff140de85734ce01d153a62ca";
+      "ghcr.io/home-assistant/home-assistant:2025.1.1@sha256:dda88779889b09d5465b8bf0c69ba2a62f81b01ee74d943ebe31e3474ea7cbea";
     immich-ml =
       "ghcr.io/immich-app/immich-machine-learning:v1.123.0@sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd";
     matter =
@@ -11,7 +11,11 @@ let
     minecraft =
       "itzg/minecraft-server:java17@sha256:21496fbcfee0eaf149b85e04d0e02e5186ebb8266ea4f806bcf0500cccbd8174";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.3.5@sha256:c9bd5dd2d1f3741649e5398c472b43fdb1c68ef69c8f8d0e0dd261c84cf0d3c1";
+      "ghcr.io/music-assistant/server:2.3.6@sha256:7c43aadfaf9109feab4c514648124701bf6b70410932ffcbf0c9daa7bdfbc2b2";
+    seq =
+      "datalust/seq:2024.3@sha256:4e81ce2e12c9086621f22ddc380c753129a7d6723b1a99eb8a43dbd2aa789e23";
+    seq-syslog =
+      "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
     technitium =
       "technitium/dns-server:13.3.0@sha256:4acc49f3cf01f6ab405332d1a2ce0a8c512007014d73a03013c17616b446095b";
   };
@@ -66,6 +70,8 @@ in {
         53 # Technitium
         1400 # Home Assistant
         3333 # Immich ML
+        5080 # Seq
+        5341 # Seq
         5353 # Matter
         5380 # Technitium
         5540 # Matter
@@ -76,7 +82,10 @@ in {
         8123 # Home Assistant
         23565 # Minecraft
       ];
-      allowedUDPPorts = [ 53 ];
+      allowedUDPPorts = [
+        53 # DNS
+        5514 # Seq Syslog
+      ];
       enable = true;
     };
 
@@ -165,6 +174,12 @@ in {
 
     openssh.enable = true;
 
+    syslogd = {
+      defaultConfig = "*.* @10.0.0.52:5514";
+
+      enable = true;
+    };
+
     thermald.enable = true;
 
     upower.enable = true;
@@ -224,6 +239,7 @@ in {
       "d /var/lib/mc 0755 nequi docker"
       "d /var/lib/mc2 0755 nequi docker"
       "d /var/lib/musicassistant 0755 nequi docker"
+      "d /var/lib/seq 0755 nequi docker"
       "d /var/lib/technitium 0755 nequi docker"
       "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
     ];
@@ -241,13 +257,33 @@ in {
         dependsOn = [ "matter" "musicassistant" "technitium" ];
 
         environment.TZ = "America/Toronto";
-        extraOptions = [ "--network=host" ];
+
+        extraOptions = [
+          "--network=host"
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
+
         image = dockerImages.homeAssistant;
         volumes = [ "/var/lib/homeassistant:/config" ];
       };
 
       immich-ml = {
         autoStart = true;
+
+        extraOptions = [
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
+
         image = dockerImages.immich-ml;
         ports = [ "3333:3003" ];
         volumes = [ "/var/lib/immich-ml:/cache" ];
@@ -255,7 +291,17 @@ in {
 
       matter = {
         autoStart = true;
-        extraOptions = [ "--network=host" ];
+
+        extraOptions = [
+          "--network=host"
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
+
         image = dockerImages.matter;
         volumes = [ "/var/lib/matter:/data" ];
       };
@@ -288,6 +334,16 @@ in {
           TYPE = "FTBA";
           USE_AIKAR_FLAGS = "TRUE";
         };
+
+        extraOptions = [
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
+
         image = dockerImages.minecraft;
         ports = [ "23565:25565" ];
         user = "root";
@@ -300,6 +356,12 @@ in {
 
         extraOptions = [
           "--network=host"
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
           "--cap-add=DAC_READ_SEARCH"
           "--cap-add=SYS_ADMIN"
           "--security-opt"
@@ -308,6 +370,30 @@ in {
 
         image = dockerImages.musicAssistant;
         volumes = [ "/var/lib/musicassistant:/data" ];
+      };
+
+      seq = {
+        autoStart = true;
+
+        environment = {
+          ACCEPT_EULA = "y";
+          SEQ_API_CANONICALURI = "http://10.0.0.52:5080";
+        };
+
+        image = dockerImages.seq;
+
+        ports = [ "5080:80" "5341:5341" ];
+        volumes = [ "/var/lib/seq:/data" ];
+      };
+
+      seq-syslog = {
+        autoStart = true;
+
+        environment.SEQ_ADDRESS = "http://10.0.0.52:5341";
+
+        image = dockerImages.seq-syslog;
+
+        ports = [ "5514:514/udp" ];
       };
 
       technitium = {
@@ -324,6 +410,15 @@ in {
           DNS_SERVER_FORWARDERS = "9.9.9.11,149.112.112.11";
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
+
+        extraOptions = [
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
 
         image = dockerImages.technitium;
         ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];

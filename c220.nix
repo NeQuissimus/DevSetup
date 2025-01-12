@@ -14,6 +14,8 @@ let
       "ghcr.io/music-assistant/server:2.3.6@sha256:7c43aadfaf9109feab4c514648124701bf6b70410932ffcbf0c9daa7bdfbc2b2";
     seq =
       "datalust/seq:2024.3@sha256:4e81ce2e12c9086621f22ddc380c753129a7d6723b1a99eb8a43dbd2aa789e23";
+    seq-parser =
+      "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
     technitium =
@@ -72,6 +74,7 @@ in {
         3333 # Immich ML
         5080 # Seq
         5341 # Seq
+        5342 # Seq
         5353 # Matter
         5380 # Technitium
         5540 # Matter
@@ -386,10 +389,27 @@ in {
         volumes = [ "/var/lib/seq:/data" ];
       };
 
+      seq-parser = {
+        autoStart = true;
+
+        environment = {
+          BIND_PORT = "5342";
+          REGEX1 =
+            "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<device>.*) was blocked from accessing (?P<target>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) by (?P<rule>.*)\\|(?P<level>.*)";
+          REGEX2 =
+            "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<message>.*)\\|(?P<level>.*)";
+          SEQ_ADDRESS = "http://10.0.0.52:5341";
+        };
+
+        image = dockerImages.seq-parser;
+
+        ports = [ "5342:5342" ];
+      };
+
       seq-syslog = {
         autoStart = true;
 
-        environment.SEQ_ADDRESS = "http://10.0.0.52:5341";
+        environment.SEQ_ADDRESS = "http://10.0.0.52:5342";
 
         image = dockerImages.seq-syslog;
 

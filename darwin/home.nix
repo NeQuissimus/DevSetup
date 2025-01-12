@@ -80,12 +80,12 @@ let
 
   zellij-zjstatus = pkgs.stdenv.mkDerivation rec {
     pname = "zellij-zjstatus";
-    version = "0.19.0";
+    version = "0.19.2";
 
     src = pkgs.fetchurl {
       url =
-        "https://github.com/dj95/zjstatus/releases/download/v0.19.0/zjstatus.wasm";
-      sha256 = "sha256-xU2CA+okW8gg9l25mLWgaQFNnzoa8Z6KH0tenmiUvhM=";
+        "https://github.com/dj95/zjstatus/releases/download/v0.19.2/zjstatus.wasm";
+      sha256 = "sha256-Jp3l3HLQxN1Jd4jyJPD7ICO/1heItMFfETDjrUsOqeI=";
     };
 
     phases = [ "installPhase" "patchPhase" ];
@@ -119,6 +119,7 @@ in {
 
     packages = with pkgs; [
       alfred
+      aerospace
       cachix
       comma
       curl
@@ -131,13 +132,15 @@ in {
       kubectl
       nerd-fonts.fira-code
       nixfmt-classic
-      podman
-      rectangle
+      #      podman
       zellij-monocle
       zellij-zjstatus
     ];
 
     file = {
+      ".aerospace.toml".source = ./config/aerospace.toml;
+      ".config/ghostty/config".source = ./config/ghostty;
+
       ".config/zellij/config.kdl".text = ''
         keybinds {
             normal {
@@ -209,8 +212,8 @@ in {
 
   launchd = {
     agents = {
+      aerospace = mkAgent { name = "Aerospace"; };
       alfred = mkAgent { name = "Alfred"; };
-      rectangle = mkAgent { name = "Rectangle"; };
     };
   };
 
@@ -246,20 +249,6 @@ in {
       enable = true;
       icons = "auto";
       git = true;
-    };
-
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-
-      settings = {
-        auto-update = "off";
-        background-opacity = 0.8;
-        confirm-close-surface = false;
-        font-family = "FiraCode Nerd Font Mono";
-        font-size = 12;
-        theme = "Teerb";
-      };
     };
 
     git = {
@@ -414,6 +403,7 @@ in {
           redhat.java
           scala-lang.scala
           scalameta.metals
+          tamasfe.even-better-toml
           vscjava.vscode-gradle
           vscjava.vscode-java-pack
           zxh404.vscode-proto3

@@ -118,14 +118,6 @@
 
   services.logrotate.checkConfig = false;
 
-  system = {
-    autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-24.11";
-      dates = "15:00";
-      enable = true;
-    };
-  };
-
   systemd = {
     services.immich_enc = {
       after = [ "tank.mount" ];

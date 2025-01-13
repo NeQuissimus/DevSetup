@@ -9,7 +9,7 @@ let
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
-      "itzg/minecraft-server:java17@sha256:21496fbcfee0eaf149b85e04d0e02e5186ebb8266ea4f806bcf0500cccbd8174";
+      "itzg/minecraft-server:2025.1.0-java17@sha256:d0e8397e16c3264d5eff0a5a17b6cd9d5a4a647216120d53502f1359b6864a91";
     musicAssistant =
       "ghcr.io/music-assistant/server:2.3.6@sha256:7c43aadfaf9109feab4c514648124701bf6b70410932ffcbf0c9daa7bdfbc2b2";
     seq =
@@ -317,10 +317,6 @@ in {
 
         environment = {
           ALLOW_FLIGHT = "TRUE";
-          AUTOPAUSE_KNOCK_INTERFACE = "eth0";
-          AUTOPAUSE_TIMEOUT_EST = "60";
-          AUTOPAUSE_TIMEOUT_INIT = "60";
-          ENABLE_AUTOPAUSE = "TRUE";
           ENABLE_ROLLING_LOGS = "TRUE";
           EULA = "TRUE";
           FTB_MODPACK_ID = "114";

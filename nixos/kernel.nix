@@ -161,7 +161,7 @@
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
-    kernelPackages = lib.mkForce pkgs.linuxPackages_6_6_hardened;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_12_hardened;
 
     kernelParams = [
       "cfi=kcfi" # Disable FineIBT since it is weaker than pure KCFI

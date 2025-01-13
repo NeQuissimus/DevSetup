@@ -152,6 +152,9 @@ in {
                     };
                     SwitchToMode "Normal"
                 }
+
+                bind "Alt left" { GoToPreviousTab; }
+                bind "Alt right" { GoToNextTab; }
             }
         }
 

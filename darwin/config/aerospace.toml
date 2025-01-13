@@ -21,10 +21,6 @@ outer.top = 0
 outer.right = 0
 [mode.main.binding]
 cmd-enter = ['exec-and-forget open /Applications/Ghostty.app', 'workspace 2:⚙️']
-ctrl-left = 'focus left'
-ctrl-down = 'focus down'
-ctrl-up = 'focus up'
-ctrl-right = 'focus right'
 ctrl-alt-left = 'move left'
 ctrl-alt-down = 'move down'
 ctrl-alt-up = 'move up'

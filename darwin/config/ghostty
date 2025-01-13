@@ -7,3 +7,5 @@ term = xterm
 theme = Teerb
 
 keybind = super+t=unbind
+keybind = alt+left=unbind
+keybind = alt+right=unbind

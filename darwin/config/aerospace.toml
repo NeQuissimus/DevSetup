@@ -20,6 +20,10 @@ outer.bottom = 0
 outer.top = 0
 outer.right = 0
 [mode.main.binding]
+cmd-enter = [
+    'exec-and-forget open /Applications/Ghostty.app',
+    'workspace 2Terminal',
+]
 ctrl-left = 'focus left'
 ctrl-down = 'focus down'
 ctrl-up = 'focus up'
@@ -50,7 +54,6 @@ alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8Music'
 alt-shift-9 = 'move-node-to-workspace 9Chat'
 alt-tab = 'workspace-back-and-forth'
-cmd-enter = 'exec-and-forget open /Applications/Ghostty.app'
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 1Browser'

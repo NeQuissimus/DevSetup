@@ -322,6 +322,7 @@ in {
         ".scalafmt.conf"
         ".idea"
         ".intellij"
+        "gradle-wrapper.properties"
         # https://www.toptal.com/developers/gitignore/api/emacs
         "*~"
         "#*#"

@@ -3,7 +3,7 @@ let
   interface = "enp4s0f0";
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.1.2@sha256:871f84a00db8d05856a70ee3761b138a8e91eb108d61f2fa176e7eeadb5eda03";
+      "ghcr.io/home-assistant/home-assistant:2025.1.3@sha256:fccef878024377273be5d2bb8cc7d63715dd8b255b36543d595eb867549f4a79";
     immich-ml =
       "ghcr.io/immich-app/immich-machine-learning:v1.124.2@sha256:a134652b47278edfdac3187d61558e78679be39c810536193a41e9e0d894c5f4";
     matter =

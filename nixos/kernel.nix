@@ -165,6 +165,7 @@
 
     kernelParams = [
       "cfi=kcfi" # Disable FineIBT since it is weaker than pure KCFI
+      "consoleblank=600" # Turn off display
       "debugfs=off" # No debugfs
       "hardened_usercopy=1" # Make sure CONFIG_HARDENED_USERCOPY stays enabled
       "iommu.passthrough=0" # Force IOMMU TLB invalidation so devices will never be able to access stale data contents

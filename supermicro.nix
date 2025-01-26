@@ -77,7 +77,7 @@
       systemCronJobs = [
         "0 17 * * 5 root reboot"
         ''
-          0 18 10 */3 5 root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+          0 18 10 * * root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 
@@ -107,13 +107,18 @@
 
     openssh.enable = true;
 
+    sanoid = {
+      datasets."tank/immich_enc".useTemplate = [ "backup" ];
+      enable = true;
+    };
+
+    smartd.enable = true;
+
     syslogd = {
       defaultConfig = "*.* @10.0.0.52:5514";
 
       enable = true;
     };
-
-    smartd.enable = true;
   };
 
   services.logrotate.checkConfig = false;

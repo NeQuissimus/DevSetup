@@ -5,20 +5,32 @@
     options zfs zfs_arc_max=2147483648
   '';
 
-  services.zfs = {
-    autoScrub = {
-      enable = true;
-      interval = "weekly";
+  services = {
+    sanoid = {
+      templates.backup = {
+        daily = 14;
+        monthly = 3;
+        yearly = 3;
+        autoprune = true;
+        autosnap = true;
+      };
     };
 
-    autoSnapshot = {
-      enable = false;
-      flags = "-k -p --utc";
-    };
+    zfs = {
+      autoScrub = {
+        enable = true;
+        interval = "weekly";
+      };
 
-    trim = {
-      enable = true;
-      interval = "weekly";
+      autoSnapshot = {
+        enable = false;
+        flags = "-k -p --utc";
+      };
+
+      trim = {
+        enable = true;
+        interval = "weekly";
+      };
     };
   };
 

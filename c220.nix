@@ -3,9 +3,9 @@ let
   interface = "enp4s0f0";
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.1.3@sha256:fccef878024377273be5d2bb8cc7d63715dd8b255b36543d595eb867549f4a79";
+      "ghcr.io/home-assistant/home-assistant:2025.1.4@sha256:a8aab945aec2f43eb1b1fde4d19e25ef952fab9c10f49e40d3b3ce7d24cedc19";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.124.2@sha256:a134652b47278edfdac3187d61558e78679be39c810536193a41e9e0d894c5f4";
+      "ghcr.io/immich-app/immich-machine-learning:v1.125.6@sha256:0ca72dae460b7fd2dbd0ca146fdddfd26b1c1af783f37659c2f1bdd546fdf1e4";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
@@ -19,7 +19,7 @@ let
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
     technitium =
-      "technitium/dns-server:13.3.0@sha256:4acc49f3cf01f6ab405332d1a2ce0a8c512007014d73a03013c17616b446095b";
+      "technitium/dns-server:13.4.0@sha256:0de0c6e8632c614cff640f6a4f1d95e528af2d6395547c080c72426a8ee7241a";
   };
 in {
   imports = [

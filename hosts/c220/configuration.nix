@@ -1,11 +1,12 @@
 { config, pkgs, lib, ... }:
 let
   interface = "enp4s0f0";
+
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.1.4@sha256:a8aab945aec2f43eb1b1fde4d19e25ef952fab9c10f49e40d3b3ce7d24cedc19";
+      "ghcr.io/home-assistant/home-assistant:2025.2@sha256:1191a95f9b82df94f467ad14dcb02bd6a5ddf244f8cf54a983c84a63bd612752";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.125.6@sha256:0ca72dae460b7fd2dbd0ca146fdddfd26b1c1af783f37659c2f1bdd546fdf1e4";
+      "ghcr.io/immich-app/immich-machine-learning:v1.125.7@sha256:5a7bac207c5be17bbe775fdca2fef7ec6635400180ae79cc7a41659cef2c05b0";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
@@ -19,20 +20,64 @@ let
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
     technitium =
-      "technitium/dns-server:13.4.0@sha256:0de0c6e8632c614cff640f6a4f1d95e528af2d6395547c080c72426a8ee7241a";
+      "technitium/dns-server:13.4.1@sha256:2ecf0f90879f1a3b44ec9dcf6753327fd80ef7ab1d54659f9cd55df16fc4fd5a";
   };
+
+  blocklists = [
+    "https://blocklistproject.github.io/Lists/abuse.txt"
+    "https://blocklistproject.github.io/Lists/ads.txt"
+    "https://blocklistproject.github.io/Lists/fraud.txt"
+    "https://blocklistproject.github.io/Lists/gambling.txt"
+    "https://blocklistproject.github.io/Lists/malware.txt"
+    "https://blocklistproject.github.io/Lists/phishing.txt"
+    "https://blocklistproject.github.io/Lists/porn.txt"
+    "https://blocklistproject.github.io/Lists/scam.txt"
+    "https://blocklistproject.github.io/Lists/smart-tv.txt"
+    "https://blocklistproject.github.io/Lists/tracking.txt"
+    "https://gitlab.com/quidsup/notrack-annoyance-blocklist/-/raw/master/annoyance.hosts"
+    "https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt"
+    "https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
+    "https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/main/noai_hosts.txt"
+    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
+    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt"
+    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt"
+    "https://someonewhocares.org/hosts/zero/hosts"
+  ];
+
+  allowed_domains = [
+    "ecsv2.roblox.com" # Roblox tracking
+    "huggingface.co" # ML Models
+    "mqtt-mini.facebook.com" # Facebook messenger
+    "mqtt-us.roborock.com" # Roborock message broker
+    "olg.ca" # OLG
+    "tile-api.com" # Tile API
+    "tr.rbxcdn.com" # Roblox assets
+    "track.spe.schoolmessenger.com" # School info
+    "transport.home.nest.com" # Nest status updates
+    "web.poecdn.com" # Path Of Exile website
+    "x20na.update.easebar.com" # Marvel Rivals
+  ];
+
+  blocked_domains = [
+    "api-fp-retry-bj.fengkongcloud.com" # Fingerprinting
+    "ntp.aliyun.com" # Alibaba NTP
+  ];
 in {
   imports = [
-    ./c220-hardware.nix
+    ./hardware.nix
 
-    ./nixos/docker.nix
-    ./nixos/kernel.nix
-    ./nixos/nix.nix
-    ./nixos/security.nix
-    ./nixos/ssh.nix
-    ./nixos/users.nix
-    ./nixos/zfs.nix
-    ./nixos/zsh.nix
+    ../../nixos/docker.nix
+    ../../nixos/kernel.nix
+    ../../nixos/nix.nix
+    ../../nixos/security.nix
+    ../../nixos/ssh.nix
+    ../../nixos/users.nix
+    ../../nixos/zfs.nix
+    ../../nixos/zsh.nix
   ];
 
   console.keyMap = "us";
@@ -225,12 +270,13 @@ in {
       path = with pkgs; [ curl ];
 
       script = ''
-        export TOKEN=$(</var/lib/technitium/token) && \
-        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=olg.ca" && \
-        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=mqtt-mini.facebook.com" && \
-        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=transport.home.nest.com" && \
-        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=mqtt-us.roborock.com" && \
-        curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=tile-api.com"
+        export TOKEN=$(</var/lib/technitium/token)
+        ${lib.concatMapStringsSep "\n" (x:
+          "curl http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}")
+        allowed_domains}
+        ${lib.concatMapStringsSep "\n" (x:
+          "curl http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}")
+        blocked_domains}
       '';
       wantedBy = [ "multi-user.target" ];
     };
@@ -421,8 +467,7 @@ in {
           DNS_SERVER_WEB_SERVICE_LOCAL_ADDRESSES = "0.0.0.0";
           DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
           DNS_SERVER_ENABLE_BLOCKING = "true";
-          DNS_SERVER_BLOCK_LIST_URLS =
-            "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts,https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/main/noai_hosts.txt,https://blocklistproject.github.io/Lists/smart-tv.txt,https://someonewhocares.org/hosts/zero/hosts,https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt,https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt,https://gitlab.com/quidsup/notrack-annoyance-blocklist/-/raw/master/annoyance.hosts,https://github.com/hagezi/dns-blocklists/raw/refs/heads/main/hosts/ultimate.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt,https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt,https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt,https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt,https://blocklistproject.github.io/Lists/abuse.txt,https://blocklistproject.github.io/Lists/ads.txt,https://blocklistproject.github.io/Lists/fraud.txt,https://blocklistproject.github.io/Lists/gambling.txt,https://blocklistproject.github.io/Lists/malware.txt,https://blocklistproject.github.io/Lists/phishing.txt,https://blocklistproject.github.io/Lists/porn.txt,https://blocklistproject.github.io/Lists/scam.txt,https://blocklistproject.github.io/Lists/tracking.txt";
+          DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
           DNS_SERVER_FORWARDERS = "9.9.9.11,149.112.112.11";
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };

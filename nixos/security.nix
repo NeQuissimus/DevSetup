@@ -14,6 +14,7 @@
     apparmor.enable = true;
     sudo = {
       enable = true;
+      execWheelOnly = true;
       wheelNeedsPassword = true;
     };
   };

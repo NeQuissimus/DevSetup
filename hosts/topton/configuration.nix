@@ -2,20 +2,19 @@
 
 {
   imports = [
-    ./supermicro-hardware.nix
+    ./hardware.nix
 
-    ./nixos/kernel.nix
-    ./nixos/nix.nix
-    ./nixos/security.nix
-    ./nixos/ssh.nix
-    ./nixos/users.nix
-    ./nixos/zfs.nix
-    ./nixos/zsh.nix
+    ../../nixos/kernel.nix
+    ../../nixos/nix.nix
+    ../../nixos/security.nix
+    ../../nixos/ssh.nix
+    ../../nixos/users.nix
+    ../../nixos/zfs.nix
+    ../../nixos/zsh.nix
   ];
 
   boot = {
     kernelModules = [ "coretemp" ];
-    kernelParams = [ "libata.force=noncq" ];
 
     loader = {
       grub = {
@@ -38,15 +37,29 @@
   documentation.nixos.enable = false;
 
   environment = {
-    etc."fuse.conf".text = ''
-      user_allow_other
-    '';
+    etc = {
+      "fuse.conf".text = ''
+        user_allow_other
+      '';
 
-    etc."sysconfig/lm_sensors".text = ''
-      HWMON_MODULES="coretemp"
-    '';
+      "machine-id".source = "/nix/persist/etc/machine-id";
+      "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
+      "ssh/ssh_host_rsa_key.pub".source =
+        "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
+      "ssh/ssh_host_ed25519_key".source =
+        "/nix/persist/etc/ssh/ssh_host_ed25519_key";
+      "ssh/ssh_host_ed25519_key.pub".source =
+        "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
 
-    systemPackages = with pkgs; [ htop ];
+      "sysconfig/lm_sensors".text = ''
+        HWMON_MODULES="coretemp"
+      '';
+    };
+
+    persistence."/nix/persist".directories =
+      [ "/etc/gcs" "/etc/nixos" "/var/lib" "/var/log" ];
+
+    systemPackages = lib.mkForce [ ];
   };
 
   hardware.cpu.intel.updateMicrocode = true;
@@ -62,14 +75,16 @@
       enable = true;
     };
 
-    hostName = "supermicro";
-    hostId = "123b567b";
+    hostName = "topton";
+    hostId = "0b2d7a86";
   };
 
   powerManagement = {
     cpuFreqGovernor = "powersave";
     powertop.enable = true;
   };
+
+  programs.htop.enable = true;
 
   services = {
     cron = {

@@ -19,57 +19,12 @@ let
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
-    technitium =
-      "technitium/dns-server:13.4.1@sha256:2ecf0f90879f1a3b44ec9dcf6753327fd80ef7ab1d54659f9cd55df16fc4fd5a";
   };
-
-  blocklists = [
-    "https://blocklistproject.github.io/Lists/abuse.txt"
-    "https://blocklistproject.github.io/Lists/ads.txt"
-    "https://blocklistproject.github.io/Lists/fraud.txt"
-    "https://blocklistproject.github.io/Lists/gambling.txt"
-    "https://blocklistproject.github.io/Lists/malware.txt"
-    "https://blocklistproject.github.io/Lists/phishing.txt"
-    "https://blocklistproject.github.io/Lists/porn.txt"
-    "https://blocklistproject.github.io/Lists/scam.txt"
-    "https://blocklistproject.github.io/Lists/smart-tv.txt"
-    "https://blocklistproject.github.io/Lists/tracking.txt"
-    "https://gitlab.com/quidsup/notrack-annoyance-blocklist/-/raw/master/annoyance.hosts"
-    "https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt"
-    "https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
-    "https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/main/noai_hosts.txt"
-    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
-    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt"
-    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt"
-    "https://someonewhocares.org/hosts/zero/hosts"
-  ];
-
-  allowed_domains = [
-    "ecsv2.roblox.com" # Roblox tracking
-    "huggingface.co" # ML Models
-    "mqtt-mini.facebook.com" # Facebook messenger
-    "mqtt-us.roborock.com" # Roborock message broker
-    "olg.ca" # OLG
-    "tile-api.com" # Tile API
-    "tr.rbxcdn.com" # Roblox assets
-    "track.spe.schoolmessenger.com" # School info
-    "transport.home.nest.com" # Nest status updates
-    "web.poecdn.com" # Path Of Exile website
-    "x20na.update.easebar.com" # Marvel Rivals
-  ];
-
-  blocked_domains = [
-    "api-fp-retry-bj.fengkongcloud.com" # Fingerprinting
-    "ntp.aliyun.com" # Alibaba NTP
-  ];
 in {
   imports = [
     ./hardware.nix
 
+    ../../nixos/dns.nix
     ../../nixos/docker.nix
     ../../nixos/kernel.nix
     ../../nixos/nix.nix
@@ -114,7 +69,6 @@ in {
     firewall = {
       allowPing = true;
       allowedTCPPorts = [
-        53 # Technitium
         1400 # Home Assistant
         3333 # Immich ML
         5080 # Seq
@@ -131,7 +85,6 @@ in {
         23565 # Minecraft
       ];
       allowedUDPPorts = [
-        53 # DNS
         5514 # Seq Syslog
       ];
       enable = true;
@@ -166,7 +119,14 @@ in {
 
     cron = {
       enable = true;
-      systemCronJobs = [ "27 1 * * 0 root reboot" ];
+      systemCronJobs = [
+        "0 16 * * 1,2,3,4,5 root systemctl start docker-minecraftabe.service"
+        "0 23 * * 1,2,3,4,5 root systemctl stop docker-minecraftabe.service"
+        "0  8 * * 6         root systemctl start docker-minecraftabe.service"
+        "0 23 * * 6,0       root systemctl stop docker-minecraftabe.service"
+
+        "0 9 * * 0 root reboot"
+      ];
     };
 
     logrotate.checkConfig =
@@ -261,38 +221,16 @@ in {
     };
   };
 
-  systemd = {
-    services.technitium-config = {
-      after = [ "docker-technitium.service" ];
-
-      description = "Configure Technitium";
-
-      path = with pkgs; [ curl ];
-
-      script = ''
-        export TOKEN=$(</var/lib/technitium/token)
-        ${lib.concatMapStringsSep "\n" (x:
-          "curl http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}")
-        allowed_domains}
-        ${lib.concatMapStringsSep "\n" (x:
-          "curl http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}")
-        blocked_domains}
-      '';
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    tmpfiles.rules = [
-      "d /var/lib/homeassistant 0755 nequi docker"
-      "d /var/lib/immich-ml 0755 nequi docker"
-      "d /var/lib/matter 0755 nequi docker"
-      "d /var/lib/mc 0755 nequi docker"
-      "d /var/lib/mc2 0755 nequi docker"
-      "d /var/lib/musicassistant 0755 nequi docker"
-      "d /var/lib/seq 0755 nequi docker"
-      "d /var/lib/technitium 0755 nequi docker"
-      "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
-    ];
-  };
+  systemd.tmpfiles.rules = [
+    "d /var/lib/homeassistant 0755 nequi docker"
+    "d /var/lib/immich-ml 0755 nequi docker"
+    "d /var/lib/matter 0755 nequi docker"
+    "d /var/lib/mc 0755 nequi docker"
+    "d /var/lib/mc2 0755 nequi docker"
+    "d /var/lib/musicassistant 0755 nequi docker"
+    "d /var/lib/seq 0755 nequi docker"
+    "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
+  ];
 
   time = { timeZone = "America/Toronto"; };
 
@@ -357,9 +295,6 @@ in {
 
       minecraftabe = {
         autoStart = true;
-
-        # Start this one last
-        dependsOn = [ "homeassistant" ];
 
         environment = {
           ALLOW_FLIGHT = "TRUE";
@@ -434,6 +369,8 @@ in {
       seq-parser = {
         autoStart = true;
 
+        dependsOn = [ "seq" ];
+
         environment = {
           BIND_PORT = "5342";
           REGEX1 =
@@ -451,39 +388,13 @@ in {
       seq-syslog = {
         autoStart = true;
 
+        dependsOn = [ "seq" ];
+
         environment.SEQ_ADDRESS = "http://10.0.0.52:5342";
 
         image = dockerImages.seq-syslog;
 
         ports = [ "5514:514/udp" ];
-      };
-
-      technitium = {
-        autoStart = true;
-
-        environment = {
-          DNS_SERVER_DOMAIN = "technitium";
-          DNS_SERVER_ADMIN_PASSWORD = "admin";
-          DNS_SERVER_WEB_SERVICE_LOCAL_ADDRESSES = "0.0.0.0";
-          DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
-          DNS_SERVER_ENABLE_BLOCKING = "true";
-          DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
-          DNS_SERVER_FORWARDERS = "9.9.9.11,149.112.112.11";
-          DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
-        };
-
-        extraOptions = [
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-        ];
-
-        image = dockerImages.technitium;
-        ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];
-        volumes = [ "/var/lib/technitium:/etc/dns" ];
       };
     };
   };

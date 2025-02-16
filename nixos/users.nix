@@ -4,7 +4,7 @@
   systemd.user.services.emacs.unitConfig.ConditionGroup = "users";
 
   users = {
-    mutableUsers = true;
+    mutableUsers = false;
 
     groups = { docker = { }; };
 
@@ -27,6 +27,9 @@
           ++ lib.optionals config.virtualisation.docker.enable [ "docker" ]
           ++ lib.optionals config.security.sudo.enable [ "wheel" ];
         isNormalUser = true;
+        createHome = true;
+        hashedPassword =
+          "$6$l9.p7uvza/su4w8p$dFidebmBvqAkUJMugKqkWYSmblJ9xv1X/KgVLKG4ZfiHxeiXiXg4HtvgJIqRQQ25LDF3YbZU2v/umQ8RqLudg.";
         name = "nequi";
         shell = pkgs.zsh;
         uid = 1000;

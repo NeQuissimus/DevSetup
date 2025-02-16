@@ -4,6 +4,8 @@
   imports = [
     ./hardware.nix
 
+    ../../nixos/dns.nix
+    ../../nixos/docker.nix
     ../../nixos/kernel.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
@@ -17,18 +19,8 @@
     kernelModules = [ "coretemp" ];
 
     loader = {
-      grub = {
-        device = "/dev/disk/by-id/usb-SABRENT_SABRENT_DB9876543214E-0:0";
-        enable = true;
-      };
-    };
-
-    tmp.cleanOnBoot = true;
-
-    zfs = {
-      forceImportAll = lib.mkForce false;
-      forceImportRoot = false;
-      requestEncryptionCredentials = lib.mkForce false;
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
     };
   };
 
@@ -43,6 +35,8 @@
       '';
 
       "machine-id".source = "/nix/persist/etc/machine-id";
+      "gocryptfs".source = "/nix/persist/etc/gocryptfs";
+
       "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
       "ssh/ssh_host_rsa_key.pub".source =
         "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
@@ -55,11 +49,6 @@
         HWMON_MODULES="coretemp"
       '';
     };
-
-    persistence."/nix/persist".directories =
-      [ "/etc/gcs" "/etc/nixos" "/var/lib" "/var/log" ];
-
-    systemPackages = lib.mkForce [ ];
   };
 
   hardware.cpu.intel.updateMicrocode = true;
@@ -72,11 +61,29 @@
 
     firewall = {
       allowPing = true;
+
+      allowedTCPPorts = [
+        8080 # MediaWiki
+      ];
+
+      allowedUDPPorts = [ ];
+
       enable = true;
     };
 
     hostName = "topton";
-    hostId = "0b2d7a86";
+    hostId = "a1b204e6";
+
+    interfaces."enp4s0" = {
+      ipv4.addresses = [{
+        address = "10.102.0.37";
+        prefixLength = 16;
+      }];
+      ipv6.addresses = [{
+        address = "fd00:1873::200";
+        prefixLength = 117;
+      }];
+    };
   };
 
   powerManagement = {
@@ -106,6 +113,23 @@
     jellyfin = {
       enable = true;
       openFirewall = true;
+    };
+
+    mediawiki = {
+      enable = false;
+
+      extraConfig = ''
+        $wgReadOnly = "Locked";
+      '';
+
+      httpd.virtualHost.listen = [{
+        ip = "127.0.0.1";
+        port = 8080;
+        ssl = false;
+      }];
+
+      name = "Wikipedia dump";
+      passwordFile = pkgs.writeText "password" "admin";
     };
 
     ntp = {
@@ -140,7 +164,7 @@
 
   systemd = {
     services.immich_enc = {
-      after = [ "tank.mount" ];
+      after = [ "tank-immich_enc.mount" ];
       before = [ "immich-server.service" "immich-machine-learning.service" ];
 
       description = "Mount immich volume";
@@ -159,7 +183,8 @@
         [ "immich-server.service" "immich-machine-learning.service" ];
     };
 
-    tmpfiles.rules = [ "d /etc/gcs 0700 root root" ];
+    tmpfiles.rules =
+      [ "d /mnt/immich 0700 immich immich" "d /etc/gcs 0700 root root" ];
   };
 
   time.timeZone = "America/Toronto";

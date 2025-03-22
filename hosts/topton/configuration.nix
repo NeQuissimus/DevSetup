@@ -62,9 +62,7 @@
     firewall = {
       allowPing = true;
 
-      allowedTCPPorts = [
-        8080 # MediaWiki
-      ];
+      allowedTCPPorts = [ ];
 
       allowedUDPPorts = [ ];
 
@@ -113,23 +111,6 @@
     jellyfin = {
       enable = true;
       openFirewall = true;
-    };
-
-    mediawiki = {
-      enable = false;
-
-      extraConfig = ''
-        $wgReadOnly = "Locked";
-      '';
-
-      httpd.virtualHost.listen = [{
-        ip = "127.0.0.1";
-        port = 8080;
-        ssl = false;
-      }];
-
-      name = "Wikipedia dump";
-      passwordFile = pkgs.writeText "password" "admin";
     };
 
     ntp = {

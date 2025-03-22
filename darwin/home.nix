@@ -46,13 +46,6 @@ let
     '';
   };
 
-  vscode_orgmode = {
-    name = "org-mode";
-    publisher = "vscode-org-mode";
-    version = "1.0.0";
-    sha256 = "sha256-o9CIjMlYQQVRdtTlOp9BAVjqrfFIhhdvzlyhlcOv5rY=";
-  };
-
   vscode_nord = {
     name = "nord-visual-studio-code";
     publisher = "arcticicestudio";
@@ -121,7 +114,7 @@ in {
       alfred
       aerospace
       cachix
-      comma
+      code-cursor
       curl
       (google-cloud-sdk.withExtraComponents [
         google-cloud-sdk.components.bq
@@ -132,7 +125,7 @@ in {
       kubectl
       nerd-fonts.fira-code
       nixfmt-classic
-      #      podman
+      obsidian
       zellij-monocle
       zellij-zjstatus
     ];
@@ -158,6 +151,7 @@ in {
             }
         }
 
+        show_startup_tips false
         theme "cyberpunk"
       '';
 
@@ -246,7 +240,7 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    # bat.enable = true;
+    bat.enable = true;
 
     eza = {
       enable = true;
@@ -351,8 +345,8 @@ in {
 
       signing = {
         key = gpgKey;
-        gpgPath = "/opt/dev/bin/gpg-auto-pin";
         signByDefault = true;
+        signer = "/opt/dev/bin/gpg-auto-pin";
       };
 
       userEmail = email;
@@ -393,60 +387,56 @@ in {
 
     vscode = {
       enable = true;
-      enableUpdateCheck = false;
 
-      extensions = with pkgs.vscode-extensions;
-        [
-          bbenoist.nix
-          brettm12345.nixfmt-vscode
-          eamodio.gitlens
-          github.copilot
-          hashicorp.terraform
-          ms-azuretools.vscode-docker
-          ms-python.python
-          redhat.java
-          scala-lang.scala
-          scalameta.metals
-          tamasfe.even-better-toml
-          vscjava.vscode-gradle
-          vscjava.vscode-java-pack
-          zxh404.vscode-proto3
-        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-          vscode_nord
-          vscode_orgmode
-        ];
+      package = pkgs.code-cursor;
 
-      userSettings = {
-        "editor.formatOnSave" = true;
-        "editor.wordWrap" = "on";
-        "files.associations" = { "*.ejson" = "json"; };
-        "files.insertFinalNewline" = true;
-        "files.trimTrailingWhitespace" = true;
-        "files.watcherExclude" = {
-          "**/.bloop" = true;
-          "**/.metals" = true;
-          "**/.ammonite" = true;
+      profiles.default = {
+        enableUpdateCheck = false;
+
+        extensions = with pkgs.vscode-extensions;
+          [
+            bbenoist.nix
+            brettm12345.nixfmt-vscode
+            eamodio.gitlens
+            hashicorp.terraform
+            ms-azuretools.vscode-docker
+            ms-python.python
+            redhat.java
+            scala-lang.scala
+            scalameta.metals
+            tamasfe.even-better-toml
+            vscjava.vscode-gradle
+            vscjava.vscode-java-pack
+            zxh404.vscode-proto3
+          ]
+          ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [ vscode_nord ];
+
+        userSettings = {
+          "editor.formatOnSave" = true;
+          "editor.wordWrap" = "on";
+          "files.associations" = { "*.ejson" = "json"; };
+          "files.insertFinalNewline" = true;
+          "files.trimTrailingWhitespace" = true;
+          "files.watcherExclude" = {
+            "**/.bloop" = true;
+            "**/.metals" = true;
+            "**/.ammonite" = true;
+          };
+          "editor.fontFamily" = "Fira Code";
+          "editor.fontLigatures" = true;
+          "editor.fontSize" = 12;
+          "gitlens.launchpad.indicator.enabled" = false;
+          "gitlens.statusBar.enabled" = false;
+          "gitlens.telemetry.enabled" = false;
+          "gradle.nestedProjects" = true;
+          "metals.enableIndentOnPaste" = true;
+          "metals.serverVersion" = "1.3.5";
+          "telemetry.telemetryLevel" = "off";
+          "workbench.colorTheme" = "Nord";
+          "workbench.preferredDarkColorTheme" = "Nord";
+          "workbench.preferredLightColorTheme" = "Nord";
+          "workbench.startupEditor" = "none";
         };
-        "editor.fontFamily" = "Fira Code";
-        "editor.fontLigatures" = true;
-        "editor.fontSize" = 12;
-        "github.copilot.editor.enableAutoCompletions" = true;
-        "github.copilot.enable" = {
-          "*" = true;
-          "org" = false;
-          "plaintext" = false;
-        };
-        "gitlens.launchpad.indicator.enabled" = false;
-        "gitlens.statusBar.enabled" = false;
-        "gitlens.telemetry.enabled" = false;
-        "gradle.nestedProjects" = true;
-        "metals.enableIndentOnPaste" = true;
-        "metals.serverVersion" = "1.3.5";
-        "telemetry.telemetryLevel" = "off";
-        "workbench.colorTheme" = "Nord";
-        "workbench.preferredDarkColorTheme" = "Nord";
-        "workbench.preferredLightColorTheme" = "Nord";
-        "workbench.startupEditor" = "none";
       };
 
       mutableExtensionsDir = false;
@@ -497,23 +487,13 @@ in {
           jq -R -r '. as $line | try fromjson catch $line'
         }
 
-        function fixnix() {
-          # macOS updates break Nix
-          grep -q "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" /etc/zshrc || echo "if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi" | sudo tee -a /etc/zshrc
-          grep -q "trusted-users" /etc/nix/nix.conf || (echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf && sudo launchctl stop org.nixos.nix-daemon && sudo launchctl start org.nixos.nix-daemon)
-          [ $(id -u ${config.home.username}) = $(stat -f "%u" /nix) ] || sudo chown -R ${config.home.username}: /nix
-        }
-
         function fixkube() {
           [ -e ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform ] && (grep -q "nix/profiles/home-manager/home-path/bin/kubectl" ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: ${config.home.homeDirectory}/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform)
         }
 
         function update() {
-          nix-channel --update && home-manager switch && brew update && brew upgrade && clear
+          nix-channel --update && home-manager switch -b backup && brew update && brew upgrade && clear
         }
-
-        # Load Nix
-        #if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then . ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
         # Tooling
         [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh

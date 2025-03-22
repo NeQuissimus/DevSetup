@@ -2,10 +2,13 @@
 
 let
   allowed_domains = [
+    "api-us.roborock.com" # Roborock
+    "awsusor0.fds.api.xiaomi.com" # Roborock
+    "edgesuite.net" # Akamai CDN
     "ecsv2.roblox.com" # Roblox tracking
     "huggingface.co" # ML Models
     "mqtt-mini.facebook.com" # Facebook messenger
-    "mqtt-us.roborock.com" # Roborock message broker
+    "mqtt-us.roborock.com" # Roborock
     "olg.ca" # OLG
     "tile-api.com" # Tile API
     "tr.rbxcdn.com" # Roblox assets
@@ -31,7 +34,6 @@ let
     "https://blocklistproject.github.io/Lists/scam.txt"
     "https://blocklistproject.github.io/Lists/smart-tv.txt"
     "https://blocklistproject.github.io/Lists/tracking.txt"
-    "https://gitlab.com/quidsup/notrack-annoyance-blocklist/-/raw/master/annoyance.hosts"
     "https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt"
     "https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt"
@@ -46,7 +48,7 @@ let
   ];
 
   dockerImages.technitium =
-    "technitium/dns-server:13.4.1@sha256:2ecf0f90879f1a3b44ec9dcf6753327fd80ef7ab1d54659f9cd55df16fc4fd5a";
+    "technitium/dns-server:13.4.3@sha256:51c863c2db49ec49f2ca989e451e386ca15f34e9ef82f3c6911f8204293628c4";
 in {
   networking.firewall = {
     enable = lib.mkDefault true;
@@ -69,7 +71,7 @@ in {
           DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
           DNS_SERVER_ENABLE_BLOCKING = "true";
           DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
-          DNS_SERVER_FORWARDERS = "9.9.9.11,149.112.112.11";
+          DNS_SERVER_FORWARDERS = "9.9.9.9,149.112.112.112";
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
 
@@ -100,10 +102,12 @@ in {
       script = ''
         export TOKEN=$(</var/lib/technitium/token)
         ${lib.concatMapStringsSep "\n" (x:
-          "curl http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}")
+          ''
+            curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}"'')
         allowed_domains}
         ${lib.concatMapStringsSep "\n" (x:
-          "curl http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}")
+          ''
+            curl "http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}"'')
         blocked_domains}
       '';
       wantedBy = [ "multi-user.target" ];

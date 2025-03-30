@@ -4,22 +4,26 @@ let
 
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.2@sha256:1191a95f9b82df94f467ad14dcb02bd6a5ddf244f8cf54a983c84a63bd612752";
+      "ghcr.io/home-assistant/home-assistant:2025.3.4@sha256:5d510569a2ceaa2fa8f8a34b91bddd36f5f7f03e4cb23e942f245e4a5a98bbef";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.125.7@sha256:5a7bac207c5be17bbe775fdca2fef7ec6635400180ae79cc7a41659cef2c05b0";
+      "ghcr.io/immich-app/immich-machine-learning:v1.130.1@sha256:767946d7143630a08f954d070dd442bf69e8aa99faf472d1530b14693dfa2e21";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
-      "itzg/minecraft-server:2025.1.0-java17@sha256:d0e8397e16c3264d5eff0a5a17b6cd9d5a4a647216120d53502f1359b6864a91";
+      "itzg/minecraft-server:2025.2.1-java17@sha256:3f5997c0d5691768a36c0e0ebb7fbbdad71e3931d8349cff3453aa18d02cf9ae";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.3.6@sha256:7c43aadfaf9109feab4c514648124701bf6b70410932ffcbf0c9daa7bdfbc2b2";
+      "ghcr.io/music-assistant/server:2.4.4@sha256:21fd9a4763f02ea63d983fb2d2cb185d28307b2928ded2fe51eae1d3230b5474";
     seq =
-      "datalust/seq:2024.3@sha256:4e81ce2e12c9086621f22ddc380c753129a7d6723b1a99eb8a43dbd2aa789e23";
+      "datalust/seq:2024.3.13545@sha256:f0153b02f284d067d724bae79e415fc39055a73f1bc23f7ee2f6c519623b64c3";
     seq-parser =
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
+    speech-to-phrase =
+      "rhasspy/wyoming-speech-to-phrase:1.3.0@sha256:d475fa739caeaf890dbcc41e134fef0fa18013ebd23b096069b90cc9d522a01e";
   };
+
+  hassToken = lib.trim (builtins.readFile (/etc/hass/hass_token));
 in {
   imports = [
     ./hardware.nix
@@ -122,10 +126,10 @@ in {
       systemCronJobs = [
         "0 16 * * 1,2,3,4,5 root systemctl start docker-minecraftabe.service"
         "0 23 * * 1,2,3,4,5 root systemctl stop docker-minecraftabe.service"
-        "0  8 * * 6         root systemctl start docker-minecraftabe.service"
+        "0  8 * * 6,0       root systemctl start docker-minecraftabe.service"
         "0 23 * * 6,0       root systemctl stop docker-minecraftabe.service"
 
-        "0 9 * * 0 root reboot"
+        "0 7 * * 0 root reboot"
       ];
     };
 
@@ -148,13 +152,14 @@ in {
       environmentVariables = {
         OLLAMA_MAX_LOADED_MODELS = "1";
         OLLAMA_MAX_QUEUE = "2";
+        OLLAMA_NOHISTORY = "true";
         OLLAMA_NUM_PARALLEL = "1";
       };
 
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels = [ "qwen2.5:3b" "llava-phi3" ];
+      loadModels = [ "gemma3:1b" "minicpm-v" ];
 
       openFirewall = true;
     };
@@ -168,7 +173,7 @@ in {
         ENABLE_MODEL_FILTER = "True";
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
-        MODEL_FILTER_LIST = "mistral:7b;qwen2.5:3b";
+        MODEL_FILTER_LIST = "gemma3:1b;qwen2.5:3b";
         OLLAMA_API_BASE_URL =
           "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";
@@ -205,7 +210,7 @@ in {
 
         enable = true;
 
-        preloadModels = [ "ok_kevin" ];
+        preloadModels = [ "hey_jarvis" ];
       };
 
       piper.servers."kevin" = {
@@ -221,6 +226,8 @@ in {
     };
   };
 
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+
   systemd.tmpfiles.rules = [
     "d /var/lib/homeassistant 0755 nequi docker"
     "d /var/lib/immich-ml 0755 nequi docker"
@@ -229,6 +236,7 @@ in {
     "d /var/lib/mc2 0755 nequi docker"
     "d /var/lib/musicassistant 0755 nequi docker"
     "d /var/lib/seq 0755 nequi docker"
+    "d /var/lib/speech-to-phrase 0755 nequi docker"
     "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
   ];
 
@@ -278,6 +286,8 @@ in {
 
       matter = {
         autoStart = true;
+
+        dependsOn = [ "technitium" ];
 
         extraOptions = [
           "--network=host"
@@ -332,6 +342,7 @@ in {
 
       musicassistant = {
         autoStart = true;
+        dependsOn = [ "technitium" ];
         environment = { LOG_LEVEL = "info"; };
 
         extraOptions = [
@@ -396,7 +407,37 @@ in {
 
         ports = [ "5514:514/udp" ];
       };
+
+      speech-to-phrase = {
+        autoStart = true;
+
+        cmd = [
+          "--hass-websocket-uri"
+          "ws://10.0.0.52:8123/api/websocket"
+          "--hass-token"
+          "${hassToken}"
+          "--retrain-on-start"
+        ];
+
+        dependsOn = [ "homeassistant" ];
+
+        extraOptions = [
+          "--log-driver"
+          "syslog"
+          "--log-opt"
+          "syslog-address=udp://10.0.0.52:5514"
+          "--log-opt"
+          "syslog-format=rfc5424"
+        ];
+
+        image = dockerImages.speech-to-phrase;
+
+        ports = [ "10500:10300" ];
+        volumes = [
+          "/var/lib/speech-to-phrase/models:/models"
+          "/var/lib/speech-to-phrase/train:/train"
+        ];
+      };
     };
   };
 }
-

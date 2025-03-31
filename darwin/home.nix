@@ -118,6 +118,7 @@ in {
       curl
       (google-cloud-sdk.withExtraComponents [
         google-cloud-sdk.components.bq
+        google-cloud-sdk.components.cbt
         google-cloud-sdk.components.gke-gcloud-auth-plugin
       ])
       gradle
@@ -126,6 +127,7 @@ in {
       nerd-fonts.fira-code
       nixfmt-classic
       obsidian
+      watch
       zellij-monocle
       zellij-zjstatus
     ];
@@ -164,6 +166,7 @@ in {
                 builtins.unsafeDiscardStringContext zellij-zjstatus
               }/share/zellij/zjstatus.wasm" {
                 hide_frame_for_single_pane "true"
+                show_startup_tips "false"
 
                 format_left  "{mode}#[fg=#89B4FA,bg=#181825,bold] {session}#[bg=#181825] {tabs}"
                 format_right "{datetime}"
@@ -204,6 +207,11 @@ in {
     };
 
     homeDirectory = "/Users/${username}";
+
+    sessionVariablesExtra = ''
+      . "${pkgs.nix}/etc/profile.d/nix.sh"
+    '';
+
     stateVersion = "24.05";
   };
 
@@ -240,6 +248,8 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   programs = {
+    aerospace.userSettings.start-at-login = true;
+
     bat.enable = true;
 
     eza = {
@@ -402,11 +412,15 @@ in {
             ms-azuretools.vscode-docker
             ms-python.python
             redhat.java
+            redhat.vscode-yaml
             scala-lang.scala
             scalameta.metals
             tamasfe.even-better-toml
             vscjava.vscode-gradle
+            vscjava.vscode-java-debug
+            vscjava.vscode-java-dependency
             vscjava.vscode-java-pack
+            vscjava.vscode-java-test
             zxh404.vscode-proto3
           ]
           ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [ vscode_nord ];
@@ -431,6 +445,7 @@ in {
           "gradle.nestedProjects" = true;
           "metals.enableIndentOnPaste" = true;
           "metals.serverVersion" = "1.3.5";
+          "redhat.telemetry.enabled" = false;
           "telemetry.telemetryLevel" = "off";
           "workbench.colorTheme" = "Nord";
           "workbench.preferredDarkColorTheme" = "Nord";
@@ -443,8 +458,11 @@ in {
     };
 
     zellij = {
+      # https://github.com/nix-community/home-manager/issues/5017
+      attachExistingSession = false;
       enable = true;
-      enableZshIntegration = true;
+      enableZshIntegration = false;
+      exitShellOnExit = false;
     };
 
     zsh = {
@@ -502,6 +520,7 @@ in {
         [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
 
         # Kubernetes
+        # cloudplatform: add Shopify clusters to your local kubernetes config
         if [ -d "${config.home.homeDirectory}/src/github.com/Shopify/cloudplatform" ]; then
           export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}${config.home.homeDirectory}/.kube/config:${config.home.homeDirectory}/.kube/config.shopify.cloudplatform
           fixkube
@@ -523,7 +542,7 @@ in {
 
         function change_tab_title() {
             local title=$1
-            command nohup zellij action rename-tab $title >/dev/null 2>&1
+            command nohup ${pkgs.zellij}/bin/zellij action rename-tab $title >/dev/null 2>&1
         }
 
         function set_tab_to_working_dir() {
@@ -545,6 +564,19 @@ in {
         if [[ -n $ZELLIJ ]]; then
             add-zsh-hook precmd set_tab_to_working_dir
             add-zsh-hook preexec set_tab_to_command_line
+        fi
+
+        # https://github.com/nix-community/home-manager/issues/5017
+        if [[ -z "$ZELLIJ" ]]; then
+            if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+                ${pkgs.zellij}/bin/zellij attach -c
+            else
+                ${pkgs.zellij}/bin/zellij
+            fi
+
+            if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+                exit
+            fi
         fi
       '';
 

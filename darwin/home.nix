@@ -465,6 +465,12 @@ in {
       exitShellOnExit = false;
     };
 
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [ "--cmd" "cd" ];
+    };
+
     zsh = {
       enable = true;
 

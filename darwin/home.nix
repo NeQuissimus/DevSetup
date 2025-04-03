@@ -133,7 +133,6 @@ in {
     ];
 
     file = {
-      ".aerospace.toml".source = ./config/aerospace.toml;
       ".config/ghostty/config".source = ./config/ghostty;
 
       ".config/zellij/config.kdl".text = ''
@@ -212,7 +211,7 @@ in {
       . "${pkgs.nix}/etc/profile.d/nix.sh"
     '';
 
-    stateVersion = "24.05";
+    stateVersion = "24.11";
   };
 
   launchd = {
@@ -248,7 +247,94 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    aerospace.userSettings.start-at-login = true;
+    aerospace = {
+      enable = true;
+
+      userSettings = {
+        automatically-unhide-macos-hidden-apps = true;
+        mode.main.binding = {
+          cmd-enter = [
+            "exec-and-forget open /Applications/Ghostty.app"
+            "workspace 2:⚙️"
+          ];
+          ctrl-alt-left = "move left";
+          ctrl-alt-down = "move down";
+          ctrl-alt-up = "move up";
+          ctrl-alt-right = "move right";
+          alt-minus = "resize smart -50";
+          alt-equal = "resize smart +50";
+          alt-1 = "workspace 1:👨‍💻";
+          alt-2 = "workspace 2:⚙️";
+          alt-3 = "workspace 3:🛠️";
+          alt-4 = "workspace 4:📝";
+          alt-5 = "workspace 5";
+          alt-6 = "workspace 6";
+          alt-7 = "workspace 7";
+          alt-8 = "workspace 8:🎶";
+          alt-9 = "workspace 9:💬";
+          alt-0 = "balance-sizes";
+          alt-shift-1 = "move-node-to-workspace 1:👨‍💻";
+          alt-shift-2 = "move-node-to-workspace 2:⚙️";
+          alt-shift-3 = "move-node-to-workspace 3:🛠️";
+          alt-shift-4 = "move-node-to-workspace 4:📝";
+          alt-shift-5 = "move-node-to-workspace 5";
+          alt-shift-6 = "move-node-to-workspace 6";
+          alt-shift-7 = "move-node-to-workspace 7";
+          alt-shift-8 = "move-node-to-workspace 8:🎶";
+          alt-shift-9 = "move-node-to-workspace 9:💬";
+          alt-shift-0 = "balance-sizes";
+          alt-tab = "workspace-back-and-forth";
+        };
+        on-window-detected = [
+          {
+            "if".app-id = "com.google.Chrome";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 1:👨‍💻" ];
+          }
+          {
+            "if".app-id = "org.mozilla.firefox";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 1:👨‍💻" ];
+          }
+          {
+            "if".app-id = "com.apple.Safari";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 1:👨‍💻" ];
+          }
+          {
+            "if".app-id = "com.mitchellh.ghostty";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 2:⚙️" ];
+          }
+          {
+            "if".app-id = "com.microsoft.VSCode";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 3:🛠️" ];
+          }
+          {
+            "if".app-id = "com.jetbrains.intellij";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 3:🛠️" ];
+          }
+          {
+            "if".app-id = "md.obsidian";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 4:📝" ];
+          }
+          {
+            "if".app-id = "com.tidal.desktop";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 8:🎶" ];
+          }
+          {
+            "if".app-id = "com.tinyspeck.slackmacgap";
+            check-further-callbacks = false;
+            run = [ "move-node-to-workspace 9:💬" ];
+          }
+        ];
+        start-at-login = true;
+      };
+    };
 
     bat.enable = true;
 
@@ -444,7 +530,7 @@ in {
           "gitlens.telemetry.enabled" = false;
           "gradle.nestedProjects" = true;
           "metals.enableIndentOnPaste" = true;
-          "metals.serverVersion" = "1.3.5";
+          "metals.serverVersion" = "1.5.2";
           "redhat.telemetry.enabled" = false;
           "telemetry.telemetryLevel" = "off";
           "workbench.colorTheme" = "Nord";

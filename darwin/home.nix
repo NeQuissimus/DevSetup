@@ -253,7 +253,7 @@ in {
       userSettings = {
         automatically-unhide-macos-hidden-apps = true;
         mode.main.binding = {
-          cmd-enter = [
+          cmd-shift-space = [
             "exec-and-forget open /Applications/Ghostty.app"
             "workspace 2:⚙️"
           ];
@@ -495,6 +495,7 @@ in {
             brettm12345.nixfmt-vscode
             eamodio.gitlens
             hashicorp.terraform
+            mathiasfrohlich.kotlin
             ms-azuretools.vscode-docker
             ms-python.python
             redhat.java
@@ -529,6 +530,7 @@ in {
           "gitlens.statusBar.enabled" = false;
           "gitlens.telemetry.enabled" = false;
           "gradle.nestedProjects" = true;
+          "java.debug.settings.vmArgs" = "-Xmx4G";
           "metals.enableIndentOnPaste" = true;
           "metals.serverVersion" = "1.5.2";
           "redhat.telemetry.enabled" = false;

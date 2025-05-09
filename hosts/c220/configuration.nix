@@ -4,15 +4,15 @@ let
 
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.3.4@sha256:5d510569a2ceaa2fa8f8a34b91bddd36f5f7f03e4cb23e942f245e4a5a98bbef";
+      "ghcr.io/home-assistant/home-assistant:2025.5.1@sha256:249d5c20ae2ab973bc2ca54c05764e67e2230f14ac5ca5a7d45e228efbb62e67";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.130.1@sha256:767946d7143630a08f954d070dd442bf69e8aa99faf472d1530b14693dfa2e21";
+      "ghcr.io/immich-app/immich-machine-learning:v1.132.3@sha256:f45063889794008cfc02fcf9d359b55fe37d1f8ebaf89653c89e1dd0e876eb7d";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
     minecraft =
-      "itzg/minecraft-server:2025.2.1-java17@sha256:3f5997c0d5691768a36c0e0ebb7fbbdad71e3931d8349cff3453aa18d02cf9ae";
+      "itzg/minecraft-server:2025.4.0-java21@sha256:ebd8e1308013c320168f436076dc5e854172be0131dd89c8406c5a4b6bc3da0a";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.4.4@sha256:21fd9a4763f02ea63d983fb2d2cb185d28307b2928ded2fe51eae1d3230b5474";
+      "ghcr.io/music-assistant/server:2.5.2@sha256:4e27bbc443d863e51736fbdd6ce492f9a5d2f857a6ca332408e7cc743443fac3";
     seq =
       "datalust/seq:2024.3.13545@sha256:f0153b02f284d067d724bae79e415fc39055a73f1bc23f7ee2f6c519623b64c3";
     seq-parser =
@@ -159,7 +159,8 @@ in {
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels = [ "gemma3:1b" "minicpm-v" ];
+      loadModels =
+        [ "gemma3:1b" "gemma3:4b" "gemma3:1b-it-qat" "gemma3:4b-it-qat" ];
 
       openFirewall = true;
     };
@@ -173,7 +174,8 @@ in {
         ENABLE_MODEL_FILTER = "True";
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
-        MODEL_FILTER_LIST = "gemma3:1b;qwen2.5:3b";
+        MODEL_FILTER_LIST =
+          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat";
         OLLAMA_API_BASE_URL =
           "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";

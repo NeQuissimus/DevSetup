@@ -48,7 +48,7 @@ let
   ];
 
   dockerImages.technitium =
-    "technitium/dns-server:13.4.3@sha256:51c863c2db49ec49f2ca989e451e386ca15f34e9ef82f3c6911f8204293628c4";
+    "technitium/dns-server:13.6.0@sha256:b12182649647f7e28dd596f4089032099a94ab1bee2262d6679fa185238c5f02";
 in {
   networking.firewall = {
     enable = lib.mkDefault true;

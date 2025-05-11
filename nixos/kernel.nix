@@ -2,7 +2,7 @@
 
 {
   boot = {
-    blacklistedKernelModules = [
+    blacklistedKernelModules = lib.mkDefault [
       "adfs"
       "af_802154"
       "affs"
@@ -58,7 +58,7 @@
       "x25"
     ];
 
-    initrd.kernelModules = [
+    initrd.kernelModules = lib.mkDefault [
       "ahci"
       "aesni-intel"
       "iso9660" # Mount CDs
@@ -161,7 +161,7 @@
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
-    kernelPackages = lib.mkForce pkgs.linuxPackages_6_12_hardened;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12_hardened;
 
     kernelParams = [
       "cfi=kcfi" # Disable FineIBT since it is weaker than pure KCFI

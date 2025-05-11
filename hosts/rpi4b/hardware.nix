@@ -7,8 +7,6 @@
 {
   imports = [ <nixos-hardware/raspberry-pi/4> ];
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_rpi4;
-
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";

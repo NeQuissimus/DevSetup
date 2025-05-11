@@ -3,15 +3,43 @@
 let interface = "end0";
 in {
   imports = [
-    ./hardware.nix
-
     ../../nixos/dns.nix
+    ../../nixos/kernel.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix
+
+    ./hardware.nix
   ];
+
+  boot = {
+    blacklistedKernelModules = lib.mkForce [
+      "bluetooth"
+      "brcmfmac"
+      "brcmutil"
+      "btbcm"
+      "btqca"
+      "btsdio"
+      "fuse"
+      "hci_uart"
+      "snd_bcm2835"
+      "snd_pcm"
+      "snd_timer"
+      "snd"
+    ];
+
+    initrd.availableKernelModules = lib.mkForce [
+      "usbhid"
+      "usb_storage"
+      "vc4"
+      "pcie_brcmstb" # required for the pcie bus to work
+      "reset-raspberrypi" # required for vl805 firmware to load
+    ];
+
+    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_rpi4;
+  };
 
   console.keyMap = "us";
 

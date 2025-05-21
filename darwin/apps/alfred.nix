@@ -4,11 +4,11 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "alfred-launcher";
-  version = "5.6_2290";
+  version = "5.6.2_2296";
 
   src = fetchurl {
     url = "https://cachefly.alfredapp.com/Alfred_${finalAttrs.version}.dmg";
-    sha256 = "sha256-ZF1iM2U4Mf1ME97C7cp+L2kTcOMome330MLLGFl0dBE=";
+    sha256 = "sha256-bEn7gB7v10T6oSJ2JhxUyuyzFyGNWw0FUyLTPlmAnNc=";
   };
   sourceRoot = ".";
 

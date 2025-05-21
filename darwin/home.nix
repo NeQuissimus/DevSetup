@@ -531,8 +531,17 @@ in {
           "gitlens.telemetry.enabled" = false;
           "gradle.nestedProjects" = true;
           "java.debug.settings.vmArgs" = "-Xmx4G";
+          "java.test.config" = [{
+            "name" = "Java 17";
+            "vmArgs" = [
+              "-Xmx12G"
+              "-Xms1G"
+              "--add-opens=java.base/java.lang=ALL-UNNAMED"
+              "--add-opens=java.base/java.util=ALL-UNNAMED"
+            ];
+          }];
           "metals.enableIndentOnPaste" = true;
-          "metals.serverVersion" = "1.5.2";
+          "metals.serverVersion" = "1.5.3";
           "redhat.telemetry.enabled" = false;
           "telemetry.telemetryLevel" = "off";
           "workbench.colorTheme" = "Nord";
@@ -565,7 +574,7 @@ in {
       autosuggestion.enable = true;
       enableCompletion = true;
 
-      initExtra = ''
+      initContent = ''
         export CASE_SENSITIVE="false"
         export GPG_TTY="$(tty)"
         export HIST_STAMPS="dd.mm.yyyy"

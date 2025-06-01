@@ -4,17 +4,17 @@ let
 
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.5.1@sha256:249d5c20ae2ab973bc2ca54c05764e67e2230f14ac5ca5a7d45e228efbb62e67";
+      "ghcr.io/home-assistant/home-assistant:2025.5.3@sha256:8a99004ff832dbd535e6ac4d141042bc31141ff6a86b4d5bb288b3680fbceac1";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.132.3@sha256:f45063889794008cfc02fcf9d359b55fe37d1f8ebaf89653c89e1dd0e876eb7d";
+      "ghcr.io/immich-app/immich-machine-learning:v1.133.1@sha256:c1e9b4997deaefac6c2e30208410b882390a36c72b897749974594f6a9450bdb";
     matter =
-      "ghcr.io/home-assistant-libs/python-matter-server:7.0.1@sha256:828c1cd3f957bb0287a099a439505457a25f5d65ed34281acf19cfbf537fe346";
+      "ghcr.io/home-assistant-libs/python-matter-server:8.0.0@sha256:8fd1ea29ab5eca1c5e87cb983c9797b469ad315f6667c73a28b2c4c23a75923c";
     minecraft =
-      "itzg/minecraft-server:2025.4.0-java21@sha256:ebd8e1308013c320168f436076dc5e854172be0131dd89c8406c5a4b6bc3da0a";
+      "itzg/minecraft-server:2025.5.1-java17@sha256:53bc863eb90c4c8452c3aac0c024ae6e065e3309f50715b4390817471be5e7a9";
     musicAssistant =
       "ghcr.io/music-assistant/server:2.5.2@sha256:4e27bbc443d863e51736fbdd6ce492f9a5d2f857a6ca332408e7cc743443fac3";
     seq =
-      "datalust/seq:2024.3.13545@sha256:f0153b02f284d067d724bae79e415fc39055a73f1bc23f7ee2f6c519623b64c3";
+      "datalust/seq:2025.1.14109@sha256:76d31ec93284c0003b97766f3fd2743616de0b510fc799054b5f0ac28820d330";
     seq-parser =
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
@@ -126,10 +126,10 @@ in {
       systemCronJobs = [
         "0 16 * * 1,2,3,4,5 root systemctl start docker-minecraftabe.service"
         "0 23 * * 1,2,3,4,5 root systemctl stop docker-minecraftabe.service"
-        "0  8 * * 6,0       root systemctl start docker-minecraftabe.service"
+        "0  9 30 * 6,0       root systemctl start docker-minecraftabe.service"
         "0 23 * * 6,0       root systemctl stop docker-minecraftabe.service"
 
-        "0 7 * * 0 root reboot"
+        "0 9 * * 0 root reboot"
       ];
     };
 

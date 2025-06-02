@@ -439,6 +439,8 @@ in {
         "/network-security.data"
       ];
 
+      maintenance.enable = true;
+
       signing = {
         key = gpgKey;
         signByDefault = true;

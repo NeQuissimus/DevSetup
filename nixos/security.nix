@@ -3,7 +3,7 @@
 {
   system.autoUpgrade = {
     allowReboot = true;
-    channel = lib.mkDefault "https://nixos.org/channels/nixos-24.11";
+    channel = lib.mkDefault "https://nixos.org/channels/nixos-25.05";
     dates = "daily";
     enable = true;
     operation = "boot";

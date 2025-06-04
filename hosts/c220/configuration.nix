@@ -159,8 +159,13 @@ in {
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels =
-        [ "gemma3:1b" "gemma3:4b" "gemma3:1b-it-qat" "gemma3:4b-it-qat" ];
+      loadModels = [
+        "gemma3:1b"
+        "gemma3:4b"
+        "gemma3:1b-it-qat"
+        "gemma3:4b-it-qat"
+        "qwen2.5vl:3b"
+      ];
 
       openFirewall = true;
     };
@@ -175,7 +180,7 @@ in {
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
         MODEL_FILTER_LIST =
-          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat";
+          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat;qwen2.5vl:3b";
         OLLAMA_API_BASE_URL =
           "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";

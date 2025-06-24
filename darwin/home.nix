@@ -6,6 +6,13 @@ let
   name = "Tim Steinbach";
   username = "nequi";
 
+  gitWorldMaintenanceScript = pkgs.writeShellScript "git-maintenance" ''
+    cd ${config.home.homeDirectory}/world/trees/root/src
+    ${pkgs.git}/bin/git checkout main
+    ${pkgs.git}/bin/git fetch --all
+    ${pkgs.git}/bin/git pull
+  '';
+
   mkAgent = { name }: {
     enable = true;
 
@@ -218,6 +225,15 @@ in {
     agents = {
       aerospace = mkAgent { name = "Aerospace"; };
       alfred = mkAgent { name = "Alfred"; };
+
+      git-world = {
+        enable = true;
+        config = {
+          Program = toString gitWorldMaintenanceScript;
+          StartInterval = 3600; # 1 hour
+          RunAtLoad = false;
+        };
+      };
     };
   };
 
@@ -238,7 +254,7 @@ in {
 
     gc = {
       automatic = true;
-      options = "--delete-older-than 14d";
+      options = "--delete-older-than 7d";
     };
 
     package = pkgs.nix;
@@ -515,7 +531,7 @@ in {
           ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [ vscode_nord ];
 
         userSettings = {
-          "editor.formatOnSave" = true;
+          "editor.formatOnSave" = false;
           "editor.wordWrap" = "on";
           "files.associations" = { "*.ejson" = "json"; };
           "files.insertFinalNewline" = true;
@@ -528,6 +544,7 @@ in {
           "editor.fontFamily" = "Fira Code";
           "editor.fontLigatures" = true;
           "editor.fontSize" = 12;
+          "editor.stickyScroll.enabled" = false;
           "gitlens.launchpad.indicator.enabled" = false;
           "gitlens.statusBar.enabled" = false;
           "gitlens.telemetry.enabled" = false;
@@ -545,11 +562,9 @@ in {
           "metals.enableIndentOnPaste" = true;
           "metals.serverVersion" = "1.5.3";
           "redhat.telemetry.enabled" = false;
-          "telemetry.telemetryLevel" = "off";
           "workbench.colorTheme" = "Nord";
           "workbench.preferredDarkColorTheme" = "Nord";
           "workbench.preferredLightColorTheme" = "Nord";
-          "workbench.startupEditor" = "none";
         };
       };
 
@@ -615,6 +630,7 @@ in {
         }
 
         function update() {
+          export NIX_CONFIG="extra-access-tokens = github.com=$(dev github print-auth --password)"
           nix-channel --update && home-manager switch -b backup && brew update && brew upgrade && clear
         }
 

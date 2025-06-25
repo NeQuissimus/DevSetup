@@ -4,17 +4,17 @@ let
 
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.5.3@sha256:8a99004ff832dbd535e6ac4d141042bc31141ff6a86b4d5bb288b3680fbceac1";
+      "ghcr.io/home-assistant/home-assistant:2025.6.3@sha256:e207929bdf5dc95db43c618b877364e99f7ad506ec5440aeef80d5c9c1cae668";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.133.1@sha256:c1e9b4997deaefac6c2e30208410b882390a36c72b897749974594f6a9450bdb";
+      "ghcr.io/immich-app/immich-machine-learning:v1.135.3@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:8.0.0@sha256:8fd1ea29ab5eca1c5e87cb983c9797b469ad315f6667c73a28b2c4c23a75923c";
     minecraft =
-      "itzg/minecraft-server:2025.5.1-java17@sha256:53bc863eb90c4c8452c3aac0c024ae6e065e3309f50715b4390817471be5e7a9";
+      "itzg/minecraft-server:2025.6.0-java17@sha256:626aade711a27c1ba9dec1faaa326e5baeeea5cff19db72a0129723edec1a456";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.5.2@sha256:4e27bbc443d863e51736fbdd6ce492f9a5d2f857a6ca332408e7cc743443fac3";
+      "ghcr.io/music-assistant/server:2.5.5@sha256:1d3527bb2d217634e875d6cdb6e459f6ff9dcde02be60c9a02fdd8dd86648f78";
     seq =
-      "datalust/seq:2025.1.14109@sha256:76d31ec93284c0003b97766f3fd2743616de0b510fc799054b5f0ac28820d330";
+      "datalust/seq:2025.2.14199@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
     seq-parser =
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =

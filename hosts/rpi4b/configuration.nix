@@ -4,7 +4,6 @@ let interface = "end0";
 in {
   imports = [
     ../../nixos/dns.nix
-    ../../nixos/kernel.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
@@ -15,21 +14,6 @@ in {
   ];
 
   boot = {
-    blacklistedKernelModules = lib.mkForce [
-      "bluetooth"
-      "brcmfmac"
-      "brcmutil"
-      "btbcm"
-      "btqca"
-      "btsdio"
-      "fuse"
-      "hci_uart"
-      "snd_bcm2835"
-      "snd_pcm"
-      "snd_timer"
-      "snd"
-    ];
-
     initrd.availableKernelModules = lib.mkForce [
       "usbhid"
       "usb_storage"
@@ -87,5 +71,5 @@ in {
     };
   };
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-25.05";
 }

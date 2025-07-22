@@ -4,23 +4,23 @@ let
 
   dockerImages = {
     homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:2025.6.3@sha256:e207929bdf5dc95db43c618b877364e99f7ad506ec5440aeef80d5c9c1cae668";
+      "ghcr.io/home-assistant/home-assistant:latest@sha256:90e105ff097717556df4e87da3b825af85b181c763ca2b8d840aeae5d34a083c";
     immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:v1.135.3@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
+      "ghcr.io/immich-app/immich-machine-learning:release@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
     matter =
       "ghcr.io/home-assistant-libs/python-matter-server:8.0.0@sha256:8fd1ea29ab5eca1c5e87cb983c9797b469ad315f6667c73a28b2c4c23a75923c";
     minecraft =
-      "itzg/minecraft-server:2025.6.0-java17@sha256:626aade711a27c1ba9dec1faaa326e5baeeea5cff19db72a0129723edec1a456";
+      "itzg/minecraft-server:java17@sha256:88a7a0c0991f3efa72049f072bd5567baadcbd076e3bacf560245d12d39d7773";
     musicAssistant =
-      "ghcr.io/music-assistant/server:2.5.5@sha256:1d3527bb2d217634e875d6cdb6e459f6ff9dcde02be60c9a02fdd8dd86648f78";
+      "ghcr.io/music-assistant/server:latest@sha256:1d3527bb2d217634e875d6cdb6e459f6ff9dcde02be60c9a02fdd8dd86648f78";
     seq =
-      "datalust/seq:2025.2.14199@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
+      "datalust/seq:latest@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
     seq-parser =
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
     speech-to-phrase =
-      "rhasspy/wyoming-speech-to-phrase:1.3.0@sha256:d475fa739caeaf890dbcc41e134fef0fa18013ebd23b096069b90cc9d522a01e";
+      "rhasspy/wyoming-speech-to-phrase:latest@sha256:18baab8f40d20ddcf984ef2f47da0ac5c6aea72d96a0155ee047a8053dfd5a7e";
   };
 
   hassToken = lib.trim (builtins.readFile (/etc/hass/hass_token));
@@ -87,6 +87,8 @@ in {
         8097 # Music Assistant
         8123 # Home Assistant
         23565 # Minecraft
+
+        config.services.ollama.port
       ];
       allowedUDPPorts = [
         5514 # Seq Syslog
@@ -165,6 +167,7 @@ in {
         "gemma3:1b-it-qat"
         "gemma3:4b-it-qat"
         "qwen2.5vl:3b"
+        "qwen3:4b"
       ];
 
       openFirewall = true;
@@ -180,7 +183,7 @@ in {
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
         MODEL_FILTER_LIST =
-          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat;qwen2.5vl:3b";
+          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat;qwen2.5vl:3b;qwen3:4b";
         OLLAMA_API_BASE_URL =
           "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";
@@ -233,7 +236,7 @@ in {
     };
   };
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-25.05";
 
   systemd.tmpfiles.rules = [
     "d /var/lib/homeassistant 0755 nequi docker"

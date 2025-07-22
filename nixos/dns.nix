@@ -2,6 +2,7 @@
 
 let
   allowed_domains = [
+    "amazonaws.com" # AWS
     "api-us.roborock.com" # Roborock
     "awsusor0.fds.api.xiaomi.com" # Roborock
     "edgesuite.net" # Akamai CDN
@@ -21,48 +22,12 @@ let
   blocked_domains = [
     "api-fp-retry-bj.fengkongcloud.com" # Fingerprinting
     "ntp.aliyun.com" # Alibaba NTP
+    "time.google.com" # Google NTP
   ];
 
   blocklists = [
-    "https://abpvn.com/android/abpvn.txt"
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/adguard_popup_filter.txt"
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
-    "https://anti-ad.net/adguard.txt"
-    "https://big.oisd.nl/"
-    "https://blocklistproject.github.io/Lists/abuse.txt"
-    "https://blocklistproject.github.io/Lists/ads.txt"
-    "https://blocklistproject.github.io/Lists/fraud.txt"
-    "https://blocklistproject.github.io/Lists/gambling.txt"
-    "https://blocklistproject.github.io/Lists/malware.txt"
-    "https://blocklistproject.github.io/Lists/phishing.txt"
-    "https://blocklistproject.github.io/Lists/porn.txt"
-    "https://blocklistproject.github.io/Lists/scam.txt"
-    "https://blocklistproject.github.io/Lists/smart-tv.txt"
-    "https://blocklistproject.github.io/Lists/tracking.txt"
-    "https://cdn.jsdelivr.net/gh/hufilter/hufilter@gh-pages/hufilter-dns.txt"
-    "https://github.com/List-KR/List-KR"
-    "https://hole.cert.pl/domains/v2/domains_adblock.txt"
-    "https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt"
-    "https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh.txt"
-    "https://o0.pages.dev/Pro/adblock.txt"
-    "https://perflyst.github.io/PiHoleBlocklist/AmazonFireTV.txt"
-    "https://perflyst.github.io/PiHoleBlocklist/android-tracking.txt"
-    "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext"
-    "https://phishing.army/download/phishing_army_blocklist_extended.txt"
-    "https://raw.githubusercontent.com/ABPindo/indonesianadblockrules/master/subscriptions/aghome.txt"
-    "https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts"
-    "https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/adblock.txt"
-    "https://raw.githubusercontent.com/bkrucarci/turk-adlist/master/hosts"
-    "https://raw.githubusercontent.com/braveinnovators/ukrainian-security-filter/main/lists/domains.txt"
-    "https://raw.githubusercontent.com/Cats-Team/AdRules/main/dns.txt"
-    "https://raw.githubusercontent.com/cchevy/macedonian-pi-hole-blocklist/master/hosts.txt"
-    "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/AdGuard%20Home%20Compilation%20List/AdGuardHomeCompilationList-Notifications.txt"
-    "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareAdGuardHome.txt"
-    "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/GameConsoleAdblockList.txt"
-    "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/NordicFiltersAdGuardHome.txt"
-    "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt"
-    "https://raw.githubusercontent.com/EasyList-Lithuania/easylist_lithuania/master/EasyListLithuaniaHosts.txt"
-    "https://raw.githubusercontent.com/easylist/EasyListHebrew/master/hosts.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/anti.piracy.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/doh-vpn-proxy-bypass.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dyndns.txt"
@@ -82,30 +47,14 @@ let
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
-    "https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt"
-    "https://raw.githubusercontent.com/lassekongo83/Frellwits-filter-lists/master/Frellwits-Swedish-Hosts-File.txt"
-    "https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/main/noai_hosts.txt"
-    "https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-pihole-filters/hostfile.txt"
-    "https://raw.githubusercontent.com/MasterKia/PersianBlocker/main/PersianBlockerHosts.txt"
-    "https://raw.githubusercontent.com/mitchellkrogza/The-Big-List-of-Hacked-Malware-Web-Sites/master/hosts"
-    "https://raw.githubusercontent.com/nickspaargaren/no-google/master/pihole-google-adguard.txt"
-    "https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt"
-    "https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/master/Lists/Dating"
-    "https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/master/Lists/Malware"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-    "https://raw.githubusercontent.com/symbuzzer/Turkish-Ad-Hosts/main/adguard/filter.txt"
-    "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/AWAvenue-Ads-Rule.txt"
-    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt"
     "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt"
     "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt"
-    "https://raw.githubusercontent.com/yous/YousList/master/hosts.txt"
-    "https://small.oisd.nl/"
-    "https://someonewhocares.org/hosts/zero/hosts"
   ];
 
   dockerImages.technitium =
-    "technitium/dns-server:13.6.0@sha256:b12182649647f7e28dd596f4089032099a94ab1bee2262d6679fa185238c5f02";
+    "technitium/dns-server:latest@sha256:b12182649647f7e28dd596f4089032099a94ab1bee2262d6679fa185238c5f02";
 in {
   networking.firewall = {
     enable = lib.mkDefault true;
@@ -128,7 +77,7 @@ in {
           DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
           DNS_SERVER_ENABLE_BLOCKING = "true";
           DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
-          DNS_SERVER_FORWARDERS = "9.9.9.9,149.112.112.112";
+          DNS_SERVER_FORWARDERS = "94.140.14.15,94.140.15.16";
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
 
@@ -143,7 +92,6 @@ in {
 
         image = dockerImages.technitium;
         ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];
-        volumes = [ "/var/lib/technitium:/etc/dns" ];
       };
     };
   };
@@ -154,20 +102,48 @@ in {
 
       description = "Configure Technitium";
 
-      path = with pkgs; [ curl ];
+      path = with pkgs; [ curl jq ];
 
       script = ''
-        export TOKEN=$(</var/lib/technitium/token)
-        ${lib.concatMapStringsSep "\n" (x:
-          ''
-            curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}"'')
-        allowed_domains}
-        ${lib.concatMapStringsSep "\n" (x:
-          ''
-            curl "http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}"'')
-        blocked_domains}
+        while [ "$(curl -o /dev/null -s -w \"%{http_code}\" http://localhost:5380/api)" != "\"404\"" ]; do sleep 1; done
+
+        export TOKEN=$(curl -sSL 'http://localhost:5380/api/user/createToken?user=admin&pass=admin&tokenName=MyToken1' | jq '.token' -r)
+        export SQLITE_URL=$(curl -sSL "http://localhost:5380/api/apps/listStoreApps?token=$TOKEN" | jq '.response.storeApps[] | select(.name | contains("Query Logs (Sqlite)")) | .url' -r)
+
+        curl -sSL "http://localhost:5380/api/apps/downloadAndInstall?token=$TOKEN&name=QueryLogs&url=$SQLITE_URL"
+
+        curl -sSL "http://localhost:5380/api/settings/set?token=$TOKEN&blockListUpdateIntervalHours=4&blockListUrls=${
+          lib.concatStringsSep "," blocklists
+        }"
+
+        curl -sSL "http://localhost:5380/api/settings/forceUpdateBlockLists?token=$TOKEN"
+
+        ${lib.concatMapStringsSep "\n" (x: ''
+          curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}"
+        '') allowed_domains}
+        ${lib.concatMapStringsSep "\n" (x: ''
+          curl "http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}"
+        '') blocked_domains}
+
+        curl -sSL "http://localhost:5380/api/zones/delete?token=$TOKEN&zone=google.com"
+
+        curl -sSL "http://localhost:5380/api/zones/create?token=$TOKEN&zone=google.com&type=Forwarder&initializeForwarder=true&forwarder=this-server"
+
+        curl -sSL "http://localhost:5380/api/zones/records/delete?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME"
+
+        curl -sSL "http://localhost:5380/api/zones/records/add?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME&cname=ca.pool.ntp.org"
+
+        curl -sSL "http://localhost:5380/api/user/logout?token=$TOKEN"
       '';
       wantedBy = [ "multi-user.target" ];
+    };
+
+    timers.technitium-config = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "hourly";
+        Unit = "technitium-config.service";
+      };
     };
 
     tmpfiles.rules = [ "d /var/lib/technitium 0755 nequi docker" ];

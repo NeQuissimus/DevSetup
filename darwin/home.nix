@@ -223,7 +223,7 @@ in {
 
   launchd = {
     agents = {
-      aerospace = mkAgent { name = "Aerospace"; };
+      # aerospace = mkAgent { name = "Aerospace"; };
       alfred = mkAgent { name = "Alfred"; };
 
       git-world = {
@@ -249,7 +249,7 @@ in {
     extraOptions = ''
       binary-caches-parallel-connections = 20
       connect-timeout = 10
-      experimental-features = nix-command flakes
+      experimental-features = nix-command flakes configurable-impure-env
     '';
 
     gc = {

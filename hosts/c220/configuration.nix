@@ -3,27 +3,17 @@ let
   interface = "enp4s0f0";
 
   dockerImages = {
-    homeAssistant =
-      "ghcr.io/home-assistant/home-assistant:latest@sha256:90e105ff097717556df4e87da3b825af85b181c763ca2b8d840aeae5d34a083c";
     immich-ml =
       "ghcr.io/immich-app/immich-machine-learning:release@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
-    matter =
-      "ghcr.io/home-assistant-libs/python-matter-server:8.0.0@sha256:8fd1ea29ab5eca1c5e87cb983c9797b469ad315f6667c73a28b2c4c23a75923c";
     minecraft =
       "itzg/minecraft-server:java17@sha256:88a7a0c0991f3efa72049f072bd5567baadcbd076e3bacf560245d12d39d7773";
-    musicAssistant =
-      "ghcr.io/music-assistant/server:latest@sha256:1d3527bb2d217634e875d6cdb6e459f6ff9dcde02be60c9a02fdd8dd86648f78";
     seq =
       "datalust/seq:latest@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
     seq-parser =
       "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
     seq-syslog =
       "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
-    speech-to-phrase =
-      "rhasspy/wyoming-speech-to-phrase:latest@sha256:18baab8f40d20ddcf984ef2f47da0ac5c6aea72d96a0155ee047a8053dfd5a7e";
   };
-
-  hassToken = lib.trim (builtins.readFile (/etc/hass/hass_token));
 in {
   imports = [
     ./hardware.nix
@@ -73,19 +63,11 @@ in {
     firewall = {
       allowPing = true;
       allowedTCPPorts = [
-        1400 # Home Assistant
         3333 # Immich ML
         5080 # Seq
         5341 # Seq
         5342 # Seq
-        5353 # Matter
         5380 # Technitium
-        5540 # Matter
-        5580 # Matter
-        8095 # Music Assistant
-        8096 # Music Assistant
-        8097 # Music Assistant
-        8123 # Home Assistant
         23565 # Minecraft
 
         config.services.ollama.port
@@ -161,14 +143,7 @@ in {
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels = [
-        "gemma3:1b"
-        "gemma3:4b"
-        "gemma3:1b-it-qat"
-        "gemma3:4b-it-qat"
-        "qwen2.5vl:3b"
-        "qwen3:4b"
-      ];
+      loadModels = [ "gemma3:4b" "gemma3:4b-it-qat" "qwen2.5vl:3b" "qwen3:4b" ];
 
       openFirewall = true;
     };
@@ -183,7 +158,7 @@ in {
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
         MODEL_FILTER_LIST =
-          "gemma3:4b;gemma3:1b;gemma3:1b-it-qat;gemma3:4b-it-qat;qwen2.5vl:3b;qwen3:4b";
+          lib.concatStringsSep ";" config.services.ollama.loadModels;
         OLLAMA_API_BASE_URL =
           "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";
@@ -207,29 +182,6 @@ in {
 
     upower.enable = true;
 
-    wyoming = {
-      faster-whisper.servers."kevin" = {
-        enable = true;
-        language = "en";
-        model = "tiny-int8";
-        uri = "tcp://0.0.0.0:10300";
-      };
-
-      openwakeword = {
-        customModelsDirectories = [ "/var/lib/openwakeword" ];
-
-        enable = true;
-
-        preloadModels = [ "hey_jarvis" ];
-      };
-
-      piper.servers."kevin" = {
-        enable = true;
-        uri = "tcp://0.0.0.0:10200";
-        voice = "en_GB-northern_english_male-medium";
-      };
-    };
-
     zfs.autoScrub = {
       enable = true;
       interval = "weekly";
@@ -239,14 +191,10 @@ in {
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-25.05";
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/homeassistant 0755 nequi docker"
     "d /var/lib/immich-ml 0755 nequi docker"
-    "d /var/lib/matter 0755 nequi docker"
     "d /var/lib/mc 0755 nequi docker"
     "d /var/lib/mc2 0755 nequi docker"
-    "d /var/lib/musicassistant 0755 nequi docker"
     "d /var/lib/seq 0755 nequi docker"
-    "d /var/lib/speech-to-phrase 0755 nequi docker"
     "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
   ];
 
@@ -256,27 +204,6 @@ in {
     backend = "docker";
 
     containers = {
-      homeassistant = {
-        autoStart = true;
-
-        dependsOn = [ "matter" "musicassistant" "technitium" ];
-
-        environment.TZ = "America/Toronto";
-
-        extraOptions = [
-          "--network=host"
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-        ];
-
-        image = dockerImages.homeAssistant;
-        volumes = [ "/var/lib/homeassistant:/config" ];
-      };
-
       immich-ml = {
         autoStart = true;
 
@@ -294,27 +221,8 @@ in {
         volumes = [ "/var/lib/immich-ml:/cache" ];
       };
 
-      matter = {
-        autoStart = true;
-
-        dependsOn = [ "technitium" ];
-
-        extraOptions = [
-          "--network=host"
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-        ];
-
-        image = dockerImages.matter;
-        volumes = [ "/var/lib/matter:/data" ];
-      };
-
       minecraftabe = {
-        autoStart = true;
+        autoStart = false;
 
         environment = {
           ALLOW_FLIGHT = "TRUE";
@@ -348,29 +256,6 @@ in {
         ports = [ "23565:25565" ];
         user = "root";
         volumes = [ "/var/lib/mc2:/data" ];
-      };
-
-      musicassistant = {
-        autoStart = true;
-        dependsOn = [ "technitium" ];
-        environment = { LOG_LEVEL = "info"; };
-
-        extraOptions = [
-          "--network=host"
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-          "--cap-add=DAC_READ_SEARCH"
-          "--cap-add=SYS_ADMIN"
-          "--security-opt"
-          "apparmor:unconfined"
-        ];
-
-        image = dockerImages.musicAssistant;
-        volumes = [ "/var/lib/musicassistant:/data" ];
       };
 
       seq = {
@@ -416,37 +301,6 @@ in {
         image = dockerImages.seq-syslog;
 
         ports = [ "5514:514/udp" ];
-      };
-
-      speech-to-phrase = {
-        autoStart = true;
-
-        cmd = [
-          "--hass-websocket-uri"
-          "ws://10.0.0.52:8123/api/websocket"
-          "--hass-token"
-          "${hassToken}"
-          "--retrain-on-start"
-        ];
-
-        dependsOn = [ "homeassistant" ];
-
-        extraOptions = [
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-        ];
-
-        image = dockerImages.speech-to-phrase;
-
-        ports = [ "10500:10300" ];
-        volumes = [
-          "/var/lib/speech-to-phrase/models:/models"
-          "/var/lib/speech-to-phrase/train:/train"
-        ];
       };
     };
   };

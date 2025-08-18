@@ -1,17 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-  email = "tim.steinbach@shopify.com";
-  gpgKey = "F09D70D880F01FF54E51477B06A338C29C3CE904";
+  email = "tim@nequissimus.com";
+  gpgKey = "";
   name = "Tim Steinbach";
   username = "nequi";
-
-  gitWorldMaintenanceScript = pkgs.writeShellScript "git-maintenance" ''
-    cd ${config.home.homeDirectory}/world/trees/root/src
-    ${pkgs.git}/bin/git checkout main
-    ${pkgs.git}/bin/git fetch --all
-    ${pkgs.git}/bin/git pull
-  '';
 
   mkAgent = { name }: {
     enable = true;
@@ -223,17 +216,7 @@ in {
 
   launchd = {
     agents = {
-      # aerospace = mkAgent { name = "Aerospace"; };
       alfred = mkAgent { name = "Alfred"; };
-
-      git-world = {
-        enable = true;
-        config = {
-          Program = toString gitWorldMaintenanceScript;
-          StartInterval = 3600; # 1 hour
-          RunAtLoad = false;
-        };
-      };
     };
   };
 
@@ -303,48 +286,43 @@ in {
         };
         on-window-detected = [
           {
-            "if".app-id = "com.google.Chrome";
             check-further-callbacks = false;
+            "if".app-name-regex-substring = "Google Chrome";
             run = [ "move-node-to-workspace 1:👨‍💻" ];
           }
           {
-            "if".app-id = "org.mozilla.firefox";
             check-further-callbacks = false;
-            run = [ "move-node-to-workspace 1:👨‍💻" ];
-          }
-          {
-            "if".app-id = "com.apple.Safari";
-            check-further-callbacks = false;
-            run = [ "move-node-to-workspace 1:👨‍💻" ];
-          }
-          {
             "if".app-id = "com.mitchellh.ghostty";
-            check-further-callbacks = false;
             run = [ "move-node-to-workspace 2:⚙️" ];
           }
           {
+            check-further-callbacks = false;
             "if".app-id = "com.microsoft.VSCode";
-            check-further-callbacks = false;
             run = [ "move-node-to-workspace 3:🛠️" ];
           }
           {
+            check-further-callbacks = false;
+            "if".app-name-regex-substring = "Cursor";
+            run = [ "move-node-to-workspace 3:🛠️" ];
+          }
+          {
+            check-further-callbacks = false;
             "if".app-id = "com.jetbrains.intellij";
-            check-further-callbacks = false;
             run = [ "move-node-to-workspace 3:🛠️" ];
           }
           {
-            "if".app-id = "md.obsidian";
             check-further-callbacks = false;
+            "if".app-id = "md.obsidian";
             run = [ "move-node-to-workspace 4:📝" ];
           }
           {
-            "if".app-id = "com.tidal.desktop";
             check-further-callbacks = false;
+            "if".app-id = "com.tidal.desktop";
             run = [ "move-node-to-workspace 8:🎶" ];
           }
           {
-            "if".app-id = "com.tinyspeck.slackmacgap";
             check-further-callbacks = false;
+            "if".app-id = "com.tinyspeck.slackmacgap";
             run = [ "move-node-to-workspace 9:💬" ];
           }
         ];
@@ -412,12 +390,6 @@ in {
         rebase.updateRefs = "true";
         submodule.recurse = "true";
         tag.sort = "version:refname";
-        url."https://github.com/Shopify/".insteadOf = [
-          "git@github.com:Shopify/"
-          "git@github.com:shopify/"
-          "ssh://git@github.com/Shopify/"
-          "ssh://git@github.com/shopify/"
-        ];
       };
 
       ignores = [
@@ -460,7 +432,6 @@ in {
       signing = {
         key = gpgKey;
         signByDefault = true;
-        signer = "/opt/dev/bin/gpg-auto-pin";
       };
 
       userEmail = email;
@@ -512,21 +483,7 @@ in {
             bbenoist.nix
             brettm12345.nixfmt-vscode
             eamodio.gitlens
-            hashicorp.terraform
-            mathiasfrohlich.kotlin
-            ms-azuretools.vscode-docker
-            ms-python.python
-            redhat.java
             redhat.vscode-yaml
-            scala-lang.scala
-            scalameta.metals
-            tamasfe.even-better-toml
-            vscjava.vscode-gradle
-            vscjava.vscode-java-debug
-            vscjava.vscode-java-dependency
-            vscjava.vscode-java-pack
-            vscjava.vscode-java-test
-            zxh404.vscode-proto3
           ]
           ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [ vscode_nord ];
 
@@ -625,29 +582,14 @@ in {
           jq -R -r '. as $line | try fromjson catch $line'
         }
 
-        function fixkube() {
-          [ -e ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform ] && (grep -q "nix/profiles/home-manager/home-path/bin/kubectl" ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform || ${pkgs.gnused}/bin/sed -i 's|command: gke-gcloud-auth-plugin|command: ${config.home.homeDirectory}/.local/state/nix/profiles/home-manager/home-path/bin/gke-gcloud-auth-plugin|g' ${config.home.homeDirectory}/.kube/config.shopify.cloudplatform)
-        }
-
         function update() {
           export NIX_CONFIG="extra-access-tokens = github.com=$(dev github print-auth --password)"
-          nix-channel --update && home-manager switch -b backup && brew update && brew upgrade && clear
+          nix-channel --update && home-manager switch -b backup && clear
         }
 
         # Tooling
-        [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
         [[ -x /usr/local/bin/brew ]] && eval $(/usr/local/bin/brew shellenv)
         [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
-        [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
-
-        # Kubernetes
-        # cloudplatform: add Shopify clusters to your local kubernetes config
-        if [ -d "${config.home.homeDirectory}/src/github.com/Shopify/cloudplatform" ]; then
-          export KUBECONFIG=''${KUBECONFIG:+$KUBECONFIG:}${config.home.homeDirectory}/.kube/config:${config.home.homeDirectory}/.kube/config.shopify.cloudplatform
-          fixkube
-          for file in ${config.home.homeDirectory}/src/github.com/Shopify/cloudplatform/workflow-utils/*.bash; do source ''${file}; done
-          kubectl-short-aliases
-        fi
 
         # https://gist.github.com/JonnieCache/1e2fdc2f5737f640e150ea40da5b9d1d
         function current_dir() {

@@ -3,9 +3,9 @@
 {
   system.autoUpgrade = {
     allowReboot = true;
-    channel = lib.mkDefault "https://nixos.org/channels/nixos-25.05";
     dates = "daily";
     enable = true;
+    flake = lib.mkDefault "github:NeQuissimus/DevSetup#${config.networking.hostName}";
     operation = "boot";
   };
 

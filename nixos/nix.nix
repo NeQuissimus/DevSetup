@@ -25,6 +25,7 @@ in {
     package = pkgs.nixVersions.latest;
 
     settings = {
+      accept-flake-config = true;
       allowed-users = [ "nequi" "root" "@wheel" ];
       auto-optimise-store = true;
       cores = 4;
@@ -44,7 +45,7 @@ in {
   };
 
   nixpkgs = {
-    system = lib.mkDefault "x86_64-linux";
+    hostPlatform = lib.mkDefault "x86_64-linux";
     config.allowUnfree = true;
   };
 

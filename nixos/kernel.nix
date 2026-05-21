@@ -161,8 +161,6 @@
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_6_13_hardened;
-
     kernelParams = [
       "cfi=kcfi" # Disable FineIBT since it is weaker than pure KCFI
       "consoleblank=600" # Turn off display

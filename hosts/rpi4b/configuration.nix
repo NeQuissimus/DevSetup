@@ -13,18 +13,6 @@ in {
     ./hardware.nix
   ];
 
-  boot = {
-    initrd.availableKernelModules = lib.mkForce [
-      "usbhid"
-      "usb_storage"
-      "vc4"
-      "pcie_brcmstb" # required for the pcie bus to work
-      "reset-raspberrypi" # required for vl805 firmware to load
-    ];
-
-    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_rpi4;
-  };
-
   console.keyMap = "us";
 
   documentation.nixos.enable = false;
@@ -52,8 +40,6 @@ in {
     usePredictableInterfaceNames = true;
   };
 
-  nixpkgs.system = "aarch64-linux";
-
   services = {
     avahi.enable = true;
 
@@ -71,5 +57,4 @@ in {
     };
   };
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-25.05";
 }

@@ -188,8 +188,6 @@ in {
     };
   };
 
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-25.05";
-
   systemd.tmpfiles.rules = [
     "d /var/lib/immich-ml 0755 nequi docker"
     "d /var/lib/mc 0755 nequi docker"

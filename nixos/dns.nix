@@ -38,6 +38,7 @@ let
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.samsung.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.winoffice.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.xiaomi.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nsfw.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.plus.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/spam-tlds.txt"
@@ -133,6 +134,8 @@ in {
         curl -sSL "http://localhost:5380/api/zones/records/delete?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME"
 
         curl -sSL "http://localhost:5380/api/zones/records/add?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME&cname=ca.pool.ntp.org"
+
+        curl -sSL "http://localhost:5380/api/cache/flush?token=$TOKEN"
 
         curl -sSL "http://localhost:5380/api/user/logout?token=$TOKEN"
       '';

@@ -45,16 +45,13 @@ in {
 
     cron = {
       enable = true;
-      systemCronJobs = [ "0 6 * * 0 root reboot" ];
+      systemCronJobs = [
+        "0 4 * * * root sh -c 'cd /home/nequi/DevSetup && nix flake update && nixos-rebuild boot --flake \".#rpi4b\"'"
+        "0 6 * * 0 root reboot"
+      ];
     };
 
     openssh.enable = true;
-
-    syslogd = {
-      defaultConfig = "*.* @10.0.0.52:5514";
-
-      enable = true;
-    };
   };
 
 }

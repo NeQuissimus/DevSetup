@@ -54,7 +54,7 @@ let
   ];
 
   dockerImages.technitium =
-    "technitium/dns-server:latest@sha256:b12182649647f7e28dd596f4089032099a94ab1bee2262d6679fa185238c5f02";
+    "technitium/dns-server:15.2.0@sha256:23d3b63d959e997800b095fe93009b3fae271b5258234ff2ade8535cb33682c8";
 in {
   networking.firewall = {
     enable = lib.mkDefault true;
@@ -77,7 +77,8 @@ in {
           DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
           DNS_SERVER_ENABLE_BLOCKING = "true";
           DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
-          DNS_SERVER_FORWARDERS = "94.140.14.15,94.140.15.16";
+          DNS_SERVER_FORWARDERS = "https://dns.adguard-dns.com/dns-query";
+          DNS_SERVER_FORWARDER_PROTOCOL = "Https";
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
 

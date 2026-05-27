@@ -37,6 +37,7 @@
 
         rpi4b = nixos-raspberrypi.lib.nixosSystem {
           system = "aarch64-linux";
+          specialArgs = { ipv4Address = "10.0.0.53"; };
           modules = [
             (
               { nixos-raspberrypi, ... }:

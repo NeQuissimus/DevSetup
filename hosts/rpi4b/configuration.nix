@@ -1,8 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, ipv4Address, ... }:
 
 let 
   interface = "end0";
-  ipv4Address = "10.0.0.53";
 in {
   imports = [
     ../../nixos/dns.nix
@@ -57,7 +56,4 @@ in {
 
     openssh.enable = true;
   };
-
-  specialArgs = { inherit ipv4Address; };
-
 }

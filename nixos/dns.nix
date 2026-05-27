@@ -29,6 +29,8 @@ let
   blocklists = [
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/adguard_popup_filter.txt"
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
+    "https://big.oisd.nl/domainswild2"
+    "https://nsfw.oisd.nl/domainswild2"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/anti.piracy.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dga14.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dga30.txt"

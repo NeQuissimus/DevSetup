@@ -13,6 +13,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +21,7 @@
   };
 
   outputs =
-    { nixpkgs, nixos-raspberrypi, ... }:
+    { self, nixpkgs, nixpkgs-unstable, nixos-raspberrypi, ... }:
     let
       mkNixosSystem =
         host:
@@ -49,6 +50,19 @@
             )
             ./hosts/rpi4b/configuration.nix
           ];
+        };
+
+        opi5plus = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { ipv4Address = "10.0.0.54"; nixpkgs = nixpkgs-unstable; };
+          modules = [
+            ./hosts/opi5plus/configuration.nix
+            ./hosts/opi5plus/sdcard.nix
+          ];
+        } // {
+          packages = {
+            sdImage = self.nixosConfigurations.opi5plus.config.system.build.sdImage;
+          };
         };
       };
     };

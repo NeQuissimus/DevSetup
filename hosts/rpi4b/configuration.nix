@@ -1,11 +1,13 @@
 { config, pkgs, lib, ... }:
 
-let interface = "end0";
+let 
+  interface = "end0";
+  ipv4Address = "10.0.0.53";
 in {
   imports = [
     ../../nixos/dns.nix
     ../../nixos/nix.nix
-    ../../nixos/security.nix
+    ../../nixos/security.nix 
     ../../nixos/ssh.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix
@@ -26,7 +28,7 @@ in {
 
     interfaces."${interface}" = {
       ipv4.addresses = [{
-        address = "10.0.0.53";
+        address = ipv4Address;
         prefixLength = 16;
       }];
       ipv6.addresses = [{
@@ -53,5 +55,7 @@ in {
 
     openssh.enable = true;
   };
+
+  specialArgs = { inherit ipv4Address; }
 
 }

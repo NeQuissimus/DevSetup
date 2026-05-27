@@ -12,6 +12,7 @@ let
     "mqtt-us.roborock.com" # Roborock
     "olg.ca" # OLG
     "tile-api.com" # Tile API
+    "torproject.org" # TOR
     "tr.rbxcdn.com" # Roblox assets
     "track.spe.schoolmessenger.com" # School info
     "transport.home.nest.com" # Nest status updates
@@ -29,6 +30,9 @@ let
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/adguard_popup_filter.txt"
     "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/anti.piracy.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dga14.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dga30.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dga7.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/doh-vpn-proxy-bypass.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dyndns.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.medium.txt"
@@ -38,20 +42,25 @@ let
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.samsung.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.winoffice.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/native.xiaomi.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nrd14-8.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nrd21-15.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nrd28-22.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nrd35-29.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nrd7.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/nsfw.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.plus.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/spam-tlds-adblock.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/spam-tlds.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/tif.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/ultimate.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/whitelist-referral.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/doh.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/tif.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/hoster-onlydomains.txt"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part1.txt"
-    "https://raw.githubusercontent.com/xRuffKez/NRD/refs/heads/main/lists/30-day/domains-only/nrd-30day_part2.txt"
   ];
 
   dockerImages.technitium =

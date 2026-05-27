@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ipv4Address, ... }:
 
 {
   programs.ssh = {
@@ -55,6 +55,13 @@
           bits = 4096;
           path = "/etc/ssh/ssh_host_rsa_key";
           type = "rsa";
+        }
+      ];
+
+      listenAddresses = [
+        { 
+          addr = ipv4Address; 
+          port = 22;
         }
       ];
 

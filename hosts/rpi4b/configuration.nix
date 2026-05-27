@@ -48,7 +48,9 @@ in {
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 4 * * * root sh -c 'cd /home/nequi/DevSetup && nix flake update && nixos-rebuild boot --flake \".#rpi4b\"'"
+        "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
+        "0 3 30 * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
+        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#rpi4b\"'"
         "0 6 * * 0 root reboot"
       ];
     };
@@ -56,6 +58,6 @@ in {
     openssh.enable = true;
   };
 
-  specialArgs = { inherit ipv4Address; }
+  specialArgs = { inherit ipv4Address; };
 
 }

@@ -137,8 +137,10 @@ in {
         '') blocked_domains}
 
         curl -sSL "http://localhost:5380/api/zones/delete?token=$TOKEN&zone=google.com"
-
+        curl -sSL "http://localhost:5380/api/zones/delete?token=$TOKEN&zone=0.10.in-addr.arpa"
+        
         curl -sSL "http://localhost:5380/api/zones/create?token=$TOKEN&zone=google.com&type=Forwarder&initializeForwarder=true&forwarder=this-server"
+        curl -sSL "http://localhost:5380/api/zones/create?token=$TOKEN&zone=10.0.0.0/16&type=Forwarder&initializeForwarder=true&forwarder=10.0.0.2"
 
         curl -sSL "http://localhost:5380/api/zones/records/delete?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME"
 

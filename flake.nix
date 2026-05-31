@@ -18,10 +18,11 @@
       url = "github:nvmd/nixos-raspberrypi/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
   outputs =
-    { self, nixpkgs, nixpkgs-unstable, nixos-raspberrypi, ... }:
+    { self, nixpkgs, nixpkgs-unstable, nixos-raspberrypi, nix-cachyos-kernel, ... }:
     let
       mkNixosSystem =
         host:
@@ -32,6 +33,7 @@
     in
     {
       nixosConfigurations = {
+        armour = mkNixosSystem "armour";
         c220 = mkNixosSystem "c220";
         supermicro = mkNixosSystem "supermicro";
         topton = mkNixosSystem "topton";

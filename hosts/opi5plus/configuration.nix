@@ -49,10 +49,9 @@ in {
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
+        "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && git checkout -- . && git pull && nix flake update'"
         "0 3 30 * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
-        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#opi5plus\"'"
-        "0 6 * * 0 root reboot"
+        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#opi5plus\" && reboot'"
       ];
     };
 

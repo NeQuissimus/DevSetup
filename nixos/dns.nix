@@ -94,15 +94,6 @@ in {
           DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
         };
 
-        extraOptions = [
-          "--log-driver"
-          "syslog"
-          "--log-opt"
-          "syslog-address=udp://10.0.0.52:5514"
-          "--log-opt"
-          "syslog-format=rfc5424"
-        ];
-
         image = dockerImages.technitium;
         ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];
       };

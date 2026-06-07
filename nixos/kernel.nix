@@ -172,7 +172,7 @@
       "init_on_free=1" # Zero memory on free
       "kfence.sample_interval=100" # Enable kfence
       "nohibernate" # Disable hibernation
-      "oops=panic" # Prevent "oops" exploits
+      #"oops=panic" # Prevent "oops" exploits
       ''quiet" "loglevel=0'' # Prevent information leak upon boot
       "page_alloc.shuffle=1" # Enable page allocator randomization
       "pti=on" # Kernel page isolation

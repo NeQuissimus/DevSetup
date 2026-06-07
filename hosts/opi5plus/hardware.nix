@@ -1,7 +1,6 @@
 #https://github.com/gnull/nixos-rk3588/blob/2a1add82960dda2e0d203051dcf1ae4c1bc8452c/examples/upstream-opi/hardware-configuration.nix
 {lib, pkgs, ...}: {
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = {
       # Disabled zfs because it limits the range of kernel versions it's
       # compatible with, and makes kernel packages marked as "broken" every now

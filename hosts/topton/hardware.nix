@@ -21,7 +21,7 @@
           after = [ "zfs-import-tank.service" ];
           before = [ "sysroot.mount" ];
 
-          path = config.boot.zfs.package;
+          path = [ config.boot.zfs.package ];
           unitConfig.DefaultDependencies = "no";
           serviceConfig.Type = "oneshot";
 

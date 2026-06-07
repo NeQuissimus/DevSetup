@@ -1,10 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, ipv4Address, ... }:
 
 {
   imports = [
     ./hardware.nix
 
-    ../../nixos/dns.nix
     ../../nixos/docker.nix
     ../../nixos/kernel.nix
     ../../nixos/nix.nix
@@ -17,6 +16,8 @@
 
   boot = {
     kernelModules = [ "coretemp" "cpuid" "spd5118" ];
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [ "pcie_aspm=off" "pcie_port_pm=off" ];
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -74,7 +75,7 @@
 
     interfaces."enp4s0" = {
       ipv4.addresses = [{
-        address = "10.102.0.37";
+        address = ipv4Address;
         prefixLength = 16;
       }];
     };

@@ -92,11 +92,11 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
-        "0 3 30 * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
+        "0 3 * * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
+        "10 3 * * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
         "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#topton\"'"
         ''
-          0 18 10 * 0 root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+          0 18 1 * * root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 

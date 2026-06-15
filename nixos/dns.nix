@@ -77,6 +77,7 @@ in {
 
   services.blocky = {
     enable = true;
+    enableConfigCheck = false;
 
     settings = {
       blocking = {

@@ -64,10 +64,10 @@ let
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   ];
-
-  dockerImages.technitium =
-    "technitium/dns-server:15.2.0@sha256:23d3b63d959e997800b095fe93009b3fae271b5258234ff2ade8535cb33682c8";
 in {
+  environment.etc."dns-allowlist.txt".text = builtins.concatStringsSep "\n" allowed_domains;
+  environment.etc."dns-blocklist.txt".text = builtins.concatStringsSep "\n" blocked_domains;
+
   networking.firewall = {
     enable = lib.mkDefault true;
 
@@ -75,85 +75,43 @@ in {
     allowedUDPPorts = [ 53 ];
   };
 
-  virtualisation.oci-containers = {
-    backend = "docker";
+  services.blocky = {
+    enable = true;
 
-    containers = {
-      technitium = {
-        autoStart = true;
+    settings = {
+      blocking = {
+        allowlists.ads = [
+          "/etc/dns-allowlist.txt"
+        ];
 
-        environment = {
-          DNS_SERVER_DOMAIN = "technitium";
-          DNS_SERVER_ADMIN_PASSWORD = "admin";
-          DNS_SERVER_WEB_SERVICE_LOCAL_ADDRESSES = "0.0.0.0";
-          DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS = "false";
-          DNS_SERVER_ENABLE_BLOCKING = "true";
-          DNS_SERVER_BLOCK_LIST_URLS = lib.concatStringsSep "," blocklists;
-          DNS_SERVER_FORWARDERS = "https://dns.adguard-dns.com/dns-query";
-          DNS_SERVER_FORWARDER_PROTOCOL = "Https";
-          DNS_SERVER_LOG_USING_LOCAL_TIME = "true";
-        };
+        blockTTL = "1h";
 
-        image = dockerImages.technitium;
-        ports = [ "53:53/tcp" "53:53/udp" "5380:5380/tcp" ];
+        denylists.ads = blocklists ++ [ "/etc/dns-blocklist.txt" ];
+      };
+
+      caching = {
+        maxItemsCount = 10000;
+        minTime = "1h";
+      };
+
+      ports = {
+        dns = 53;
+        http = "127.0.0.1:4000";
+      };
+
+      prometheus = {
+        enable = true;
+        path = "/metrics";
+      };
+
+      upstreams = {
+        groups.default = [
+          "quic://dns.adguard-dns.com"
+          "https://dns.adguard-dns.com/dns-query"
+        ];
+
+        strategy = "strict";
       };
     };
-  };
-
-  systemd = {
-    services.technitium-config = {
-      after = [ "docker-technitium.service" ];
-
-      description = "Configure Technitium";
-
-      path = with pkgs; [ curl jq ];
-
-      script = ''
-        while [ "$(curl -o /dev/null -s -w \"%{http_code}\" http://localhost:5380/api)" != "\"404\"" ]; do sleep 1; done
-
-        export TOKEN=$(curl -sSL 'http://localhost:5380/api/user/createToken?user=admin&pass=admin&tokenName=MyToken1' | jq '.token' -r)
-        export SQLITE_URL=$(curl -sSL "http://localhost:5380/api/apps/listStoreApps?token=$TOKEN" | jq '.response.storeApps[] | select(.name | contains("Query Logs (Sqlite)")) | .url' -r)
-
-        curl -sSL "http://localhost:5380/api/apps/downloadAndInstall?token=$TOKEN&name=QueryLogs&url=$SQLITE_URL"
-
-        curl -sSL "http://localhost:5380/api/settings/set?token=$TOKEN&blockListUpdateIntervalHours=4&blockListUrls=${
-          lib.concatStringsSep "," blocklists
-        }"
-
-        curl -sSL "http://localhost:5380/api/settings/forceUpdateBlockLists?token=$TOKEN"
-
-        ${lib.concatMapStringsSep "\n" (x: ''
-          curl "http://localhost:5380/api/allowed/add?token=$TOKEN&domain=${x}"
-        '') allowed_domains}
-        ${lib.concatMapStringsSep "\n" (x: ''
-          curl "http://localhost:5380/api/blocked/add?token=$TOKEN&domain=${x}"
-        '') blocked_domains}
-
-        curl -sSL "http://localhost:5380/api/zones/delete?token=$TOKEN&zone=google.com"
-        curl -sSL "http://localhost:5380/api/zones/delete?token=$TOKEN&zone=0.10.in-addr.arpa"
-        
-        curl -sSL "http://localhost:5380/api/zones/create?token=$TOKEN&zone=google.com&type=Forwarder&initializeForwarder=true&forwarder=this-server"
-        curl -sSL "http://localhost:5380/api/zones/create?token=$TOKEN&zone=10.0.0.0/16&type=Forwarder&initializeForwarder=true&forwarder=10.0.0.2"
-
-        curl -sSL "http://localhost:5380/api/zones/records/delete?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME"
-
-        curl -sSL "http://localhost:5380/api/zones/records/add?token=$TOKEN&domain=time.google.com&zone=google.com&type=CNAME&cname=ca.pool.ntp.org"
-
-        curl -sSL "http://localhost:5380/api/cache/flush?token=$TOKEN"
-
-        curl -sSL "http://localhost:5380/api/user/logout?token=$TOKEN"
-      '';
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    timers.technitium-config = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "hourly";
-        Unit = "technitium-config.service";
-      };
-    };
-
-    tmpfiles.rules = [ "d /var/lib/technitium 0755 nequi docker" ];
   };
 }

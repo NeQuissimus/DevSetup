@@ -6,6 +6,7 @@ in {
   imports = [
     ../../nixos/dns.nix
     ../../nixos/nix.nix
+    ../../nixos/observability.nix
     ../../nixos/security.nix 
     ../../nixos/ssh.nix
     ../../nixos/users.nix

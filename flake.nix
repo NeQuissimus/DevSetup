@@ -13,7 +13,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -63,11 +63,10 @@
           ];
         };
 
-        opi5plus = nixpkgs.lib.nixosSystem {
+        opi5plus = nixpkgs-unstable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { 
             ipv4Address = "10.0.0.54"; 
-            nixpkgs = nixpkgs-unstable; 
             rk3588 = {
               nixpkgs = nixpkgs-unstable;
               pkgsKernel = import nixpkgs-unstable { system = "aarch64-linux"; };

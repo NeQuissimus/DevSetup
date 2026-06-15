@@ -19,7 +19,12 @@ in {
 
   documentation.nixos.enable = false;
 
-  i18n = { defaultLocale = "en_US.UTF-8"; };
+  environment.systemPackages = with pkgs; [
+    git
+    htop
+  ];
+
+  i18n = { defaultLocale = "en_CA.UTF-8"; };
 
   networking = {
     defaultGateway = "10.0.0.2";
@@ -48,13 +53,15 @@ in {
     avahi.enable = true;
 
     cron = {
-      enable = true;
+      enable = false; # Does not always come back from a reboot
       systemCronJobs = [
         "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && git checkout -- . && git pull && nix flake update'"
         "0 3 30 * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
         "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#opi5plus\" && reboot'"
       ];
     };
+
+    journald.extraConfig = "SystemMaxUse=100M";
 
     openssh.enable = true;
   };

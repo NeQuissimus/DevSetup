@@ -64,7 +64,7 @@ in {
           }
         ] ++ (lib.optionals config.services.blocky.enable [
           {
-            name = "Blocky SQLite";
+            name = "blocky-sqlite";
             type = "frser-sqlite-datasource";
             isDefault = false;
             editable = false;

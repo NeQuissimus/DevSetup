@@ -1,19 +1,32 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ipv4Address, ... }:
 {
   imports = [
-    ../../nixos/kernel.nix
+    ./hardware.nix
+
+    ../../nixos/hyprland.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
+    ../../nixos/steam.nix
+    ../../nixos/time.nix
     ../../nixos/users.nix
-    ../../nixos/zfs.nix
     ../../nixos/zsh.nix
   ];
 
   boot = {
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-lts;
-    supportedFilesystems.zfs = true;
-    zfs.package = config.boot.kernelPackages.zfs_cachyos;
+    kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" "nvidia_uvm" ];
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
   };
+
+  environment.systemPackages = with pkgs; [
+    git
+    prismlauncher
+    tor-browser
+  ];
 
   hardware = {
     bluetooth.enable = true;
@@ -21,70 +34,35 @@
     graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        mesa
+      ];
     };
+
+    nvidia = {
+      modesetting.enable = true;
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+  };
+
+  networking = {
+    defaultGateway = "10.0.0.2";
+    hostName = "armour";
+    useDHCP = true;
+    usePredictableInterfaceNames = true;
   };
 
   nix.settings = {
-    substituters = [ "https://attic.xuyh0120.win/lantian" ];
+    #extra-substituters = [ "https://attic.xuyh0120.win/lantian" ];
     trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
   };
 
-  nixpkgs = {
-    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "steam"
-      "steam-unwrapped"
-    ];
+  nixpkgs.overlays = [
+    inputs.nix-cachyos-kernel.overlays.default
+  ];
 
-    overlays = [
-      nix-cachyos-kernel.overlays.default
-    ];
-  }
+  services.xserver.videoDrivers = [ "nvidia" ];
 
-  programs = {
-    firefox = {
-      enable = true;
-      languagePacks = [ "en-CA" "en-US" ];
-      package = pkgs.librewolf;
-
-      policies = {
-        DisableFirefoxStudies = true;
-
-        ExtensionSettings = builtins.listToAttrs (builtins.map (id: {
-          name = id;
-          value = {
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-            installation_mode = "force_installed";
-          };
-        }) [ "7tv-extension" "twitch-auto-points" "ublock-origin" "vertical-twitch" ]);
-
-        SearchEngines = {
-          Default = "Ecosia";
-
-          Remove = [
-              "eBay"
-              "Google"
-              "Bing"
-              "Wikipedia"
-              "Perplexity"
-          ];
-        };
-
-
-      };
-
-      preferencesStatus = "locked";
-    };
-
-    gamemode.enable = true;
-
-    steam = {
-      enable = true;
-
-      extraCompatPackages = with pkgs; [
-        proton-ge-bin
-      ];
-    };
-  };
-
-  system.stateVersion = "26.05";
+  system.stateVersion = lib.mkForce "26.05";
 }

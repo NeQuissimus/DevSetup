@@ -193,5 +193,5 @@ in {
     };
   };
 
-  # systemd.tmpfiles.rules = [ "d /opt 0777 nobody nogroup" ];
+  systemd.tmpfiles.rules = [ "d /var/lib/private 0701 nobody nogroup" ];
 }

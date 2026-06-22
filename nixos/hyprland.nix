@@ -1,9 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs = {
-    hypridle.enable = true;
+  environment.systemPackages = with pkgs; [
+    hyprlauncher
+  ];
 
+  programs = {
     hyprland = {
       enable = true;
       withUWSM = true;
@@ -11,8 +13,6 @@
     };
 
     hyprlock.enable = true;
-
-    hyprsunset.enable = true;
   };
 
   services = {

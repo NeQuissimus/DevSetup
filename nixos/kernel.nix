@@ -101,7 +101,7 @@
         2; # Enable all available Address Space Randomization (ASLR) for userspace processes
       "kernel.sysrq" = 4; # Users can only use the secure attention key
       "kernel.unprivileged_bpf_disabled" = true; # Prevent privilege escalation
-      "kernel.unprivileged_userns_clone" = 0; # Restrict user namespaces
+      "kernel.unprivileged_userns_clone" = lib.mkDefault 0; # Restrict user namespaces
       "kernel.warn_limit" = 1; # Reboot after even 1 WARN
       "kernel.yama.ptrace_scope" = 2; # Limit ptrace
 
@@ -172,7 +172,7 @@
       "init_on_free=1" # Zero memory on free
       "kfence.sample_interval=100" # Enable kfence
       "nohibernate" # Disable hibernation
-      "oops=panic" # Prevent "oops" exploits
+      #"oops=panic" # Prevent "oops" exploits
       ''quiet" "loglevel=0'' # Prevent information leak upon boot
       "page_alloc.shuffle=1" # Enable page allocator randomization
       "pti=on" # Kernel page isolation

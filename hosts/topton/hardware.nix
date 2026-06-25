@@ -10,9 +10,26 @@
       availableKernelModules =
         [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
       kernelModules = [ ];
-      postDeviceCommands = lib.mkAfter ''
-        zfs rollback -r system-pool/cache@empty
-      '';
+
+      systemd = {
+        enable = lib.mkDefault true;
+
+        services.rollback = {
+          description = "Rollback root filesystem to a pristine state on boot";
+
+          wantedBy = [ "initrd.target" ];
+          after = [ "zfs-import-tank.service" ];
+          before = [ "sysroot.mount" ];
+
+          path = [ config.boot.zfs.package ];
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "oneshot";
+
+          script = ''
+            zfs rollback -r system-pool/cache@empty
+          '';
+        };
+      };
     };
 
     kernelModules = [ "kvm-intel" ];

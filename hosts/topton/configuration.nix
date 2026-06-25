@@ -1,10 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, ipv4Address, ... }:
 
 {
   imports = [
     ./hardware.nix
 
-    ../../nixos/dns.nix
     ../../nixos/docker.nix
     ../../nixos/kernel.nix
     ../../nixos/nix.nix
@@ -16,8 +15,9 @@
   ];
 
   boot = {
-    kernelModules = [ "coretemp" ];
+    kernelModules = [ "coretemp" "cpuid" "spd5118" ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [ "pcie_aspm=off" "pcie_port_pm=off" ];
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -75,12 +75,8 @@
 
     interfaces."enp4s0" = {
       ipv4.addresses = [{
-        address = "10.102.0.37";
+        address = ipv4Address;
         prefixLength = 16;
-      }];
-      ipv6.addresses = [{
-        address = "fd00:1873::200";
-        prefixLength = 117;
       }];
     };
   };
@@ -96,9 +92,11 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 17 * * 5 root reboot"
+        "0 3 * * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
+        "10 3 * * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
+        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#topton\"'"
         ''
-          0 18 10 * * root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+          0 18 1 * * root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 
@@ -134,12 +132,6 @@
     };
 
     smartd.enable = true;
-
-    syslogd = {
-      defaultConfig = "*.* @10.0.0.52:5514";
-
-      enable = true;
-    };
   };
 
   services.logrotate.checkConfig = false;

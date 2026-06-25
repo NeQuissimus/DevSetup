@@ -1,7 +1,10 @@
 { config, lib, pkgs, secrets, ... }:
 
 {
-  systemd.user.services.emacs.unitConfig.ConditionGroup = "users";
+  systemd = {
+    tmpfiles.rules = [ "d /home/nequi 0700 nequi nequi" ];
+    user.services.emacs.unitConfig.ConditionGroup = "users";
+  };
 
   users = {
     mutableUsers = false;

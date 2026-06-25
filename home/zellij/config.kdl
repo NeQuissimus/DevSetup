@@ -1,0 +1,28 @@
+keybinds {
+    normal {
+        bind "Alt left" { GoToPreviousTab; }
+        bind "Alt right" { GoToNextTab; }
+        bind "Ctrl g" { Write 7; }
+    }
+    locked {
+        unbind "Ctrl g"
+    }
+    // Open new tabs at $HOME instead of inheriting the focused pane's cwd.
+    // NewTab's cwd sets the base dir for the tab's default-template pane.
+    // Only tabs are pinned to $HOME here; new *panes* still inherit cwd
+    // (using default_cwd would have changed pane behaviour too). @HOME@ is
+    // substituted with config.home.homeDirectory by default.nix.
+    tab {
+        bind "n" { NewTab { cwd "@HOME@"; }; SwitchToMode "Normal"; }
+    }
+    tmux {
+        bind "c" { NewTab { cwd "@HOME@"; }; SwitchToMode "Normal"; }
+    }
+}
+
+show_startup_tips false
+theme "cyber-noir"
+
+// Single panes no longer get an auto-hidden frame (that was a zjstatus
+// feature). Turn frames off globally so a lone pane has no border.
+pane_frames false

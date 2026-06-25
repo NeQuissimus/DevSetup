@@ -78,6 +78,8 @@ in
         }
 
         unsetopt correct_all
+
+        ${pkgs.fastfetch}/bin/fastfetch
       '';
 
       sessionVariables = {

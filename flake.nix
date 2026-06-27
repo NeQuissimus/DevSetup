@@ -41,14 +41,25 @@
   };
 
   outputs =
-    inputs@{ self, firefox-addons, home-manager, nixpkgs, nixpkgs-unstable, nixos-raspberrypi, nix-cachyos-kernel, nur, nixos-rk3588, zen-browser, ... }:
+    inputs@{
+      self,
+      firefox-addons,
+      home-manager,
+      nixpkgs,
+      nixpkgs-unstable,
+      nixos-raspberrypi,
+      nix-cachyos-kernel,
+      nur,
+      nixos-rk3588,
+      zen-browser,
+      ...
+    }:
     let
       mkNixosSystem =
-        host:
-        ipv4Address:
+        host: ipv4Address:
         nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [ 
+          modules = [
             ./hosts/${host}/configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -70,7 +81,9 @@
 
         rpi4b = nixos-raspberrypi.lib.nixosSystem {
           system = "aarch64-linux";
-          specialArgs = { ipv4Address = "10.0.0.53"; };
+          specialArgs = {
+            ipv4Address = "10.0.0.53";
+          };
           modules = [
             (
               { nixos-raspberrypi, ... }:
@@ -84,26 +97,28 @@
           ];
         };
 
-        opi5plus = nixpkgs-unstable.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = { 
-            ipv4Address = "10.0.0.54"; 
-            rk3588 = {
-              nixpkgs = nixpkgs-unstable;
-              pkgsKernel = import nixpkgs-unstable { system = "aarch64-linux"; };
+        opi5plus =
+          nixpkgs-unstable.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = {
+              ipv4Address = "10.0.0.54";
+              rk3588 = {
+                nixpkgs = nixpkgs-unstable;
+                pkgsKernel = import nixpkgs-unstable { system = "aarch64-linux"; };
+              };
+            };
+            modules = [
+              nixos-rk3588.nixosModules.boards.orangepi5plus.core
+              nixos-rk3588.nixosModules.boards.orangepi5plus.sd-image
+
+              ./hosts/opi5plus/configuration.nix
+            ];
+          }
+          // {
+            packages = {
+              sdImage = self.nixosConfigurations.opi5plus.config.system.build.sdImage;
             };
           };
-          modules = [
-            nixos-rk3588.nixosModules.boards.orangepi5plus.core
-            nixos-rk3588.nixosModules.boards.orangepi5plus.sd-image
-
-            ./hosts/opi5plus/configuration.nix
-          ];
-        } // {
-          packages = {
-            sdImage = self.nixosConfigurations.opi5plus.config.system.build.sdImage;
-          };
-        };
       };
     };
 }

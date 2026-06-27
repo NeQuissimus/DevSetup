@@ -1,20 +1,21 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   interface = "enp4s0f0";
 
   dockerImages = {
-    immich-ml =
-      "ghcr.io/immich-app/immich-machine-learning:release@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
-    minecraft =
-      "itzg/minecraft-server:java17@sha256:88a7a0c0991f3efa72049f072bd5567baadcbd076e3bacf560245d12d39d7773";
-    seq =
-      "datalust/seq:latest@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
-    seq-parser =
-      "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
-    seq-syslog =
-      "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
+    immich-ml = "ghcr.io/immich-app/immich-machine-learning:release@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e";
+    minecraft = "itzg/minecraft-server:java17@sha256:88a7a0c0991f3efa72049f072bd5567baadcbd076e3bacf560245d12d39d7773";
+    seq = "datalust/seq:latest@sha256:ca47ade2527cb167f31c310f5530e1a2d8d801ce5ff6b2f3deed53b42da7434e";
+    seq-parser = "smokserwis/seq-log-parser:latest@sha256:85cf07f5f8a988dfe1e4579a52ec773be947f247fecaed572c749bd7c575d97f";
+    seq-syslog = "datalust/seq-input-syslog:1.0.93@sha256:a6da444b41e0c0ebae87dedb15ccbece27cb84605064b25984eba8d143fa12e0";
   };
-in {
+in
+{
   imports = [
     ./hardware.nix
 
@@ -52,10 +53,15 @@ in {
       HWMON_MODULES="coretemp"
     '';
 
-    systemPackages = with pkgs; [ git htop ];
+    systemPackages = with pkgs; [
+      git
+      htop
+    ];
   };
 
-  i18n = { defaultLocale = "en_US.UTF-8"; };
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+  };
 
   networking = {
     defaultGateway = "10.0.0.2";
@@ -82,14 +88,18 @@ in {
     hostName = "c220";
 
     interfaces."${interface}" = {
-      ipv4.addresses = [{
-        address = "10.0.0.52";
-        prefixLength = 16;
-      }];
-      ipv6.addresses = [{
-        address = "fd00:1873::100";
-        prefixLength = 117;
-      }];
+      ipv4.addresses = [
+        {
+          address = "10.0.0.52";
+          prefixLength = 16;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "fd00:1873::100";
+          prefixLength = 117;
+        }
+      ];
     };
 
     nameservers = [ "9.9.9.9" ];
@@ -117,8 +127,7 @@ in {
       ];
     };
 
-    logrotate.checkConfig =
-      false; # https://github.com/NixOS/nixpkgs/pull/237414
+    logrotate.checkConfig = false; # https://github.com/NixOS/nixpkgs/pull/237414
 
     ntp = {
       enable = true;
@@ -143,7 +152,12 @@ in {
       home = "/var/lib/ollama";
       host = "0.0.0.0";
 
-      loadModels = [ "gemma3:4b" "gemma3:4b-it-qat" "qwen2.5vl:3b" "qwen3:4b" ];
+      loadModels = [
+        "gemma3:4b"
+        "gemma3:4b-it-qat"
+        "qwen2.5vl:3b"
+        "qwen3:4b"
+      ];
 
       openFirewall = true;
     };
@@ -157,10 +171,8 @@ in {
         ENABLE_MODEL_FILTER = "True";
         ENABLE_OPENAI_API = "False";
         ENABLE_SIGNUP = "False";
-        MODEL_FILTER_LIST =
-          lib.concatStringsSep ";" config.services.ollama.loadModels;
-        OLLAMA_API_BASE_URL =
-          "http://127.0.0.1:${toString config.services.ollama.port}";
+        MODEL_FILTER_LIST = lib.concatStringsSep ";" config.services.ollama.loadModels;
+        OLLAMA_API_BASE_URL = "http://127.0.0.1:${toString config.services.ollama.port}";
         SAFE_MODE = "True";
         WEBUI_AUTH = "False";
       };
@@ -196,7 +208,9 @@ in {
     "L+ ${config.services.minecraft-server.dataDir}/ops.json - - - - /etc/minecraft/ops.json"
   ];
 
-  time = { timeZone = "America/Toronto"; };
+  time = {
+    timeZone = "America/Toronto";
+  };
 
   virtualisation.oci-containers = {
     backend = "docker";
@@ -266,7 +280,10 @@ in {
 
         image = dockerImages.seq;
 
-        ports = [ "5080:80" "5341:5341" ];
+        ports = [
+          "5080:80"
+          "5341:5341"
+        ];
         volumes = [ "/var/lib/seq:/data" ];
       };
 
@@ -277,10 +294,8 @@ in {
 
         environment = {
           BIND_PORT = "5342";
-          REGEX1 =
-            "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<device>.*) was blocked from accessing (?P<target>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) by (?P<rule>.*)\\|(?P<level>.*)";
-          REGEX2 =
-            "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<message>.*)\\|(?P<level>.*)";
+          REGEX1 = "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<device>.*) was blocked from accessing (?P<target>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) by (?P<rule>.*)\\|(?P<level>.*)";
+          REGEX2 = "(?P<date>.*) (?P<timezone>[A-Z]{3}) (?P<source>[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}) (?P<cef>CEF:[0-9]*)\\|Ubiquiti\\|(?P<app>.*)\\|(?P<version>.*)\\|(?P<event_id>.*)\\|(?P<message>.*)\\|(?P<level>.*)";
           SEQ_ADDRESS = "http://10.0.0.52:5341";
         };
 

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   allowed_domains = [
@@ -27,7 +32,7 @@ let
   ];
 
   blocklists_mixed = [
-    "https://big.oisd.nl/domainswild2"    
+    "https://big.oisd.nl/domainswild2"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
     "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
@@ -102,7 +107,8 @@ let
     meta.mainProgram = "blocky";
   });
 
-in {
+in
+{
   environment.etc."dns-allowlist.txt".text = builtins.concatStringsSep "\n" allowed_domains;
   environment.etc."dns-blocklist.txt".text = builtins.concatStringsSep "\n" blocked_domains;
 
@@ -128,7 +134,16 @@ in {
         blockTTL = "1h";
 
         clientGroupsBlock = {
-          default = [ "gambling" "manual" "misc" "mixed" "newdomains" "nsfw" "piracy" "vendors" ];
+          default = [
+            "gambling"
+            "manual"
+            "misc"
+            "mixed"
+            "newdomains"
+            "nsfw"
+            "piracy"
+            "vendors"
+          ];
         };
 
         denylists = {

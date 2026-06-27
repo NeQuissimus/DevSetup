@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   system.autoUpgrade = {
@@ -21,7 +26,7 @@
 
   services.fail2ban = {
     bantime = "24h"; # Ban IPs for one day on the first ban
-  
+
     bantime-increment = {
       enable = true;
       formula = "ban.Time * math.exp(float(ban.Count+1)*banFactor)/math.exp(1*banFactor)";

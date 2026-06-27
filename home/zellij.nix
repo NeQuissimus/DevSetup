@@ -1,7 +1,8 @@
 { pkgs, config, ... }:
 let
   zellij-zjstatus = import ./zellij/status.nix { inherit pkgs; };
-in {
+in
+{
   home = {
     file = {
       ".config/zellij/config.kdl".text =
@@ -12,9 +13,7 @@ in {
             default_tab_template {
                 children
                 pane size=1 borderless=true {
-                    plugin location="file:${
-                      builtins.unsafeDiscardStringContext zellij-zjstatus
-                    }/share/zellij/zjstatus.wasm" {
+                    plugin location="file:${builtins.unsafeDiscardStringContext zellij-zjstatus}/share/zellij/zjstatus.wasm" {
                     // KEEP "false". Setting "true" makes zjstatus poll
                     // get_session_list, which on zellij >=0.44.1 creates a
                     // render feedback loop -> flicker on new sessions

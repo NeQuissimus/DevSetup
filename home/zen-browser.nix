@@ -1,7 +1,13 @@
-{ inputs, pkgs, lib, ...}:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   firefox-addons = inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
-in {
+in
+{
   imports = [
     inputs.zen-browser.homeModules.beta
   ];
@@ -99,13 +105,17 @@ in {
 
         engines = {
           ecosia = {
-            urls = [{
-              template = "https://www.ecosia.org/search?q={searchTerms}";
-              params = [{
-                name = "query";
-                value = "searchTerms";
-              }];
-            }];
+            urls = [
+              {
+                template = "https://www.ecosia.org/search?q={searchTerms}";
+                params = [
+                  {
+                    name = "query";
+                    value = "searchTerms";
+                  }
+                ];
+              }
+            ];
           };
         };
 
@@ -122,13 +132,15 @@ in {
         "Default" = {
           id = "1f4f055a-3495-423f-b159-0c482bbb4d4d";
           theme = {
-            colors = [{
-              red = 20;
-              green = 20;
-              blue = 20;
-              type = "explicit-lightness";
-              lightness = 20;
-            }];
+            colors = [
+              {
+                red = 20;
+                green = 20;
+                blue = 20;
+                type = "explicit-lightness";
+                lightness = 20;
+              }
+            ];
           };
         };
       };

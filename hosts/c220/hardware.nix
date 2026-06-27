@@ -1,4 +1,10 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
@@ -7,8 +13,14 @@
     extraModulePackages = [ ];
 
     initrd = {
-      availableKernelModules =
-        [ "ehci_pci" "ahci" "megaraid_sas" "usbhid" "usb_storage" "sd_mod" ];
+      availableKernelModules = [
+        "ehci_pci"
+        "ahci"
+        "megaraid_sas"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
       kernelModules = [ ];
     };
 
@@ -40,6 +52,5 @@
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

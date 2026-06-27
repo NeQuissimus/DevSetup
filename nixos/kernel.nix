@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot = {
@@ -79,10 +84,8 @@
 
     kernel.sysctl = {
       "abi.vsyscall32" = 0; # Disable VDSO for 32 bit syscalls
-      "dev.tty.ldisc_autoload" =
-        0; # Prevent loading vulnerable line disciplines
-      "dev.tty.legacy_tiocsti" =
-        0; # Disable TIOCSTI which is used to inject keypresses
+      "dev.tty.ldisc_autoload" = 0; # Prevent loading vulnerable line disciplines
+      "dev.tty.legacy_tiocsti" = 0; # Disable TIOCSTI which is used to inject keypresses
 
       "fs.protected_fifos" = 2; # Prevent FIFOs in world-writable environments
       "fs.protected_regular" = 2; # Prevent files in world-writable environments
@@ -97,8 +100,7 @@
       "kernel.perf_event_paranoid" = 3; # Restrict performance events
       "kernel.panic_on_oops" = true; # Kernel panic on oops
       "kernel.printk" = "3 3 3 3"; # Hide printing information leaks
-      "kernel.randomize_va_space" =
-        2; # Enable all available Address Space Randomization (ASLR) for userspace processes
+      "kernel.randomize_va_space" = 2; # Enable all available Address Space Randomization (ASLR) for userspace processes
       "kernel.sysrq" = 4; # Users can only use the secure attention key
       "kernel.unprivileged_bpf_disabled" = true; # Prevent privilege escalation
       "kernel.unprivileged_userns_clone" = lib.mkDefault 0; # Restrict user namespaces
@@ -113,21 +115,17 @@
       "net.ipv4.conf.all.log_martians" = 1; # Log martian packets
       "net.ipv4.conf.all.rp_filter" = 1; # Protect against IP spoofing
       "net.ipv4.conf.all.secure_redirects" = 0; # No redirects
-      "net.ipv4.conf.all.send_redirects" =
-        0; # No redirects (only needed on routers)
+      "net.ipv4.conf.all.send_redirects" = 0; # No redirects (only needed on routers)
       "net.ipv4.conf.default.accept_redirects" = 0; # Don't accept redirects
-      "net.ipv4.conf.default.accept_source_route" =
-        0; # Don't accept source routes
+      "net.ipv4.conf.default.accept_source_route" = 0; # Don't accept source routes
       "net.ipv4.conf.default.log_martians" = 1; # Log martian packets
       "net.ipv4.conf.default.rp_filter" = 1; # Protect against IP spoofing
       "net.ipv4.conf.default.secure_redirects" = 0; # No redirects
-      "net.ipv4.conf.default.send_redirects" =
-        0; # No redirects (only needed on routers)
+      "net.ipv4.conf.default.send_redirects" = 0; # No redirects (only needed on routers)
       "net.ipv4.icmp_echo_ignore_all" = 1; # Ignore ICMP requests
       "net.ipv4.tcp_dsack" = 0; # Disable TCP SACK
       "net.ipv4.tcp_fack" = 0; # Disable TCP SACK
-      "net.ipv4.tcp_rfc1337" =
-        1; # Protect against tcp time-wait assassination hazards
+      "net.ipv4.tcp_rfc1337" = 1; # Protect against tcp time-wait assassination hazards
       "net.ipv4.tcp_sack" = 0; # Disable TCP SACK
       "net.ipv4.tcp_syncookies" = 1; # Protect against SYN flood
 
@@ -135,18 +133,15 @@
       "net.ipv6.conf.all.accept_redirects" = 0; # Don't accept redirects
       "net.ipv6.conf.all.accept_source_route" = 0; # Don't accept source routes
       "net.ipv6.conf.all.secure_redirects" = 0; # No redirects
-      "net.ipv6.conf.default.accept_ra" =
-        0; # Don't accept router advertisements
+      "net.ipv6.conf.default.accept_ra" = 0; # Don't accept router advertisements
       "net.ipv6.conf.default.accept_redirects" = 0; # Don't accept redirects
-      "net.ipv6.conf.default.accept_source_route" =
-        0; # Don't accept source routes
+      "net.ipv6.conf.default.accept_source_route" = 0; # Don't accept source routes
       "net.ipv6.conf.default.secure_redirects" = 0; # No redirects
       "net.ipv6.all.disable_ipv6" = 1; # Disable IPv6
 
       #      "user.max_user_namespaces" = 0; # Disable user namespaces, breaks Nix 2.0
 
-      "vm.dirty_background_ratio" =
-        20; # Max % of RAM with dirty pages before reclaim
+      "vm.dirty_background_ratio" = 20; # Max % of RAM with dirty pages before reclaim
       "vm.dirty_ratio" = 30; # Max % of RAM with dirty pages before STW
       "vm.dirty_writeback_centisecs" = 500; # Frequency pages are reclaimed
       "vm.dirty_expire_centisecs" = 3000; # Max age of dirty pages
@@ -156,8 +151,7 @@
       "vm.mmap_rnd_bits" = 32; # Raise ASLR entropy
       "vm.mmap_rnd_compat_bits" = 16; # Raise ASLR entropy
       "vm.swappiness" = 1; # Minimum swap usage
-      "vm.unprivileged_userfaultfd" =
-        0; # userfaultfd is used to exploit use-after-free
+      "vm.unprivileged_userfaultfd" = 0; # userfaultfd is used to exploit use-after-free
       "vm.vfs_cache_pressure" = 60; # Less reclaim pressure
     };
 

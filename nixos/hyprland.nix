@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   environment.systemPackages = with pkgs; [
@@ -18,10 +23,10 @@
   services = {
     displayManager.sddm = {
       enable = true;
-  
+
       wayland.enable = true;
     };
-    
+
     xserver.enable = true;
   };
 }

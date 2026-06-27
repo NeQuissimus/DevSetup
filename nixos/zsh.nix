@@ -16,7 +16,8 @@ let
       install -Dm0644 themes/nequissimus.zsh-theme "$out/share/zsh/themes/"
     '';
   };
-in {
+in
+{
   programs.zsh = {
     autosuggestions.enable = true;
     enable = true;

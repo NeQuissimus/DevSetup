@@ -1,12 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   domain = "opi5plus.nequissimus.com";
   scrapeThis = name: ip: port: {
     job_name = name;
-    static_configs = [{ targets = [ "${ip}:${toString port}" ]; }];
+    static_configs = [ { targets = [ "${ip}:${toString port}" ]; } ];
   };
-in {
+in
+{
   environment.etc."grafana-blocky/blocky.json".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/0xERR0R/blocky/refs/tags/v${pkgs.blocky.version}/docs/blocky-grafana.json";
     sha256 = "1z04dh3ijnq62bii64vxp4681i8ssl419vj1471dmm7n8w8wvzbz";
@@ -42,14 +48,16 @@ in {
       };
 
       provision = {
-        dashboards.settings.providers = [{
-          name = "Blocky";
-          disableDeletion = true;
-          options = {
-            path = "/etc/grafana-blocky";
-            foldersFromFilesStructure = true;
-          };
-        }];
+        dashboards.settings.providers = [
+          {
+            name = "Blocky";
+            disableDeletion = true;
+            options = {
+              path = "/etc/grafana-blocky";
+              foldersFromFilesStructure = true;
+            };
+          }
+        ];
 
         datasources.settings.datasources = [
           {
@@ -62,7 +70,8 @@ in {
               timeInterval = "1m";
             };
           }
-        ] ++ (lib.optionals config.services.blocky.enable [
+        ]
+        ++ (lib.optionals config.services.blocky.enable [
           {
             name = "blocky-sqlite";
             type = "frser-sqlite-datasource";

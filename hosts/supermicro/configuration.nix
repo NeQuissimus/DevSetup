@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -52,7 +57,9 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
 
-  i18n = { defaultLocale = "en_US.UTF-8"; };
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+  };
 
   networking = {
     defaultGateway = "10.0.0.2";
@@ -76,8 +83,7 @@
       enable = true;
       systemCronJobs = [
         "0 17 * * 5 root reboot"
-        ''
-          0 18 10 * * root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+        ''0 18 10 * * root GOOGLE_APPLICATION_CREDENTIALS=/etc/gcs/serviceaccount.json ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
 
@@ -126,22 +132,24 @@
   systemd = {
     services.immich_enc = {
       after = [ "tank.mount" ];
-      before = [ "immich-server.service" "immich-machine-learning.service" ];
+      before = [
+        "immich-server.service"
+        "immich-machine-learning.service"
+      ];
 
       description = "Mount immich volume";
       path = with pkgs; [ util-linux ];
 
       serviceConfig = {
-        ExecStart = ''
-          ${
-            lib.getBin pkgs.gocryptfs
-          }/bin/gocryptfs -passfile /etc/gocryptfs -allow_other "/tank/immich_enc" "/mnt/immich"'';
+        ExecStart = ''${lib.getBin pkgs.gocryptfs}/bin/gocryptfs -passfile /etc/gocryptfs -allow_other "/tank/immich_enc" "/mnt/immich"'';
 
         Type = "forking";
       };
 
-      requiredBy =
-        [ "immich-server.service" "immich-machine-learning.service" ];
+      requiredBy = [
+        "immich-server.service"
+        "immich-machine-learning.service"
+      ];
     };
 
     tmpfiles.rules = [ "d /etc/gcs 0700 root root" ];

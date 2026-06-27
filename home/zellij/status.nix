@@ -9,12 +9,14 @@ pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "zellij-zjstatus";
 
   src = pkgs.fetchurl {
-    url =
-      "https://github.com/dj95/zjstatus/releases/download/v${version}/zjstatus.wasm";
+    url = "https://github.com/dj95/zjstatus/releases/download/v${version}/zjstatus.wasm";
     sha256 = "sha256-4AaQEiNSQjnbYYAh5MxdF/gtxL+uVDKJW6QfA/E4Yf8=";
   };
 
-  phases = [ "installPhase" "patchPhase" ];
+  phases = [
+    "installPhase"
+    "patchPhase"
+  ];
 
   installPhase = ''
     mkdir -p "$out/share/zellij/"

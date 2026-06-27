@@ -1,4 +1,11 @@
-{ inputs, config, pkgs, lib, ipv4Address, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ipv4Address,
+  ...
+}:
 {
   imports = [
     ./hardware.nix
@@ -13,7 +20,12 @@
   ];
 
   boot = {
-    kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" "nvidia_uvm" ];
+    kernelModules = [
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_drm"
+      "nvidia_uvm"
+    ];
     kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
     loader = {

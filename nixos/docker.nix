@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   environment.etc."docker-daemon.json".text = ''{"bip": "192.168.1.5/24"}'';

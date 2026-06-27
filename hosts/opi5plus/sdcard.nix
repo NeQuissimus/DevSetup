@@ -1,5 +1,11 @@
 # https://github.com/gnull/nixos-rk3588/blob/2a1add82960dda2e0d203051dcf1ae4c1bc8452c/examples/upstream-opi/sdcard.nix
-{nixpkgs, lib, config, pkgs, ...}:
+{
+  nixpkgs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   # Feel free to change the UUID, maybe even generate one randomly. We use
   # hardcoded UUID so that the kernel may always find the root partition, no
@@ -10,7 +16,8 @@ let
   rootPartitionUUID = "14e19a7b-0ae0-484d-9d54-43bd6fdc20c7";
   # TODO: change this if you are using a different board:
   uboot = pkgs.ubootOrangePi5Plus;
-in {
+in
+{
   imports = [
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image.nix"
   ];

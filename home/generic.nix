@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
   username = "nequi";
-in {
+in
+{
   fonts.fontconfig = {
     defaultFonts.monospace = [ "Fira Mono" ];
     enable = true;

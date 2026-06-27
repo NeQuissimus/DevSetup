@@ -3,7 +3,8 @@ let
   email = "tim@nequissimus.com";
   gpgKey = "";
   name = "Tim Steinbach";
-in {
+in
+{
   programs.git = {
     enable = true;
 
@@ -53,15 +54,12 @@ in {
       advice.detachedHead = "false";
 
       alias = {
-        bclean =
-          "!(git for-each-ref --format '%(refname:short)' refs/heads | grep -v 'master\\|main' | xargs git branch -D)";
+        bclean = "!(git for-each-ref --format '%(refname:short)' refs/heads | grep -v 'master\\|main' | xargs git branch -D)";
         c = "!(${pkgs.gitmoji-cli}/bin/gitmoji -c)";
         clear = "clean -dfx";
         fpush = "push --force-with-lease";
-        lg =
-          "log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>%Creset%C(auto)%d%Creset' --abbrev-commit";
-        ll = ''
-          log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat'';
+        lg = "log --all --decorate --color --graph --pretty=format:'%Cred%h%Creset %Cgreen(%cr)%Creset - %s %C(bold blue)<%an>%Creset%C(auto)%d%Creset' --abbrev-commit";
+        ll = ''log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat'';
         undo = "reset HEAD~1 --mixed";
         worktree-cleanup = ''
           !f() {

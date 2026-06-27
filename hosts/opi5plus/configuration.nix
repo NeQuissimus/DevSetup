@@ -1,13 +1,20 @@
-{ config, pkgs, lib, ipv4Address, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ipv4Address,
+  ...
+}:
 
-let 
+let
   interface = "enP4p65s0";
-in {
+in
+{
   imports = [
     ../../nixos/dns.nix
     ../../nixos/nix.nix
     ../../nixos/observability.nix
-    ../../nixos/security.nix 
+    ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix
@@ -24,7 +31,9 @@ in {
     htop
   ];
 
-  i18n = { defaultLocale = "en_CA.UTF-8"; };
+  i18n = {
+    defaultLocale = "en_CA.UTF-8";
+  };
 
   networking = {
     defaultGateway = "10.0.0.2";
@@ -32,14 +41,18 @@ in {
     hostName = "opi5plus";
 
     interfaces."${interface}" = {
-      ipv4.addresses = [{
-        address = ipv4Address;
-        prefixLength = 16;
-      }];
-      ipv6.addresses = [{
-        address = "fd00:1873::300";
-        prefixLength = 117;
-      }];
+      ipv4.addresses = [
+        {
+          address = ipv4Address;
+          prefixLength = 16;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "fd00:1873::300";
+          prefixLength = 117;
+        }
+      ];
     };
 
     nameservers = [ "9.9.9.9" ];

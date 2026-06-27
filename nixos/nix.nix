@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let base = ../.;
-in {
+let
+  base = ../.;
+in
+{
   nix = {
     extraOptions = ''
       binary-caches-parallel-connections = 20
@@ -26,7 +33,11 @@ in {
 
     settings = {
       accept-flake-config = true;
-      allowed-users = [ "nequi" "root" "@wheel" ];
+      allowed-users = [
+        "nequi"
+        "root"
+        "@wheel"
+      ];
       auto-optimise-store = true;
       cores = 4;
       max-jobs = 4;

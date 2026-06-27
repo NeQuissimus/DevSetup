@@ -8,6 +8,22 @@ let
     ];
   };
 
+  binding_focus = key: direction: {
+    _args = [
+        (lib.generators.mkLuaInline "mod .. \" + ${key}\"")
+        (lib.generators.mkLuaInline "hl.dsp.focus({ direction = \"${direction}\"})")
+        { locked = true; }
+    ];
+  };
+
+  binding_move = key: direction: {
+    _args = [
+        (lib.generators.mkLuaInline "mod .. \" + SHIFT + ${key}\"")
+        (lib.generators.mkLuaInline "hl.dsp.window.move({ direction = \"${direction}\"})")
+        { locked = true; }
+    ];
+  };
+
   wallpaper = builtins.fetchurl {
     url = "https://live.staticflickr.com/65535/55248904961_bf0319f2ea_5k.jpg";
     sha256 = "0h7jzzc8r61mgxbj7438a5zy8jdghhbnzb25ym5jhhjf076c1i63";
@@ -68,11 +84,59 @@ in {
             mod._var = "SUPER";
 
             bind = [
-                (binding_exec "R" "hyprlauncher")
-                (binding_exec "L" "hyprlock")
-                (binding_exec "Return" "kitty")
                 (binding_exec "BackSpace" "wlogout")
+                (binding_exec "L" "hyprlock")
+                (binding_exec "D" "hyprlauncher")
+                (binding_exec "Return" "kitty")
+
+                (binding_focus "down" "down")
+                (binding_focus "left" "left")
+                (binding_focus "right" "right")
+                (binding_focus "up" "up")
+
+                (binding_move "down" "down")
+                (binding_move "left" "left")
+                (binding_move "right" "right")
+                (binding_move "up" "up")
             ];
+
+            config = {
+                debug.disable_logs = true;
+
+                ecosystem.no_update_news = true;
+
+                general = {
+                    border_size = 2;
+
+                    col = {
+                        active_border = {
+                            colors = [
+                                "rgba(00ff99ee)"
+                            ];
+                        };
+                    };
+
+                    gaps_in = 1;
+                    gaps_out = 10;
+                    layout = "master";
+                };
+
+                input = {
+                    follow_mouse = 1;
+                    kb_layout = "us";
+                };
+
+                master = {
+                    mfact = 0.7;
+                    orientation = "left";
+                };
+
+                misc = {
+                    disable_autoreload = true;
+                    disable_hyprland_logo = true;
+                    disable_splash_rendering = true;
+                };
+            };
 
             exec_cmd = [ "${pkgs.hyprpaper}/bin/hyprpaper" ];
         };

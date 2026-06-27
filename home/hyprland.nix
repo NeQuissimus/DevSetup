@@ -29,6 +29,25 @@ let
     sha256 = "0h7jzzc8r61mgxbj7438a5zy8jdghhbnzb25ym5jhhjf076c1i63";
   };
 in {
+    home.file."hypr/hypridle.conf".text = ''
+        general {
+            lock_cmd = pidof hyprlock || hyprlock
+            before_sleep_cmd = loginctl lock-session    # lock before suspend
+            after_sleep_cmd = hyprctl dispatch dpms on
+        }
+
+        listener {
+            timeout = 600
+            on-timeout = loginctl lock-session
+        }
+
+        listener {
+            timeout = 900
+            on-timeout = hyprctl dispatch dpms off
+            on-resume = hyprctl dispatch dpms on
+        } 
+    '';
+
     programs.wlogout = {
         enable = true;
 
@@ -138,7 +157,10 @@ in {
                 };
             };
 
-            exec_cmd = [ "${pkgs.hyprpaper}/bin/hyprpaper" ];
+            exec_cmd = [ 
+                "${pkgs.hyprpaper}/bin/hyprpaper"
+                "${pkgs.hypridle}/bin/hypridle"
+            ];
         };
     };
 }

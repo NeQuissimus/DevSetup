@@ -35,9 +35,13 @@
   };
 
   environment.systemPackages = with pkgs; [
+    bambu-studio
     git
+    kdePackages.dolphin
+    kdePackages.qtsvg
     prismlauncher
     tor-browser
+    vlc
   ];
 
   hardware = {

@@ -30,45 +30,85 @@ let
   };
 in
 {
-  home.file."hypr/hypridle.conf".text = ''
-    general {
-        lock_cmd = pidof hyprlock || hyprlock
-        before_sleep_cmd = loginctl lock-session    # lock before suspend
-        after_sleep_cmd = hyprctl dispatch dpms on
-    }
+  programs = {
 
-    listener {
-        timeout = 600
-        on-timeout = loginctl lock-session
-    }
+    hyprlock = {
+      enable = true;
 
-    listener {
-        timeout = 900
-        on-timeout = hyprctl dispatch dpms off
-        on-resume = hyprctl dispatch dpms on
-    } 
-  '';
+      settings = {
+        animations.enabled = true;
 
-  programs.wlogout = {
-    enable = true;
+        background = {
+          path = "screenshot";
+          blur_passes = 5;
+        };
 
-    layout = [
-      {
-        label = "reboot";
-        action = "systemctl reboot";
-        text = "Reboot";
-        keybind = "r";
-      }
-      {
-        label = "shutdown";
-        action = "systemctl poweroff";
-        text = "Shutdown";
-        keybind = "p";
-      }
-    ];
+        general = {
+          fail_timeout = 10000;
+          ignore_empty_input = true;
+        };
+
+        input-field = {
+          check_color = "rgba(00ff99ee) rgba(ff6633ee) 120deg";
+          fade_on_empty = false;
+          fail_color = "rgba(ff6633ee) rgba(ff0066ee) 40deg";
+          fail_text = "$PAMFAIL$FPRINTFAIL";
+          font_color = "rgb(143, 143, 143)";
+          font_family = "$font";
+          outer_color = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+          outline_thickness = 3;
+          placeholder_text = "Input password...";
+          rounding = 15;
+          size = "20%, 5%";
+        };
+      };
+    };
+
+    wlogout = {
+      enable = true;
+
+      layout = [
+        {
+          label = "reboot";
+          action = "systemctl reboot";
+          text = "Reboot";
+          keybind = "r";
+        }
+        {
+          label = "shutdown";
+          action = "systemctl poweroff";
+          text = "Shutdown";
+          keybind = "p";
+        }
+      ];
+    };
   };
 
   services = {
+    hypridle = {
+      enable = true;
+
+      settings = {
+        general = {
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+          before_sleep_cmd = "loginctl lock-session";
+          ignore_dbus_inhibit = false;
+          lock_cmd = "pidof hyprlock || hyprlock";
+        };
+        listener = [
+          {
+            on-timeout = "hyprlock";
+            timeout = 900;
+          }
+          {
+            on-resume = "hyprctl dispatch dpms on";
+            on-timeout = "hyprctl dispatch dpms off";
+            timeout = 1200;
+          }
+        ];
+      };
+    };
+
     hyprpaper = {
       enable = true;
       settings = {

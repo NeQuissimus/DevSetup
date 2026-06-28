@@ -47,6 +47,10 @@ in
           Value = true;
           Status = "locked";
         };
+        "zen.tabs.vertical.right-side" = {
+          Value = true;
+          Status = "locked";
+        };
       };
     };
 

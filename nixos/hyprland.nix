@@ -16,8 +16,6 @@
       withUWSM = true;
       xwayland.enable = true;
     };
-
-    hyprlock.enable = true;
   };
 
   services = {

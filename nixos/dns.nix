@@ -177,6 +177,8 @@ in
         minTime = "1h";
       };
 
+      clientLookup.upstream = "10.0.0.2";
+
       customDNS = {
         mapping = {
           "opi5plus.nequissimus.com" = "10.0.0.54";

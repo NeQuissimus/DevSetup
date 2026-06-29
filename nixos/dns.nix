@@ -208,5 +208,5 @@ in
     };
   };
 
-  systemd.tmpfiles.rules = [ "d /var/lib/private 0701 nobody nogroup" ];
+  systemd.tmpfiles.rules = [ "d /var/lib/private 0700 root root" ];
 }

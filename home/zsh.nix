@@ -50,6 +50,7 @@ in
         export HISTSIZE=25000
         export SAVEHIST=25000
         export HISTDUP="erase"
+        export TERM="xterm"
 
         setopt correct
         setopt numericglobsort

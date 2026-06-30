@@ -13,6 +13,7 @@
     ../../nixos/hyprland.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
+    ../../nixos/ssh.nix
     ../../nixos/steam.nix
     ../../nixos/time.nix
     ../../nixos/users.nix
@@ -39,6 +40,7 @@
     git
     kdePackages.dolphin
     kdePackages.qtsvg
+    orca-slicer
     prismlauncher
     tor-browser
     vlc

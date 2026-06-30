@@ -11,7 +11,7 @@ let
 in
 {
   imports = [
-    ../../nixos/dns.nix
+    (import ../../nixos/dns-cluster.nix { inherit lib ipv4Address; })
     ../../nixos/nix.nix
     ../../nixos/observability.nix
     ../../nixos/security.nix
@@ -64,15 +64,6 @@ in
 
   services = {
     avahi.enable = true;
-
-    cron = {
-      enable = false; # Does not always come back from a reboot
-      systemCronJobs = [
-        "0 3 30 * 0 nequi bash -c 'cd /home/nequi/DevSetup && git checkout -- . && git pull && nix flake update'"
-        "0 3 30 * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
-        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#opi5plus\" && reboot'"
-      ];
-    };
 
     journald.extraConfig = "SystemMaxUse=100M";
 

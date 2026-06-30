@@ -126,6 +126,7 @@ in
       scrapeConfigs = [
         (scrapeThis "opi5plus" "127.0.0.1" 9002)
         (scrapeThis "opi5plus-dns" "127.0.0.1" 4000)
+        (scrapeThis "rpi4b-dns" "10.0.0.53" 4000)
       ];
     };
   };

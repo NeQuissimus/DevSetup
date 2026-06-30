@@ -11,7 +11,7 @@ let
 in
 {
   imports = [
-    ../../nixos/dns.nix
+    (import ../../nixos/dns-cluster.nix { inherit lib ipv4Address; })
     ../../nixos/nix.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
@@ -66,6 +66,8 @@ in
         "0 6 * * 0 root reboot"
       ];
     };
+
+    journald.extraConfig = "SystemMaxUse=100M";
 
     openssh.enable = true;
   };

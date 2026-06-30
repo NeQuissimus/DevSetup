@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  isPrimary ? false,
   ...
 }:
 
@@ -115,7 +116,10 @@ in
   networking.firewall = {
     enable = lib.mkDefault true;
 
-    allowedTCPPorts = [ 53 ];
+    allowedTCPPorts = [
+      53
+      4000
+    ];
     allowedUDPPorts = [ 53 ];
   };
 
@@ -182,11 +186,12 @@ in
       customDNS = {
         mapping = {
           "opi5plus.nequissimus.com" = "10.0.0.54";
+          "rpi4b.nequissimus.com" = "10.0.0.53";
         };
       };
 
       ports = {
-        http = "127.0.0.1:4000";
+        http = "0.0.0.0:4000";
       };
 
       prometheus = {

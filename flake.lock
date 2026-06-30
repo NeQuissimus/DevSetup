@@ -290,7 +290,7 @@
         "flake-compat": "flake-compat_2",
         "nixos-images": "nixos-images",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {

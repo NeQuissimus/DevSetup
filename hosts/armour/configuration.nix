@@ -11,8 +11,10 @@
     ./hardware.nix
 
     ../../nixos/hyprland.nix
+    ../../nixos/logs.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
+    ../../nixos/ssh.nix
     ../../nixos/steam.nix
     ../../nixos/time.nix
     ../../nixos/users.nix
@@ -39,6 +41,7 @@
     git
     kdePackages.dolphin
     kdePackages.qtsvg
+    orca-slicer
     prismlauncher
     tor-browser
     vlc
@@ -65,7 +68,7 @@
   networking = {
     defaultGateway = "10.0.0.2";
 
-    firewall.allowedTCPPorts = [ 12345 ];
+    firewall.allowedTCPPorts = [ 9002 12345 ];
 
     hostName = "armour";
     useDHCP = true;
@@ -81,7 +84,17 @@
     inputs.nix-cachyos-kernel.overlays.default
   ];
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services = {
+    prometheus.exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+    };
+  
+    xserver.videoDrivers = [ "nvidia" ];
+  };
 
   system.stateVersion = lib.mkForce "26.05";
 }

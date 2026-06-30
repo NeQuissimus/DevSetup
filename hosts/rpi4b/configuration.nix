@@ -11,7 +11,8 @@ let
 in
 {
   imports = [
-    ../../nixos/dns.nix
+    (import ../../nixos/dns-cluster.nix { inherit lib ipv4Address; })
+    ../../nixos/logs.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
@@ -31,6 +32,8 @@ in
 
   networking = {
     defaultGateway = "10.0.0.2";
+
+    firewall.allowedTCPPorts = [ 9002 ];
 
     hostName = "rpi4b";
 
@@ -67,6 +70,16 @@ in
       ];
     };
 
+    journald.extraConfig = "SystemMaxUse=100M";
+
     openssh.enable = true;
+
+    prometheus.exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+    };
   };
 }

@@ -8,8 +8,9 @@
 {
   imports = [
     ./hardware.nix
-
+    
     ../../nixos/kernel.nix
+    ../../nixos/logs.nix
     ../../nixos/nix.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix

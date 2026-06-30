@@ -102,6 +102,14 @@ in
           id = "c8988540-0366-4d77-862c-fb84707c0306";
           url = "https://www.twitch.tv";
         };
+        "Youtube" = {
+          id = "9769c817-fadd-4a74-8d17-f9e6f6e1c34e";
+          url = "https://www.youtube.com/feed/subscriptions";
+        };
+        "Netflix" = {
+          id = "27e56443-acd7-4f2d-bb15-bea7b4a1a96b";
+          url = "https://www.netflix.com/browse";
+        };
       };
 
       search = {

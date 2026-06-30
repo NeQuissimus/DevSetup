@@ -19,10 +19,7 @@
     home-manager.url = "github:nix-community/home-manager";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nur = {
       url = "github:nix-community/NUR";
@@ -90,6 +87,7 @@
               {
                 imports = with nixos-raspberrypi.nixosModules; [
                   raspberry-pi-4.base
+                  trusted-nix-caches
                 ];
               }
             )

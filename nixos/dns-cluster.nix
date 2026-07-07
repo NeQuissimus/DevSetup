@@ -53,54 +53,42 @@ let
 
   blocklists_mixed = [
     "https://big.oisd.nl/domainswild2"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/anti.piracy.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/doh-vpn-proxy-bypass.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/doh.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/dyndns.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/gambling.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/hoster.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.amazon.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.apple.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.huawei.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.lgwebos.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.oppo-realme.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.roku.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.samsung.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.tiktok.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.vivo.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.winoffice.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.xiaomi.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/nosafesearch.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/nsfw.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/spam-tlds-onlydomains.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif.txt"
+    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/urlshortener.txt"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/ultimate.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/multi.txt"
-  ];
-
-  blocklists_piracy = [
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/anti.piracy.txt"
-  ];
-
-  blocklists_gambling = [
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/gambling.medium.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/gambling.txt"
-  ];
-
-  blocklists_nsfw = [
-    "https://nsfw.oisd.nl/domainswild2"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/nsfw.txt"
   ];
 
   blocklists_newdomains = [
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/dga14.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/dga30.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/dga7.txt"
-    "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd7.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd14-8.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd21-15.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd28-22.txt"
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd35-29.txt"
-  ];
-
-  blocklists_vendors = [
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.samsung.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.winoffice.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/native.xiaomi.txt"
-  ];
-
-  blocklists_misc = [
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/doh.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/hoster-onlydomains.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/spam-tlds-onlydomains.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/doh-vpn-proxy-bypass.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/dyndns.txt"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/hoster.txt"
+    "https://raw.githubusercontent.com/hagezi/nrd/main/domains/nrd7.txt"
   ];
 in
 {
@@ -141,7 +129,7 @@ in
           };
 
           denylists = {
-            all = blocklists_gambling ++ blocklists_misc ++ blocklists_mixed ++ blocklists_nsfw ++ blocklists_piracy ++ blocklists_vendors;
+            all =  blocklists_mixed;
             manual = [ "/etc/dns-blocklist.txt" ];
             newdomains = blocklists_newdomains;
           };

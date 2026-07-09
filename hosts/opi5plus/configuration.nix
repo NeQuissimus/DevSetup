@@ -68,4 +68,9 @@ in
 
     openssh.enable = true;
   };
+
+  system.autoUpgrade = {
+    allowReboot = lib.mkForce false;
+    operation = lib.mkForce "switch";
+  };
 }

@@ -47,8 +47,6 @@ let
 
   blocked_domains = [
     "api-fp-retry-bj.fengkongcloud.com" # Fingerprinting
-    "ntp.aliyun.com" # Alibaba NTP
-    "time.google.com" # Google NTP
   ];
 
   blocklists_mixed = [
@@ -163,6 +161,14 @@ in
               value = x.ip;
             }) cluster_members
           );
+
+          zone = ''
+            ''\$ORIGIN time.google.com.
+            @ 3600 CNAME ca.pool.ntp.org.
+
+            ''$ORIGIN ntp.aliyun.com.
+            @ 3600 CNAME ca.pool.ntp.org.
+          '';
         };
 
         ports = {

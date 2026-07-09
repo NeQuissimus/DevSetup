@@ -96,5 +96,8 @@
     xserver.videoDrivers = [ "nvidia" ];
   };
 
-  system.stateVersion = lib.mkForce "26.05";
+  system = {
+    autoUpgrade.allowReboot = lib.mkForce false;
+    stateVersion = lib.mkForce "26.05";
+  };
 }

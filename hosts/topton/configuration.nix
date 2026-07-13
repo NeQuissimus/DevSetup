@@ -76,7 +76,7 @@
     firewall = {
       allowPing = true;
 
-      allowedTCPPorts = [ ];
+      allowedTCPPorts = [ 9002 ];
 
       allowedUDPPorts = [ ];
 

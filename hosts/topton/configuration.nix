@@ -107,9 +107,6 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        "0 3 * * 0 nequi bash -c 'cd /home/nequi/DevSetup && nix flake update'"
-        "10 3 * * 0 root echo -e \"[safe]\n\tdirectory = /home/nequi/DevSetup\" > /root/.gitconfig"
-        "0 4 * * 0 root bash -c 'cd /home/nequi/DevSetup && nixos-rebuild boot --flake \".#topton\"'"
         ''0 18 1 * * root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
       ];
     };
@@ -126,6 +123,8 @@
       openFirewall = true;
     };
 
+    logrotate.checkConfig = false;
+
     ntp = {
       enable = true;
       servers = [
@@ -136,9 +135,15 @@
       ];
     };
 
-    thermald.enable = true;
-
     openssh.enable = true;
+
+    prometheus.exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+    };
 
     sanoid = {
       datasets."tank/immich_enc".useTemplate = [ "backup" ];
@@ -146,9 +151,9 @@
     };
 
     smartd.enable = true;
-  };
 
-  services.logrotate.checkConfig = false;
+    thermald.enable = true;
+  };
 
   systemd = {
     services.immich_enc = {

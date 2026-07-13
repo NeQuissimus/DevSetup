@@ -125,6 +125,7 @@ in
 
       scrapeConfigs = [
         (scrapeThis "armour" "10.0.10.2" 9002)
+        (scrapeThis "mbp" "10.0.10.6" 9100)
         (scrapeThis "opi5plus" "127.0.0.1" 9002)
         (scrapeThis "opi5plus-dns" "127.0.0.1" 4000)
         (scrapeThis "opi5plus-postgres" "127.0.0.1" 9187)

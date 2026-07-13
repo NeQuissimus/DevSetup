@@ -132,6 +132,7 @@ in
         (scrapeThis "opi5plus-redis" "127.0.0.1" 9121)
         (scrapeThis "rpi4b" "10.0.0.53" 9002)
         (scrapeThis "rpi4b-dns" "10.0.0.53" 4000)
+        (scrapeThis "topton" "10.102.0.37" 9002)
       ];
     };
   };

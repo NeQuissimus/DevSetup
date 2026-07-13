@@ -27,7 +27,7 @@
       "cpuid"
       "spd5118"
     ];
-    kernelPackages = pkgs.linuxPackages_latest;
+
     kernelParams = [
       "pcie_aspm=off"
       "pcie_port_pm=off"

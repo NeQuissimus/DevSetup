@@ -1,9 +1,13 @@
 { config, pkgs, ... }: {
-  boot.extraModprobeConfig = ''
-    options zfs zfs_prefetch_disable=1
-    options zfs zfs_arc_min=1073741824
-    options zfs zfs_arc_max=2147483648
-  '';
+  boot = {
+    extraModprobeConfig = ''
+      options zfs zfs_prefetch_disable=1
+      options zfs zfs_arc_min=1073741824
+      options zfs zfs_arc_max=2147483648
+    '';
+
+    zfs.forceImportRoot = false;
+  };
 
   services = {
     sanoid = {

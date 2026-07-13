@@ -232,11 +232,11 @@ in
     };
 
     prometheus.exporters = {
-      postgres = {
-        enable = is_primary;
-        listenAddress = "0.0.0.0";
-        port = postgres_prometheus_port;
-      };
+      # postgres = {
+      #   enable = is_primary;
+      #   listenAddress = "0.0.0.0";
+      #   port = postgres_prometheus_port;
+      # };
 
       redis = {
         enable = is_primary;

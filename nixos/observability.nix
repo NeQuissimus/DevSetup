@@ -128,7 +128,7 @@ in
         (scrapeThis "mbp" "10.0.10.6" 9100)
         (scrapeThis "opi5plus" "127.0.0.1" 9002)
         (scrapeThis "opi5plus-dns" "127.0.0.1" 4000)
-        (scrapeThis "opi5plus-postgres" "127.0.0.1" 9187)
+        # (scrapeThis "opi5plus-postgres" "127.0.0.1" 9187)
         (scrapeThis "opi5plus-redis" "127.0.0.1" 9121)
         (scrapeThis "rpi4b" "10.0.0.53" 9002)
         (scrapeThis "rpi4b-dns" "10.0.0.53" 4000)

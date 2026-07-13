@@ -249,6 +249,7 @@ in
       databases = 1;
       enable = is_primary;
       openFirewall = is_primary;
+      port = 6379;
       syslog = false;
     };
   };

@@ -70,20 +70,7 @@ in
               timeInterval = "1m";
             };
           }
-        ]
-        ++ (lib.optionals config.services.blocky.enable [
-          {
-            name = "blocky-sqlite";
-            type = "frser-sqlite-datasource";
-            isDefault = false;
-            editable = false;
-            access = "proxy";
-            jsonData = {
-              path = config.services.blocky.settings.queryLog.target;
-            };
-
-          }
-        ]);
+        ];
 
         enable = true;
       };

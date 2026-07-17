@@ -53,35 +53,39 @@ let
     "https://big.oisd.nl/domainswild2"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts"
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-  ] ++ (lib.concatMap (file: [
-    "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/${file}"
-    "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/${file}"
-    "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/wildcard/${file}"
-  ]) [
-    "anti.piracy.txt"
-    "doh-vpn-proxy-bypass.txt"
-    "doh.txt"
-    "dyndns.txt"
-    "gambling.txt"
-    "hoster.txt"
-    "native.amazon.txt"
-    "native.apple.txt"
-    "native.huawei.txt"
-    "native.lgwebos.txt"
-    "native.oppo-realme.txt"
-    "native.roku.txt"
-    "native.samsung.txt"
-    "native.tiktok.txt"
-    "native.vivo.txt"
-    "native.winoffice.txt"
-    "native.xiaomi.txt"
-    "nosafesearch.txt"
-    "nsfw.txt"
-    "pro.plus.txt"
-    "spam-tlds-onlydomains.txt"
-    "tif.txt"
-    "urlshortener.txt"
-  ]);
+  ]
+  ++ (lib.concatMap
+    (file: [
+      "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/${file}"
+      "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/${file}"
+      "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/wildcard/${file}"
+    ])
+    [
+      "anti.piracy.txt"
+      "doh-vpn-proxy-bypass.txt"
+      "doh.txt"
+      "dyndns.txt"
+      "gambling.txt"
+      "hoster.txt"
+      "native.amazon.txt"
+      "native.apple.txt"
+      "native.huawei.txt"
+      "native.lgwebos.txt"
+      "native.oppo-realme.txt"
+      "native.roku.txt"
+      "native.samsung.txt"
+      "native.tiktok.txt"
+      "native.vivo.txt"
+      "native.winoffice.txt"
+      "native.xiaomi.txt"
+      "nosafesearch.txt"
+      "nsfw.txt"
+      "pro.plus.txt"
+      "spam-tlds-onlydomains.txt"
+      "tif.txt"
+      "urlshortener.txt"
+    ]
+  );
 
   blocklists_newdomains = [
     "https://raw.githubusercontent.com/hagezi/nrd/main/domains/dga14.txt"
@@ -132,7 +136,7 @@ in
           };
 
           denylists = {
-            all =  blocklists_mixed;
+            all = blocklists_mixed;
             manual = [ "/etc/dns-blocklist.txt" ];
             newdomains = blocklists_newdomains;
           };

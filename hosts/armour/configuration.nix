@@ -6,6 +6,11 @@
   ipv4Address,
   ...
 }:
+let
+  bambu = pkgs.bambu-studio.override {
+    withNvidiaGLWorkaround = true;
+  };
+in
 {
   imports = [
     ./hardware.nix
@@ -36,16 +41,20 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    bambu-studio
-    git
-    kdePackages.dolphin
-    kdePackages.qtsvg
-    orca-slicer
-    prismlauncher
-    tor-browser
-    vlc
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      git
+      godot
+      kdePackages.dolphin
+      kdePackages.qtsvg
+      orca-slicer
+      prismlauncher
+      tor-browser
+      vlc
+    ])
+    ++ [
+      bambu
+    ];
 
   hardware = {
     bluetooth.enable = true;
@@ -68,7 +77,10 @@
   networking = {
     defaultGateway = "10.0.0.2";
 
-    firewall.allowedTCPPorts = [ 9002 12345 ];
+    firewall.allowedTCPPorts = [
+      9002
+      12345
+    ];
 
     hostName = "armour";
     useDHCP = true;
@@ -92,7 +104,7 @@
         port = 9002;
       };
     };
-  
+
     xserver.videoDrivers = [ "nvidia" ];
   };
 

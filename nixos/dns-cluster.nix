@@ -32,6 +32,7 @@ let
     "awsusor0.fds.api.xiaomi.com" # Roborock
     "*.edgesuite.net" # Akamai CDN
     "ecsv2.roblox.com" # Roblox tracking
+    "go.aftvnews.com" # AFTVNews Downloader
     "huggingface.co" # ML Models
     "mqtt-mini.facebook.com" # Facebook messenger
     "mqtt-us.roborock.com" # Roborock

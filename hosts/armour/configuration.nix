@@ -70,7 +70,7 @@ in
     nvidia = {
       modesetting.enable = true;
       open = false;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
   };
 
@@ -95,6 +95,8 @@ in
   nixpkgs.overlays = [
     inputs.nix-cachyos-kernel.overlays.default
   ];
+
+  programs.thunderbird.enable = true;
 
   services = {
     prometheus.exporters = {

@@ -107,7 +107,7 @@
     cron = {
       enable = true;
       systemCronJobs = [
-        ''0 18 1 * * root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive --delete-unmatched-destination-objects''
+        ''0 18 1 * * root ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account --key-file /etc/gcs/serviceaccount.json && ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync "/tank/immich_enc" "gs://nequi-nas-i/" --recursive''
       ];
     };
 

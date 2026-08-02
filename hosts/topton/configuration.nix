@@ -104,6 +104,7 @@
   programs.htop.enable = true;
 
   services = {
+<<<<<<< Updated upstream
     cron = {
       enable = true;
       systemCronJobs = [
@@ -111,6 +112,8 @@
       ];
     };
 
+=======
+>>>>>>> Stashed changes
     immich = {
       enable = true;
       host = "0.0.0.0";
@@ -156,26 +159,56 @@
   };
 
   systemd = {
-    services.immich_enc = {
-      after = [ "tank-immich_enc.mount" ];
-      before = [
-        "immich-server.service"
-        "immich-machine-learning.service"
-      ];
+    services = {
+      gcs-backup = {
+        description = "GCS Backup - Sync EncFS images to Google Cloud Storage";
+        after = ["network-online.target"];
 
-      description = "Mount immich volume";
-      path = with pkgs; [ util-linux ];
-
-      serviceConfig = {
-        ExecStart = ''${lib.getBin pkgs.gocryptfs}/bin/gocryptfs -passfile /etc/gocryptfs -allow_other "/tank/immich_enc" "/mnt/immich"'';
-
-        Type = "forking";
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+          Environment = "HOME=/root";
+          ExecStart = ''
+            ${pkgs.google-cloud-sdk}/bin/gcloud auth activate-service-account \
+              --key-file /etc/gcs/serviceaccount.json && \
+            ${pkgs.google-cloud-sdk}/bin/gcloud storage rsync \
+              /tank/immich_enc gs://nequi-nas-i/ --recursive --ignore-timestamps
+          '';
+        };
       };
 
-      requiredBy = [
-        "immich-server.service"
-        "immich-machine-learning.service"
-      ];
+      immich_enc = {
+        after = [ "tank-immich_enc.mount" ];
+        before = [
+          "immich-server.service"
+          "immich-machine-learning.service"
+        ];
+
+        description = "Mount immich volume";
+        path = with pkgs; [ util-linux ];
+
+        serviceConfig = {
+          ExecStart = ''${lib.getBin pkgs.gocryptfs}/bin/gocryptfs -passfile /etc/gocryptfs -allow_other "/tank/immich_enc" "/mnt/immich"'';
+
+          Type = "forking";
+        };
+
+        requiredBy = [
+          "immich-server.service"
+          "immich-machine-learning.service"
+        ];
+      };
+    };
+
+    timers.gcs-backup = {
+      description = "Monthly GCS Backup Timer";
+
+      timerConfig = {
+        OnCalendar = "*-*-1 18:00:00";
+        Persistent = true;
+      };
+
+      wantedBy = ["timers.target"];
     };
 
     tmpfiles.rules = [

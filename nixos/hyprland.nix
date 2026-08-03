@@ -13,18 +13,26 @@
   programs = {
     hyprland = {
       enable = true;
-      withUWSM = true;
+      withUWSM = false;
       xwayland.enable = true;
     };
   };
 
   services = {
-    displayManager.sddm = {
-      enable = true;
+    displayManager.sddm.enable = false;
 
-      wayland.enable = true;
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd start-hyprland --user-menu";
+          user = "nequi";
+        };
+      };
     };
 
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+    };
   };
 }

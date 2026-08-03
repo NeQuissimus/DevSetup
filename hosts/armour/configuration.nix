@@ -33,7 +33,14 @@ in
       "nvidia_drm"
       "nvidia_uvm"
     ];
+
     kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+
+    kernelParams = [
+      "loglevel=3"
+      "quiet"
+      "splash"
+    ];
 
     loader = {
       efi.canTouchEfiVariables = true;

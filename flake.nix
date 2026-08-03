@@ -19,6 +19,7 @@
     home-manager.url = "github:nix-community/home-manager";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=pull/548762/merge";
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nur = {

@@ -21,12 +21,16 @@ in
       DisableAppUpdate = true;
       DisableFeedbackCommands = true;
       DisableFirefoxStudies = true;
+      DisableMasterPasswordCreation = true;
       DisablePocket = true;
       DisableTelemetry = true;
       DNSOverHTTPS = false;
       DontCheckDefaultBrowser = true;
       HttpsOnlyMode = true;
       OfferToSaveLogins = false;
+      OfferToSaveLoginsDefault = false;
+      PasswordManagerEnabled = false;
+      PrimaryPassword = false;
       EnableTrackingProtection = {
         Value = true;
         Locked = true;

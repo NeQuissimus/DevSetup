@@ -64,6 +64,16 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-compute-runtime
+      intel-media-driver
+      intel-ocl
+      vpl-gpu-rt
+    ];
+  };
+
   i18n = {
     defaultLocale = "en_US.UTF-8";
   };
@@ -92,6 +102,10 @@
         }
       ];
     };
+  };
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
 
   powerManagement = {
@@ -150,7 +164,7 @@
     services = {
       gcs-backup = {
         description = "GCS Backup - Sync EncFS images to Google Cloud Storage";
-        after = ["network-online.target"];
+        after = [ "network-online.target" ];
 
         serviceConfig = {
           Type = "oneshot";
@@ -186,6 +200,8 @@
           "immich-machine-learning.service"
         ];
       };
+
+      jellyfin.environment.LIBVA_DRIVER_NAME = "iHD";
     };
 
     timers.gcs-backup = {
@@ -196,7 +212,7 @@
         Persistent = true;
       };
 
-      wantedBy = ["timers.target"];
+      wantedBy = [ "timers.target" ];
     };
 
     tmpfiles.rules = [

@@ -50,11 +50,11 @@ in
 
   environment.systemPackages =
     (with pkgs; [
+      awakened-poe-trade
       git
       godot
       kdePackages.dolphin
       kdePackages.qtsvg
-      orca-slicer
       prismlauncher
       tor-browser
       vlc

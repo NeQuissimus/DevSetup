@@ -31,6 +31,25 @@ let
 in
 {
   programs = {
+    feh = {
+      buttons = {
+        zoom_in = 4;
+        zoom_out = 5;
+      };
+
+      enable = true;
+
+      keybindings = {
+        next_img = "Right";
+        prev_img = "Left";
+      };
+
+      themes = {
+        feh = [
+          "--scale-down"
+        ];
+      };
+    };
 
     hyprlock = {
       enable = true;

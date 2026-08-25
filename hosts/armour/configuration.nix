@@ -10,6 +10,17 @@ let
   bambu = pkgs.bambu-studio.override {
     withNvidiaGLWorkaround = true;
   };
+
+  awakenedpoetrade = pkgs.awakened-poe-trade.overrideAttrs (oldAttrs: {
+    postFixup = ''
+      makeWrapper ${lib.getExe pkgs.electron} $out/bin/awakened-poe-trade \
+        --add-flags "$out/share/awakened-poe-trade/resources/app.asar --no-sandbox --disable-gpu --force-device-scale-factor=1 --ozone-platform=x11 --no-overlay" \
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [
+          pkgs.libxtst
+          pkgs.libxt
+        ]}" \
+    '';
+  });
 in
 {
   imports = [
@@ -50,7 +61,6 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-      awakened-poe-trade
       git
       godot
       kdePackages.dolphin
@@ -60,6 +70,7 @@ in
       vlc
     ])
     ++ [
+      awakenedpoetrade
       bambu
     ];
 

@@ -15,10 +15,12 @@ let
     postFixup = ''
       makeWrapper ${lib.getExe pkgs.electron} $out/bin/awakened-poe-trade \
         --add-flags "$out/share/awakened-poe-trade/resources/app.asar --no-sandbox --disable-gpu --force-device-scale-factor=1 --ozone-platform=x11 --no-overlay" \
-        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [
-          pkgs.libxtst
-          pkgs.libxt
-        ]}" \
+        --prefix LD_LIBRARY_PATH : "${
+          lib.makeLibraryPath [
+            pkgs.libxtst
+            pkgs.libxt
+          ]
+        }" \
     '';
   });
 in
@@ -27,6 +29,7 @@ in
     ./hardware.nix
 
     ../../nixos/brave.nix
+    ../../nixos/helium.nix
     ../../nixos/hyprland.nix
     ../../nixos/logs.nix
     ../../nixos/nix.nix
@@ -64,7 +67,6 @@ in
   environment.systemPackages =
     (with pkgs; [
       brave-origin
-      helium
       git
       godot
       kdePackages.dolphin

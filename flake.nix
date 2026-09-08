@@ -3,10 +3,16 @@
 
   nixConfig = {
     extra-substituters = [
+      "https://attic.xuyh0120.win/lantian"
+      "https://cache.nixos-cuda.org"
+      "https://cache.numtide.com"
       "https://nixos-raspberrypi.cachix.org"
     ];
 
     extra-trusted-public-keys = [
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     ];
   };
@@ -16,15 +22,16 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    helium-flake.url = "github:oxcl/nix-flake-helium-browser";
     home-manager.url = "github:nix-community/home-manager";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=pull/548762/merge";
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nur";
     };
     nixos-rk3588 = {
       url = "github:gnull/nixos-rk3588";
@@ -41,8 +48,9 @@
   outputs =
     inputs@{
       self,
-      firefox-addons,
+      helium-flake,
       home-manager,
+      llm-agents,
       nixpkgs,
       nixpkgs-unstable,
       nixos-raspberrypi,
@@ -58,6 +66,8 @@
         nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            { nixpkgs.overlays = [ helium-flake.overlays.default ]; }
+
             ./hosts/${host}/configuration.nix
             home-manager.nixosModules.home-manager
             {

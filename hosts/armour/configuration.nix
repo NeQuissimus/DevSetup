@@ -26,9 +26,11 @@ in
   imports = [
     ./hardware.nix
 
+    ../../nixos/brave.nix
     ../../nixos/hyprland.nix
     ../../nixos/logs.nix
     ../../nixos/nix.nix
+    ../../nixos/ollama.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/steam.nix
@@ -61,6 +63,8 @@ in
 
   environment.systemPackages =
     (with pkgs; [
+      brave-origin
+      helium
       git
       godot
       kdePackages.dolphin
@@ -68,6 +72,9 @@ in
       prismlauncher
       tor-browser
       vlc
+    ])
+    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+      omp
     ])
     ++ [
       awakenedpoetrade
@@ -103,11 +110,6 @@ in
     hostName = "armour";
     useDHCP = true;
     usePredictableInterfaceNames = true;
-  };
-
-  nix.settings = {
-    extra-substituters = [ "https://attic.xuyh0120.win/lantian" ];
-    extra-trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
   };
 
   nixpkgs.overlays = [

@@ -1,0 +1,68 @@
+{
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
+  "BraveAIChatEnabled": 0,
+  "BraveNewsDisabled": 1,
+  "BraveP3AEnabled": false,
+  "BravePlaylistEnabled": 0,
+  "BraveRewardsDisabled": 1,
+  "BraveSpeedreaderEnabled": 0,
+  "BraveStatsPingEnabled": false,
+  "BraveSyncUrl": "",
+  "BraveTalkDisabled": 1,
+  "BraveVPNDisabled": 1,
+  "BraveWalletDisabled": 1,
+  "BraveWaybackMachineEnabled": 0,
+  "BraveWebDiscoveryEnabled": 0,
+  "DefaultSearchProviderEnabled": true,
+  "DefaultSearchProviderName": "Ecosia",
+  "DefaultSearchProviderSearchURL": "https://www.ecosia.org/search?method=index&q={searchTerms}",
+  "DnsOverHttpsMode": "off",
+  "IncognitoModeAvailability": 1,
+  "ManagedBookmarks": [
+    {
+      "name": "1Password",
+      "url": "https://my.1password.com/app"
+    },
+    {
+      "name": "F1TV",
+      "url": "https://f1tv.formula1.com/"
+    },
+    {
+      "name": "Grafana",
+      "url": "http://opi5plus.nequissimus.com/dashboards"
+    },
+    {
+      "name": "Home Assistant",
+      "url": "http://10.0.0.55:8123/dashboard-dashboard/0"
+    },
+    {
+      "name": "Immich",
+      "url": "http://10.102.0.37:2283/photos"
+    },
+    {
+      "name": "Jellyfin",
+      "url": "http://10.102.0.37:8096/web/#/home"
+    },
+    {
+      "name": "Proton",
+      "url": "https://account.proton.me/apps"
+    },
+    {
+      "name": "Twitch",
+      "url": "https://www.twitch.tv/"
+    },
+    {
+      "name": "Unifi OS",
+      "url": "https://10.0.0.2/network/default/dashboard"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/feed/subscriptions"
+    }
+  ],
+  "MetricsReportingEnabled": false,
+  "PasswordManagerEnabled": false,
+  "SearchSuggestEnabled": false,
+  "SyncDisabled": true
+}

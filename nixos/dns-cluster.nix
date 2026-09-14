@@ -33,6 +33,7 @@ let
     "*.edgesuite.net" # Akamai CDN
     "ecsv2.roblox.com" # Roblox tracking
     "go.aftvnews.com" # AFTVNews Downloader
+    "*.hf.co" # ML Models
     "huggingface.co" # ML Models
     "mqtt-mini.facebook.com" # Facebook messenger
     "mqtt-us.roborock.com" # Roborock

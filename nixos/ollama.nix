@@ -4,7 +4,7 @@
     enable = true;
 
     environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "64000";
+      OLLAMA_CONTEXT_LENGTH = "131000";
     };
 
     loadModels = [

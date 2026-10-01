@@ -33,7 +33,7 @@ in
     ../../nixos/hyprland.nix
     ../../nixos/logs.nix
     ../../nixos/nix.nix
-    ../../nixos/ollama.nix
+#    ../../nixos/ollama.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/steam.nix

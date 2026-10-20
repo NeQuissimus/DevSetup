@@ -11,9 +11,8 @@ let
 in
 {
   imports = [
-    (import ../../nixos/dns-cluster.nix { inherit lib ipv4Address; })
-    ../../nixos/logs.nix
     ../../nixos/nix.nix
+    ../../nixos/pihole.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/users.nix

@@ -105,13 +105,13 @@ in {
           description = "Custom allowlist";
           enabled = true;
           type = "allow";
-          url = "/etc/dns-allowlist.txt";
+          url = "file:///etc/dns-allowlist.txt";
         }
         {
           description = "Custom blocklist";
           enabled = true;
           type = "block";
-          url = "/etc/dns-blocklist.txt";
+          url = "file:///etc/dns-blocklist.txt";
         }
       ];
 

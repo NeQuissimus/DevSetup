@@ -3,7 +3,7 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://attic.xuyh0120.win/lantian"
+#      "https://attic.xuyh0120.win/lantian"
       "https://cache.nixos-cuda.org"
       "https://cache.numtide.com"
       "https://nixos-raspberrypi.cachix.org"
@@ -11,7 +11,7 @@
 
     extra-trusted-public-keys = [
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+#      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     ];

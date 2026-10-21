@@ -33,6 +33,14 @@
           "url" = "https://my.1password.com/app";
         }
         {
+          "name" = "DNS 53";
+          "url" = "https://10.0.0.53/";
+        }
+        {
+          "name" = "DNS 54";
+          "url" = "https://10.0.0.54/";
+        }
+        {
           "name" = "F1TV";
           "url" = "https://f1tv.formula1.com/";
         }
@@ -74,3 +82,4 @@
     };
   };
 }
+

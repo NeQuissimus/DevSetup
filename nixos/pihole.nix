@@ -130,7 +130,7 @@ in {
           domain.name = "nequissimus.com";
 
           rateLimit = {
-            count = 100;
+            count = 250;
             interval = 600; # Seconds
           };
 

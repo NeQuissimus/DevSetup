@@ -8,6 +8,7 @@ let
     "*.amazonaws.com" # AWS
     "api-us.roborock.com" # Roborock
     "awsusor0.fds.api.xiaomi.com" # Roborock
+    "cbcrclinear-tor.akamaized.net" # CBC
     "*.edgesuite.net" # Akamai CDN
     "ecsv2.roblox.com" # Roblox tracking
     "go.aftvnews.com" # AFTVNews Downloader

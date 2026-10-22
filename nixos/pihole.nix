@@ -21,6 +21,7 @@ let
     "*.torproject.org" # TOR
     "tr.rbxcdn.com" # Roblox assets
     "track.spe.schoolmessenger.com" # School info
+    "wdrfsww247.akamaized.net" # WDR
     "web.poecdn.com" # Path Of Exile website
   ];
 

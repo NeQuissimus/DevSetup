@@ -13,6 +13,7 @@ let
     "go.aftvnews.com" # AFTVNews Downloader
     "*.hf.co" # ML Models
     "huggingface.co" # ML Models
+    "i.imgur.com" # Jellyfin covers
     "mqtt-mini.facebook.com" # Facebook messenger
     "mqtt-us.roborock.com" # Roborock
     "*.olg.ca" # OLG
@@ -25,6 +26,7 @@ let
 
   blocked_domains = [
     "api-fp-retry-bj.fengkongcloud.com" # Fingerprinting
+    "beacon.shopify.io"
   ];
 
   blocklists = [

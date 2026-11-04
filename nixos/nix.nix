@@ -60,5 +60,30 @@ in
     config.allowUnfree = true;
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.11";
+
+  systemd = {
+    services.nix-store-verify = {
+      description = "Verify and repair the Nix store";
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+      path = [ config.nix.package pkgs.coreutils ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        Nice = 19;
+        IOSchedulingClass = "idle";
+        ExecStart = "${config.nix.package}/bin/nix-store --verify --check-contents --repair";
+      };
+    };
+
+    timers.nix-store-verify = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "Mon 03:30";
+        Persistent = true;
+        RandomizedDelaySec = "1h";
+      };
+    };
+  };
 }

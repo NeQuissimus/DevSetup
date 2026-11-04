@@ -133,11 +133,6 @@ in {
 
           domain.name = "nequissimus.com";
 
-          rateLimit = {
-            count = 250;
-            interval = 600; # Seconds
-          };
-
           upstreams = [
             "94.140.14.15" # AdGuard Family Primary
             "94.140.15.16" # AdGuard Family Secondary

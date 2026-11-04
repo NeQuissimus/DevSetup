@@ -36,6 +36,8 @@
     nixos-rk3588 = {
       url = "github:gnull/nixos-rk3588";
     };
+    strata-nix.url = "github:Yunor743/strata.nix";
+    omp.url = "github:can1357/oh-my-pi";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -57,6 +59,7 @@
       nix-cachyos-kernel,
       nur,
       nixos-rk3588,
+      strata-nix,
       zen-browser,
       ...
     }:
@@ -66,16 +69,24 @@
         nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            { nixpkgs.overlays = [ helium-flake.overlays.default ]; }
+            { nixpkgs.overlays = [ helium-flake.overlays.default strata-nix.overlays.default ]; }
 
             ./hosts/${host}/configuration.nix
+            strata-nix.nixosModules.default
+            inputs.omp.nixosModules.default
             home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.nequi = ./home/_nequi.nix;
-            }
+            (
+              { config, ... }:
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                  strataPort = if config.services.strata.enable then config.services.strata.port else null;
+                };
+                home-manager.users.nequi = ./home/_nequi.nix;
+              }
+            )
           ];
           specialArgs = { inherit ipv4Address inputs; };
         };

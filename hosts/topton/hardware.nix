@@ -24,7 +24,6 @@
       kernelModules = [ ];
 
       systemd = {
-        enable = lib.mkDefault true;
 
         services.rollback = {
           description = "Rollback root filesystem to a pristine state on boot";

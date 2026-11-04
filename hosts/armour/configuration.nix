@@ -37,6 +37,7 @@ in
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/steam.nix
+    ../../nixos/strata.nix
     ../../nixos/time.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix

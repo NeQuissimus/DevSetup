@@ -127,7 +127,7 @@ in {
           blockTTL = 3600; # Seconds
 
           cache = {
-            size = 1000;
+            size = 5000;
             optimizer = 7200; # Seconds
           };
 

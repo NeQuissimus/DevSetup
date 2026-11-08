@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }:
 {
   imports = [
-    ./brave.nix
+#    ./brave.nix
     ./generic.nix
     ./git.nix
     ./hyprland.nix

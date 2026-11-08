@@ -28,7 +28,7 @@ in
   imports = [
     ./hardware.nix
 
-    ../../nixos/brave.nix
+#    ../../nixos/brave.nix
     ../../nixos/helium.nix
     ../../nixos/hyprland.nix
     ../../nixos/logs.nix
@@ -37,7 +37,7 @@ in
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/steam.nix
-    ../../nixos/strata.nix
+#    ../../nixos/strata.nix
     ../../nixos/time.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix
@@ -67,7 +67,7 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-      brave-origin
+#      brave-origin
       git
       godot
       kdePackages.dolphin

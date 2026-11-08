@@ -65,6 +65,10 @@
           "url" = "https://account.proton.me/apps";
         }
         {
+          "name" = "Supercars";
+          "url" = "https://www.supercars.com/superview";
+        }
+        {
           "name" = "Twitch";
           "url" = "https://www.twitch.tv/";
         }

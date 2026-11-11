@@ -18,48 +18,68 @@
   "DefaultSearchProviderName": "Ecosia",
   "DefaultSearchProviderSearchURL": "https://www.ecosia.org/search?method=index&q={searchTerms}",
   "DnsOverHttpsMode": "off",
+  "ExtensionInstallForcelist": [
+        "ammjkodgmmoknidbanneddgankgfejfh",
+        "blockjmkbacgjkknlgpkjjiijinjdanf",
+        "mnjggcdmjocbbbhaepdhchncahnbgone",
+        "jdpblpklojajpopllbckephjndibljbc",
+        "caldgcgjbhdhmiaomefkhknhhgodhbin",
+        "enamippconapkdmgfgjchkhakpfinmaj"
+  ],
   "IncognitoModeAvailability": 1,
   "ManagedBookmarks": [
-    {
-      "name": "1Password",
-      "url": "https://my.1password.com/app"
-    },
-    {
-      "name": "F1TV",
-      "url": "https://f1tv.formula1.com/"
-    },
-    {
-      "name": "Grafana",
-      "url": "http://opi5plus.nequissimus.com/dashboards"
-    },
-    {
-      "name": "Home Assistant",
-      "url": "http://10.0.0.55:8123/dashboard-dashboard/0"
-    },
-    {
-      "name": "Immich",
-      "url": "http://10.102.0.37:2283/photos"
-    },
-    {
-      "name": "Jellyfin",
-      "url": "http://10.102.0.37:8096/web/#/home"
-    },
-    {
-      "name": "Proton",
-      "url": "https://account.proton.me/apps"
-    },
-    {
-      "name": "Twitch",
-      "url": "https://www.twitch.tv/"
-    },
-    {
-      "name": "Unifi OS",
-      "url": "https://10.0.0.2/network/default/dashboard"
-    },
-    {
-      "name": "YouTube",
-      "url": "https://www.youtube.com/feed/subscriptions"
-    }
+        {
+          "name": "1Password",
+          "url": "https://my.1password.com/app"
+        },
+        {
+          "name": "DNS 53",
+          "url": "https://10.0.0.53/"
+        },
+        {
+          "name": "DNS 54",
+          "url": "https://10.0.0.54/"
+        },
+        {
+          "name": "F1TV",
+          "url": "https://f1tv.formula1.com/"
+        },
+        {
+          "name": "Grafana",
+          "url": "http://opi5plus.nequissimus.com/dashboards"
+        },
+        {
+          "name": "Home Assistant",
+          "url": "http://10.0.0.55:8123/dashboard-dashboard/0"
+        },
+        {
+          "name": "Immich",
+          "url": "http://10.102.0.37:2283/photos"
+        },
+        {
+          "name": "Jellyfin",
+          "url": "http://10.102.0.37:8096/web/#/home"
+        },
+        {
+          "name": "Proton",
+          "url": "https://account.proton.me/apps"
+        },
+        {
+          "name": "Supercars",
+          "url": "https://www.supercars.com/superview"
+        },
+        {
+          "name": "Twitch",
+          "url": "https://www.twitch.tv/"
+        },
+        {
+          "name": "Unifi OS",
+          "url": "https://10.0.0.2/network/default/dashboard"
+        },
+        {
+          "name": "YouTube",
+          "url": "https://www.youtube.com/feed/subscriptions"
+        }
   ],
   "MetricsReportingEnabled": false,
   "PasswordManagerEnabled": false,

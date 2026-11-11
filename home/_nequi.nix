@@ -6,7 +6,7 @@
     ./git.nix
     ./hyprland.nix
     ./kitty.nix
-    ./omp.nix
+#    ./omp.nix
     ./vscodium.nix
     ./zellij.nix
     ./zsh.nix

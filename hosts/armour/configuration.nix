@@ -28,8 +28,7 @@ in
   imports = [
     ./hardware.nix
 
-#    ../../nixos/brave.nix
-    ../../nixos/helium.nix
+    ../../nixos/brave.nix
     ../../nixos/hyprland.nix
     ../../nixos/logs.nix
     ../../nixos/nix.nix
@@ -76,9 +75,9 @@ in
       tor-browser
       vlc
     ])
-    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
-      omp
-    ])
+#    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+#      omp
+#    ])
     ++ [
       awakenedpoetrade
       bambu

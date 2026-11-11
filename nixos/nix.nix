@@ -60,7 +60,7 @@ in
     config.allowUnfree = true;
   };
 
-  system.stateVersion = "26.11";
+  system.stateVersion = lib.mkDefault "26.11";
 
   systemd = {
     services.nix-store-verify = {

@@ -21,6 +21,7 @@
       "DefaultSearchProviderSearchURL" = "https://ecosia.org/search?method=index&q={searchTerms}";
       "ExtensionInstallForcelist" = [
         "ammjkodgmmoknidbanneddgankgfejfh" # 7TV
+        "blockjmkbacgjkknlgpkjjiijinjdanf" # uBlock Origin
         "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock for YouTube
         "jdpblpklojajpopllbckephjndibljbc" # Twitch Channel Points Auto Clicker
         "caldgcgjbhdhmiaomefkhknhhgodhbin" # Vertical Twitch

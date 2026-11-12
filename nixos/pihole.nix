@@ -134,8 +134,8 @@ in {
           domain.name = "nequissimus.com";
 
           upstreams = [
-            "94.140.14.15" # AdGuard Family Primary
-            "94.140.15.16" # AdGuard Family Secondary
+            "94.140.14.14" # AdGuard Primary
+            "94.140.15.15" # AdGuard Secondary
           ];
         };
       };

@@ -181,7 +181,7 @@
 
   security = {
     forcePageTableIsolation = true;
-    lockKernelModules = true;
+    lockKernelModules = lib.mkDefault true;
     protectKernelImage = true;
   };
 }

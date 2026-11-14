@@ -30,6 +30,7 @@ in
 
     ../../nixos/brave.nix
     ../../nixos/hyprland.nix
+    ../../nixos/kernel.nix
     ../../nixos/logs.nix
     ../../nixos/nix.nix
 #    ../../nixos/ollama.nix
@@ -119,6 +120,8 @@ in
   ];
 
   programs.thunderbird.enable = true;
+
+  security.lockKernelModules = false;
 
   services = {
     prometheus.exporters = {

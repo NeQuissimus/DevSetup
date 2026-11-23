@@ -55,19 +55,6 @@ in
       "nvidia_uvm"
     ];
 
-    #    kernelPackage
-    #   "hid_logitech_hidpp"
-    #   "i2c_piix4"
-    #   "i2c_smbus"
-    #   "i8042"
-    #   "input_leds"
-    #   "intel_rapl_common"
-    #   "intel_rapl_msr"
-    #   "ip6t_rpfilter"
-    #   "ipt_rpfilter"
-    #   "irqbypass"
-    #   "joydev"s = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
-
     kernelParams = [
       "loglevel=3"
       "quiet"

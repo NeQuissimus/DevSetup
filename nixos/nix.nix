@@ -67,7 +67,10 @@ in
       description = "Verify and repair the Nix store";
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
-      path = [ config.nix.package pkgs.coreutils ];
+      path = [
+        config.nix.package
+        pkgs.coreutils
+      ];
 
       serviceConfig = {
         Type = "oneshot";

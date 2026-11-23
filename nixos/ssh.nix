@@ -14,13 +14,9 @@
         ConnectTimeout 60
         ServerAliveInterval 240
         ConnectionAttempts 60
-        KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
         PasswordAuthentication no
         ChallengeResponseAuthentication no
         PubkeyAuthentication yes
-        HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa
-        Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-        MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
         UseRoaming no
     '';
 
@@ -71,23 +67,49 @@
       ];
 
       settings = {
+        AllowUsers = [ "nequi" ];
+        ChallengeResponseAuthentication = false;
+
+        Ciphers = [
+          "chacha20-poly1305@openssh.com"
+          "aes256-gcm@openssh.com"
+          "aes128-gcm@openssh.com"
+        ];
+
+        ClientAliveCountMax = 3;
+        ClientAliveInterval = 300;
+        HostbasedAuthentication = false;
+
+        HostkeyAlgorithms = [
+          "ssh-ed25519"
+          "rsa-sha2-512"
+          "rsa-sha2-256"
+        ];
+
+        IgnoreRhosts = true;
         KbdInteractiveAuthentication = false;
 
         KexAlgorithms = [
+          "curve25519-sha256"
           "curve25519-sha256@libssh.org"
-          "diffie-hellman-group14-sha256"
           "diffie-hellman-group16-sha512"
           "diffie-hellman-group18-sha512"
         ];
 
-        Macs = [
+        LoginGraceTime = 30;
+
+        MACs = [
           "hmac-sha2-512-etm@openssh.com"
           "hmac-sha2-256-etm@openssh.com"
           "umac-128-etm@openssh.com"
         ];
 
+        MaxAuthTries = 3;
+        MaxSessions = 2;
+        MaxStartups = "10:30:100";
         PasswordAuthentication = false;
-        PermitRootLogin = "no";
+        PermitEmptyPasswords = false;
+        PermitRootLogin = false;
       };
     };
   };

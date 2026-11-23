@@ -1,7 +1,6 @@
 { pkgs, ... }:
 let
-  email = "tim@nequissimus.com";
-  gpgKey = "";
+  email = "nequissimus@protonmail.com";
   name = "Tim Steinbach";
 in
 {
@@ -114,7 +113,9 @@ in
     };
 
     signing = {
-      key = gpgKey;
+      allowedSigners = "${email} namespaces=\"git\" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEubpT+1r7+w5YHMriOywiX2wIr4s5MJw1rlc3e3EAQQAAAABHNzaDo=";
+      format = "ssh";
+      key = "~/.ssh/id_ed25519_sk.pub";
       signByDefault = true;
     };
   };

@@ -30,14 +30,18 @@ in
 
     ../../nixos/brave.nix
     ../../nixos/hyprland.nix
-    ../../nixos/kernel.nix
+    (import ../../nixos/kernel.nix {
+      inherit pkgs lib config;
+      modlistFile = ./modlist.txt;
+      baseKernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    })
     ../../nixos/logs.nix
     ../../nixos/nix.nix
-#    ../../nixos/ollama.nix
+    #    ../../nixos/ollama.nix
     ../../nixos/security.nix
     ../../nixos/ssh.nix
     ../../nixos/steam.nix
-#    ../../nixos/strata.nix
+    #    ../../nixos/strata.nix
     ../../nixos/time.nix
     ../../nixos/users.nix
     ../../nixos/zsh.nix
@@ -51,7 +55,18 @@ in
       "nvidia_uvm"
     ];
 
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    #    kernelPackage
+    #   "hid_logitech_hidpp"
+    #   "i2c_piix4"
+    #   "i2c_smbus"
+    #   "i8042"
+    #   "input_leds"
+    #   "intel_rapl_common"
+    #   "intel_rapl_msr"
+    #   "ip6t_rpfilter"
+    #   "ipt_rpfilter"
+    #   "irqbypass"
+    #   "joydev"s = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
     kernelParams = [
       "loglevel=3"
@@ -67,18 +82,18 @@ in
 
   environment.systemPackages =
     (with pkgs; [
-#      brave-origin
+      #      brave-origin
       git
-      godot
+      #      godot
       kdePackages.dolphin
       kdePackages.qtsvg
       prismlauncher
       tor-browser
       vlc
     ])
-#    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
-#      omp
-#    ])
+    #    ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+    #      omp
+    #    ])
     ++ [
       awakenedpoetrade
       bambu
@@ -119,7 +134,7 @@ in
     inputs.nix-cachyos-kernel.overlays.default
   ];
 
-  programs.thunderbird.enable = true;
+#  programs.thunderbird.enable = true;
 
   security.lockKernelModules = false;
 

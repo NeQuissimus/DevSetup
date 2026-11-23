@@ -1,4 +1,9 @@
-{ pkgs, lib, strataPort, ... }:
+{
+  pkgs,
+  lib,
+  strataPort,
+  ...
+}:
 {
   home.file.".omp/agent/models.yml" = lib.mkIf (strataPort != null) {
     source = pkgs.writeText "omp-models" ''

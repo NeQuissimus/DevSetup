@@ -3,7 +3,7 @@
 
   nixConfig = {
     extra-substituters = [
-#      "https://attic.xuyh0120.win/lantian"
+      #      "https://attic.xuyh0120.win/lantian"
       "https://cache.nixos-cuda.org"
       "https://cache.numtide.com"
       "https://nixos-raspberrypi.cachix.org"
@@ -11,23 +11,23 @@
 
     extra-trusted-public-keys = [
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-#      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      #      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     ];
   };
 
   inputs = {
-#    firefox-addons = {
-#      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-#      inputs.nixpkgs.follows = "nixpkgs-unstable";
-#    };
-#    helium-flake = {
-#      url = "github:oxcl/nix-flake-helium-browser";
-#      inputs.nixpkgs.follows = "nixpkgs-unstable";
-#    };
+    #    firefox-addons = {
+    #      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    #      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #    };
+    #    helium-flake = {
+    #      url = "github:oxcl/nix-flake-helium-browser";
+    #      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #    };
     home-manager.url = "github:nix-community/home-manager";
-#    llm-agents.url = "github:numtide/llm-agents.nix";
+    #    llm-agents.url = "github:numtide/llm-agents.nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     #nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=pull/548762/merge";
@@ -35,31 +35,31 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nur.url = "github:nix-community/nur";
     nixos-rk3588.url = "github:gnull/nixos-rk3588";
-#    strata-nix.url = "github:Yunor743/strata.nix";
-#    omp.url = "github:can1357/oh-my-pi";
-#    zen-browser = {
-#      url = "github:0xc000022070/zen-browser-flake";
-#      inputs = {
-#        nixpkgs.follows = "nixpkgs-unstable";
-#        home-manager.follows = "home-manager";
-#      };
-#    };
+    #    strata-nix.url = "github:Yunor743/strata.nix";
+    #    omp.url = "github:can1357/oh-my-pi";
+    #    zen-browser = {
+    #      url = "github:0xc000022070/zen-browser-flake";
+    #      inputs = {
+    #        nixpkgs.follows = "nixpkgs-unstable";
+    #        home-manager.follows = "home-manager";
+    #      };
+    #    };
   };
 
   outputs =
     inputs@{
       self,
-#      helium-flake,
+      #      helium-flake,
       home-manager,
-#      llm-agents,
+      #      llm-agents,
       nixpkgs,
       nixpkgs-unstable,
       nixos-raspberrypi,
       nix-cachyos-kernel,
       nur,
       nixos-rk3588,
-#      strata-nix,
-#      zen-browser,
+      #      strata-nix,
+      #      zen-browser,
       ...
     }:
     let
@@ -68,21 +68,21 @@
         nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-#            { nixpkgs.overlays = [ helium-flake.overlays.default strata-nix.overlays.default ]; }
+            #            { nixpkgs.overlays = [ helium-flake.overlays.default strata-nix.overlays.default ]; }
 
             ./hosts/${host}/configuration.nix
-#            strata-nix.nixosModules.default
-#            inputs.omp.nixosModules.default
+            #            strata-nix.nixosModules.default
+            #            inputs.omp.nixosModules.default
             home-manager.nixosModules.home-manager
             (
               { config, ... }:
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-#                home-manager.extraSpecialArgs = {
-#                  inherit inputs;
-#                  strataPort = if config.services.strata.enable then config.services.strata.port else null;
-#                };
+                #                home-manager.extraSpecialArgs = {
+                #                  inherit inputs;
+                #                  strataPort = if config.services.strata.enable then config.services.strata.port else null;
+                #                };
                 home-manager.users.nequi = ./home/_nequi.nix;
               }
             )

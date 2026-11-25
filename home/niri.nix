@@ -56,6 +56,8 @@ in {
             "Mod+Shift+L" = { spawn = ["swaylock"]; };
             "Mod+Left" = { focus-column-left = {}; };
             "Mod+Right" = { focus-column-right = {}; };
+            "Mod+Up" = { set-column-width = "+10%"; };
+            "Mod+Down" = { set-column-width = "-10%"; };
             "Mod+Shift+Up" = { maximize-window-to-edges = {}; };
             "Mod+Shift+Left" = { move-column-left = {}; };
             "Mod+Shift+Right" = { move-column-right = {}; };

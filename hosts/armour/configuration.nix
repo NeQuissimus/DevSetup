@@ -29,13 +29,14 @@ in
     ./hardware.nix
 
     ../../nixos/brave.nix
-    ../../nixos/hyprland.nix
+    # ../../nixos/hyprland.nix
     (import ../../nixos/kernel.nix {
       inherit pkgs lib config;
       modlistFile = ./modlist.txt;
       baseKernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
     })
     ../../nixos/logs.nix
+    ../../nixos/niri.nix
     ../../nixos/nix.nix
     #    ../../nixos/ollama.nix
     ../../nixos/security.nix
@@ -121,7 +122,7 @@ in
     inputs.nix-cachyos-kernel.overlays.default
   ];
 
-#  programs.thunderbird.enable = true;
+  #  programs.thunderbird.enable = true;
 
   security.lockKernelModules = false;
 

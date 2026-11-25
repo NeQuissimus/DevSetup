@@ -40,6 +40,8 @@ in
       ];
       auto-optimise-store = true;
       cores = 4;
+      keep-derivations = false;
+      keep-outputs = false;
       max-jobs = 4;
       require-sigs = true;
       sandbox = true;

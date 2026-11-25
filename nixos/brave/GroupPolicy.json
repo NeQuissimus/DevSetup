@@ -66,6 +66,10 @@
           "url": "https://account.proton.me/apps"
         },
         {
+          "name": "Reolink",
+          "url": "https://10.0.0.44/"
+        },
+        {
           "name": "Supercars",
           "url": "https://www.supercars.com/superview"
         },

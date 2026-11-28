@@ -26,3 +26,7 @@ theme "cyber-noir"
 // Single panes no longer get an auto-hidden frame (that was a zjstatus
 // feature). Turn frames off globally so a lone pane has no border.
 pane_frames false
+
+terminal {
+  opacity 0.1
+}

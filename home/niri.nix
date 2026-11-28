@@ -26,14 +26,26 @@ let
    
     cp config.jsonc $out
   '';
+
+  colours = {
+    dark = "#404041";
+    accent = "#e6c17a";
+    light = "#f6ede3";
+  };
+
+  wallpaper = builtins.fetchurl {
+    url = "https://live.staticflickr.com/65535/55248904961_bf0319f2ea_5k.jpg";
+    sha256 = "0h7jzzc8r61mgxbj7438a5zy8jdghhbnzb25ym5jhhjf076c1i63";
+  };
 in {
   home = {
     file.".config/waybar/config".source = waybar_config_patched;
 
     packages = with pkgs; [
-      hyprlauncher
-      kitty
+      oreo-cursors-plus
     ];
+
+    sessionVariables.XCURSOR_PATH = "/etc/profiles/per-user/${config.home.username}/share/icons";
   };
 
   programs.swaylock.enable = true;
@@ -50,10 +62,10 @@ in {
         binds = {
             "Mod+Return" = {
               _props.repeat = false;
-              spawn = ["kitty"];
+              spawn = ["${pkgs.kitty}/bin/kitty"];
             };
-            "Mod+D" = { spawn = ["hyprlauncher"]; };
-            "Mod+Shift+L" = { spawn = ["swaylock"]; };
+            "Mod+D" = { spawn = ["${pkgs.hyprlauncher}/bin/hyprlauncher"]; };
+            "Mod+Shift+L" = { spawn = ["${pkgs.swaylock}/bin/swaylock"]; };
             "Mod+Left" = { focus-column-left = {}; };
             "Mod+Right" = { focus-column-right = {}; };
             "Mod+Up" = { set-column-width = "+10%"; };
@@ -63,8 +75,42 @@ in {
             "Mod+Shift+Right" = { move-column-right = {}; };
         };
 
+        cursor = {
+          hide-after-inactive-ms = 5000;
+          xcursor-theme = "oreo_spark_orange_cursors";
+          xcursor-size = 48;
+        };
+
+        hotkey-overlay = { "skip-at-startup" = {}; };
+
+        layout = {
+          background-color = colours.light;
+
+          focus-ring = {
+            active-color = colours.light;
+            inactive-color = colours.dark;
+            off = {};
+            urgent-color = colours.accent;
+            width = 5;
+          };
+
+          gaps = 5;
+        };
+
+
         _children = [
+          { spawn-at-startup = "${pkgs.awww}/bin/awww-daemon"; }
+          { spawn-at-startup = [ (lib.getExe pkgs.awww) "img" wallpaper ]; }
+          { spawn-at-startup = "${lib.getExe pkgs.waybar}"; }
+
+          { prefer-no-csd = {}; }
+
           { window-rule._children = [
+            { match._props = { app-id = "kitty"; }; }
+            { background-effect = { xray = true; blur = true; }; }
+          ]; }
+          { window-rule._children = [
+            { background-effect = { blur = true; }; }
             { draw-border-with-background = false; }
           ]; }
         ];

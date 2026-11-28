@@ -14,12 +14,13 @@
     };
 
     settings = {
-      background_blur = 32;
-      background_opacity = 0.7;
+      background_blur = 0;
+      background_opacity = 0.0;
       confirm_os_window_close = 0;
       enable_audio_bell = false;
       scrollback_lines = 100000;
-      shell = "${pkgs.zsh}/bin/zsh -l -c ${pkgs.zellij}/bin/zellij";
+#      shell = "${pkgs.zsh}/bin/zsh -l -c ${pkgs.zellij}/bin/zellij";
+      shell = "${pkgs.zsh}/bin/zsh -l";
       update_check_interval = 0;
     };
 
